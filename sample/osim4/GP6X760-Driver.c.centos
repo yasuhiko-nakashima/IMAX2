@@ -1,0 +1,802 @@
+/*
+ * Copyright (c) 2003-2010 Sansei Syatem LTD
+ *
+ * GP6V760 USB device driver for Linux 2.6.xx.
+ */
+
+#include <linux/fs.h>
+#include <linux/kernel.h>
+#include <linux/errno.h>
+#include <linux/init.h>
+#include <linux/slab.h>
+#include <linux/module.h>
+#include <linux/kref.h>
+#include <linux/smp_lock.h>
+#include <linux/usb.h>
+#include <asm/uaccess.h>
+
+/* Command */
+#define CMD_REG_READ					(0x00000004)
+#define CMD_MEM_READ					(0x00000005)
+#define CMD_REG_WRITE_START				(0x00000006)
+#define CMD_REG_WRITE_STOP				(0x0000000E)
+#define CMD_MEM_WRITE_START				(0x00000007)
+#define CMD_MEM_WRITE_STOP				(0x0000000F)
+/* FPGA register */
+#define REG_FPGA_REG_MIN				(0x00000000)
+#define REG_FPGA_REG_MAX				(0x00000054)
+#define REG_FPGA_VERSION				(0x00000000)
+#define REG_FPGA_SOFTRESET				(0x00000004)
+#define		VAL_SOFTRESET				(0x00000001)
+#define REG_FPGA_SYS_SET				(0x00000008)
+#define		VAL_AXIBRAM_RW_EN			(0x00000001)
+#define REG_FPGA_AXI_WADDR				(0x00000010)
+#define REG_FPGA_AXI_WSIZE				(0x00000014)
+#define		VAL_AXIWSIZE_LONG			(0x12000000)
+#define REG_FPGA_AXI_WADDR_CTRL			(0x00000020)
+#define		VAL_AXIWADDR_TRIG			(0x00000001)
+#define REG_FPGA_AXI_WDATA				(0x00000024)
+#define REG_FPGA_AXI_WDATA_CTRL			(0x0000002C)
+#define		VAL_AXIWDATA_END			(0x00000F03)
+#define REG_FPGA_AXI_RADDR				(0x00000038)
+#define REG_FPGA_AXI_RSIZE				(0x0000003C)
+#define		VAL_AXIRSIZE_LONG			(0x12000000)
+#define REG_FPGA_AXI_RADDR_CTRL			(0x00000048)
+#define		VAL_AXIRADDR_TRIG			(0x00000001)
+#define REG_FPGA_AXI_RDATA				(0x0000004C)
+#define REG_FPGA_AXI_RDATA_CTRL			(0x00000054)
+#define		VAL_AXIRDATA_END			(0x00000001)
+
+/* Define these values to match your devices */
+#define USB_GP6V760_VENDOR_ID			0x04EC
+#define USB_GP6V760_PRODUCT_ID0			0xF000
+#define USB_GP6V760_PRODUCT_ID1			0xF001
+
+/* driver */
+#define	USB_GP6V760_CBSIZE				16
+#define	USB_GP6V760_MAX_LENGTH			512
+#define	USB_GP6V760_BSIZE				2048
+#define	USB_GP6V760_CMDOUT_ADDR			0x02
+#define	USB_GP6V760_BULKOUT_ADDR		0x01
+#define	USB_GP6V760_BULKIN_ADDR			0x81
+#define	USB_GP6V760_TIMEOUT				3000
+
+/* table of devices that work with this driver */
+static struct usb_device_id usb_gp6v760_table [] = {
+	{ USB_DEVICE(USB_GP6V760_VENDOR_ID, USB_GP6V760_PRODUCT_ID0) },
+	{ USB_DEVICE(USB_GP6V760_VENDOR_ID, USB_GP6V760_PRODUCT_ID1) },
+	{ }					/* Terminating entry */
+};
+MODULE_DEVICE_TABLE (usb, usb_gp6v760_table);
+
+
+/* Get a minor range for your devices from the usb maintainer */
+#define USB_GP6V760_MINOR_BASE			250
+
+/* Structure to hold all of our device specific stuff */
+struct usb_gp6v760 {
+	struct usb_device *		udev;					/* the usb device for this device */
+	struct usb_interface *	interface;				/* the interface for this device */
+	unsigned char *			bulk_in_buffer;			/* the buffer to receive data */
+	unsigned char *			bulk_out_buffer;		/* the buffer to trans data */
+	unsigned char *			cmd_out_buffer;			/* the buffer to trans command data */
+	size_t					bulk_size;				/* the size of the receive/trans buffer */
+	__u8					cmd_out_endpointAddr;	/* the address of the command outendpoint */
+	__u8					bulk_in_endpointAddr;	/* the address of the bulk in endpoint */
+	__u8					bulk_out_endpointAddr;	/* the address of the bulk out endpoint */
+	int						length;
+	struct kref				kref;
+};
+
+#define to_usb_gp6v760_dev(d) container_of( d, struct usb_gp6v760, kref )
+
+static struct usb_driver usb_gp6v760_driver;
+
+static void usb_gp6v760_delete( struct kref *kref ){	
+	struct usb_gp6v760 *dev = to_usb_gp6v760_dev( kref );
+
+	usb_put_dev( dev->udev );
+	kfree ( dev->bulk_in_buffer );
+	kfree ( dev->bulk_out_buffer );
+	kfree ( dev->cmd_out_buffer );
+	kfree ( dev );
+
+}
+
+static int usb_gp6v760_open( struct inode *inode, struct file *file ){
+	struct usb_gp6v760 *dev;
+	struct usb_interface *interface;
+	int subminor;
+	int retval = 0;
+
+	subminor = iminor( inode );
+
+	interface = usb_find_interface( &usb_gp6v760_driver, subminor );
+	if( !interface ){
+		printk("%s - error, can't find device for minor %d\n", __FUNCTION__, subminor );
+		retval = -ENODEV;
+		goto exit;
+	}
+
+	dev = usb_get_intfdata( interface );
+	if( !dev ){
+		retval = -ENODEV;
+		goto exit;
+	}
+	
+	/* increment our usage count for the device */
+	kref_get( &dev->kref );
+
+	/* save our object in the file's private structure */
+	file->private_data = dev;
+
+exit:
+	return retval;
+
+}
+
+static int usb_gp6v760_release( struct inode *inode, struct file *file ){
+	struct usb_gp6v760 *dev;
+
+	dev = ( struct usb_gp6v760 * )file->private_data;
+	if( dev == NULL ){
+		return -ENODEV;
+	}
+
+	/* decrement the count on our device */
+	kref_put( &dev->kref, usb_gp6v760_delete );
+	return 0;
+
+}
+
+static int usb_gp6v760_cmd_write( struct usb_gp6v760 *dev, int addr, int data, int len ){
+	unsigned char bufp[16];
+	int retval = 0;
+	int length;
+	int count;
+
+	length = len / 4;
+	count = 0x10;
+
+	/* verify that we actually have some data to write */
+	if( len == 0 ){
+		return -ENOMEM;
+	}
+
+	bufp[0]  = (unsigned char)(  data & 0x000000FF );
+	bufp[1]  = (unsigned char)(( data & 0x0000FF00 ) >> 8  );
+	bufp[2]  = (unsigned char)(( data & 0x00FF0000 ) >> 16 );
+	bufp[3]  = (unsigned char)(( data & 0xFF000000 ) >> 24 );
+	bufp[4]  = (unsigned char)(  addr & 0x000000FF );
+	bufp[5]  = (unsigned char)(( addr & 0x0000FF00 ) >> 8  );
+	bufp[6]  = (unsigned char)(( addr & 0x00FF0000 ) >> 16 );
+	bufp[7]  = (unsigned char)(( addr & 0xFF000000 ) >> 24 );
+	bufp[8]  = (unsigned char)(  length & 0x000000FF );
+	bufp[9]  = (unsigned char)(( length & 0x0000FF00 ) >> 8  );
+	bufp[10] = (unsigned char)(( length & 0x00FF0000 ) >> 16 );
+	bufp[11] = (unsigned char)(( length & 0xFF000000 ) >> 24 );
+	bufp[12] = 0x0;
+	bufp[13] = 0x0;
+	bufp[14] = 0x0;
+	bufp[15] = 0x0;
+
+
+	/* do a blocking bulk write to the device from get data */
+	retval = usb_bulk_msg( dev->udev,
+						   usb_sndbulkpipe( dev->udev, dev->cmd_out_endpointAddr ),
+						   (void *)bufp, count, &count, HZ*10 );
+
+	if( count != 0x10 ){
+		printk("error command write len=%x count=%x\n", len, count );
+	}
+
+	return retval;
+
+}
+
+static int usb_gp6v760_data_write_single( struct usb_gp6v760 *dev, int data, int len ){
+	unsigned char bufp[4];
+	int retval = 0;
+	int count;
+
+	count = len;
+
+	/* verify that we actually have some data to write */
+	if( len == 0 ){
+		return -ENOMEM;
+	}
+
+	bufp[0] = (unsigned char)(  data & 0x000000FF );
+	bufp[1] = (unsigned char)(( data & 0x0000FF00 ) >> 8  );
+	bufp[2] = (unsigned char)(( data & 0x00FF0000 ) >> 16 );
+	bufp[3] = (unsigned char)(( data & 0xFF000000 ) >> 24 );
+
+
+	/* do a blocking bulk write to the device from get data */
+	retval = usb_bulk_msg( dev->udev,
+						   usb_sndbulkpipe( dev->udev, dev->bulk_out_endpointAddr ),
+						   (void *)bufp, count, &count, HZ*10 );
+
+	if( len != count ){
+		printk("error single write len=%x count=%x\n", len, count );
+	}
+
+	return retval;
+
+}
+
+static int usb_gp6v760_data_write_burst( struct usb_gp6v760 *dev, unsigned int *bufin, int len ){
+	int retval = 0;
+	int count;
+
+	count = len;
+
+	/* verify that we actually have some data to write */
+	if( len == 0 ){
+		return -ENOMEM;
+	}
+
+
+	/* do a blocking bulk write to the device from get data */
+	retval = usb_bulk_msg( dev->udev,
+						   usb_sndbulkpipe( dev->udev, dev->bulk_out_endpointAddr ),
+						   bufin, count, &count, HZ*10 );
+
+	if( len != count ){
+		printk("error burst write-1 len=%x count=%x\n", len, count );
+	}
+
+	count = 0x0;
+	retval = usb_bulk_msg( dev->udev,
+						   usb_sndbulkpipe( dev->udev, dev->bulk_out_endpointAddr ),
+						   bufin, count, &count, HZ*10 );
+
+	if( count != 0 ){
+		printk("error burst write-2 len=0 count=%x\n", count );
+	}
+
+	return retval;
+
+}
+
+static int usb_gp6v760_data_read( struct usb_gp6v760 *dev, unsigned int *bufout, int len ){
+	int retval = 0;
+	int count;
+
+	count = len;
+
+	/* do a blocking bulk read to get data from the device */
+	retval = usb_bulk_msg( dev->udev,
+						   usb_rcvbulkpipe( dev->udev, dev->bulk_in_endpointAddr ),
+						   bufout, count, &count, HZ*10 );
+
+	return retval;
+
+}
+
+static int usb_gp6v760_write_do( struct usb_gp6v760 *dev, int addr, int data ){
+
+	/* Write Register Start */
+	if( usb_gp6v760_cmd_write( dev, addr, CMD_REG_WRITE_START, 0x4 )){
+		return (ENOMEM);
+	}
+
+	/* Write data process */
+	if( usb_gp6v760_data_write_single( dev, data, 0x4 )){
+		return (ENOMEM);
+	}
+
+	//Write Register Stop
+	if( usb_gp6v760_cmd_write( dev, addr, CMD_REG_WRITE_STOP, 0x4 )){
+		return (ENOMEM);
+	}
+
+	return ( 0 );
+}
+
+
+static int usb_gp6v760_read_do( struct usb_gp6v760 *dev, int addr, unsigned int *bufout ){
+
+	/* Read Register Command */
+	if( usb_gp6v760_cmd_write( dev, addr, CMD_REG_READ, 0x4 )){
+		return (ENOMEM);
+	}
+
+	/* Read data process */
+	if( usb_gp6v760_data_read( dev, bufout, 0x4 )){
+		return (ENOMEM);
+	}
+
+	return ( 0 );
+}
+
+static int usb_gp6v760_writev( struct file *file, const struct iovec *iov, int count, loff_t *offset ){
+	struct usb_gp6v760 *dev;
+	int	addr;
+	int	data;
+	int i;
+	int j;
+	unsigned int cnt;
+	unsigned int adrp[1024];
+	unsigned int *bufp = NULL;
+	unsigned char *bufin = NULL;
+
+	dev = ( struct usb_gp6v760 * )file->private_data;
+
+	/* Address Vector */
+	if( copy_from_user( adrp, iov[0].iov_base, (count-1)*4 )){
+		printk("write address copyin error\n");
+		return (-1);
+	}
+
+	for( i=0; i<count; i++ ){
+		if( i == 0 ){
+			addr = (int)*offset;
+		} else {
+			addr = (int)adrp[i-1];
+		}
+		dev->length = iov[i].iov_len;
+
+		if( dev->length == 0x4 ){
+			bufp = (unsigned int *)dev->bulk_out_buffer;
+			if( copy_from_user( bufp, iov[i].iov_base, iov[i].iov_len )){
+				printk("write single data copyin error\n");
+				return (ENOMEM);
+			}
+			data = (int)*bufp;
+
+			/* AXI Single Access */
+			//---AXI enable
+			if( usb_gp6v760_write_do( dev, REG_FPGA_SYS_SET, VAL_AXIBRAM_RW_EN )){
+				return (ENOMEM);
+			}
+			//---AXI size
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_WSIZE, VAL_AXIWSIZE_LONG )){
+				return (ENOMEM);
+			}
+			//---Addr
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_WADDR, addr )){
+				return (ENOMEM);
+			}
+			//---Addr trig
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_WADDR_CTRL, VAL_AXIWADDR_TRIG )){
+				return (ENOMEM);
+			}
+			//---Data
+			if( usb_gp6v760_write_do( dev,  REG_FPGA_AXI_WDATA, data )){
+				return (ENOMEM);
+			}
+			//---Data trig
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_WDATA_CTRL, VAL_AXIWDATA_END )){
+				return (ENOMEM);
+			}
+			//---AXI size recover
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_WSIZE, VAL_AXIWSIZE_LONG )){
+				return (ENOMEM);
+			}
+			//---Close the axi enable
+			if( usb_gp6v760_write_do( dev, REG_FPGA_SYS_SET, 0x0 )){
+				return (ENOMEM);
+			}
+		} else {
+			for( j=0; j<dev->length; ){
+				if(( dev->length - j ) > USB_GP6V760_MAX_LENGTH ){
+					cnt = USB_GP6V760_MAX_LENGTH;
+				} else {
+					cnt = dev->length - j;
+				}
+
+				bufin = (uint8_t *)iov[i].iov_base + j;
+				bufp = (unsigned int *)dev->bulk_out_buffer;
+				if( copy_from_user( bufp, bufin, cnt )){
+					printk("write burst data copyin error\n");
+					break;
+				}
+
+				/* AXI Burst Access */
+				//---Memory Write enable
+				if( usb_gp6v760_cmd_write( dev, addr, CMD_MEM_WRITE_START, cnt )){
+					return (ENOMEM);
+				}
+				//---Burst Data
+				if( usb_gp6v760_data_write_burst( dev, bufp, cnt )){
+					return (ENOMEM);
+				}
+				//---Memory Write disable
+				if( usb_gp6v760_cmd_write( dev, addr, CMD_MEM_WRITE_STOP, cnt )){
+					return (ENOMEM);
+				}
+				addr = addr + cnt;
+				j = j + cnt;
+			}
+		}
+	}
+	return (0);
+
+}
+
+static int usb_gp6v760_readv( struct file *file, const struct iovec *iov, int count, loff_t *offset ){
+	struct usb_gp6v760 *dev;
+	int	addr;
+	int err;
+	int i;
+	int j;
+	int k;
+	int l;
+	unsigned int cnt;
+	unsigned int adrp[1024];
+	unsigned int *bufp = NULL;
+	unsigned char *bufout = NULL;
+
+	dev = ( struct usb_gp6v760 * )file->private_data;
+
+	bufp = (unsigned int *)dev->bulk_in_buffer;
+
+	for( i=0; i<count; i++ ){
+
+		if(( i == 0 ) && ( count != 1 )){
+			addr = (int)*offset;
+			dev->length = count*4;
+
+			if( dev->length == 0x4 ){
+				bufp = (unsigned int *)dev->bulk_in_buffer;
+
+				/* AXI Single Access */
+				//---AXI enable
+				if( usb_gp6v760_write_do( dev, REG_FPGA_SYS_SET, VAL_AXIBRAM_RW_EN )){
+					return (ENOMEM);
+				}
+				//---AXI size
+				if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RSIZE, VAL_AXIWSIZE_LONG )){
+					return (ENOMEM);
+				}
+				//---Addr
+				if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RADDR, addr )){
+					return (ENOMEM);
+				}
+				//---Addr trig
+				if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RADDR_CTRL, VAL_AXIWADDR_TRIG )){
+					return (ENOMEM);
+				}
+				//---Data
+				if( usb_gp6v760_read_do( dev, REG_FPGA_AXI_RDATA, bufp )){
+					return (ENOMEM);
+				}
+				//---Data trig
+				if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RDATA_CTRL, VAL_AXIRDATA_END )){
+					return (ENOMEM);
+				}
+				//---AXI size recover
+				if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RSIZE, VAL_AXIWSIZE_LONG )){
+					return (ENOMEM);
+				}
+				//---Close the axi enable
+				if( usb_gp6v760_write_do( dev, REG_FPGA_SYS_SET, 0x0 )){
+					return (ENOMEM);
+				}
+
+				/* Address Vector */
+				adrp[0]   = *bufp;
+
+			} else {
+				l = 0;
+				for( j=0; j<dev->length; ){
+					if(( dev->length - j ) > USB_GP6V760_MAX_LENGTH ){
+						cnt = USB_GP6V760_MAX_LENGTH;
+					} else {
+						cnt = dev->length - j;
+					}
+
+					bufp = (unsigned int *)dev->bulk_in_buffer;
+
+					/* AXI Burst Access */
+					//---Memory Read enable
+					if( usb_gp6v760_cmd_write( dev, addr, CMD_MEM_READ, cnt )){
+						return (ENOMEM);
+					}
+					//---Data
+					if( usb_gp6v760_data_read( dev, bufp, cnt )){
+						return (ENOMEM);
+					}
+
+					/* Address Vector */
+					for( k=0; k<cnt/4; k++ ){
+						adrp[l] = *bufp;
+						bufp = bufp + 1;
+						l = l +1;
+					}
+
+					addr = addr + cnt;
+					j = j + cnt;
+				}
+			}
+		}
+
+
+		if( i == 0 ){
+			addr = (int)*offset;
+		} else {
+			addr = (int)adrp[i-1];
+		}
+
+		dev->length = iov[i].iov_len;
+
+		if( dev->length == 0x4 ){
+			bufp = (unsigned int *)dev->bulk_in_buffer;
+
+			/* AXI Single Access */
+			//---AXI enable
+			if( usb_gp6v760_write_do( dev, REG_FPGA_SYS_SET, VAL_AXIBRAM_RW_EN )){
+				return (ENOMEM);
+			}
+			//---AXI size
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RSIZE, VAL_AXIWSIZE_LONG )){
+				return (ENOMEM);
+			}
+			//---Addr
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RADDR, addr )){
+				return (ENOMEM);
+			}
+			//---Addr trig
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RADDR_CTRL, VAL_AXIWADDR_TRIG )){
+				return (ENOMEM);
+			}
+			//---Data
+			if( usb_gp6v760_read_do( dev, REG_FPGA_AXI_RDATA, bufp )){
+				return (ENOMEM);
+			}
+			//---Data trig
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RDATA_CTRL, VAL_AXIRDATA_END )){
+				return (ENOMEM);
+			}
+			//---AXI size recover
+			if( usb_gp6v760_write_do( dev, REG_FPGA_AXI_RSIZE, VAL_AXIWSIZE_LONG )){
+				return (ENOMEM);
+			}
+			//---Close the axi enable
+			if( usb_gp6v760_write_do( dev, REG_FPGA_SYS_SET, 0x0 )){
+				return (ENOMEM);
+			}
+
+			err = copy_to_user( iov[i].iov_base, bufp, dev->length );
+			if( err ){
+				printk("read single data copyout error\n");
+				break;
+			}
+		} else {
+			for( j=0; j<dev->length; ){
+				if(( dev->length - j ) > USB_GP6V760_MAX_LENGTH ){
+					cnt = USB_GP6V760_MAX_LENGTH;
+				} else {
+					cnt = dev->length - j;
+				}
+
+				bufp = (unsigned int *)dev->bulk_in_buffer;
+
+				/* AXI Burst Access */
+				//---Memory Read enable
+				if( usb_gp6v760_cmd_write( dev, addr, CMD_MEM_READ, cnt )){
+					return (ENOMEM);
+				}
+				//---Data
+				if( usb_gp6v760_data_read( dev, bufp, cnt )){
+					return (ENOMEM);
+				}
+
+				bufout = (uint8_t *)iov[i].iov_base + j;
+
+				err = copy_to_user( bufout, bufp, cnt );
+				if( err ){
+					printk("read burst data copyout error\n");
+					break;
+				}
+
+				addr = addr + cnt;
+				j = j + cnt;
+			}
+		}
+	}
+	return (0);
+
+}
+
+static int usb_gp6v760_read(struct file *file, char __user *buffer, size_t count, loff_t *offset){
+	struct iovec	iov[1];
+	int				retval = 0;
+
+	iov[0].iov_base = (unsigned char *)buffer;
+	iov[0].iov_len = (int)count;
+
+	retval = usb_gp6v760_readv( file, iov, 0x1, offset );
+	return (retval);
+
+}
+
+static int usb_gp6v760_write(struct file *file, const char __user *buffer, size_t count, loff_t *offset ){
+	struct iovec	iov[1];
+	int				retval = 0;
+
+	iov[0].iov_base = (unsigned char *)buffer;
+	iov[0].iov_len = (int)count;
+
+	retval = usb_gp6v760_writev( file, iov, 0x1, offset );
+	return (0);
+
+}
+
+
+static struct file_operations usb_gp6v760_fops = {
+	.owner   =		THIS_MODULE,
+	.read    =		usb_gp6v760_read,
+	.write   =		usb_gp6v760_write,
+	.open    =		usb_gp6v760_open,
+	.release =		usb_gp6v760_release,
+};
+
+/* 
+ * usb class driver info in order to get a minor number from the usb core,
+ * and to have the device registered with devfs and the driver core
+ */
+static struct usb_class_driver usb_gp6v760_class = {
+	.name = "usb_gp6v760%d",
+	.fops = &usb_gp6v760_fops,
+//	.mode = S_IFCHR | S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH,
+	.minor_base = USB_GP6V760_MINOR_BASE,
+};
+
+static int usb_gp6v760_probe( struct usb_interface *interface, const struct usb_device_id *id ){
+	struct usb_gp6v760 *dev = NULL;
+	struct usb_host_interface *iface_desc;
+	struct usb_endpoint_descriptor *endpoint;
+	size_t buffer_size;
+	int i;
+	int retval = -ENOMEM;
+
+	/* allocate memory for our device state and initialize it */
+	dev = kmalloc( sizeof( struct usb_gp6v760 ), GFP_KERNEL );
+	if( dev == NULL ){
+		printk("Out of memory\n");
+		goto error;
+	}
+	memset( dev, 0x00, sizeof( *dev ));
+	kref_init( &dev->kref );
+
+	dev->udev = usb_get_dev( interface_to_usbdev( interface ));
+	dev->interface = interface;
+
+	/* set up the endpoint information */
+	/* use only the first bulk-in and bulk-out endpoints */
+	iface_desc = interface->cur_altsetting;
+	for ( i = 0; i < iface_desc->desc.bNumEndpoints; ++i ){
+		endpoint = &iface_desc->endpoint[i].desc;
+
+		if (!dev->bulk_in_endpointAddr &&
+		    (endpoint->bEndpointAddress & USB_DIR_IN) &&
+		    ((endpoint->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
+					== USB_ENDPOINT_XFER_BULK)) {
+			/* we found a bulk in endpoint */
+			buffer_size = endpoint->wMaxPacketSize;
+			dev->bulk_size = buffer_size;
+			dev->bulk_in_endpointAddr = endpoint->bEndpointAddress;
+			dev->bulk_in_buffer = kmalloc( buffer_size, GFP_KERNEL );
+			if (!dev->bulk_in_buffer) {
+				printk("Could not allocate bulk_in_buffer\n");
+				goto error;
+			}
+		}
+
+		if ((!dev->bulk_out_endpointAddr || !dev->cmd_out_endpointAddr) &&
+		    !(endpoint->bEndpointAddress & USB_DIR_IN) &&
+		    ((endpoint->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
+					== USB_ENDPOINT_XFER_BULK)) {
+			if( endpoint->bEndpointAddress == USB_GP6V760_BULKOUT_ADDR ){
+				/* we found a bulk out endpoint */
+				dev->bulk_out_endpointAddr = endpoint->bEndpointAddress;
+				buffer_size = endpoint->wMaxPacketSize;
+				dev->bulk_out_buffer = kmalloc( buffer_size, GFP_KERNEL );
+				if (!dev->bulk_out_buffer) {
+					printk("Could not allocate bulk_out_buffer\n");
+					goto error;
+				}
+			} else if ( endpoint->bEndpointAddress == USB_GP6V760_CMDOUT_ADDR ){
+				/* we found a command out endpoint */
+				dev->cmd_out_endpointAddr = endpoint->bEndpointAddress;
+				buffer_size = endpoint->wMaxPacketSize;
+				dev->cmd_out_buffer = kmalloc( buffer_size, GFP_KERNEL );
+				if (!dev->cmd_out_buffer) {
+					printk("Could not allocate cmd_out_buffer\n");
+					goto error;
+				}
+			} else {
+				printk("found the thing which was not bulk-out/command-out endpoints\n");
+			}
+		}
+	}
+	if ( !( dev->bulk_in_endpointAddr && dev->bulk_out_endpointAddr )){
+		printk("Could not find both bulk-in and bulk-out endpoints\n");
+		goto error;
+	}
+
+	/* save our data pointer in this interface device */
+	usb_set_intfdata( interface, dev );
+
+	/* we can register the device now, as it is ready */
+	retval = usb_register_dev( interface, &usb_gp6v760_class );
+	if( retval ){
+		/* something prevented us from registering this driver */
+		printk("Not able to get a minor for this device.\n");
+		usb_set_intfdata( interface, NULL );
+		goto error;
+	}
+
+	/* let the user know what node this device is now attached to */
+	printk("USB GP6V760 device now attached to USB_GP6V760-%d\n", interface->minor );
+	printk("USB_GP6V760 : ENDPOINT ADDR CMD:%x WR:%x RD:%x BUFF=%x\n",
+			dev->cmd_out_endpointAddr,
+			dev->bulk_out_endpointAddr,
+			dev->bulk_in_endpointAddr,
+			dev->bulk_size );
+	return 0;
+
+error:
+	if( dev ){
+		kref_put( &dev->kref, usb_gp6v760_delete );
+	}
+	return retval;
+
+}
+
+static void usb_gp6v760_disconnect(struct usb_interface *interface){
+	struct usb_gp6v760 *dev;
+	int minor = interface->minor;
+
+	/* prevent usb_gp6v760_open() from racing usb_gp6v760_disconnect() */
+	lock_kernel();
+
+	dev = usb_get_intfdata( interface );
+	usb_set_intfdata( interface, NULL );
+
+	/* give back our minor */
+	usb_deregister_dev( interface, &usb_gp6v760_class );
+
+	unlock_kernel();
+
+	/* decrement our usage count */
+	kref_put( &dev->kref, usb_gp6v760_delete );
+
+	printk("USB GP6V760 #%d now disconnected", minor);
+
+}
+
+static struct usb_driver usb_gp6v760_driver = {
+//	.owner      = THIS_MODULE,
+	.name       = "usb_gp6v760",
+	.id_table   = usb_gp6v760_table,
+	.probe      = usb_gp6v760_probe,
+	.disconnect = usb_gp6v760_disconnect,
+};
+
+static int __init usb_gp6v760_init(void){
+	int result;
+
+	/* register this driver with the USB subsystem */
+	result = usb_register( &usb_gp6v760_driver );
+	if( result ){
+		printk("usb_register failed. Error number %d\n", result );
+	}
+
+	return result;
+
+}
+
+static void __exit usb_gp6v760_exit(void){
+	/* deregister this driver with the USB subsystem */
+	usb_deregister( &usb_gp6v760_driver );
+
+}
+
+module_init (usb_gp6v760_init);
+module_exit (usb_gp6v760_exit);
+
+MODULE_LICENSE("GPL");
+

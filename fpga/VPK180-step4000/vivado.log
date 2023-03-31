@@ -1,0 +1,1863 @@
+#-----------------------------------------------------------
+# Vivado v2022.2.2 (64-bit)
+# SW Build 3788238 on Tue Feb 21 19:59:23 MST 2023
+# IP Build 3783773 on Tue Feb 21 23:41:56 MST 2023
+# Start of session at: Tue Mar 28 14:23:38 2023
+# Process ID: 21973
+# Current directory: /home/nakashim/proj-arm64/fpga/VPK180-step4000
+# Command line: vivado -stack 10000
+# Log file: /home/nakashim/proj-arm64/fpga/VPK180-step4000/vivado.log
+# Journal file: /home/nakashim/proj-arm64/fpga/VPK180-step4000/vivado.jou
+# Running On: cad103.naist.jp, OS: Linux, CPU Frequency: 5499.938 MHz, CPU Physical cores: 8, Host memory: 134938 MB
+#-----------------------------------------------------------
+start_gui
+Sourcing tcl script '/home/nakashim/.Xilinx/Vivado/Vivado_init.tcl'
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_a/1.0/board.xml as part xcve2802-vsvh1760-2lp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_b/1.0/board.xml as part xcve2802-vsvh1760-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vhk158_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vhk158/es/1.0/board.xml as part xcvh1582-vsva3697-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es:part0:1.2 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120/es/1.2/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120_revb/es/1.0/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk180_es:part0:1.0 available at /home/nakashim/.Xilinx/Vivado/2022.2.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2022.2.2/boards/Xilinx/vpk180/es/1.0/1.0/board.xml as part xcvp1802-lsvc4072-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu208ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu208ld/production/2.0/board.xml as part xczu58dr-fsvg1517-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu216ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu216ld/production/2.0/board.xml as part xczu59dr-ffvf1760-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670/2.0/board.xml as part xczu67dr-fsve1156-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670ld:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670ld/1.0/board.xml as part xczu57dr-fsve1156-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_a/1.0/board.xml as part xcve2802-vsvh1760-2lp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_b/1.0/board.xml as part xcve2802-vsvh1760-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vhk158_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vhk158/es/1.0/board.xml as part xcvh1582-vsva3697-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es:part0:1.2 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120/es/1.2/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120_revb/es/1.0/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk180_es:part0:1.0 available at /home/nakashim/.Xilinx/Vivado/2022.2.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2022.2.2/boards/Xilinx/vpk180/es/1.0/1.0/board.xml as part xcvp1802-lsvc4072-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu208ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu208ld/production/2.0/board.xml as part xczu58dr-fsvg1517-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu216ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu216ld/production/2.0/board.xml as part xczu59dr-ffvf1760-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670/2.0/board.xml as part xczu67dr-fsve1156-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670ld:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670ld/1.0/board.xml as part xczu57dr-fsve1156-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_a/1.0/board.xml as part xcve2802-vsvh1760-2lp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_b/1.0/board.xml as part xcve2802-vsvh1760-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vhk158_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vhk158/es/1.0/board.xml as part xcvh1582-vsva3697-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es:part0:1.2 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120/es/1.2/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120_revb/es/1.0/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk180_es:part0:1.0 available at /home/nakashim/.Xilinx/Vivado/2022.2.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2022.2.2/boards/Xilinx/vpk180/es/1.0/1.0/board.xml as part xcvp1802-lsvc4072-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu208ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu208ld/production/2.0/board.xml as part xczu58dr-fsvg1517-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu216ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu216ld/production/2.0/board.xml as part xczu59dr-ffvf1760-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670/2.0/board.xml as part xczu67dr-fsve1156-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670ld:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670ld/1.0/board.xml as part xczu57dr-fsve1156-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_a/1.0/board.xml as part xcve2802-vsvh1760-2lp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_b/1.0/board.xml as part xcve2802-vsvh1760-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vhk158_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vhk158/es/1.0/board.xml as part xcvh1582-vsva3697-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es:part0:1.2 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120/es/1.2/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120_revb/es/1.0/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk180_es:part0:1.0 available at /home/nakashim/.Xilinx/Vivado/2022.2.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2022.2.2/boards/Xilinx/vpk180/es/1.0/1.0/board.xml as part xcvp1802-lsvc4072-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu208ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu208ld/production/2.0/board.xml as part xczu58dr-fsvg1517-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu216ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu216ld/production/2.0/board.xml as part xczu59dr-ffvf1760-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670/2.0/board.xml as part xczu67dr-fsve1156-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670ld:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670ld/1.0/board.xml as part xczu57dr-fsve1156-2-i specified in board_part file is either invalid or not available
+create_project VPM180_64st . -part xcvp1802-lsvc4072-2MP-e-S
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/xilinx/Vivado/2022.2/data/ip'.
+set_property board_part xilinx.com:vpk180:part0:1.0 [current_project]
+WARNING: [Board 49-151] The current board 'xilinx.com::vpk180:1.0' is from a local repo. The vivado install has a corresponding board with version greater than or equal to the local repo board. Please use boards from vivado install to avoid any upgrade/migrate issues
+create_bd_design "design_1"
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd> 
+update_compile_order -fileset sources_1
+set_property  ip_repo_paths  /home/nakashim/proj-arm64/fpga/VPK180-step4000_IP [current_project]
+update_ip_catalog
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/nakashim/proj-arm64/fpga/VPK180-step4000_IP'.
+set_property dataflow_viewer_settings "min_width=16"   [current_fileset]
+startgroup
+create_bd_cell -type ip -vlnv comparch:user:emax6:1.0 emax6_0
+endgroup
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:versal_cips:3.3 versal_cips_0
+INFO: [Device 21-403] Loading part xcvp1802-lsvc4072-2MP-e-S
+create_bd_cell: Time (s): cpu = 00:00:18 ; elapsed = 00:00:21 . Memory (MB): peak = 15345.469 ; gain = 1880.645 ; free physical = 69639 ; free virtual = 126952
+endgroup
+set_property location {0.5 -188 -255} [get_bd_cells versal_cips_0]
+set_property -dict [list \
+  CONFIG.DDR_MEMORY_MODE {Custom} \
+  CONFIG.PS_PMC_CONFIG { \
+    DDR_MEMORY_MODE {Custom} \
+    PS_USE_FPD_AXI_NOC0 {1} \
+    PS_USE_FPD_AXI_NOC1 {1} \
+    PS_USE_FPD_CCI_NOC {0} \
+    SMON_ALARMS {Set_Alarms_On} \
+    SMON_ENABLE_TEMP_AVERAGING {0} \
+    SMON_TEMP_AVERAGING_SAMPLES {0} \
+  } \
+] [get_bd_cells versal_cips_0]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_noc:1.0 axi_noc_0
+endgroup
+set_property location {3 447 -370} [get_bd_cells axi_noc_0]
+set_property location {1 -135 -361} [get_bd_cells versal_cips_0]
+startgroup
+set_property -dict [list \
+  CONFIG.NUM_MI {3} \
+  CONFIG.NUM_SI {3} \
+] [get_bd_cells axi_noc_0]
+set_property -dict [list CONFIG.CATEGORY {ps_cci} CONFIG.CONNECTIONS {M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S00_AXI]
+set_property -dict [list CONFIG.CATEGORY {ps_cci} CONFIG.CONNECTIONS {M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S01_AXI]
+set_property -dict [list CONFIG.CATEGORY {ps_cci} CONFIG.CONNECTIONS {M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S02_AXI]
+set_property -dict [list CONFIG.ASSOCIATED_BUSIF {S02_AXI:M01_AXI:M02_AXI:S00_AXI:M00_AXI:S01_AXI}] [get_bd_pins /axi_noc_0/aclk0]
+endgroup
+mc_type_choices:None LPDDR
+apply_bd_automation -rule xilinx.com:bd_rule:axi_noc -config { hbm_density {None} hbm_nmu {None} mc_type {LPDDR} noc_clk {None} num_axi_bram {None} num_axi_tg {None} num_aximm_ext {None} num_mc_ddr {None} num_mc_lpddr {1} pl2noc_apm {0} pl2noc_cips {1}}  [get_bd_cells axi_noc_0]
+INFO: [xilinx.com:ip:axi_noc:1.0-101] Block Automation /axi_noc_0 requested enabling LPDDR Memory Controller (1). By default internal memory responder will be enabled within DDR4 Memory Controller.
+apply_bd_automation: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 16905.566 ; gain = 0.000 ; free physical = 69209 ; free virtual = 126525
+apply_bd_automation: Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 16905.566 ; gain = 0.000 ; free physical = 69209 ; free virtual = 126525
+set_property location {2.5 856 -452} [get_bd_cells emax6_0]
+startgroup
+set_property -dict [list \
+  CONFIG.NUM_MI {3} \
+  CONFIG.NUM_SI {4} \
+] [get_bd_cells axi_noc_0]
+set_property -dict [list CONFIG.ASSOCIATED_BUSIF {M01_AXI:M02_AXI:S00_AXI:M00_AXI}] [get_bd_pins /axi_noc_0/aclk0]
+set_property -dict [list CONFIG.ASSOCIATED_BUSIF {}] [get_bd_pins /axi_noc_0/aclk4]
+set_property -dict [list CONFIG.ASSOCIATED_BUSIF {}] [get_bd_pins /axi_noc_0/aclk5]
+delete_bd_objs [get_bd_intf_nets versal_cips_0_LPD_AXI_NOC_0] [get_bd_intf_nets versal_cips_0_PMC_NOC_AXI_0]
+endgroup
+startgroup
+set_property -dict [list \
+  CONFIG.DDR_MEMORY_MODE {Custom} \
+  CONFIG.PS_PMC_CONFIG { \
+    DDR_MEMORY_MODE {Custom} \
+    DESIGN_MODE {1} \
+    DEVICE_INTEGRITY_MODE {Sysmon temperature voltage and external IO monitoring} \
+    PMC_GPIO0_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 0 .. 25}}} \
+    PMC_GPIO1_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 26 .. 51}}} \
+    PMC_MIO37 {{AUX_IO 0} {DIRECTION out} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA high} {PULL pullup} {SCHMITT 0} {SLEW slow} {USAGE GPIO}} \
+    PMC_QSPI_FBCLK {{ENABLE 1} {IO {PMC_MIO 6}}} \
+    PMC_QSPI_PERIPHERAL_DATA_MODE {x4} \
+    PMC_QSPI_PERIPHERAL_ENABLE {1} \
+    PMC_QSPI_PERIPHERAL_MODE {Dual Parallel} \
+    PMC_REF_CLK_FREQMHZ {33.3333} \
+    PMC_SD1 {{CD_ENABLE 1} {CD_IO {PMC_MIO 28}} {POW_ENABLE 1} {POW_IO {PMC_MIO 51}} {RESET_ENABLE 0} {RESET_IO {PMC_MIO 12}} {WP_ENABLE 0} {WP_IO {PMC_MIO 1}}} \
+    PMC_SD1_PERIPHERAL {{CLK_100_SDR_OTAP_DLY 0x3} {CLK_200_SDR_OTAP_DLY 0x2} {CLK_50_DDR_ITAP_DLY 0x2A} {CLK_50_DDR_OTAP_DLY 0x3} {CLK_50_SDR_ITAP_DLY 0x25} {CLK_50_SDR_OTAP_DLY 0x4} {ENABLE 1} {IO {PMC_MIO 26 .. 36}}} \
+    PMC_SD1_SLOT_TYPE {SD 3.0 AUTODIR} \
+    PMC_USE_PMC_NOC_AXI0 {0} \
+    PS_BOARD_INTERFACE {ps_pmc_fixed_io} \
+    PS_ENET0_MDIO {{ENABLE 1} {IO {PS_MIO 24 .. 25}}} \
+    PS_ENET0_PERIPHERAL {{ENABLE 1} {IO {PS_MIO 0 .. 11}}} \
+    PS_GEN_IPI0_ENABLE {1} \
+    PS_GEN_IPI0_MASTER {A72} \
+    PS_GEN_IPI1_ENABLE {1} \
+    PS_GEN_IPI2_ENABLE {1} \
+    PS_GEN_IPI3_ENABLE {1} \
+    PS_GEN_IPI4_ENABLE {1} \
+    PS_GEN_IPI5_ENABLE {1} \
+    PS_GEN_IPI6_ENABLE {1} \
+    PS_I2C0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 46 .. 47}}} \
+    PS_I2C1_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 44 .. 45}}} \
+    PS_I2CSYSMON_PERIPHERAL {{ENABLE 0} {IO {PMC_MIO 39 .. 40}}} \
+    PS_MIO7 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+    PS_MIO9 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+    PS_NUM_FABRIC_RESETS {0} \
+    PS_PCIE_RESET {{ENABLE 1}} \
+    PS_UART0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 42 .. 43}}} \
+    PS_USB3_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 13 .. 25}}} \
+    PS_USE_FPD_CCI_NOC {1} \
+    PS_USE_FPD_CCI_NOC0 {1} \
+    PS_USE_NOC_LPD_AXI0 {0} \
+    PS_USE_PMCPL_CLK0 {0} \
+    PS_USE_PMCPL_CLK1 {0} \
+    PS_USE_PMCPL_CLK2 {0} \
+    PS_USE_PMCPL_CLK3 {0} \
+    SMON_ALARMS {Set_Alarms_On} \
+    SMON_ENABLE_TEMP_AVERAGING {0} \
+    SMON_INTERFACE_TO_USE {I2C} \
+    SMON_PMBUS_ADDRESS {0x18} \
+    SMON_TEMP_AVERAGING_SAMPLES {0} \
+  } \
+] [get_bd_cells versal_cips_0]
+delete_bd_objs [get_bd_nets versal_cips_0_lpd_axi_noc_clk] [get_bd_nets versal_cips_0_pmc_axi_noc_axi0_clk]
+endgroup
+startgroup
+set_property -dict [list \
+  CONFIG.NUM_CLKS {2} \
+  CONFIG.NUM_SI {2} \
+] [get_bd_cells axi_noc_0]
+delete_bd_objs [get_bd_nets versal_cips_0_fpd_cci_noc_axi2_clk] [get_bd_nets versal_cips_0_fpd_cci_noc_axi3_clk] [get_bd_intf_nets versal_cips_0_FPD_CCI_NOC_2] [get_bd_intf_nets versal_cips_0_FPD_CCI_NOC_3]
+endgroup
+set_property location {2 449 -387} [get_bd_cells axi_noc_0]
+connect_bd_intf_net [get_bd_intf_pins axi_noc_0/M00_AXI] [get_bd_intf_pins emax6_0/axi_s]
+startgroup
+create_bd_cell -type ip -vlnv comparch:user:emax6:1.0 emax6_1
+endgroup
+set_property location {4 804 -555} [get_bd_cells emax6_1]
+set_property location {2.5 619 -386} [get_bd_cells axi_noc_0]
+connect_bd_intf_net [get_bd_intf_pins axi_noc_0/M01_AXI] [get_bd_intf_pins emax6_1/axi_s]
+startgroup
+create_bd_cell -type ip -vlnv comparch:user:emax6:1.0 emax6_2
+endgroup
+set_property location {4 915 -705} [get_bd_cells emax6_2]
+connect_bd_intf_net [get_bd_intf_pins axi_noc_0/M02_AXI] [get_bd_intf_pins emax6_2/axi_s]
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {New/Reuse Simulation Clock And Reset Generator} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins emax6_0/ACLK]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {New/Reuse Simulation Clock And Reset Generator} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins emax6_1/ACLK]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {New/Reuse Simulation Clock And Reset Generator} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins emax6_2/ACLK]
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {New Clocking Wizard} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins noc_clk_gen/axi_clk_in_0]
+INFO: [Ipptcl 7-1463] No Compatible Board Interface found. Board Tab not created in customize GUI
+startgroup
+set_property -dict [list \
+  CONFIG.DDR_MEMORY_MODE {Custom} \
+  CONFIG.PS_PMC_CONFIG { \
+    DDR_MEMORY_MODE {Custom} \
+    DESIGN_MODE {1} \
+    DEVICE_INTEGRITY_MODE {Sysmon temperature voltage and external IO monitoring} \
+    PMC_GPIO0_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 0 .. 25}}} \
+    PMC_GPIO1_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 26 .. 51}}} \
+    PMC_MIO37 {{AUX_IO 0} {DIRECTION out} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA high} {PULL pullup} {SCHMITT 0} {SLEW slow} {USAGE GPIO}} \
+    PMC_QSPI_FBCLK {{ENABLE 1} {IO {PMC_MIO 6}}} \
+    PMC_QSPI_PERIPHERAL_DATA_MODE {x4} \
+    PMC_QSPI_PERIPHERAL_ENABLE {1} \
+    PMC_QSPI_PERIPHERAL_MODE {Dual Parallel} \
+    PMC_REF_CLK_FREQMHZ {33.3333} \
+    PMC_SD1 {{CD_ENABLE 1} {CD_IO {PMC_MIO 28}} {POW_ENABLE 1} {POW_IO {PMC_MIO 51}} {RESET_ENABLE 0} {RESET_IO {PMC_MIO 12}} {WP_ENABLE 0} {WP_IO {PMC_MIO 1}}} \
+    PMC_SD1_PERIPHERAL {{CLK_100_SDR_OTAP_DLY 0x3} {CLK_200_SDR_OTAP_DLY 0x2} {CLK_50_DDR_ITAP_DLY 0x2A} {CLK_50_DDR_OTAP_DLY 0x3} {CLK_50_SDR_ITAP_DLY 0x25} {CLK_50_SDR_OTAP_DLY 0x4} {ENABLE 1} {IO {PMC_MIO 26 .. 36}}} \
+    PMC_SD1_SLOT_TYPE {SD 3.0 AUTODIR} \
+    PMC_USE_PMC_NOC_AXI0 {0} \
+    PS_BOARD_INTERFACE {ps_pmc_fixed_io} \
+    PS_ENET0_MDIO {{ENABLE 1} {IO {PS_MIO 24 .. 25}}} \
+    PS_ENET0_PERIPHERAL {{ENABLE 1} {IO {PS_MIO 0 .. 11}}} \
+    PS_GEN_IPI0_ENABLE {1} \
+    PS_GEN_IPI0_MASTER {A72} \
+    PS_GEN_IPI1_ENABLE {1} \
+    PS_GEN_IPI2_ENABLE {1} \
+    PS_GEN_IPI3_ENABLE {1} \
+    PS_GEN_IPI4_ENABLE {1} \
+    PS_GEN_IPI5_ENABLE {1} \
+    PS_GEN_IPI6_ENABLE {1} \
+    PS_I2C0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 46 .. 47}}} \
+    PS_I2C1_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 44 .. 45}}} \
+    PS_I2CSYSMON_PERIPHERAL {{ENABLE 0} {IO {PMC_MIO 39 .. 40}}} \
+    PS_MIO7 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+    PS_MIO9 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+    PS_NUM_FABRIC_RESETS {0} \
+    PS_PCIE_RESET {{ENABLE 1}} \
+    PS_UART0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 42 .. 43}}} \
+    PS_USB3_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 13 .. 25}}} \
+    PS_USE_FPD_CCI_NOC {0} \
+    PS_USE_FPD_CCI_NOC0 {1} \
+    PS_USE_NOC_LPD_AXI0 {0} \
+    PS_USE_PMCPL_CLK0 {0} \
+    PS_USE_PMCPL_CLK1 {0} \
+    PS_USE_PMCPL_CLK2 {0} \
+    PS_USE_PMCPL_CLK3 {0} \
+    SMON_ALARMS {Set_Alarms_On} \
+    SMON_ENABLE_TEMP_AVERAGING {0} \
+    SMON_INTERFACE_TO_USE {I2C} \
+    SMON_PMBUS_ADDRESS {0x18} \
+    SMON_TEMP_AVERAGING_SAMPLES {0} \
+  } \
+] [get_bd_cells versal_cips_0]
+delete_bd_objs [get_bd_nets versal_cips_0_fpd_cci_noc_axi0_clk] [get_bd_nets versal_cips_0_fpd_cci_noc_axi1_clk] [get_bd_intf_nets versal_cips_0_FPD_CCI_NOC_0] [get_bd_intf_nets versal_cips_0_FPD_CCI_NOC_1]
+endgroup
+set_property CONFIG.PS_PMC_CONFIG { \
+  DDR_MEMORY_MODE {Custom} \
+  DESIGN_MODE {1} \
+  DEVICE_INTEGRITY_MODE {Sysmon temperature voltage and external IO monitoring} \
+  PMC_GPIO0_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 0 .. 25}}} \
+  PMC_GPIO1_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 26 .. 51}}} \
+  PMC_MIO37 {{AUX_IO 0} {DIRECTION out} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA high} {PULL pullup} {SCHMITT 0} {SLEW slow} {USAGE GPIO}} \
+  PMC_QSPI_FBCLK {{ENABLE 1} {IO {PMC_MIO 6}}} \
+  PMC_QSPI_PERIPHERAL_DATA_MODE {x4} \
+  PMC_QSPI_PERIPHERAL_ENABLE {1} \
+  PMC_QSPI_PERIPHERAL_MODE {Dual Parallel} \
+  PMC_REF_CLK_FREQMHZ {33.3333} \
+  PMC_SD1 {{CD_ENABLE 1} {CD_IO {PMC_MIO 28}} {POW_ENABLE 1} {POW_IO {PMC_MIO 51}} {RESET_ENABLE 0} {RESET_IO {PMC_MIO 12}} {WP_ENABLE 0} {WP_IO {PMC_MIO 1}}} \
+  PMC_SD1_PERIPHERAL {{CLK_100_SDR_OTAP_DLY 0x3} {CLK_200_SDR_OTAP_DLY 0x2} {CLK_50_DDR_ITAP_DLY 0x2A} {CLK_50_DDR_OTAP_DLY 0x3} {CLK_50_SDR_ITAP_DLY 0x25} {CLK_50_SDR_OTAP_DLY 0x4} {ENABLE 1} {IO {PMC_MIO 26 .. 36}}} \
+  PMC_SD1_SLOT_TYPE {SD 3.0 AUTODIR} \
+  PMC_USE_PMC_NOC_AXI0 {0} \
+  PS_BOARD_INTERFACE {ps_pmc_fixed_io} \
+  PS_ENET0_MDIO {{ENABLE 1} {IO {PS_MIO 24 .. 25}}} \
+  PS_ENET0_PERIPHERAL {{ENABLE 1} {IO {PS_MIO 0 .. 11}}} \
+  PS_GEN_IPI0_ENABLE {1} \
+  PS_GEN_IPI0_MASTER {A72} \
+  PS_GEN_IPI1_ENABLE {1} \
+  PS_GEN_IPI2_ENABLE {1} \
+  PS_GEN_IPI3_ENABLE {1} \
+  PS_GEN_IPI4_ENABLE {1} \
+  PS_GEN_IPI5_ENABLE {1} \
+  PS_GEN_IPI6_ENABLE {1} \
+  PS_I2C0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 46 .. 47}}} \
+  PS_I2C1_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 44 .. 45}}} \
+  PS_I2CSYSMON_PERIPHERAL {{ENABLE 0} {IO {PMC_MIO 39 .. 40}}} \
+  PS_MIO7 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+  PS_MIO9 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+  PS_NUM_FABRIC_RESETS {0} \
+  PS_PCIE_RESET {{ENABLE 1}} \
+  PS_UART0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 42 .. 43}}} \
+  PS_USB3_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 13 .. 25}}} \
+  PS_USE_FPD_AXI_NOC0 {1} \
+  PS_USE_FPD_AXI_NOC1 {1} \
+  PS_USE_FPD_CCI_NOC {0} \
+  PS_USE_FPD_CCI_NOC0 {1} \
+  PS_USE_NOC_LPD_AXI0 {0} \
+  PS_USE_PMCPL_CLK0 {0} \
+  PS_USE_PMCPL_CLK1 {0} \
+  PS_USE_PMCPL_CLK2 {0} \
+  PS_USE_PMCPL_CLK3 {0} \
+  SMON_ALARMS {Set_Alarms_On} \
+  SMON_ENABLE_TEMP_AVERAGING {0} \
+  SMON_INTERFACE_TO_USE {I2C} \
+  SMON_PMBUS_ADDRESS {0x18} \
+  SMON_TEMP_AVERAGING_SAMPLES {0} \
+} [get_bd_cells versal_cips_0]
+set_property location {1 -143 -364} [get_bd_cells versal_cips_0]
+connect_bd_intf_net [get_bd_intf_pins versal_cips_0/FPD_AXI_NOC_0] [get_bd_intf_pins axi_noc_0/S00_AXI]
+connect_bd_intf_net [get_bd_intf_pins versal_cips_0/FPD_AXI_NOC_1] [get_bd_intf_pins axi_noc_0/S01_AXI]
+startgroup
+endgroup
+startgroup
+endgroup
+connect_bd_net [get_bd_pins versal_cips_0/fpd_axi_noc_axi0_clk] [get_bd_pins axi_noc_0/aclk0]
+connect_bd_net [get_bd_pins versal_cips_0/fpd_axi_noc_axi1_clk] [get_bd_pins axi_noc_0/aclk1]
+startgroup
+set_property -dict [list \
+  CONFIG.CLOCK_MODE {REF CLK 33.33 MHz} \
+  CONFIG.PS_BOARD_INTERFACE {Custom} \
+  CONFIG.PS_PMC_CONFIG { \
+    CLOCK_MODE {REF CLK 33.33 MHz} \
+    DDR_MEMORY_MODE {Custom} \
+    DESIGN_MODE {1} \
+    DEVICE_INTEGRITY_MODE {Sysmon temperature voltage and external IO monitoring} \
+    PMC_ALT_REF_CLK_FREQMHZ {33.333} \
+    PMC_CRP_EFUSE_REF_CTRL_SRCSEL {IRO_CLK/4} \
+    PMC_CRP_HSM0_REF_CTRL_FREQMHZ {33.333} \
+    PMC_CRP_HSM1_REF_CTRL_FREQMHZ {133.333} \
+    PMC_CRP_LSBUS_REF_CTRL_FREQMHZ {100} \
+    PMC_CRP_NOC_REF_CTRL_FREQMHZ {960} \
+    PMC_CRP_PL0_REF_CTRL_FREQMHZ {100} \
+    PMC_CRP_PL5_REF_CTRL_FREQMHZ {400} \
+    PMC_GPIO0_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 0 .. 25}}} \
+    PMC_GPIO1_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 26 .. 51}}} \
+    PMC_MIO37 {{AUX_IO 0} {DIRECTION out} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA high} {PULL pullup} {SCHMITT 0} {SLEW slow} {USAGE GPIO}} \
+    PMC_PL_ALT_REF_CLK_FREQMHZ {33.333} \
+    PMC_QSPI_FBCLK {{ENABLE 1} {IO {PMC_MIO 6}}} \
+    PMC_QSPI_PERIPHERAL_DATA_MODE {x4} \
+    PMC_QSPI_PERIPHERAL_ENABLE {1} \
+    PMC_QSPI_PERIPHERAL_MODE {Dual Parallel} \
+    PMC_REF_CLK_FREQMHZ {33.3333} \
+    PMC_SD1 {{CD_ENABLE 1} {CD_IO {PMC_MIO 28}} {POW_ENABLE 1} {POW_IO {PMC_MIO 51}} {RESET_ENABLE 0} {RESET_IO {PMC_MIO 12}} {WP_ENABLE 0} {WP_IO {PMC_MIO 1}}} \
+    PMC_SD1_PERIPHERAL {{CLK_100_SDR_OTAP_DLY 0x3} {CLK_200_SDR_OTAP_DLY 0x2} {CLK_50_DDR_ITAP_DLY 0x2A} {CLK_50_DDR_OTAP_DLY 0x3} {CLK_50_SDR_ITAP_DLY 0x25} {CLK_50_SDR_OTAP_DLY 0x4} {ENABLE 1} {IO {PMC_MIO 26 .. 36}}} \
+    PMC_SD1_SLOT_TYPE {SD 3.0 AUTODIR} \
+    PMC_USE_PMC_NOC_AXI0 {0} \
+    PS_BOARD_INTERFACE {Custom} \
+    PS_ENET0_MDIO {{ENABLE 1} {IO {PS_MIO 24 .. 25}}} \
+    PS_ENET0_PERIPHERAL {{ENABLE 1} {IO {PS_MIO 0 .. 11}}} \
+    PS_GEN_IPI0_ENABLE {1} \
+    PS_GEN_IPI0_MASTER {A72} \
+    PS_GEN_IPI1_ENABLE {1} \
+    PS_GEN_IPI2_ENABLE {1} \
+    PS_GEN_IPI3_ENABLE {1} \
+    PS_GEN_IPI4_ENABLE {1} \
+    PS_GEN_IPI5_ENABLE {1} \
+    PS_GEN_IPI6_ENABLE {1} \
+    PS_I2C0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 46 .. 47}}} \
+    PS_I2C1_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 44 .. 45}}} \
+    PS_I2CSYSMON_PERIPHERAL {{ENABLE 0} {IO {PMC_MIO 39 .. 40}}} \
+    PS_MIO7 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+    PS_MIO9 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+    PS_NUM_FABRIC_RESETS {0} \
+    PS_PCIE_RESET {{ENABLE 1}} \
+    PS_UART0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 42 .. 43}}} \
+    PS_USB3_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 13 .. 25}}} \
+    PS_USE_FPD_AXI_NOC0 {1} \
+    PS_USE_FPD_AXI_NOC1 {1} \
+    PS_USE_FPD_CCI_NOC {0} \
+    PS_USE_FPD_CCI_NOC0 {1} \
+    PS_USE_NOC_LPD_AXI0 {0} \
+    PS_USE_PMCPL_CLK0 {1} \
+    PS_USE_PMCPL_CLK1 {0} \
+    PS_USE_PMCPL_CLK2 {0} \
+    PS_USE_PMCPL_CLK3 {0} \
+    PS_USE_PMCPL_IRO_CLK {1} \
+    SMON_ALARMS {Set_Alarms_On} \
+    SMON_ENABLE_TEMP_AVERAGING {0} \
+    SMON_INTERFACE_TO_USE {I2C} \
+    SMON_PMBUS_ADDRESS {0x18} \
+    SMON_TEMP_AVERAGING_SAMPLES {0} \
+  } \
+] [get_bd_cells versal_cips_0]
+endgroup
+delete_bd_objs [get_bd_nets clk_wiz_locked] [get_bd_cells clk_wiz]
+delete_bd_objs [get_bd_nets rst_clk_wiz_100M_peripheral_aresetn] [get_bd_nets clk_wiz_clk_out1] [get_bd_cells noc_clk_gen]
+delete_bd_objs [get_bd_cells rst_clk_wiz_100M]
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/versal_cips_0/pl0_ref_clk (98 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins emax6_0/ACLK]
+INFO: [Ipptcl 7-1463] No Compatible Board Interface found. Board Tab not created in customize GUI
+INFO: [BD 5-455] Automation on '/emax6_1/ACLK' will not be run, since it is obsolete due to previously run automations
+INFO: [BD 5-455] Automation on '/emax6_2/ACLK' will not be run, since it is obsolete due to previously run automations
+endgroup
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wizard:1.0 clk_wizard_0
+endgroup
+set_property location {2 167 -134} [get_bd_cells clk_wizard_0]
+set_property -dict [list \
+  CONFIG.CLKOUT_DRIVES {BUFG,BUFG,BUFG,BUFG,BUFG,BUFG,BUFG} \
+  CONFIG.CLKOUT_DYN_PS {None,None,None,None,None,None,None} \
+  CONFIG.CLKOUT_GROUPING {Auto,Auto,Auto,Auto,Auto,Auto,Auto} \
+  CONFIG.CLKOUT_MATCHED_ROUTING {false,false,false,false,false,false,false} \
+  CONFIG.CLKOUT_PORT {clk_out1,clk_out2,clk_out3,clk_out4,clk_out5,clk_out6,clk_out7} \
+  CONFIG.CLKOUT_REQUESTED_DUTY_CYCLE {50.000,50.000,50.000,50.000,50.000,50.000,50.000} \
+  CONFIG.CLKOUT_REQUESTED_OUT_FREQUENCY {300.000,200.000,100.000,100.000,100.000,100.000,100.000} \
+  CONFIG.CLKOUT_REQUESTED_PHASE {0.000,0.000,0.000,0.000,0.000,0.000,0.000} \
+  CONFIG.CLKOUT_USED {true,true,false,false,false,false,false} \
+] [get_bd_cells clk_wizard_0]
+delete_bd_objs [get_bd_nets noc_clk_gen_axi_clk_0]
+connect_bd_net [get_bd_pins versal_cips_0/pl0_ref_clk] [get_bd_pins clk_wizard_0/clk_in1]
+connect_bd_net [get_bd_pins clk_wizard_0/clk_out1] [get_bd_pins axi_noc_0/aclk2]
+delete_bd_objs [get_bd_nets clk_wizard_0_clk_out1]
+startgroup
+set_property CONFIG.NUM_CLKS {4} [get_bd_cells axi_noc_0]
+endgroup
+connect_bd_net [get_bd_pins clk_wizard_0/clk_out1] [get_bd_pins axi_noc_0/aclk2]
+connect_bd_net [get_bd_pins clk_wizard_0/clk_out2] [get_bd_pins axi_noc_0/aclk3]
+connect_bd_net [get_bd_pins emax6_2/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+connect_bd_net [get_bd_pins emax6_1/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+connect_bd_net [get_bd_pins emax6_0/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:board -config { Manual_Source {Auto}}  [get_bd_pins rst_versal_cips_0_98M/ext_reset_in]
+INFO: [BoardRule 102-10] create_bd_port -dir I reset_rtl -type rst
+INFO: [BoardRule 102-7] set_property CONFIG.POLARITY ACTIVE_LOW /reset_rtl
+INFO: [BoardRule 102-15] connect_bd_net /reset_rtl /rst_versal_cips_0_98M/ext_reset_in
+INFO: [BoardRule 102-19] set_property CONFIG.POLARITY ACTIVE_LOW /reset_rtl
+WARNING: [BoardRule 102-1] Board automation did not generate location constraint for /rst_versal_cips_0_98M/ext_reset_in. Users may need to specify the location constraint manually.
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/clk_wizard_0/clk_out1 (300 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins rst_versal_cips_0_98M/slowest_sync_clk]
+endgroup
+delete_bd_objs [get_bd_nets clk_wizard_0_clk_out1]
+connect_bd_net [get_bd_pins clk_wizard_0/clk_out1] [get_bd_pins axi_noc_0/aclk2]
+connect_bd_net [get_bd_pins rst_versal_cips_0_98M/slowest_sync_clk] [get_bd_pins clk_wizard_0/clk_out2]
+regenerate_bd_layout
+set_property location {1 307 541} [get_bd_cells clk_wizard_0]
+regenerate_bd_layout -routing
+set_property location {1 295 552} [get_bd_cells rst_versal_cips_0_98M]
+set_property location {2 754 566} [get_bd_cells rst_versal_cips_0_98M]
+regenerate_bd_layout -routing
+set_property location {3 1077 -40} [get_bd_cells emax6_1]
+set_property location {3 1078 -198} [get_bd_cells emax6_1]
+set_property location {3 1089 -58} [get_bd_cells emax6_0]
+set_property location {3 1068 72} [get_bd_cells emax6_2]
+set_property location {3 1060 -331} [get_bd_cells emax6_0]
+set_property location {3 1106 -54} [get_bd_cells emax6_1]
+set_property location {3 1104 -187} [get_bd_cells emax6_0]
+regenerate_bd_layout -routing
+make_wrapper -files [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -top
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S00_AXI/C3_DDR_LOW0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S00_AXI/C3_DDR_LOW1> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S01_AXI/C1_DDR_LOW0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_1>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S01_AXI/C1_DDR_LOW1> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_1>. Please use Address Editor to either assign or exclude it.
+ERROR: [BD 41-2331] NoC Category Mismatch. NoC interface /axi_noc_0/S00_AXI category 'ps_cci' does not match connected interface /versal_cips_0/FPD_AXI_NOC_0 category 'ps_nci'. Please edit the noc instance /axi_noc_0 and set the category of S00_AXI to ps_nci
+ERROR: [BD 41-2331] NoC Category Mismatch. NoC interface /axi_noc_0/S01_AXI category 'ps_cci' does not match connected interface /versal_cips_0/FPD_AXI_NOC_1 category 'ps_nci'. Please edit the noc instance /axi_noc_0 and set the category of S01_AXI to ps_nci
+ERROR: [BD 41-2275] One or more AXI NoC block interfaces are not connected in the NoC Connectivity tab of the NoC IP GUI. Please add connections in the NoC IP GUI Connectivity tab for the following: 
+/axi_noc_0/M00_AXI
+/axi_noc_0/M01_AXI
+/axi_noc_0/M02_AXI
+ERROR: [BD 41-1031] Hdl Generation failed for the IP Integrator design /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd 
+ERROR: [Common 17-39] 'make_wrapper' failed due to earlier errors.
+startgroup
+set_property -dict [list CONFIG.CATEGORY {ps_nci}] [get_bd_intf_pins /axi_noc_0/S00_AXI]
+set_property -dict [list CONFIG.CATEGORY {ps_nci}] [get_bd_intf_pins /axi_noc_0/S01_AXI]
+endgroup
+make_wrapper -files [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -top
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S00_AXI/C3_DDR_LOW0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S00_AXI/C3_DDR_LOW1> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S01_AXI/C1_DDR_LOW0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_1>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S01_AXI/C1_DDR_LOW1> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_1>. Please use Address Editor to either assign or exclude it.
+ERROR: [BD 41-2275] One or more AXI NoC block interfaces are not connected in the NoC Connectivity tab of the NoC IP GUI. Please add connections in the NoC IP GUI Connectivity tab for the following: 
+/axi_noc_0/M00_AXI
+/axi_noc_0/M01_AXI
+/axi_noc_0/M02_AXI
+ERROR: [BD 41-1031] Hdl Generation failed for the IP Integrator design /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd 
+ERROR: [Common 17-39] 'make_wrapper' failed due to earlier errors.
+startgroup
+set_property -dict [list CONFIG.CONNECTIONS {MC_0 { read_bw {100} write_bw {100} read_avg_burst {4} write_avg_burst {4}} M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S00_AXI]
+set_property -dict [list CONFIG.CONNECTIONS {M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} MC_1 { read_bw {100} write_bw {100} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S01_AXI]
+endgroup
+make_wrapper -files [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -top
+CRITICAL WARNING: [BD 41-1356] Slave segment </emax6_0/axi_s/reg0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </emax6_1/axi_s/reg0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </emax6_2/axi_s/reg0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S00_AXI/C0_DDR_LOW0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S00_AXI/C0_DDR_LOW1> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </emax6_0/axi_s/reg0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_1>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </emax6_1/axi_s/reg0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_1>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S01_AXI/C1_DDR_LOW0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_1>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S01_AXI/C1_DDR_LOW1> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_1>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </emax6_2/axi_s/reg0> is not assigned into address space </versal_cips_0/FPD_AXI_NOC_1>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-2842] Virtual address or fixed destID NMU has multiple fanout. NSU /axi_noc_0/M00_AXI is using virtual-addressing or has no assigned address so all traffic from the upstream NMU /axi_noc_0/S00_AXI. All traffic will route to this NSU using a fixed destID. To fix: ensure the NMU has a single fanout, or ensure the NSU has an assigned address in the Address Editor.
+CRITICAL WARNING: [BD 41-2842] Virtual address or fixed destID NMU has multiple fanout. NSU /axi_noc_0/M00_AXI is using virtual-addressing or has no assigned address so all traffic from the upstream NMU /axi_noc_0/S01_AXI. All traffic will route to this NSU using a fixed destID. To fix: ensure the NMU has a single fanout, or ensure the NSU has an assigned address in the Address Editor.
+Generating placement and routing for NoC components
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 0 insts (0 INI), 0 paths (0 INI). Read In: 6 insts (0 INI), 8 paths (0 INI). After Merge: 6 insts (0 INI), 8 paths (0 INI). Noc Frequency: 960 0 error slaves
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 6 insts (0 INI), 8 paths (0 INI). Read In: 8 insts (0 INI), 12 paths (0 INI). After Merge: 14 insts (0 INI), 20 paths (0 INI). Noc Frequency: 960 0 error slaves
+NoC TrafficSpec | Checksum: 5a5fd8a6
+NoC Constraints | Checksum: 66cc4d45
+NoC Incremental Solution | Checksum: 1d7dcf25
+INFO: [Ipconfig 75-92] Running NOC Placement
+INFO: [Ipconfig 75-122] Detailed placement phase
+INFO: [Ipconfig 75-133] Running NOC Routing
+NoC Compiler Finished Successfully
+NoC Solution | Checksum: b92467ee
+INFO: [Ipconfig 75-108] Writing file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/common/nsln/NOC_Power.xpe.
+WARNING: [BD 41-237] Bus Interface property WUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_AXI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_AXI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property WUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_AXI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_AXI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.v
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/sim/design_1.v
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
+make_wrapper: Time (s): cpu = 00:00:12 ; elapsed = 00:00:11 . Memory (MB): peak = 21177.371 ; gain = 438.012 ; free physical = 64978 ; free virtual = 123860
+add_files -norecurse /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
+update_compile_order -fileset sources_1
+startgroup
+set_property CONFIG.PS_PMC_CONFIG { \
+  CLOCK_MODE {REF CLK 33.33 MHz} \
+  DDR_MEMORY_MODE {Custom} \
+  DESIGN_MODE {1} \
+  DEVICE_INTEGRITY_MODE {Custom} \
+  PMC_ALT_REF_CLK_FREQMHZ {33.333} \
+  PMC_CRP_EFUSE_REF_CTRL_SRCSEL {IRO_CLK/4} \
+  PMC_CRP_HSM0_REF_CTRL_FREQMHZ {33.333} \
+  PMC_CRP_HSM1_REF_CTRL_FREQMHZ {133.333} \
+  PMC_CRP_LSBUS_REF_CTRL_FREQMHZ {100} \
+  PMC_CRP_NOC_REF_CTRL_FREQMHZ {960} \
+  PMC_CRP_PL0_REF_CTRL_FREQMHZ {100} \
+  PMC_CRP_PL5_REF_CTRL_FREQMHZ {400} \
+  PMC_GPIO0_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 0 .. 25}}} \
+  PMC_GPIO1_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 26 .. 51}}} \
+  PMC_MIO37 {{AUX_IO 0} {DIRECTION out} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA high} {PULL pullup} {SCHMITT 0} {SLEW slow} {USAGE GPIO}} \
+  PMC_PL_ALT_REF_CLK_FREQMHZ {33.333} \
+  PMC_QSPI_FBCLK {{ENABLE 1} {IO {PMC_MIO 6}}} \
+  PMC_QSPI_PERIPHERAL_DATA_MODE {x4} \
+  PMC_QSPI_PERIPHERAL_ENABLE {1} \
+  PMC_QSPI_PERIPHERAL_MODE {Dual Parallel} \
+  PMC_REF_CLK_FREQMHZ {33.3333} \
+  PMC_SD1 {{CD_ENABLE 1} {CD_IO {PMC_MIO 28}} {POW_ENABLE 1} {POW_IO {PMC_MIO 51}} {RESET_ENABLE 0} {RESET_IO {PMC_MIO 12}} {WP_ENABLE 0} {WP_IO {PMC_MIO 1}}} \
+  PMC_SD1_PERIPHERAL {{CLK_100_SDR_OTAP_DLY 0x3} {CLK_200_SDR_OTAP_DLY 0x2} {CLK_50_DDR_ITAP_DLY 0x2A} {CLK_50_DDR_OTAP_DLY 0x3} {CLK_50_SDR_ITAP_DLY 0x25} {CLK_50_SDR_OTAP_DLY 0x4} {ENABLE 1} {IO {PMC_MIO 26 .. 36}}} \
+  PMC_SD1_SLOT_TYPE {SD 3.0 AUTODIR} \
+  PMC_USE_PMC_NOC_AXI0 {0} \
+  PS_BOARD_INTERFACE {Custom} \
+  PS_ENET0_MDIO {{ENABLE 1} {IO {PS_MIO 24 .. 25}}} \
+  PS_ENET0_PERIPHERAL {{ENABLE 1} {IO {PS_MIO 0 .. 11}}} \
+  PS_GEN_IPI0_ENABLE {1} \
+  PS_GEN_IPI0_MASTER {A72} \
+  PS_GEN_IPI1_ENABLE {1} \
+  PS_GEN_IPI2_ENABLE {1} \
+  PS_GEN_IPI3_ENABLE {1} \
+  PS_GEN_IPI4_ENABLE {1} \
+  PS_GEN_IPI5_ENABLE {1} \
+  PS_GEN_IPI6_ENABLE {1} \
+  PS_I2C0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 46 .. 47}}} \
+  PS_I2C1_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 44 .. 45}}} \
+  PS_I2CSYSMON_PERIPHERAL {{ENABLE 0} {IO {PMC_MIO 39 .. 40}}} \
+  PS_MIO7 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+  PS_MIO9 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+  PS_NUM_FABRIC_RESETS {0} \
+  PS_PCIE_RESET {{ENABLE 1}} \
+  PS_UART0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 42 .. 43}}} \
+  PS_USB3_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 13 .. 25}}} \
+  PS_USE_FPD_AXI_NOC0 {1} \
+  PS_USE_FPD_AXI_NOC1 {1} \
+  PS_USE_FPD_CCI_NOC {0} \
+  PS_USE_FPD_CCI_NOC0 {1} \
+  PS_USE_NOC_FPD_AXI0 {0} \
+  PS_USE_NOC_FPD_AXI1 {0} \
+  PS_USE_NOC_LPD_AXI0 {0} \
+  PS_USE_PMCPL_CLK0 {1} \
+  PS_USE_PMCPL_CLK1 {0} \
+  PS_USE_PMCPL_CLK2 {0} \
+  PS_USE_PMCPL_CLK3 {0} \
+  PS_USE_PMCPL_IRO_CLK {1} \
+  SMON_ALARMS {Set_Alarms_On} \
+  SMON_ENABLE_TEMP_AVERAGING {0} \
+  SMON_INTERFACE_TO_USE {I2C} \
+  SMON_PMBUS_ADDRESS {0x18} \
+  SMON_TEMP_AVERAGING_SAMPLES {0} \
+} [get_bd_cells versal_cips_0]
+endgroup
+startgroup
+set_property CONFIG.NUM_SI {3} [get_bd_cells axi_noc_0]
+set_property -dict [list CONFIG.ASSOCIATED_BUSIF {S02_AXI:S00_AXI}] [get_bd_pins /axi_noc_0/aclk0]
+endgroup
+assign_bd_address
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_0000_0000 [ 1G ]>.
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_0000_0000 [ 1G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_4000_0000 [ 1G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_4000_0000 [ 1G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_8000_0000 [ 1G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_8000_0000 [ 1G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x8_0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x8_0000_0000 [ 2G ]>.
+auto_assign_options {memory_capacity 4G}
+validate_bd_design
+ERROR: [BD 41-2275] One or more AXI NoC block interfaces are not connected in the NoC Connectivity tab of the NoC IP GUI. Please add connections in the NoC IP GUI Connectivity tab for the following: 
+/axi_noc_0/S02_AXI
+ERROR: [Common 17-39] 'validate_bd_design' failed due to earlier errors.
+startgroup
+set_property -dict [list CONFIG.CONNECTIONS {MC_0 { read_bw {100} write_bw {100} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S00_AXI]
+WARNING: [BD 41-1931] The CONNECTIVITY change has put the mapped segment /versal_cips_0/FPD_AXI_NOC_0 [ /emax6_1/axi_s/reg0 ] out of scope. Please unmap and remap the segments
+WARNING: [BD 41-1931] The CONNECTIVITY change has put the mapped segment /versal_cips_0/FPD_AXI_NOC_0 [ /emax6_2/axi_s/reg0 ] out of scope. Please unmap and remap the segments
+set_property -dict [list CONFIG.CONNECTIONS {M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} MC_1 { read_bw {100} write_bw {100} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S01_AXI]
+WARNING: [BD 41-1931] The CONNECTIVITY change has put the mapped segment /versal_cips_0/FPD_AXI_NOC_1 [ /emax6_0/axi_s/reg0 ] out of scope. Please unmap and remap the segments
+WARNING: [BD 41-1931] The CONNECTIVITY change has put the mapped segment /versal_cips_0/FPD_AXI_NOC_1 [ /emax6_2/axi_s/reg0 ] out of scope. Please unmap and remap the segments
+set_property -dict [list CONFIG.CONNECTIONS {M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} MC_2 { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S02_AXI]
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {/versal_cips_0/fpd_axi_noc_axi0_clk (749 MHz)} Clk_slave {/versal_cips_0/fpd_axi_noc_axi0_clk (749 MHz)} Clk_xbar {/versal_cips_0/fpd_axi_noc_axi0_clk (749 MHz)} Master {/versal_cips_0/FPD_AXI_NOC_0} Slave {/axi_noc_0/S02_AXI} ddr_seg {Auto} intc_ip {/axi_noc_0} master_apm {0}}  [get_bd_intf_pins axi_noc_0/S02_AXI]
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_a/1.0/board.xml as part xcve2802-vsvh1760-2lp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/rev_b/1.0/board.xml as part xcve2802-vsvh1760-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vhk158_es:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vhk158/es/1.0/board.xml as part xcvh1582-vsva3697-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es:part0:1.2 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120/es/1.2/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es_revb:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120_revb/es/1.0/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk180_es:part0:1.0 available at /home/nakashim/.Xilinx/Vivado/2022.2.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2022.2.2/boards/Xilinx/vpk180/es/1.0/1.0/board.xml as part xcvp1802-lsvc4072-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu208ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu208ld/production/2.0/board.xml as part xczu58dr-fsvg1517-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu216ld:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu216ld/production/2.0/board.xml as part xczu59dr-ffvf1760-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670:part0:2.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670/2.0/board.xml as part xczu67dr-fsve1156-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670ld:part0:1.0 available at /opt/xilinx/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670ld/1.0/board.xml as part xczu57dr-fsve1156-2-i specified in board_part file is either invalid or not available
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {/versal_cips_0/fpd_axi_noc_axi0_clk (749 MHz)} Clk_slave {/versal_cips_0/fpd_axi_noc_axi0_clk (749 MHz)} Clk_xbar {/versal_cips_0/fpd_axi_noc_axi0_clk (749 MHz)} Master {/versal_cips_0/FPD_AXI_NOC_0} Slave {/axi_noc_0/S02_AXI} ddr_seg {Auto} intc_ip {/axi_noc_0} master_apm {0}}  [get_bd_intf_pins axi_noc_0/S02_AXI]
+startgroup
+set_property CONFIG.NUM_SI {2} [get_bd_cells axi_noc_0]
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/ui/bd_4c5cedd7.ui> 
+set_property -dict [list CONFIG.ASSOCIATED_BUSIF {S00_AXI}] [get_bd_pins /axi_noc_0/aclk0]
+endgroup
+startgroup
+set_property -dict [list CONFIG.CONNECTIONS {MC_0 { read_bw {100} write_bw {100} read_avg_burst {4} write_avg_burst {4}} M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S00_AXI]
+set_property -dict [list CONFIG.CONNECTIONS {M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} MC_1 { read_bw {100} write_bw {100} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S01_AXI]
+endgroup
+set_property offset 0x20140000000 [get_bd_addr_segs {versal_cips_0/FPD_AXI_NOC_0/SEG_emax6_1_reg0}]
+set_property offset 0x20140000000 [get_bd_addr_segs {versal_cips_0/FPD_AXI_NOC_0/SEG_emax6_1_reg0}]
+delete_bd_objs [get_bd_addr_segs versal_cips_0/FPD_AXI_NOC_0/SEG_emax6_2_reg0]
+delete_bd_objs [get_bd_addr_segs] [get_bd_addr_segs -excluded]
+assign_bd_address -target_address_space /versal_cips_0/FPD_AXI_NOC_0 [get_bd_addr_segs emax6_0/axi_s/reg0] -force
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_0000_0000 [ 4G ]>.
+auto_assign_options {memory_capacity 4G}
+assign_bd_address
+WARNING: [BD 41-1743] Cannot assign slave segment '/emax6_1/axi_s/reg0' into address space '/versal_cips_0/FPD_AXI_NOC_0' because no valid addressing path exists. The addressing path from slave segment '/emax6_1/axi_s/reg0' to address space '/versal_cips_0/FPD_AXI_NOC_0' has no free apertures. This assignment will be automatically excluded.
+WARNING: [BD 41-1743] Cannot assign slave segment '/emax6_2/axi_s/reg0' into address space '/versal_cips_0/FPD_AXI_NOC_0' because no valid addressing path exists. The addressing path from slave segment '/emax6_2/axi_s/reg0' to address space '/versal_cips_0/FPD_AXI_NOC_0' has no free apertures. This assignment will be automatically excluded.
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_0000_0000 [ 1G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_4000_0000 [ 1G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_8000_0000 [ 1G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x0000_0000 [ 512M ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x0000_0000 [ 512M ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x8_0000_0000 [ 3584M ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x8_0000_0000 [ 3584M ]>.
+Excluding slave segment /emax6_1/axi_s/reg0 from address space /versal_cips_0/FPD_AXI_NOC_0.
+Excluding slave segment /emax6_2/axi_s/reg0 from address space /versal_cips_0/FPD_AXI_NOC_0.
+auto_assign_options {memory_capacity 4G}
+delete_bd_objs [get_bd_addr_segs] [get_bd_addr_segs -excluded]
+assign_bd_address -target_address_space /versal_cips_0/FPD_AXI_NOC_0 [get_bd_addr_segs emax6_0/axi_s/reg0] -force
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_0000_0000 [ 4G ]>.
+auto_assign_options {memory_capacity 4G}
+assign_bd_address -target_address_space /versal_cips_0/FPD_AXI_NOC_0 [get_bd_addr_segs emax6_1/axi_s/reg0] -force
+CRITICAL WARNING: [BD 41-1376] Forcibly assigning slave segment '/emax6_1/axi_s/reg0' into address space '/versal_cips_0/FPD_AXI_NOC_0' at address <0x000_0000_0000 [ 1T ]>. This must be resolved before passing validation.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x000_0000_0000 [ 1T ]>.
+auto_assign_options {memory_capacity 4G}
+startgroup
+set_property CONFIG.PS_PMC_CONFIG { \
+  CLOCK_MODE {REF CLK 33.33 MHz} \
+  DDR_MEMORY_MODE {Custom} \
+  DESIGN_MODE {1} \
+  DEVICE_INTEGRITY_MODE {Custom} \
+  PMC_ALT_REF_CLK_FREQMHZ {33.333} \
+  PMC_CRP_EFUSE_REF_CTRL_SRCSEL {IRO_CLK/4} \
+  PMC_CRP_HSM0_REF_CTRL_FREQMHZ {33.333} \
+  PMC_CRP_HSM1_REF_CTRL_FREQMHZ {133.333} \
+  PMC_CRP_LSBUS_REF_CTRL_FREQMHZ {100} \
+  PMC_CRP_NOC_REF_CTRL_FREQMHZ {960} \
+  PMC_CRP_PL0_REF_CTRL_FREQMHZ {100} \
+  PMC_CRP_PL5_REF_CTRL_FREQMHZ {400} \
+  PMC_GPIO0_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 0 .. 25}}} \
+  PMC_GPIO1_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 26 .. 51}}} \
+  PMC_MIO37 {{AUX_IO 0} {DIRECTION out} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA high} {PULL pullup} {SCHMITT 0} {SLEW slow} {USAGE GPIO}} \
+  PMC_PL_ALT_REF_CLK_FREQMHZ {33.333} \
+  PMC_QSPI_FBCLK {{ENABLE 1} {IO {PMC_MIO 6}}} \
+  PMC_QSPI_PERIPHERAL_DATA_MODE {x4} \
+  PMC_QSPI_PERIPHERAL_ENABLE {1} \
+  PMC_QSPI_PERIPHERAL_MODE {Dual Parallel} \
+  PMC_REF_CLK_FREQMHZ {33.3333} \
+  PMC_SD1 {{CD_ENABLE 1} {CD_IO {PMC_MIO 28}} {POW_ENABLE 1} {POW_IO {PMC_MIO 51}} {RESET_ENABLE 0} {RESET_IO {PMC_MIO 12}} {WP_ENABLE 0} {WP_IO {PMC_MIO 1}}} \
+  PMC_SD1_PERIPHERAL {{CLK_100_SDR_OTAP_DLY 0x3} {CLK_200_SDR_OTAP_DLY 0x2} {CLK_50_DDR_ITAP_DLY 0x2A} {CLK_50_DDR_OTAP_DLY 0x3} {CLK_50_SDR_ITAP_DLY 0x25} {CLK_50_SDR_OTAP_DLY 0x4} {ENABLE 1} {IO {PMC_MIO 26 .. 36}}} \
+  PMC_SD1_SLOT_TYPE {SD 3.0 AUTODIR} \
+  PMC_USE_PMC_NOC_AXI0 {0} \
+  PS_BOARD_INTERFACE {Custom} \
+  PS_ENET0_MDIO {{ENABLE 1} {IO {PS_MIO 24 .. 25}}} \
+  PS_ENET0_PERIPHERAL {{ENABLE 1} {IO {PS_MIO 0 .. 11}}} \
+  PS_GEN_IPI0_ENABLE {1} \
+  PS_GEN_IPI0_MASTER {A72} \
+  PS_GEN_IPI1_ENABLE {1} \
+  PS_GEN_IPI2_ENABLE {1} \
+  PS_GEN_IPI3_ENABLE {1} \
+  PS_GEN_IPI4_ENABLE {1} \
+  PS_GEN_IPI5_ENABLE {1} \
+  PS_GEN_IPI6_ENABLE {1} \
+  PS_I2C0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 46 .. 47}}} \
+  PS_I2C1_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 44 .. 45}}} \
+  PS_I2CSYSMON_PERIPHERAL {{ENABLE 0} {IO {PMC_MIO 39 .. 40}}} \
+  PS_MIO7 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+  PS_MIO9 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+  PS_NUM_FABRIC_RESETS {0} \
+  PS_PCIE_RESET {{ENABLE 1}} \
+  PS_UART0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 42 .. 43}}} \
+  PS_USB3_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 13 .. 25}}} \
+  PS_USE_FPD_AXI_NOC0 {1} \
+  PS_USE_FPD_AXI_NOC1 {0} \
+  PS_USE_FPD_CCI_NOC {0} \
+  PS_USE_FPD_CCI_NOC0 {1} \
+  PS_USE_NOC_FPD_AXI0 {0} \
+  PS_USE_NOC_FPD_AXI1 {0} \
+  PS_USE_NOC_LPD_AXI0 {0} \
+  PS_USE_PMCPL_CLK0 {1} \
+  PS_USE_PMCPL_CLK1 {0} \
+  PS_USE_PMCPL_CLK2 {0} \
+  PS_USE_PMCPL_CLK3 {0} \
+  PS_USE_PMCPL_IRO_CLK {1} \
+  SMON_ALARMS {Set_Alarms_On} \
+  SMON_ENABLE_TEMP_AVERAGING {0} \
+  SMON_INTERFACE_TO_USE {I2C} \
+  SMON_PMBUS_ADDRESS {0x18} \
+  SMON_TEMP_AVERAGING_SAMPLES {0} \
+} [get_bd_cells versal_cips_0]
+CRITICAL WARNING: [BD 41-1740] Cannot create master segment for </emax6_1/axi_s/reg0> in Address Space </versal_cips_0/FPD_AXI_NOC_0>. The proposed address '0x000_0000_0000 [ 1T ]' must fit an available aperture through master interface '/versal_cips_0/FPD_AXI_NOC_0' into address space '/versal_cips_0/FPD_AXI_NOC_0'. Valid apertures are {<0x0000_0000 [ 2G ]>, <0x1_0000_0000 [ 128M ]>, <0x1_0800_0000 [ 128M ]>, <0x1_1000_0000 [ 128M ]>, <0x1_1800_0000 [ 128M ]>, <0x8_0000_0000 [ 32G ]>, <0x40_0000_0000 [ 64G ]>, <0x50_0000_0000 [ 64G ]>, <0x60_0000_0000 [ 64G ]>, <0x70_0000_0000 [ 64G ]>, <0xC0_0000_0000 [ 256G ]>, ...}.
+CRITICAL WARNING: [BD 41-1740] Cannot create master segment for </emax6_1/axi_s/reg0> in Address Space </versal_cips_0/FPD_AXI_NOC_0>. The proposed address '0x000_0000_0000 [ 1T ]' must fit an available aperture through master interface '/versal_cips_0/FPD_AXI_NOC_0' into address space '/versal_cips_0/FPD_AXI_NOC_0'. Valid apertures are {<0x0000_0000 [ 2G ]>, <0x1_0000_0000 [ 128M ]>, <0x1_0800_0000 [ 128M ]>, <0x1_1000_0000 [ 128M ]>, <0x1_1800_0000 [ 128M ]>, <0x8_0000_0000 [ 32G ]>, <0x40_0000_0000 [ 64G ]>, <0x50_0000_0000 [ 64G ]>, <0x60_0000_0000 [ 64G ]>, <0x70_0000_0000 [ 64G ]>, <0xC0_0000_0000 [ 256G ]>, ...}.
+delete_bd_objs [get_bd_nets versal_cips_0_fpd_axi_noc_axi1_clk] [get_bd_intf_nets versal_cips_0_FPD_AXI_NOC_1]
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {/versal_cips_0/fpd_axi_noc_axi0_clk (749 MHz)} Clk_slave {Auto} Clk_xbar {Auto} Master {/versal_cips_0/FPD_AXI_NOC_0} Slave {/axi_noc_0/S01_AXI} ddr_seg {Auto} intc_ip {/axi_noc_0} master_apm {0}}  [get_bd_intf_pins axi_noc_0/S01_AXI]
+startgroup
+set_property CONFIG.PS_PMC_CONFIG { \
+  CLOCK_MODE {REF CLK 33.33 MHz} \
+  DDR_MEMORY_MODE {Custom} \
+  DESIGN_MODE {1} \
+  DEVICE_INTEGRITY_MODE {Custom} \
+  PMC_ALT_REF_CLK_FREQMHZ {33.333} \
+  PMC_CRP_EFUSE_REF_CTRL_SRCSEL {IRO_CLK/4} \
+  PMC_CRP_HSM0_REF_CTRL_FREQMHZ {33.333} \
+  PMC_CRP_HSM1_REF_CTRL_FREQMHZ {133.333} \
+  PMC_CRP_LSBUS_REF_CTRL_FREQMHZ {100} \
+  PMC_CRP_NOC_REF_CTRL_FREQMHZ {960} \
+  PMC_CRP_PL0_REF_CTRL_FREQMHZ {100} \
+  PMC_CRP_PL5_REF_CTRL_FREQMHZ {400} \
+  PMC_GPIO0_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 0 .. 25}}} \
+  PMC_GPIO1_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 26 .. 51}}} \
+  PMC_MIO37 {{AUX_IO 0} {DIRECTION out} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA high} {PULL pullup} {SCHMITT 0} {SLEW slow} {USAGE GPIO}} \
+  PMC_PL_ALT_REF_CLK_FREQMHZ {33.333} \
+  PMC_QSPI_FBCLK {{ENABLE 1} {IO {PMC_MIO 6}}} \
+  PMC_QSPI_PERIPHERAL_DATA_MODE {x4} \
+  PMC_QSPI_PERIPHERAL_ENABLE {1} \
+  PMC_QSPI_PERIPHERAL_MODE {Dual Parallel} \
+  PMC_REF_CLK_FREQMHZ {33.3333} \
+  PMC_SD1 {{CD_ENABLE 1} {CD_IO {PMC_MIO 28}} {POW_ENABLE 1} {POW_IO {PMC_MIO 51}} {RESET_ENABLE 0} {RESET_IO {PMC_MIO 12}} {WP_ENABLE 0} {WP_IO {PMC_MIO 1}}} \
+  PMC_SD1_PERIPHERAL {{CLK_100_SDR_OTAP_DLY 0x3} {CLK_200_SDR_OTAP_DLY 0x2} {CLK_50_DDR_ITAP_DLY 0x2A} {CLK_50_DDR_OTAP_DLY 0x3} {CLK_50_SDR_ITAP_DLY 0x25} {CLK_50_SDR_OTAP_DLY 0x4} {ENABLE 1} {IO {PMC_MIO 26 .. 36}}} \
+  PMC_SD1_SLOT_TYPE {SD 3.0 AUTODIR} \
+  PMC_USE_PMC_NOC_AXI0 {0} \
+  PS_BOARD_INTERFACE {Custom} \
+  PS_ENET0_MDIO {{ENABLE 1} {IO {PS_MIO 24 .. 25}}} \
+  PS_ENET0_PERIPHERAL {{ENABLE 1} {IO {PS_MIO 0 .. 11}}} \
+  PS_GEN_IPI0_ENABLE {1} \
+  PS_GEN_IPI0_MASTER {A72} \
+  PS_GEN_IPI1_ENABLE {1} \
+  PS_GEN_IPI2_ENABLE {1} \
+  PS_GEN_IPI3_ENABLE {1} \
+  PS_GEN_IPI4_ENABLE {1} \
+  PS_GEN_IPI5_ENABLE {1} \
+  PS_GEN_IPI6_ENABLE {1} \
+  PS_I2C0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 46 .. 47}}} \
+  PS_I2C1_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 44 .. 45}}} \
+  PS_I2CSYSMON_PERIPHERAL {{ENABLE 0} {IO {PMC_MIO 39 .. 40}}} \
+  PS_MIO7 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+  PS_MIO9 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+  PS_NUM_FABRIC_RESETS {0} \
+  PS_PCIE_RESET {{ENABLE 1}} \
+  PS_UART0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 42 .. 43}}} \
+  PS_USB3_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 13 .. 25}}} \
+  PS_USE_FPD_AXI_NOC0 {1} \
+  PS_USE_FPD_AXI_NOC1 {1} \
+  PS_USE_FPD_CCI_NOC {0} \
+  PS_USE_FPD_CCI_NOC0 {1} \
+  PS_USE_NOC_FPD_AXI0 {0} \
+  PS_USE_NOC_FPD_AXI1 {0} \
+  PS_USE_NOC_LPD_AXI0 {0} \
+  PS_USE_PMCPL_CLK0 {1} \
+  PS_USE_PMCPL_CLK1 {0} \
+  PS_USE_PMCPL_CLK2 {0} \
+  PS_USE_PMCPL_CLK3 {0} \
+  PS_USE_PMCPL_IRO_CLK {1} \
+  SMON_ALARMS {Set_Alarms_On} \
+  SMON_ENABLE_TEMP_AVERAGING {0} \
+  SMON_INTERFACE_TO_USE {I2C} \
+  SMON_PMBUS_ADDRESS {0x18} \
+  SMON_TEMP_AVERAGING_SAMPLES {0} \
+} [get_bd_cells versal_cips_0]
+CRITICAL WARNING: [BD 41-1740] Cannot create master segment for </emax6_1/axi_s/reg0> in Address Space </versal_cips_0/FPD_AXI_NOC_0>. The proposed address '0x000_0000_0000 [ 1T ]' must fit an available aperture through master interface '/versal_cips_0/FPD_AXI_NOC_0' into address space '/versal_cips_0/FPD_AXI_NOC_0'. Valid apertures are {<0x0000_0000 [ 2G ]>, <0x1_0000_0000 [ 128M ]>, <0x1_0800_0000 [ 128M ]>, <0x1_1000_0000 [ 128M ]>, <0x1_1800_0000 [ 128M ]>, <0x8_0000_0000 [ 32G ]>, <0x40_0000_0000 [ 64G ]>, <0x50_0000_0000 [ 64G ]>, <0x60_0000_0000 [ 64G ]>, <0x70_0000_0000 [ 64G ]>, <0xC0_0000_0000 [ 256G ]>, ...}.
+CRITICAL WARNING: [BD 41-1740] Cannot create master segment for </emax6_1/axi_s/reg0> in Address Space </versal_cips_0/FPD_AXI_NOC_0>. The proposed address '0x000_0000_0000 [ 1T ]' must fit an available aperture through master interface '/versal_cips_0/FPD_AXI_NOC_0' into address space '/versal_cips_0/FPD_AXI_NOC_0'. Valid apertures are {<0x0000_0000 [ 2G ]>, <0x1_0000_0000 [ 128M ]>, <0x1_0800_0000 [ 128M ]>, <0x1_1000_0000 [ 128M ]>, <0x1_1800_0000 [ 128M ]>, <0x8_0000_0000 [ 32G ]>, <0x40_0000_0000 [ 64G ]>, <0x50_0000_0000 [ 64G ]>, <0x60_0000_0000 [ 64G ]>, <0x70_0000_0000 [ 64G ]>, <0xC0_0000_0000 [ 256G ]>, ...}.
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {/versal_cips_0/fpd_axi_noc_axi0_clk (749 MHz)} Clk_slave {/clk_wizard_0/clk_out1 (299 MHz)} Clk_xbar {Auto} Master {/versal_cips_0/FPD_AXI_NOC_0} Slave {/axi_noc_0/S01_AXI} ddr_seg {Auto} intc_ip {/axi_noc_0} master_apm {0}}  [get_bd_intf_pins axi_noc_0/S01_AXI]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {/versal_cips_0/fpd_axi_noc_axi0_clk (749 MHz)} Clk_slave {/clk_wizard_0/clk_out1 (299 MHz)} Clk_xbar {Auto} Master {/versal_cips_0/FPD_AXI_NOC_0} Slave {/axi_noc_0/S01_AXI} ddr_seg {Auto} intc_ip {/axi_noc_0} master_apm {0}}  [get_bd_intf_pins axi_noc_0/S01_AXI]
+connect_bd_intf_net [get_bd_intf_pins versal_cips_0/FPD_AXI_NOC_1] [get_bd_intf_pins axi_noc_0/S01_AXI]
+startgroup
+set_property -dict [list CONFIG.CONNECTIONS {MC_0 { read_bw {100} write_bw {100} read_avg_burst {4} write_avg_burst {4}} M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S00_AXI]
+set_property -dict [list CONFIG.CONNECTIONS {M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} MC_1 { read_bw {100} write_bw {100} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S01_AXI]
+endgroup
+startgroup
+endgroup
+delete_bd_objs [get_bd_addr_segs versal_cips_0/FPD_AXI_NOC_0/SEG_emax6_1_reg0]
+delete_bd_objs [get_bd_addr_segs] [get_bd_addr_segs -excluded]
+assign_bd_address
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_0000_0000 [ 1G ]>.
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_0000_0000 [ 1G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_4000_0000 [ 1G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_4000_0000 [ 1G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_8000_0000 [ 1G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_8000_0000 [ 1G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x0000_0000 [ 2M ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x0000_0000 [ 2M ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x8_0000_0000 [ 32M ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x8_0000_0000 [ 32M ]>.
+auto_assign_options {memory_capacity 4G}
+set_property range 2G [get_bd_addr_segs {versal_cips_0/FPD_AXI_NOC_0/SEG_emax6_2_reg0}]
+set_property range 2G [get_bd_addr_segs {versal_cips_0/FPD_AXI_NOC_1/SEG_emax6_2_reg0}]
+delete_bd_objs [get_bd_addr_segs versal_cips_0/FPD_AXI_NOC_0/SEG_emax6_2_reg0]
+delete_bd_objs [get_bd_addr_segs] [get_bd_addr_segs -excluded]
+assign_bd_address -target_address_space /versal_cips_0/FPD_AXI_NOC_0 [get_bd_addr_segs emax6_0/axi_s/reg0] -force
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_0000_0000 [ 4G ]>.
+auto_assign_options {memory_capacity 4G}
+assign_bd_address -target_address_space /versal_cips_0/FPD_AXI_NOC_1 [get_bd_addr_segs emax6_0/axi_s/reg0] -force
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_0000_0000 [ 4G ]>.
+auto_assign_options {memory_capacity 4G}
+assign_bd_address -target_address_space /versal_cips_0/FPD_AXI_NOC_0 [get_bd_addr_segs emax6_1/axi_s/reg0] -force
+CRITICAL WARNING: [BD 41-1376] Forcibly assigning slave segment '/emax6_1/axi_s/reg0' into address space '/versal_cips_0/FPD_AXI_NOC_0' at address <0x000_0000_0000 [ 1T ]>. This must be resolved before passing validation.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x000_0000_0000 [ 1T ]>.
+auto_assign_options {memory_capacity 4G}
+delete_bd_objs [get_bd_addr_segs versal_cips_0/FPD_AXI_NOC_0/SEG_emax6_1_reg0]
+assign_bd_address
+WARNING: [BD 41-1743] Cannot assign slave segment '/emax6_1/axi_s/reg0' into address space '/versal_cips_0/FPD_AXI_NOC_0' because no valid addressing path exists. The addressing path from slave segment '/emax6_1/axi_s/reg0' to address space '/versal_cips_0/FPD_AXI_NOC_0' has no free apertures. This assignment will be automatically excluded.
+WARNING: [BD 41-1743] Cannot assign slave segment '/emax6_1/axi_s/reg0' into address space '/versal_cips_0/FPD_AXI_NOC_1' because no valid addressing path exists. The addressing path from slave segment '/emax6_1/axi_s/reg0' to address space '/versal_cips_0/FPD_AXI_NOC_1' has no free apertures. This assignment will be automatically excluded.
+WARNING: [BD 41-1743] Cannot assign slave segment '/emax6_2/axi_s/reg0' into address space '/versal_cips_0/FPD_AXI_NOC_0' because no valid addressing path exists. The addressing path from slave segment '/emax6_2/axi_s/reg0' to address space '/versal_cips_0/FPD_AXI_NOC_0' has no free apertures. This assignment will be automatically excluded.
+WARNING: [BD 41-1743] Cannot assign slave segment '/emax6_2/axi_s/reg0' into address space '/versal_cips_0/FPD_AXI_NOC_1' because no valid addressing path exists. The addressing path from slave segment '/emax6_2/axi_s/reg0' to address space '/versal_cips_0/FPD_AXI_NOC_1' has no free apertures. This assignment will be automatically excluded.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x8_0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x8_0000_0000 [ 2G ]>.
+Excluding slave segment /emax6_1/axi_s/reg0 from address space /versal_cips_0/FPD_AXI_NOC_0.
+Excluding slave segment /emax6_2/axi_s/reg0 from address space /versal_cips_0/FPD_AXI_NOC_0.
+Excluding slave segment /emax6_1/axi_s/reg0 from address space /versal_cips_0/FPD_AXI_NOC_1.
+Excluding slave segment /emax6_2/axi_s/reg0 from address space /versal_cips_0/FPD_AXI_NOC_1.
+auto_assign_options {memory_capacity 4G}
+delete_bd_objs [get_bd_addr_segs] [get_bd_addr_segs -excluded]
+assign_bd_address
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_0000_0000 [ 1G ]>.
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_0000_0000 [ 1G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_4000_0000 [ 1G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_4000_0000 [ 1G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_8000_0000 [ 1G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_8000_0000 [ 1G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x0000_0000 [ 2M ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x0000_0000 [ 2M ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x8_0000_0000 [ 32M ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x8_0000_0000 [ 32M ]>.
+auto_assign_options {memory_capacity 4G}
+validate_bd_design
+Generating placement and routing for NoC components
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 0 insts (0 INI), 0 paths (0 INI). Read In: 6 insts (0 INI), 8 paths (0 INI). After Merge: 6 insts (0 INI), 8 paths (0 INI). Noc Frequency: 960 0 error slaves
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 6 insts (0 INI), 8 paths (0 INI). Read In: 8 insts (0 INI), 12 paths (0 INI). After Merge: 14 insts (0 INI), 20 paths (0 INI). Noc Frequency: 960 0 error slaves
+NoC TrafficSpec | Checksum: 5a5fd8a6
+NoC Constraints | Checksum: 66cc4d45
+NoC Incremental Solution | Checksum: 1d7dcf25
+INFO: [Ipconfig 75-92] Running NOC Placement
+INFO: [Ipconfig 75-122] Detailed placement phase
+INFO: [Ipconfig 75-133] Running NOC Routing
+NoC Compiler Finished Successfully
+NoC Solution | Checksum: b92467ee
+INFO: [Ipconfig 75-108] Writing file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/common/nsln/NOC_Power.xpe.
+ERROR: [xilinx.com:ip:axi_noc:1.0-1] design_1_axi_noc_0_0: Error resolving clock-association for NoC port S01_AXI. Please ensure there is an aclk pin enabled on this NoC block design_1_axi_noc_0_0, which is connected to this source-clock /versal_cips_0/fpd_axi_noc_axi1_clk
+CRITICAL WARNING: [IP_Flow 19-1747] Failed to deliver file '/opt/xilinx/Vivado/2022.2/data/rsb/iprepos/axi_noc_v1_0/xit/update_contents.xit': 
+ERROR: [IP_Flow 19-167] Failed to deliver one or more file(s).
+ERROR: [IP_Flow 19-3541] IP Elaboration error: Failed to generate IP 'axi_noc_0'. Failed to generate 'Elaborate BD' outputs: Failed to elaborate IP.
+validate_bd_design: Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 22842.543 ; gain = 0.000 ; free physical = 65317 ; free virtual = 122844
+ERROR: [Common 17-39] 'validate_bd_design' failed due to earlier errors.
+startgroup
+set_property CONFIG.NUM_MCP {4} [get_bd_cells axi_noc_0]
+endgroup
+regenerate_bd_layout -routing
+delete_bd_objs [get_bd_nets clk_wizard_0_clk_out1]
+connect_bd_net [get_bd_pins clk_wizard_0/clk_out1] [get_bd_pins axi_noc_0/aclk2]
+connect_bd_net [get_bd_pins versal_cips_0/fpd_axi_noc_axi1_clk] [get_bd_pins axi_noc_0/aclk1]
+validate_bd_design
+Generating placement and routing for NoC components
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 0 insts (0 INI), 0 paths (0 INI). Read In: 6 insts (0 INI), 8 paths (0 INI). After Merge: 6 insts (0 INI), 8 paths (0 INI). Noc Frequency: 960 0 error slaves
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 6 insts (0 INI), 8 paths (0 INI). Read In: 8 insts (0 INI), 12 paths (0 INI). After Merge: 14 insts (0 INI), 20 paths (0 INI). Noc Frequency: 960 0 error slaves
+NoC TrafficSpec | Checksum: 5a5fd8a6
+NoC Constraints | Checksum: 66cc4d45
+NoC Incremental Solution | Checksum: 1d7dcf25
+INFO: [Ipconfig 75-92] Running NOC Placement
+INFO: [Ipconfig 75-122] Detailed placement phase
+INFO: [Ipconfig 75-133] Running NOC Routing
+NoC Compiler Finished Successfully
+NoC Solution | Checksum: b92467ee
+INFO: [Ipconfig 75-108] Writing file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/common/nsln/NOC_Power.xpe.
+WARNING: [BD 41-237] Bus Interface property WUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_AXI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_AXI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property WUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_AXI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_AXI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+validate_bd_design: Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 24113.098 ; gain = 0.000 ; free physical = 65224 ; free virtual = 122751
+reset_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+export_ip_user_files -of_objects  [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -sync -no_script -force -quiet
+set_property synth_checkpoint_mode None [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+generate_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+INFO: [BD 41-1662] The design 'design_1.bd' is already validated. Therefore parameter propagation will not be re-run.
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.v
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/sim/design_1.v
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
+CRITICAL WARNING: [IP_Flow 19-4965] IP fpga_bram64 was packaged with board value 'xilinx.com:vmk180:part0:2.2'. Current project's board value is 'xilinx.com:vpk180:part0:1.0'. Please update the project settings to match the packaged IP.
+INFO: [IP_Flow 19-3422] Upgraded fpga_bram64 (Embedded Memory Generator 1.0) from revision 5 to revision 6
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_0 .
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_AXI_NOC_0'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_AXI_NOC_1'. A default connection has been created.
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: XDC Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 1941 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by XDC_generate is 1941 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: REG Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 1596 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by reg_generate is 1597 ms
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/hw_handoff/design_1_versal_cips_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/synth/design_1_versal_cips_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block versal_cips_0 .
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M02_AXI'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+Calling reg_generate
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/hw_handoff/design_1_axi_noc_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/synth/design_1_axi_noc_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_noc_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_1 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_2 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block rst_versal_cips_0_98M .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_wizard_0 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.hwdef
+generate_target: Time (s): cpu = 00:00:25 ; elapsed = 00:00:28 . Memory (MB): peak = 24986.379 ; gain = 0.000 ; free physical = 65052 ; free virtual = 122661
+export_ip_user_files -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet
+export_simulation -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -directory /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/sim_scripts -ip_user_files_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files -ipstatic_source_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/modelsim} {questa=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/questa} {xcelium=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/xcelium} {vcs=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/vcs} {riviera=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+startgroup
+set_property -dict [list CONFIG.CONNECTIONS {MC_0 { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S00_AXI]
+set_property -dict [list CONFIG.CONNECTIONS {M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} MC_1 { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S01_AXI]
+endgroup
+reset_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+export_ip_user_files -of_objects  [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -sync -no_script -force -quiet
+generate_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+Generating placement and routing for NoC components
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 0 insts (0 INI), 0 paths (0 INI). Read In: 6 insts (0 INI), 8 paths (0 INI). After Merge: 6 insts (0 INI), 8 paths (0 INI). Noc Frequency: 960 0 error slaves
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 6 insts (0 INI), 8 paths (0 INI). Read In: 8 insts (0 INI), 12 paths (0 INI). After Merge: 14 insts (0 INI), 20 paths (0 INI). Noc Frequency: 960 0 error slaves
+NoC TrafficSpec | Checksum: 9469e935
+NoC Constraints | Checksum: 66cc4d45
+NoC Incremental Solution | Checksum: 1d7dcf25
+INFO: [Ipconfig 75-92] Running NOC Placement
+INFO: [Ipconfig 75-122] Detailed placement phase
+INFO: [Ipconfig 75-133] Running NOC Routing
+NoC Compiler Finished Successfully
+NoC Solution | Checksum: f1476829
+INFO: [Ipconfig 75-108] Writing file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/common/nsln/NOC_Power.xpe.
+WARNING: [BD 41-237] Bus Interface property WUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_AXI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_AXI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property WUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_AXI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_AXI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.v
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/sim/design_1.v
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
+CRITICAL WARNING: [IP_Flow 19-4965] IP fpga_bram64 was packaged with board value 'xilinx.com:vmk180:part0:2.2'. Current project's board value is 'xilinx.com:vpk180:part0:1.0'. Please update the project settings to match the packaged IP.
+INFO: [IP_Flow 19-3422] Upgraded fpga_bram64 (Embedded Memory Generator 1.0) from revision 5 to revision 6
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_0 .
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_AXI_NOC_0'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_AXI_NOC_1'. A default connection has been created.
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: XDC Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 1872 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by XDC_generate is 1872 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: REG Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 1564 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by reg_generate is 1565 ms
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/hw_handoff/design_1_versal_cips_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/synth/design_1_versal_cips_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block versal_cips_0 .
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M02_AXI'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+Calling reg_generate
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/hw_handoff/design_1_axi_noc_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/synth/design_1_axi_noc_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_noc_0 .
+CRITICAL WARNING: [IP_Flow 19-663] Failed to copy file '/home/nakashim/proj-arm64/fpga/VPK180-step4000_IP/src/fpga_bram64/fpga_bram64.xci', it does not exist.
+CRITICAL WARNING: [IP_Flow 19-157] Failed to copy file from '/home/nakashim/proj-arm64/fpga/VPK180-step4000_IP/src/fpga_bram64/fpga_bram64.xci' to '/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_emax6_1_0/src/fpga_bram64/fpga_bram64.xci'.
+ERROR: [IP_Flow 19-167] Failed to deliver one or more file(s).
+ERROR: [IP_Flow 19-3505] IP Generation error: Failed to generate IP 'emax6_1'. Failed to generate 'Synthesis' outputs: 
+ERROR: [IP_Flow 19-98] Generation of the IP CORE failed.
+Failed to generate IP 'emax6_1'. Failed to generate 'Synthesis' outputs: 
+ERROR: [BD 41-1030] Generation failed for the IP Integrator block emax6_1 
+CRITICAL WARNING: [IP_Flow 19-663] Failed to copy file '/home/nakashim/proj-arm64/fpga/VPK180-step4000_IP/src/fpga_bram64/fpga_bram64.xci', it does not exist.
+CRITICAL WARNING: [IP_Flow 19-157] Failed to copy file from '/home/nakashim/proj-arm64/fpga/VPK180-step4000_IP/src/fpga_bram64/fpga_bram64.xci' to '/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_emax6_2_0/src/fpga_bram64/fpga_bram64.xci'.
+ERROR: [IP_Flow 19-167] Failed to deliver one or more file(s).
+ERROR: [IP_Flow 19-3505] IP Generation error: Failed to generate IP 'emax6_2'. Failed to generate 'Synthesis' outputs: 
+ERROR: [IP_Flow 19-98] Generation of the IP CORE failed.
+Failed to generate IP 'emax6_2'. Failed to generate 'Synthesis' outputs: 
+ERROR: [BD 41-1030] Generation failed for the IP Integrator block emax6_2 
+INFO: [BD 41-1029] Generation completed for the IP Integrator block rst_versal_cips_0_98M .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_wizard_0 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.hwdef
+generate_target: Time (s): cpu = 00:00:40 ; elapsed = 00:00:42 . Memory (MB): peak = 26202.551 ; gain = 0.000 ; free physical = 64901 ; free virtual = 122517
+ERROR: [Common 17-39] 'generate_target' failed due to earlier errors.
+WARNING: [IP_Flow 19-4318] IP-XACT file does not exist: /home/nakashim/proj-arm64/fpga/VPK180-step4000_IP/component.xml. It will be created.
+update_ip_catalog -rebuild -scan_changes
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/nakashim/proj-arm64/fpga/VPK180-step4000_IP'.
+report_ip_status -name ip_status
+set_property LOCK_UPGRADE 1 [get_bd_cells /emax6_0]
+INFO: [IP_Flow 19-8015] Moving outputs for IP 'design_1_emax6_0_0' to '/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/ip/design_1_emax6_0_0'
+WARNING: [IP_Flow 19-3571] IP 'fpga_bram64' is restricted:
+* Detected changes to IP definition 'Embedded Memory Generator (1.0)' file(s).
+WARNING: [IP_Flow 19-2162] IP 'design_1_emax6_0_0' is locked:
+* IP definition 'emax6 (1.0)' for IP 'design_1_emax6_0_0' (customized with software release 2022.2.2) was not found in the IP Catalog. * Detected changes to IP definition 'emax6 (1.0)' file(s).
+WARNING: [BD 41-2028] Locking emax6 to version 1.0. If the latest driver for the IP is not backwards compatible, software flow will assign a generic driver or no driver for this IP
+report_ip_status -name ip_status 
+report_ip_status -name ip_status 
+delete_bd_objs [get_bd_intf_nets axi_noc_0_M00_AXI] [get_bd_cells emax6_0]
+delete_bd_objs [get_bd_intf_nets axi_noc_0_M01_AXI] [get_bd_cells emax6_1]
+delete_bd_objs [get_bd_nets rst_versal_cips_0_98M_peripheral_aresetn] [get_bd_intf_nets axi_noc_0_M02_AXI] [get_bd_cells emax6_2]
+set_property  ip_repo_paths  {} [current_project]
+update_ip_catalog
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+set_property  ip_repo_paths  /home/nakashim/proj-arm64/fpga/VPK180-step4000_IP [current_project]
+update_ip_catalog
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/nakashim/proj-arm64/fpga/VPK180-step4000_IP'.
+startgroup
+create_bd_cell -type ip -vlnv comparch:user:emax6:1.0 emax6_0
+endgroup
+set_property location {3.5 1298 265} [get_bd_cells emax6_0]
+startgroup
+create_bd_cell -type ip -vlnv comparch:user:emax6:1.0 emax6_1
+endgroup
+startgroup
+create_bd_cell -type ip -vlnv comparch:user:emax6:1.0 emax6_2
+endgroup
+set_property location {5 1375 358} [get_bd_cells emax6_1]
+set_property location {4 1374 75} [get_bd_cells emax6_0]
+set_property location {4 1400 178} [get_bd_cells emax6_1]
+set_property location {4 1362 312} [get_bd_cells emax6_2]
+connect_bd_intf_net [get_bd_intf_pins axi_noc_0/M00_AXI] [get_bd_intf_pins emax6_0/axi_s]
+connect_bd_intf_net [get_bd_intf_pins axi_noc_0/M01_AXI] [get_bd_intf_pins emax6_1/axi_s]
+connect_bd_intf_net [get_bd_intf_pins axi_noc_0/M02_AXI] [get_bd_intf_pins emax6_2/axi_s]
+connect_bd_net [get_bd_pins emax6_0/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+connect_bd_net [get_bd_pins emax6_1/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+connect_bd_net [get_bd_pins emax6_2/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+connect_bd_net [get_bd_pins rst_versal_cips_0_98M/peripheral_aresetn] [get_bd_pins emax6_2/ARESETN]
+connect_bd_net [get_bd_pins rst_versal_cips_0_98M/peripheral_aresetn] [get_bd_pins emax6_1/ARESETN]
+connect_bd_net [get_bd_pins emax6_0/ARESETN] [get_bd_pins rst_versal_cips_0_98M/peripheral_aresetn]
+assign_bd_address
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_0000_0000 [ 1G ]>.
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_0000_0000 [ 1G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_4000_0000 [ 1G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_4000_0000 [ 1G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_0' at <0x201_8000_0000 [ 1G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_AXI_NOC_1' at <0x201_8000_0000 [ 1G ]>.
+auto_assign_options {memory_capacity 4G}
+validate_bd_design
+Generating placement and routing for NoC components
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 0 insts (0 INI), 0 paths (0 INI). Read In: 6 insts (0 INI), 8 paths (0 INI). After Merge: 6 insts (0 INI), 8 paths (0 INI). Noc Frequency: 960 0 error slaves
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 6 insts (0 INI), 8 paths (0 INI). Read In: 8 insts (0 INI), 12 paths (0 INI). After Merge: 14 insts (0 INI), 20 paths (0 INI). Noc Frequency: 960 0 error slaves
+NoC TrafficSpec | Checksum: 9469e935
+NoC Constraints | Checksum: 66cc4d45
+NoC Incremental Solution | Checksum: 1d7dcf25
+INFO: [Ipconfig 75-92] Running NOC Placement
+INFO: [Ipconfig 75-122] Detailed placement phase
+INFO: [Ipconfig 75-133] Running NOC Routing
+NoC Compiler Finished Successfully
+NoC Solution | Checksum: f1476829
+INFO: [Ipconfig 75-108] Writing file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/common/nsln/NOC_Power.xpe.
+WARNING: [BD 41-237] Bus Interface property WUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_AXI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_AXI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property WUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_AXI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_AXI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+validate_bd_design: Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 27441.848 ; gain = 0.000 ; free physical = 64864 ; free virtual = 122468
+startgroup
+endgroup
+reset_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+export_ip_user_files -of_objects  [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -sync -no_script -force -quiet
+generate_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+INFO: [BD 41-1662] The design 'design_1.bd' is already validated. Therefore parameter propagation will not be re-run.
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.v
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/sim/design_1.v
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_AXI_NOC_0'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_AXI_NOC_1'. A default connection has been created.
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: XDC Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 1950 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by XDC_generate is 1951 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: REG Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 1569 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by reg_generate is 1570 ms
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/hw_handoff/design_1_versal_cips_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/synth/design_1_versal_cips_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block versal_cips_0 .
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M02_AXI'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+Calling reg_generate
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/hw_handoff/design_1_axi_noc_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/synth/design_1_axi_noc_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_noc_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block rst_versal_cips_0_98M .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_wizard_0 .
+CRITICAL WARNING: [IP_Flow 19-4965] IP fpga_bram64 was packaged with board value 'xilinx.com:vmk180:part0:2.2'. Current project's board value is 'xilinx.com:vpk180:part0:1.0'. Please update the project settings to match the packaged IP.
+INFO: [IP_Flow 19-3422] Upgraded fpga_bram64 (Embedded Memory Generator 1.0) from revision 5 to revision 6
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_1 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_2 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.hwdef
+generate_target: Time (s): cpu = 00:00:26 ; elapsed = 00:00:26 . Memory (MB): peak = 27816.875 ; gain = 0.000 ; free physical = 64732 ; free virtual = 122406
+export_ip_user_files -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet
+export_simulation -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -directory /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/sim_scripts -ip_user_files_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files -ipstatic_source_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/modelsim} {questa=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/questa} {xcelium=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/xcelium} {vcs=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/vcs} {riviera=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+regenerate_bd_layout -routing
+set_property location {1 289 532} [get_bd_cells clk_wizard_0]
+regenerate_bd_layout -routing
+launch_runs impl_1 -to_step write_device_image -jobs 16
+[Tue Mar 28 16:14:23 2023] Launched synth_1...
+Run output will be captured here: /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.runs/synth_1/runme.log
+[Tue Mar 28 16:14:23 2023] Launched impl_1...
+Run output will be captured here: /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.runs/impl_1/runme.log
+reset_run synth_1
+startgroup
+set_property -dict [list \
+  CONFIG.DDR_MEMORY_MODE {Custom} \
+  CONFIG.PS_PMC_CONFIG { \
+    CLOCK_MODE {REF CLK 33.33 MHz} \
+    DDR_MEMORY_MODE {Custom} \
+    DESIGN_MODE {1} \
+    DEVICE_INTEGRITY_MODE {Custom} \
+    PMC_ALT_REF_CLK_FREQMHZ {33.333} \
+    PMC_CRP_EFUSE_REF_CTRL_SRCSEL {IRO_CLK/4} \
+    PMC_CRP_HSM0_REF_CTRL_FREQMHZ {33.333} \
+    PMC_CRP_HSM1_REF_CTRL_FREQMHZ {133.333} \
+    PMC_CRP_LSBUS_REF_CTRL_FREQMHZ {100} \
+    PMC_CRP_NOC_REF_CTRL_FREQMHZ {960} \
+    PMC_CRP_PL0_REF_CTRL_FREQMHZ {100} \
+    PMC_CRP_PL5_REF_CTRL_FREQMHZ {400} \
+    PMC_GPIO0_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 0 .. 25}}} \
+    PMC_GPIO1_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 26 .. 51}}} \
+    PMC_MIO37 {{AUX_IO 0} {DIRECTION out} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA high} {PULL pullup} {SCHMITT 0} {SLEW slow} {USAGE GPIO}} \
+    PMC_PL_ALT_REF_CLK_FREQMHZ {33.333} \
+    PMC_QSPI_FBCLK {{ENABLE 1} {IO {PMC_MIO 6}}} \
+    PMC_QSPI_PERIPHERAL_DATA_MODE {x4} \
+    PMC_QSPI_PERIPHERAL_ENABLE {1} \
+    PMC_QSPI_PERIPHERAL_MODE {Dual Parallel} \
+    PMC_REF_CLK_FREQMHZ {33.3333} \
+    PMC_SD1 {{CD_ENABLE 1} {CD_IO {PMC_MIO 28}} {POW_ENABLE 1} {POW_IO {PMC_MIO 51}} {RESET_ENABLE 0} {RESET_IO {PMC_MIO 12}} {WP_ENABLE 0} {WP_IO {PMC_MIO 1}}} \
+    PMC_SD1_PERIPHERAL {{CLK_100_SDR_OTAP_DLY 0x3} {CLK_200_SDR_OTAP_DLY 0x2} {CLK_50_DDR_ITAP_DLY 0x2A} {CLK_50_DDR_OTAP_DLY 0x3} {CLK_50_SDR_ITAP_DLY 0x25} {CLK_50_SDR_OTAP_DLY 0x4} {ENABLE 1} {IO {PMC_MIO 26 .. 36}}} \
+    PMC_SD1_SLOT_TYPE {SD 3.0 AUTODIR} \
+    PMC_USE_PMC_NOC_AXI0 {0} \
+    PS_BOARD_INTERFACE {Custom} \
+    PS_ENET0_MDIO {{ENABLE 1} {IO {PS_MIO 24 .. 25}}} \
+    PS_ENET0_PERIPHERAL {{ENABLE 1} {IO {PS_MIO 0 .. 11}}} \
+    PS_GEN_IPI0_ENABLE {1} \
+    PS_GEN_IPI0_MASTER {A72} \
+    PS_GEN_IPI1_ENABLE {1} \
+    PS_GEN_IPI2_ENABLE {1} \
+    PS_GEN_IPI3_ENABLE {1} \
+    PS_GEN_IPI4_ENABLE {1} \
+    PS_GEN_IPI5_ENABLE {1} \
+    PS_GEN_IPI6_ENABLE {1} \
+    PS_I2C0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 46 .. 47}}} \
+    PS_I2C1_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 44 .. 45}}} \
+    PS_I2CSYSMON_PERIPHERAL {{ENABLE 0} {IO {PMC_MIO 39 .. 40}}} \
+    PS_MIO7 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+    PS_MIO9 {{AUX_IO 0} {DIRECTION in} {DRIVE_STRENGTH 8mA} {OUTPUT_DATA default} {PULL disable} {SCHMITT 0} {SLEW slow} {USAGE Reserved}} \
+    PS_NUM_FABRIC_RESETS {0} \
+    PS_PCIE_RESET {{ENABLE 1}} \
+    PS_UART0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 42 .. 43}}} \
+    PS_USB3_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 13 .. 25}}} \
+    PS_USE_FPD_AXI_NOC0 {0} \
+    PS_USE_FPD_AXI_NOC1 {0} \
+    PS_USE_FPD_CCI_NOC {1} \
+    PS_USE_FPD_CCI_NOC0 {1} \
+    PS_USE_NOC_FPD_AXI0 {0} \
+    PS_USE_NOC_FPD_AXI1 {0} \
+    PS_USE_NOC_LPD_AXI0 {0} \
+    PS_USE_PMCPL_CLK0 {1} \
+    PS_USE_PMCPL_CLK1 {0} \
+    PS_USE_PMCPL_CLK2 {0} \
+    PS_USE_PMCPL_CLK3 {0} \
+    PS_USE_PMCPL_IRO_CLK {1} \
+    SMON_ALARMS {Set_Alarms_On} \
+    SMON_ENABLE_TEMP_AVERAGING {0} \
+    SMON_INTERFACE_TO_USE {I2C} \
+    SMON_PMBUS_ADDRESS {0x18} \
+    SMON_TEMP_AVERAGING_SAMPLES {0} \
+  } \
+] [get_bd_cells versal_cips_0]
+delete_bd_objs [get_bd_nets versal_cips_0_fpd_axi_noc_axi0_clk] [get_bd_nets versal_cips_0_fpd_axi_noc_axi1_clk] [get_bd_intf_nets versal_cips_0_FPD_AXI_NOC_0] [get_bd_intf_nets versal_cips_0_FPD_AXI_NOC_1]
+endgroup
+startgroup
+set_property CONFIG.NUM_SI {4} [get_bd_cells axi_noc_0]
+set_property -dict [list CONFIG.CATEGORY {ps_cci}] [get_bd_intf_pins /axi_noc_0/S00_AXI]
+set_property -dict [list CONFIG.CATEGORY {ps_cci}] [get_bd_intf_pins /axi_noc_0/S01_AXI]
+set_property -dict [list CONFIG.CATEGORY {ps_cci}] [get_bd_intf_pins /axi_noc_0/S02_AXI]
+set_property -dict [list CONFIG.CATEGORY {ps_cci}] [get_bd_intf_pins /axi_noc_0/S03_AXI]
+set_property -dict [list CONFIG.ASSOCIATED_BUSIF {S03_AXI:S00_AXI:S01_AXI}] [get_bd_pins /axi_noc_0/aclk0]
+set_property -dict [list CONFIG.ASSOCIATED_BUSIF {S02_AXI}] [get_bd_pins /axi_noc_0/aclk1]
+endgroup
+connect_bd_intf_net [get_bd_intf_pins versal_cips_0/FPD_CCI_NOC_0] [get_bd_intf_pins axi_noc_0/S00_AXI]
+connect_bd_intf_net [get_bd_intf_pins versal_cips_0/FPD_CCI_NOC_1] [get_bd_intf_pins axi_noc_0/S01_AXI]
+connect_bd_intf_net [get_bd_intf_pins versal_cips_0/FPD_CCI_NOC_2] [get_bd_intf_pins axi_noc_0/S02_AXI]
+connect_bd_intf_net [get_bd_intf_pins versal_cips_0/FPD_CCI_NOC_3] [get_bd_intf_pins axi_noc_0/S03_AXI]
+startgroup
+set_property CONFIG.NUM_CLKS {6} [get_bd_cells axi_noc_0]
+endgroup
+connect_bd_net [get_bd_pins versal_cips_0/fpd_cci_noc_axi0_clk] [get_bd_pins axi_noc_0/aclk0]
+connect_bd_net [get_bd_pins versal_cips_0/fpd_cci_noc_axi1_clk] [get_bd_pins axi_noc_0/aclk1]
+delete_bd_objs [get_bd_nets clk_wizard_0_clk_out1]
+delete_bd_objs [get_bd_nets clk_wizard_0_clk_out2]
+connect_bd_net [get_bd_pins versal_cips_0/fpd_cci_noc_axi2_clk] [get_bd_pins axi_noc_0/aclk2]
+connect_bd_net [get_bd_pins versal_cips_0/fpd_cci_noc_axi3_clk] [get_bd_pins axi_noc_0/aclk3]
+connect_bd_net [get_bd_pins clk_wizard_0/clk_out1] [get_bd_pins axi_noc_0/aclk4]
+connect_bd_net [get_bd_pins clk_wizard_0/clk_out2] [get_bd_pins axi_noc_0/aclk5]
+connect_bd_net [get_bd_pins emax6_0/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+connect_bd_net [get_bd_pins emax6_1/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+connect_bd_net [get_bd_pins emax6_2/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+connect_bd_net [get_bd_pins rst_versal_cips_0_98M/slowest_sync_clk] [get_bd_pins clk_wizard_0/clk_out2]
+regenerate_bd_layout -routing
+set_property location {2 829 631} [get_bd_cells rst_versal_cips_0_98M]
+regenerate_bd_layout -routing
+regenerate_bd_layout -routing
+regenerate_bd_layout -routing
+regenerate_bd_layout -routing
+regenerate_bd_layout -routing
+regenerate_bd_layout -routing
+regenerate_bd_layout -routing
+startgroup
+set_property -dict [list CONFIG.CONNECTIONS {MC_0 { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} M00_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S00_AXI]
+set_property -dict [list CONFIG.CONNECTIONS {M01_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} MC_1 { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S01_AXI]
+set_property -dict [list CONFIG.CONNECTIONS {M02_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} MC_2 { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}} CONFIG.W_TRAFFIC_CLASS {BEST_EFFORT}] [get_bd_intf_pins /axi_noc_0/S02_AXI]
+set_property -dict [list CONFIG.CONNECTIONS {MC_3 { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S03_AXI]
+endgroup
+reset_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+export_ip_user_files -of_objects  [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -sync -no_script -force -quiet
+generate_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S00_AXI/C0_DDR_LOW0> is not assigned into address space </versal_cips_0/FPD_CCI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S00_AXI/C0_DDR_LOW1> is not assigned into address space </versal_cips_0/FPD_CCI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </emax6_0/axi_s/reg0> is not assigned into address space </versal_cips_0/FPD_CCI_NOC_0>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </emax6_1/axi_s/reg0> is not assigned into address space </versal_cips_0/FPD_CCI_NOC_1>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S02_AXI/C2_DDR_LOW1> is not assigned into address space </versal_cips_0/FPD_CCI_NOC_2>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </emax6_2/axi_s/reg0> is not assigned into address space </versal_cips_0/FPD_CCI_NOC_2>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S02_AXI/C2_DDR_LOW0> is not assigned into address space </versal_cips_0/FPD_CCI_NOC_2>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S03_AXI/C3_DDR_LOW1> is not assigned into address space </versal_cips_0/FPD_CCI_NOC_3>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-1356] Slave segment </axi_noc_0/S03_AXI/C3_DDR_LOW0> is not assigned into address space </versal_cips_0/FPD_CCI_NOC_3>. Please use Address Editor to either assign or exclude it.
+CRITICAL WARNING: [BD 41-2842] Virtual address or fixed destID NMU has multiple fanout. NSU /axi_noc_0/M00_AXI is using virtual-addressing or has no assigned address so all traffic from the upstream NMU /axi_noc_0/S00_AXI. All traffic will route to this NSU using a fixed destID. To fix: ensure the NMU has a single fanout, or ensure the NSU has an assigned address in the Address Editor.
+CRITICAL WARNING: [BD 41-2842] Virtual address or fixed destID NMU has multiple fanout. NSU /axi_noc_0/M01_AXI is using virtual-addressing or has no assigned address so all traffic from the upstream NMU /axi_noc_0/S01_AXI. All traffic will route to this NSU using a fixed destID. To fix: ensure the NMU has a single fanout, or ensure the NSU has an assigned address in the Address Editor.
+CRITICAL WARNING: [BD 41-2842] Virtual address or fixed destID NMU has multiple fanout. NSU /axi_noc_0/M02_AXI is using virtual-addressing or has no assigned address so all traffic from the upstream NMU /axi_noc_0/S02_AXI. All traffic will route to this NSU using a fixed destID. To fix: ensure the NMU has a single fanout, or ensure the NSU has an assigned address in the Address Editor.
+Generating placement and routing for NoC components
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 0 insts (0 INI), 0 paths (0 INI). Read In: 8 insts (0 INI), 7 paths (0 INI). After Merge: 8 insts (0 INI), 7 paths (0 INI). Noc Frequency: 960 0 error slaves
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 8 insts (0 INI), 7 paths (0 INI). Read In: 8 insts (0 INI), 12 paths (0 INI). After Merge: 16 insts (0 INI), 19 paths (0 INI). Noc Frequency: 960 0 error slaves
+NoC TrafficSpec | Checksum: d6a16fb2
+NoC Constraints | Checksum: 6548992b
+NoC Incremental Solution | Checksum: 1d7dcf25
+INFO: [Ipconfig 75-92] Running NOC Placement
+INFO: [Ipconfig 75-122] Detailed placement phase
+INFO: [Ipconfig 75-133] Running NOC Routing
+NoC Compiler Finished Successfully
+NoC Solution | Checksum: bb31d9cb
+INFO: [Ipconfig 75-108] Writing file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/common/nsln/NOC_Power.xpe.
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_CCI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_CCI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S02_AXI(17) and /versal_cips_0/FPD_CCI_NOC_2(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S03_AXI(17) and /versal_cips_0/FPD_CCI_NOC_3(0)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.v
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/sim/design_1.v
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_0'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_1'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_2'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_3'. A default connection has been created.
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: XDC Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 2026 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by XDC_generate is 2026 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: REG Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 1619 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by reg_generate is 1619 ms
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/hw_handoff/design_1_versal_cips_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/synth/design_1_versal_cips_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block versal_cips_0 .
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S02_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S03_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M02_AXI'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S02_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S02_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S03_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S03_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+Calling reg_generate
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/hw_handoff/design_1_axi_noc_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/synth/design_1_axi_noc_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_noc_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block rst_versal_cips_0_98M .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_wizard_0 .
+CRITICAL WARNING: [IP_Flow 19-4965] IP fpga_bram64 was packaged with board value 'xilinx.com:vmk180:part0:2.2'. Current project's board value is 'xilinx.com:vpk180:part0:1.0'. Please update the project settings to match the packaged IP.
+INFO: [IP_Flow 19-3422] Upgraded fpga_bram64 (Embedded Memory Generator 1.0) from revision 5 to revision 6
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_1 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_2 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.hwdef
+generate_target: Time (s): cpu = 00:00:47 ; elapsed = 00:00:46 . Memory (MB): peak = 28708.230 ; gain = 0.000 ; free physical = 50189 ; free virtual = 110144
+export_ip_user_files -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet
+export_simulation -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -directory /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/sim_scripts -ip_user_files_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files -ipstatic_source_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/modelsim} {questa=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/questa} {xcelium=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/xcelium} {vcs=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/vcs} {riviera=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+delete_bd_objs [get_bd_addr_segs] [get_bd_addr_segs -excluded]
+assign_bd_address
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_0' at <0x201_0000_0000 [ 4G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_1' at <0x201_0000_0000 [ 4G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_2' at <0x201_8000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_0' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_1' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S02_AXI/C2_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_2' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S03_AXI/C3_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_3' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_0' at <0x8_0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_1' at <0x8_0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S02_AXI/C2_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_2' at <0x8_0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S03_AXI/C3_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_3' at <0x8_0000_0000 [ 2G ]>.
+auto_assign_options {memory_capacity 4G}
+startgroup
+endgroup
+delete_bd_objs [get_bd_addr_segs] [get_bd_addr_segs -excluded]
+assign_bd_address
+Slave segment '/emax6_0/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_0' at <0x201_0000_0000 [ 4G ]>.
+Slave segment '/emax6_1/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_1' at <0x201_0000_0000 [ 4G ]>.
+Slave segment '/emax6_2/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_2' at <0x201_8000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_0' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_1' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S02_AXI/C2_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_2' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S03_AXI/C3_DDR_LOW0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_3' at <0x0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S00_AXI/C0_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_0' at <0x8_0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S01_AXI/C1_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_1' at <0x8_0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S02_AXI/C2_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_2' at <0x8_0000_0000 [ 2G ]>.
+Slave segment '/axi_noc_0/S03_AXI/C3_DDR_LOW1' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_3' at <0x8_0000_0000 [ 2G ]>.
+auto_assign_options {memory_capacity 4G}
+set_property offset 0x20200000000 [get_bd_addr_segs {versal_cips_0/FPD_CCI_NOC_1/SEG_emax6_1_reg0}]
+INFO: [BD 41-2709] Auto-set NSU PL aperture for /axi_noc_0/M01_AXI to 0x202_0000_0000 [ 4G ]. Old value: 0x201_0000_0000 [ 4G ]
+set_property offset 0x20300000000 [get_bd_addr_segs {versal_cips_0/FPD_CCI_NOC_2/SEG_emax6_2_reg0}]
+INFO: [BD 41-2709] Auto-set NSU PL aperture for /axi_noc_0/M02_AXI to 0x203_0000_0000 [ 2G ]. Old value: 0x201_8000_0000 [ 2G ]
+set_property range 4G [get_bd_addr_segs {versal_cips_0/FPD_CCI_NOC_2/SEG_emax6_2_reg0}]
+reset_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+export_ip_user_files -of_objects  [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -sync -no_script -force -quiet
+generate_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+Generating placement and routing for NoC components
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 0 insts (0 INI), 0 paths (0 INI). Read In: 8 insts (0 INI), 7 paths (0 INI). After Merge: 8 insts (0 INI), 7 paths (0 INI). Noc Frequency: 960 0 error slaves
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 8 insts (0 INI), 7 paths (0 INI). Read In: 8 insts (0 INI), 12 paths (0 INI). After Merge: 16 insts (0 INI), 19 paths (0 INI). Noc Frequency: 960 0 error slaves
+NoC TrafficSpec | Checksum: d6a16fb2
+NoC Constraints | Checksum: 6548992b
+NoC Incremental Solution | Checksum: 1d7dcf25
+INFO: [Ipconfig 75-92] Running NOC Placement
+INFO: [Ipconfig 75-122] Detailed placement phase
+INFO: [Ipconfig 75-133] Running NOC Routing
+NoC Compiler Finished Successfully
+NoC Solution | Checksum: bb31d9cb
+INFO: [Ipconfig 75-108] Writing file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/common/nsln/NOC_Power.xpe.
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_CCI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_CCI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S02_AXI(17) and /versal_cips_0/FPD_CCI_NOC_2(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S03_AXI(17) and /versal_cips_0/FPD_CCI_NOC_3(0)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.v
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/sim/design_1.v
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_0'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_1'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_2'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_3'. A default connection has been created.
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: XDC Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 2259 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by XDC_generate is 2259 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: REG Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 1673 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by reg_generate is 1673 ms
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/hw_handoff/design_1_versal_cips_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/synth/design_1_versal_cips_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block versal_cips_0 .
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S02_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S03_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M02_AXI'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S02_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S02_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S03_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S03_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+Calling reg_generate
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/hw_handoff/design_1_axi_noc_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/synth/design_1_axi_noc_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_noc_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block rst_versal_cips_0_98M .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_wizard_0 .
+CRITICAL WARNING: [IP_Flow 19-4965] IP fpga_bram64 was packaged with board value 'xilinx.com:vmk180:part0:2.2'. Current project's board value is 'xilinx.com:vpk180:part0:1.0'. Please update the project settings to match the packaged IP.
+INFO: [IP_Flow 19-3422] Upgraded fpga_bram64 (Embedded Memory Generator 1.0) from revision 5 to revision 6
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_1 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_2 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.hwdef
+generate_target: Time (s): cpu = 00:00:46 ; elapsed = 00:00:52 . Memory (MB): peak = 29931.410 ; gain = 0.000 ; free physical = 47986 ; free virtual = 108533
+export_ip_user_files -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet
+export_simulation -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -directory /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/sim_scripts -ip_user_files_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files -ipstatic_source_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/modelsim} {questa=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/questa} {xcelium=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/xcelium} {vcs=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/vcs} {riviera=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+launch_runs impl_1 -to_step write_device_image -jobs 16
+[Tue Mar 28 16:39:08 2023] Launched synth_1...
+Run output will be captured here: /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.runs/synth_1/runme.log
+[Tue Mar 28 16:39:08 2023] Launched impl_1...
+Run output will be captured here: /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.runs/impl_1/runme.log
+open_bd_design {/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd}
+reset_run impl_1
+open_bd_design {/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd}
+startgroup
+create_bd_cell -type ip -vlnv comparch:user:emax6:1.0 emax6_3
+endgroup
+set_property location {4 1270 -98} [get_bd_cells emax6_0]
+set_property location {4 1277 55} [get_bd_cells emax6_1]
+set_property location {4 1270 196} [get_bd_cells emax6_2]
+set_property location {4 1218 349} [get_bd_cells emax6_3]
+startgroup
+set_property CONFIG.NUM_MI {4} [get_bd_cells axi_noc_0]
+set_property -dict [list CONFIG.ASSOCIATED_BUSIF {M03_AXI:S00_AXI}] [get_bd_pins /axi_noc_0/aclk0]
+endgroup
+connect_bd_intf_net [get_bd_intf_pins axi_noc_0/M03_AXI] [get_bd_intf_pins emax6_3/axi_s]
+connect_bd_net [get_bd_pins emax6_3/ACLK] [get_bd_pins clk_wizard_0/clk_out2]
+connect_bd_net [get_bd_pins emax6_3/ARESETN] [get_bd_pins rst_versal_cips_0_98M/peripheral_aresetn]
+regenerate_bd_layout -routing
+startgroup
+set_property -dict [list CONFIG.CONNECTIONS {M03_AXI { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}} MC_3 { read_bw {1720} write_bw {1720} read_avg_burst {4} write_avg_burst {4}}}] [get_bd_intf_pins /axi_noc_0/S03_AXI]
+endgroup
+assign_bd_address -target_address_space /versal_cips_0/FPD_CCI_NOC_3 [get_bd_addr_segs emax6_3/axi_s/reg0] -force
+Slave segment '/emax6_3/axi_s/reg0' is being assigned into address space '/versal_cips_0/FPD_CCI_NOC_3' at <0x204_4000_0000 [ 1G ]>.
+auto_assign_options {memory_capacity 4G}
+set_property range 4G [get_bd_addr_segs {versal_cips_0/FPD_CCI_NOC_3/SEG_emax6_3_reg0}]
+set_property offset 0x20400000000 [get_bd_addr_segs {versal_cips_0/FPD_CCI_NOC_3/SEG_emax6_3_reg0}]
+reset_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+export_ip_user_files -of_objects  [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -sync -no_script -force -quiet
+generate_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+Generating placement and routing for NoC components
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 0 insts (0 INI), 0 paths (0 INI). Read In: 9 insts (0 INI), 8 paths (0 INI). After Merge: 9 insts (0 INI), 8 paths (0 INI). Noc Frequency: 960 0 error slaves
+INFO: [Ipconfig 75-709] Read and Merge Traffic Stats:  Before Read: 9 insts (0 INI), 8 paths (0 INI). Read In: 8 insts (0 INI), 12 paths (0 INI). After Merge: 17 insts (0 INI), 20 paths (0 INI). Noc Frequency: 960 0 error slaves
+NoC TrafficSpec | Checksum: 50fc883
+NoC Constraints | Checksum: 6548992b
+NoC Incremental Solution | Checksum: 1d7dcf25
+INFO: [Ipconfig 75-92] Running NOC Placement
+INFO: [Ipconfig 75-122] Detailed placement phase
+INFO: [Ipconfig 75-133] Running NOC Routing
+NoC Compiler Finished Successfully
+NoC Solution | Checksum: acd57213
+INFO: [Ipconfig 75-108] Writing file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/common/nsln/NOC_Power.xpe.
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S00_AXI(17) and /versal_cips_0/FPD_CCI_NOC_0(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S01_AXI(17) and /versal_cips_0/FPD_CCI_NOC_1(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S02_AXI(17) and /versal_cips_0/FPD_CCI_NOC_2(0)
+WARNING: [BD 41-237] Bus Interface property RUSER_WIDTH does not match between /axi_noc_0/S03_AXI(17) and /versal_cips_0/FPD_CCI_NOC_3(0)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_0/axi_s(0) and /axi_noc_0/M00_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_1/axi_s(0) and /axi_noc_0/M01_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_2/axi_s(0) and /axi_noc_0/M02_AXI(18)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_3/axi_s(0) and /axi_noc_0/M03_AXI(18)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_3/axi_s(0) and /axi_noc_0/M03_AXI(18)
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M03_AXI_rid'(2) to pin: '/emax6_3/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M03_AXI_bid'(2) to pin: '/emax6_3/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_3/axi_s_awid'(16) to pin: '/axi_noc_0/M03_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_3/axi_s_arid'(16) to pin: '/axi_noc_0/M03_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.v
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_rid'(2) to pin: '/emax6_0/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M00_AXI_bid'(2) to pin: '/emax6_0/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_awid'(16) to pin: '/axi_noc_0/M00_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_0/axi_s_arid'(16) to pin: '/axi_noc_0/M00_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_rid'(2) to pin: '/emax6_1/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M01_AXI_bid'(2) to pin: '/emax6_1/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_awid'(16) to pin: '/axi_noc_0/M01_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_1/axi_s_arid'(16) to pin: '/axi_noc_0/M01_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_rid'(2) to pin: '/emax6_2/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M02_AXI_bid'(2) to pin: '/emax6_2/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_awid'(16) to pin: '/axi_noc_0/M02_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_2/axi_s_arid'(16) to pin: '/axi_noc_0/M02_AXI_arid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M03_AXI_rid'(2) to pin: '/emax6_3/axi_s_rid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/axi_noc_0/M03_AXI_bid'(2) to pin: '/emax6_3/axi_s_bid'(16) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_3/axi_s_awid'(16) to pin: '/axi_noc_0/M03_AXI_awid'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-2384] Width mismatch when connecting pin: '/emax6_3/axi_s_arid'(16) to pin: '/axi_noc_0/M03_AXI_arid'(2) - Only lower order bits will be connected.
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/sim/design_1.v
+Verilog Output written to : /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hdl/design_1_wrapper.v
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_0'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_1'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_2'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'FPD_CCI_NOC_3'. A default connection has been created.
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: XDC Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 2028 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by XDC_generate is 2029 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: REG Generation
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by generate_ps_data 1627 ms
+INFO: [xilinx.com:ip:pspmc:1.3-2] bd_70da_pspmc_0_0: Time taken by reg_generate is 1627 ms
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/hw_handoff/design_1_versal_cips_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_versal_cips_0_0/bd_0/synth/design_1_versal_cips_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block versal_cips_0 .
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S02_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'S03_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M00_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M01_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M02_AXI'. A default connection has been created.
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M03_AXI'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S02_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S02_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S00_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S03_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S03_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nmu:1.0-1] bd_8be5_S01_AXI_nmu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'SAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M03_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M03_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M00_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M02_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [xilinx.com:ip:noc_nsu:1.0-1] bd_8be5_M01_AXI_nsu_0: device = xcvp1802
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'MAXI4'. A default connection has been created.
+Calling reg_generate
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/hw_handoff/design_1_axi_noc_0_0.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/ip/design_1_axi_noc_0_0/bd_0/synth/design_1_axi_noc_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_noc_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block rst_versal_cips_0_98M .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_wizard_0 .
+CRITICAL WARNING: [IP_Flow 19-4965] IP fpga_bram64 was packaged with board value 'xilinx.com:vmk180:part0:2.2'. Current project's board value is 'xilinx.com:vpk180:part0:1.0'. Please update the project settings to match the packaged IP.
+INFO: [IP_Flow 19-3422] Upgraded fpga_bram64 (Embedded Memory Generator 1.0) from revision 5 to revision 6
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_1 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_2 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_3 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.gen/sources_1/bd/design_1/synth/design_1.hwdef
+generate_target: Time (s): cpu = 00:00:43 ; elapsed = 00:00:43 . Memory (MB): peak = 30407.645 ; gain = 0.000 ; free physical = 37336 ; free virtual = 106888
+export_ip_user_files -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet
+export_simulation -of_objects [get_files /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -directory /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/sim_scripts -ip_user_files_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files -ipstatic_source_dir /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/modelsim} {questa=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/questa} {xcelium=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/xcelium} {vcs=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/vcs} {riviera=/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+reset_run synth_1
+INFO: [Project 1-1160] Copying file /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.runs/synth_1/design_1_wrapper.dcp to /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/utils_1/imports/synth_1 and adding it to utils fileset
+launch_runs impl_1 -to_step write_device_image -jobs 16
+[Tue Mar 28 18:10:00 2023] Launched synth_1...
+Run output will be captured here: /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.runs/synth_1/runme.log
+[Tue Mar 28 18:10:00 2023] Launched impl_1...
+Run output will be captured here: /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.runs/impl_1/runme.log
+open_bd_design {/home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd}
+reset_run impl_1
+reset_target all [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd]
+export_ip_user_files -of_objects  [get_files  /home/nakashim/proj-arm64/fpga/VPK180-step4000/VPM180_64st.srcs/sources_1/bd/design_1/design_1.bd] -sync -no_script -force -quiet
+exit
+INFO: [Common 17-206] Exiting Vivado at Tue Mar 28 22:17:31 2023...

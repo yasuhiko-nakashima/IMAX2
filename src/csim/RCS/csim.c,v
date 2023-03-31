@@ -1,0 +1,2736 @@
+head	1.68;
+access;
+symbols;
+locks
+	nakashim:1.68; strict;
+comment	@ * @;
+
+
+1.68
+date	2022.03.03.14.59.26;	author nakashim;	state Exp;
+branches;
+next	1.67;
+
+1.67
+date	2021.06.14.03.53.22;	author nakashim;	state Exp;
+branches;
+next	1.66;
+
+1.66
+date	2019.10.19.08.50.30;	author nakashim;	state Exp;
+branches;
+next	1.65;
+
+1.65
+date	2019.03.02.01.53.14;	author nakashim;	state Exp;
+branches;
+next	1.64;
+
+1.64
+date	2018.12.09.03.31.49;	author nakashim;	state Exp;
+branches;
+next	1.63;
+
+1.63
+date	2017.11.02.06.07.43;	author nakashim;	state Exp;
+branches;
+next	1.62;
+
+1.62
+date	2017.08.16.15.34.11;	author nakashim;	state Exp;
+branches;
+next	1.61;
+
+1.61
+date	2017.08.09.14.07.28;	author nakashim;	state Exp;
+branches;
+next	1.60;
+
+1.60
+date	2017.07.18.09.17.17;	author nakashim;	state Exp;
+branches;
+next	1.59;
+
+1.59
+date	2017.07.09.23.19.05;	author nakashim;	state Exp;
+branches;
+next	1.58;
+
+1.58
+date	2017.06.10.12.51.44;	author nakashim;	state Exp;
+branches;
+next	1.57;
+
+1.57
+date	2017.06.04.13.53.31;	author nakashim;	state Exp;
+branches;
+next	1.56;
+
+1.56
+date	2017.04.21.03.28.36;	author nakashim;	state Exp;
+branches;
+next	1.55;
+
+1.55
+date	2017.03.05.10.43.43;	author nakashim;	state Exp;
+branches;
+next	1.54;
+
+1.54
+date	2017.02.28.14.49.34;	author nakashim;	state Exp;
+branches;
+next	1.53;
+
+1.53
+date	2017.02.28.07.54.16;	author nakashim;	state Exp;
+branches;
+next	1.52;
+
+1.52
+date	2017.02.25.06.32.54;	author nakashim;	state Exp;
+branches;
+next	1.51;
+
+1.51
+date	2017.02.23.11.10.35;	author nakashim;	state Exp;
+branches;
+next	1.50;
+
+1.50
+date	2017.02.21.01.52.58;	author nakashim;	state Exp;
+branches;
+next	1.49;
+
+1.49
+date	2017.02.14.03.56.54;	author nakashim;	state Exp;
+branches;
+next	1.48;
+
+1.48
+date	2017.02.13.02.27.21;	author nakashim;	state Exp;
+branches;
+next	1.47;
+
+1.47
+date	2017.02.08.05.39.39;	author nakashim;	state Exp;
+branches;
+next	1.46;
+
+1.46
+date	2017.02.04.15.56.30;	author nakashim;	state Exp;
+branches;
+next	1.45;
+
+1.45
+date	2017.02.04.05.00.32;	author nakashim;	state Exp;
+branches;
+next	1.44;
+
+1.44
+date	2017.02.03.12.07.14;	author nakashim;	state Exp;
+branches;
+next	1.43;
+
+1.43
+date	2017.02.03.10.14.21;	author nakashim;	state Exp;
+branches;
+next	1.42;
+
+1.42
+date	2017.02.02.23.25.17;	author nakashim;	state Exp;
+branches;
+next	1.41;
+
+1.41
+date	2017.02.02.22.45.55;	author nakashim;	state Exp;
+branches;
+next	1.40;
+
+1.40
+date	2017.02.02.03.32.45;	author nakashim;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	2016.11.15.12.57.38;	author nakashim;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	2016.08.24.13.57.24;	author nakashim;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	2016.08.16.03.09.22;	author nakashim;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	2016.08.04.15.36.00;	author nakashim;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	2016.07.28.06.40.11;	author nakashim;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2016.07.01.08.03.37;	author nakashim;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2016.05.20.08.06.55;	author nakashim;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2016.05.19.12.50.19;	author nakashim;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2016.05.19.06.19.18;	author nakashim;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2016.05.19.06.18.59;	author nakashim;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2016.05.19.00.03.51;	author nakashim;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2016.05.18.23.59.16;	author nakashim;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2016.05.08.11.02.17;	author nakashim;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2016.04.27.15.19.05;	author nakashim;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2016.04.18.13.11.10;	author nakashim;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2016.04.17.02.33.24;	author nakashim;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2016.03.02.15.32.38;	author nakashim;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2016.02.28.15.09.53;	author nakashim;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2016.02.28.15.07.15;	author nakashim;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2016.02.05.09.28.04;	author nakashim;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2016.02.03.10.00.09;	author nakashim;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2015.09.20.23.39.05;	author nakashim;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2015.09.16.13.52.43;	author nakashim;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2015.09.14.12.35.54;	author nakashim;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2015.09.14.04.51.12;	author nakashim;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.09.13.11.36.48;	author nakashim;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.09.08.22.53.18;	author nakashim;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.09.08.12.05.42;	author nakashim;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.09.01.09.32.15;	author nakashim;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.09.01.07.33.46;	author nakashim;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.08.30.22.43.58;	author nakashim;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.08.30.11.59.58;	author nakashim;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.08.30.11.00.22;	author nakashim;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.08.30.06.12.49;	author nakashim;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.08.29.15.52.28;	author nakashim;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.08.29.14.21.22;	author nakashim;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.08.27.06.47.08;	author nakashim;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.08.22.04.49.10;	author nakashim;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.07.21.05.44.37;	author nakashim;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.68
+log
+@*** empty log message ***
+@
+text
+@
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.67 2021/06/14 03:53:22 nakashim Exp nakashim $";
+
+/* ARM Simulator                       */
+/*         Copyright (C) 2005 by NAIST */
+/*         Primary writer: Y.Nakashima */
+/*                nakashim@@is.naist.jp */
+
+/* csim.c 2005/3/22 */ 
+
+#include "csim.h"
+#include "../conv-c2c/emax6.h"
+Ull get_tcureg_valid();
+Ull get_tcureg_last();
+Ull get_tcureg();
+
+main(argc, argv)
+  int argc;  char **argv;
+{
+  int  parse_args = 0;
+  char *armprog = NULL;
+  int  armargc = 0;
+  char **armargv;
+  Uchar *memp;
+  Uint  tid, cid, did, mid;
+  Uint  i, j, k, l, stat, alive=1;
+
+  EMAX_DEPTH = 64; /* default */
+  /* オプション解析 */
+  for (argc--, argv++; argc; argc--, argv++) {
+    switch (parse_args) {
+    case 0:
+      if (**argv == '-') { /* regard as a command */
+	switch (*(*argv+1)) {
+	case 'u':
+	  sscanf(*argv+2, "%d", &EMAX_DEPTH);
+	  switch (EMAX_DEPTH) {
+	  case 64:
+	  case 32:
+	  case 16:
+	  case  8:
+	    break;
+	  default:
+	    printf("usage: csim [-uxx -m -x -p -bxxx -exxx -dxxx] <arm-object> [arm-args]\n");
+	    printf(" xx should be 64,32,16,8\n");
+	    exit(1);
+	  }
+	  break;
+	case 'm':
+	  flag |= USE_PTHREAD;
+	  break;
+	case 'x':
+	  flag |= IMAGEWIN;
+	  break;
+	case 'p':
+	  flag |= TRACE_PIPE;
+	  break;
+	case 'b':
+	  flag |= TRACE_RANGE;
+	  sscanf(*argv+2, "%x", &trace_on);
+	  trace_off = 0xffffffff;
+	  break;
+	case 'e':
+	  flag |= TRACE_RANGE;
+	  sscanf(*argv+2, "%x", &trace_off);
+	  break;
+	case 'd':
+	  flag |= DUMP_DDR;
+	  break;
+	default:
+	  printf("usage: csim [-uxx -m -x -p -bxxx -exxx -dxxx] <arm-object> [arm-args]\n");
+	  printf("       -u64 : 64 units\n");
+	  printf("       -u32 : 32 units\n");
+	  printf("       -u16 : 16 units\n");
+	  printf("       -u8  : 8 units\n");
+	  printf("       -m   : with pthread\n");
+	  printf("       -x   : open image window\n");
+	  printf("       -p   : trace pipe (EMAX6)\n");
+	  printf("       -bxxx: trace from xxx_step\n");
+	  printf("       -exxx: trace until xxx_step\n");
+	  printf("       -d   : dump DDR to conf/lmmi/regv/load.dat for FPGA_siml\n");
+	  exit(1);
+	}
+	break;
+      }
+      else if (**argv != '/' || *(*argv+1) != '/') { /* regard as a command */
+	parse_args++;
+	strcpy(armprog = (char*)malloc(strlen(*argv) + 1), *argv);
+	armargc = 1;
+	armargv = argv;
+	continue;
+      }
+      else {
+	parse_args++;
+	parse_args++;
+	continue;
+      }
+    case 1:
+      if (**argv != '/' || *(*argv+1) != '/') { /* regard as a command */
+	armargc++;
+	break;
+      }
+      else {
+	parse_args++;
+	continue;
+      }
+    }
+  }
+
+  printf("ARM+EMAX6 Simulator Version %s\n", version());
+  printf(" MAXTHRD   =  %d\n", MAXTHRD);
+  printf(" MAXCORE   =  %d\n", MAXCORE);
+  printf(" THR/CORE  =  %f (should be integer)\n", (double)MAXTHRD/(double)MAXCORE);
+  printf(" ROBSIZE   =  %d (actives are CORE_ROBSIZE-1)\n", CORE_ROBSIZE-1);
+  printf(" LINESIZE  =  %dB\n", LINESIZE);
+  printf(" I1SIZE    =  %dB (%dway delay=%d)\n", I1SIZE, I1WAYS, I1DELAY);
+  printf(" D1SIZE    =  %dB (%dway delay=%d)\n", D1SIZE, D1WAYS, D1DELAY);
+  printf(" L2SIZE    =  %dB (%dway dirdl=%d, cc=%d, mm=%d)\n", L2SIZE, L2WAYS, L2DIRDL, CCDELAY, MMDELAY);
+  printf(" MAXL1BK   =  %d\n", MAXL1BK);
+  printf(" MAXL2BK   =  %d\n", MAXL2BK);
+  printf(" MAXMMBK   =  %d\n", MAXMMBK);
+  printf(" memspace  =  %08.8x-%08.8x\n", 0, MEMSIZE-1);
+  printf(" arm_hdr   =  %08.8x-\n", HDRADDR);
+  printf(" arm_param =  %08.8x-\n", PARAM);
+  printf(" aloclimit = -%08.8x\n", ALOCLIMIT);
+  printf(" stack/thr =  %08.8x\n", STACKPERTHREAD);
+  printf(" stackinit = -%08.8x\n", STACKINIT);
+  
+  /* ARMベンチマークプログラム走行用引数を格納 */
+  memp = &mem[0][HDRADDR+24];	/* argc */
+  *(Ull*)memp = armargc;
+  i = PARAM;
+  for (memp+=8; armargc; armargc--, armargv++, memp+=8) {
+    *(Ull*)memp = i;		/* *argv */
+    do {
+      *(int*)&mem[0][i] = *(int*)(*armargv);	/* **argv */
+      i += 4;
+      (*armargv)+=4;
+    } while (*((*armargv)-4)&&*((*armargv)-3)&&*((*armargv)-2)&&*((*armargv)-1));
+  }
+
+  t[0].ib.pc = read_armelf(armprog);
+  t[0].status = ARM_NORMAL;
+  for (tid=1; tid<MAXTHRD; tid++) {
+    t[tid].ib.pc = t[0].ib.pc;
+    t[tid].status = ARM_STOP;
+  }
+  for (tid=0; tid<MAXTHRD; tid++)
+    t[tid].cpsr = 0x000000d3; /* FIQ,IRQ=off,Supervisor Mode */
+  for (cid=0; cid<MAXCORE; cid++) {
+    c[cid].if_nexttid = cid;
+    c[cid].rob_nexttid = cid;
+  }
+
+  /* プロセッサ機能・リセット(GP600M上の機能は自己リセット) */
+  printf("<ARM-PARAMS>\n");
+  printf(" start_address=0x%08.8x\n", t[0].ib.pc);
+  memp = &mem[0][HDRADDR];         /* initial malloc pointer */
+  printf(" malloc_topadr=0x%08.8x_%08.8x\n", (Uint)((*(Ull*)memp)>>32), (Uint)(*(Ull*)memp));
+  memp = &mem[0][HDRADDR+8];       /* latest malloc pointer */
+  printf(" malloc_latest=0x%08.8x_%08.8x\n", (Uint)((*(Ull*)memp)>>32), (Uint)(*(Ull*)memp));
+  memp = &mem[0][HDRADDR+16];      /* initial stack pointer */
+  printf(" stack_pointer=0x%08.8x_%08.8x\n", (Uint)((*(Ull*)memp)>>32), (Uint)(*(Ull*)memp));
+  for (i=0; i<256; i+=4) {
+    if ((i%32) == 0)
+      printf("%08.8x:", HDRADDR+i);
+    printf(" %08.8x", *(int*)&mem[0][HDRADDR+i]);
+    if ((i%32) == 28)
+      printf("\n");
+  }
+
+  signal(SIGINT,  onintr_exit);
+  signal(SIGQUIT, onintr_exit);
+  signal(SIGKILL, onintr_exit);
+  signal(SIGPIPE, onintr_exit);
+  signal(SIGTERM, onintr_exit);
+
+  /*emax_lmm_init();*/
+
+  x11_open();
+
+  restme();
+
+  /*****************************************************************************/
+  /* Main Loop start */
+  /*****************************************************************************/
+  while (alive) {
+    alive = 0;
+    if (flag & USE_PTHREAD) {
+      for (cid=0; cid<MAXCORE; cid++) pthread_create(&th_p[cid], NULL, sim_core, (void*)((cid<<16)|PTHREAD_TICKS));
+      for (did=0; did<MAXL2BK; did++) pthread_create(&th_d[did], NULL, sim_mreq, (void*)((did<<16)|PTHREAD_TICKS));
+      for (mid=0; mid<MAXMMBK; mid++) pthread_create(&th_m[mid], NULL, sim_mem,  (void*)((mid<<16)|PTHREAD_TICKS));
+      for (cid=0; cid<MAXCORE; cid++) pthread_join(th_p[cid], &tr_p[cid]);
+      for (did=0; did<MAXL2BK; did++) pthread_join(th_d[did], &tr_d[did]);
+      for (mid=0; mid<MAXMMBK; mid++) pthread_join(th_m[mid], &tr_m[mid]);
+    }
+    else {
+      for (cid=0; cid<MAXCORE; cid++) sim_core((cid<<16)|STHREAD_TICKS);
+      for (did=0; did<MAXL2BK; did++) sim_mreq((did<<16)|STHREAD_TICKS);
+      for (mid=0; mid<MAXMMBK; mid++) sim_mem ((mid<<16)|STHREAD_TICKS);
+    }
+
+    for (tid=0; tid<MAXTHRD; tid++) {
+      switch (t[tid].status) {
+      case ARM_PTHREAD:
+	/**********************************************************************************/
+	/* _gettid:       svc   0x01001   no cache_sync                                   */
+	/* _barrier:      svc   0x01002   barrier0 write b[pid]=%o0 and wait for all=%o0  */
+        /*                bne   _barrier                                                  */
+	/* pthread_create:svc	0x01003   no cache_sync                                   */
+	/* pthread_join:  svc	0x01004   no cache_sync                                   */
+	/* tcureg_valid:  svc   0x01010   tcureg_valid->x0                                */
+	/* tcureg_ready:  svc   0x01011   1->tcureg_ready                                 */
+	/* tcureg_last:   svc   0x01012   tcureg_last->x0                                 */
+	/* tcureg_term:   svc   0x01013   1->tcureg_term                                  */
+	/* tcureg         svc   0x01014   tcureg[3:0]->x3,2,1,0                           */
+	/* getclk         svc   0x010fe   get cycle                                       */
+	/* getpa          svc   0x010ff   display PA                                      */
+	/**********************************************************************************/
+	if (flag & TRACE_ARM)
+	  printf("%03.3d:PT %08.8x_%08.8x %08.8x pth_opcd=%04.4x", tid,
+		 (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), t[tid].ib.pc, t[tid].svc_opcd);
+	switch (t[tid].svc_opcd) {
+	case 0x001: /* _gettid() */
+	  grw(tid, 0, (Ull)tid);
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	case 0x002: /* _barrier(val) */
+	  t[tid].barrier = (Uint)grr(tid, 0); /* read %o0 */
+	  for (i=0; i<MAXTHRD; i++) {
+	    if (t[i].status != ARM_COMPLETE && t[i].status != ARM_STOP && t[i].barrier != t[tid].barrier)
+	      break;
+	  }
+	  if (i<MAXTHRD) { /* wait for barrier */
+	    if (flag & TRACE_ARM)
+	      printf(":BARRIER WAITING");
+	    ccw(tid, 0LL);
+	  }
+	  else {
+	    if (flag & TRACE_ARM)
+	      printf(":BARRIER OK");
+	    ccw(tid, (Ull)CC_Z);
+	  }
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	case 0x003: /* pthred_create(int id, NULL, (void*)func, void *arg) */
+	  {
+	    Uint target = (Uint)grr(tid, 0); /* 起動先tidを直接指定（本物pthreadと違う）自身と同じtidを指定するとエラー */
+	    Uint func   = (Uint)grr(tid, 2);
+	    Uint param  = (Uint)grr(tid, 3);
+
+	    if (tid == target) {
+	      if (flag & TRACE_ARM)
+		printf(":ERROR pthread_create target=%d (==tid) (illegal specification)", target);
+	      else
+		printf("%03.3d:ERROR %08.8x_%08.8x pthread_create target=%d (==tid) (illegal specification)\n",
+		       tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), target);
+	      t[tid].status = ARM_STOP;
+	    }
+	    else if (target < MAXTHRD) {
+	      /* 自身のmem-op完了待ち中は ARM_PTHREAD を維持 */
+	      for (i=0; i<MAXL1BK; i++) {
+		if (c[tid2cid(tid)].l1rq[i].v_stat && c[tid2cid(tid)].l1rq[i].tid == tid)
+		  break;
+	      }
+	      if (i==MAXL1BK) {
+		/* target起動 */
+		grw(target, 30, 0LL); /* for detecting pthread exits */
+		grw(target, 31, (Ull)(STACKINIT-STACKPERTHREAD*target));
+		t[target].ib.pc = func;
+		grw(target, 0, (Ull)param);
+		t[target].status = ARM_NORMAL;
+		if (flag & TRACE_ARM)
+		  printf(":PTHREAD pthread_create target=%d\n", target);
+		else
+		  printf("%03.3d:PTHREAD %08.8x_%08.8x pthread_create target=%d func=%08.8x\n",
+			 tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), target, func);
+		t[tid].status = ARM_NORMAL;
+	      }
+	      alive++;
+	    }
+	    else {
+	      if (flag & TRACE_ARM)
+		printf(":ERROR pthread_create target=%d (>=MAXTHRD) (illegal specification)", target);
+	      else
+		printf("%03.3d:ERROR %08.8x_%08.8x pthread_create target=%d (>==MAXTHRD) (illegal specification)\n",
+		       tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), target);
+	      t[tid].status = ARM_NORMAL;
+	      alive++;
+	    }
+	  }
+	  break;
+	case 0x004: /* pthread_join(int id, NULL) */
+	  {
+	    Uint target = (Uint)grr(tid, 0); /* 起動先tidを直接指定（本物pthreadと違う）自身と同じtidを指定するとエラー */
+
+	    if (tid == target) {
+	      if (flag & TRACE_ARM)
+		printf(":ERROR pthread_join target=%d (==tid) (illegal specification)", target);
+	      else
+		printf("%03.3d:ERROR %08.8x_%08.8x pthread_join target=%d (==tid) (illegal specification)\n",
+		       tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), target);
+	      t[tid].status = ARM_STOP;
+	    }
+	    else if (target < MAXTHRD) {
+	      int i;
+	      /* target停止待ち中は ARM_PTHREAD を維持 */
+	      for (i=0; i<MAXL1BK; i++) {
+		if (c[tid2cid(target)].l1rq[i].v_stat && c[tid2cid(target)].l1rq[i].tid == target)
+		  break;
+	      }
+	      if (i==MAXL1BK && (t[target].status == ARM_COMPLETE || t[target].status == ARM_STOP))
+		t[tid].status = ARM_NORMAL;
+	      alive++;
+	    }
+	    else {
+	      if (flag & TRACE_ARM)
+		printf(":ERROR pthread_join target=%d (>==MAXTHRD) (illegal specification)\n", target);
+	      else
+		printf("%03.3d:ERROR %08.8x_%08.8x pthread_join target=%d (>==MAXTHRD) (illegal specification)\n",
+		       tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), target);
+	      t[tid].status = ARM_NORMAL;
+	      alive++;
+	    }
+	  }
+	  break;
+	case 0x010: /* fsm[x0].tcureg_valid->x0 */
+	  grw(tid, 0, (Ull)get_tcureg_valid((Uint)grr(tid, 0), (Uint)grr(tid, 1)));
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	case 0x011: /* fsm[x0].tcureg_ready=1 */
+	  put_tcureg_ready((Uint)grr(tid, 0), (Uint)grr(tid, 1)); /* cid#,col# */
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	case 0x012: /* fsm[x0].tcureg_last->x0 */
+	  grw(tid, 0, (Ull)get_tcureg_last((Uint)grr(tid, 0), (Uint)grr(tid, 1)));
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	case 0x013: /* fsm[x0].tcureg_term=1 */
+	  put_tcureg_term((Uint)grr(tid, 0), (Uint)grr(tid, 1)); /* cid#,col# */
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	case 0x014: /* fsm[x0].tcureg[3:0]->x3,2,1,0 */
+	  i = (Uint)grr(tid, 0);
+	  j = (Uint)grr(tid, 1);
+	  grw(tid, 0, (Ull)get_tcureg(i, j, 0));
+	  grw(tid, 1, (Ull)get_tcureg(i, j, 1));
+	  grw(tid, 2, (Ull)get_tcureg(i, j, 2));
+	  grw(tid, 3, (Ull)get_tcureg(i, j, 3));
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	case 0x0fe: /* get cycle */
+	  grw(tid, 0, t[tid].total_cycle);
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	case 0x0ff: /* report and reset performance counter */
+	  if (flag & TRACE_ARM)
+	    printf("\n");
+	  printpa();
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	default:
+	  t[tid].status = ARM_STOP;
+	  break;
+	}
+	if (flag & TRACE_ARM)
+	  printf("\n");
+	break;
+      case ARM_EXCSVC:
+	/* L2(dirty)を全てDDRに書き戻す */
+	/* この際にl2tag更新も必要 */
+	/* L2DIRのDIRTYも消去が必要 */
+	/* ★ただし，ZYNQ+EMAX6の場合,conf[][]はR/Oのためflush不要 */
+	/* ★        regv[][]とlmmi[][]はACPバスを経由しL2から直接読み出すため，性能的にはL2のflushオーバヘッドは不要  */
+	/* ★        ACPでもL2ミスすればDDRに行くので論理的にはDDR空間からのloadだが，性能的にはflushしないのと同じ    */
+	/* ★        以上のことから，以下の区別によりZYNQ+ACP+EMAX6の性能モデル化か可能                                */
+	/* ★   1. stack領域には，lmmi[][],regv[][]があり，機能的にはL2へのflushが必要．ただし性能オーバヘッドは不要   */
+	/* ★   2. EMAX実行前は，dirtyを全てDDRに書き戻しつつ，flushcycleは計上しない．また，L2から消さずdirty=0に変更 */
+        /* ★   3. EMAX実行中にtransactionが走ると,cacheを使用する.この時,dirty=1に戻るcacheが存在.                    */
+	/*         EMAX本体は,主記憶を直接更新.当該領域はtransaction対象cache-lineとは異なる前提.                      */
+	/* ★   4. EMAX実行後,transaction結果はcacheに残りdirty=1,EMAX本体の結果は主記憶が有効でcacheは古いまま        */
+	/*         ただし,transactionの場合,EMAX本体は主記憶を更新しない前提でもよい(tricountは特に)                   */
+	/*         ・transactionの結果はcacheに残すのでL2$無効化しない                                                 */
+	/*         ・transactionがない場合(lmm_dirty=1が存在)はcacheから追い出してEMAX本体の結果をARMが参照可能とする  */
+
+	/* EMAX5と異なり,LMM->DDRはARMによる明示的DMAなので,直前のDMAでFLUSH済のラインは対象外 */
+	for (i=0; i<MAXL2BK; i++) {
+	  for (j=0; j<L2WMAXINDEX; j++) {
+	    for (k=0; k<L2WAYS; k++) {
+	      int cid = tid2cid(tid);
+	      if (c[cid].l2tag[i][j][k].v && c[cid].l2tag[i][j][k].dirty && (t[tid].svc_keep_or_drain || !c[cid].l2tag[i][j][k].drain)) { /* dirtyの場合主記憶へ書き戻す */
+		Uint l2toa = (c[cid].l2tag[i][j][k].la*L2TAGMASK)|((j*MAXL2BK+i)*LINESIZE);
+		c[cid].l2tag[i][j][k].drain = 1; /* mark */
+		for (l=0; l<LINESIZE/8; l++)
+		  mmw(l2toa+l*8, 0xffffffffffffffffLL, c[cid].l2line[i][j][k].d[l]);
+#if 1
+		/* ★   2. EMAX実行前のEMAX参照(malloc)領域はflushcycle計上.それ以外もDDRに書き戻すがflushcycleは計上ぜず,L2に残す */
+		if (l2toa >= *(Ull*)&mem[0][HDRADDR] && l2toa < ALOCLIMIT) {
+		  t[tid].total_cycle       +=LINESIZE/8; /* ★L2flush コスト加算の考え方に関しては上記コメント参照 */
+		  t[tid].pa_cycle          +=LINESIZE/8; /* ★L2flush コスト加算の考え方に関しては上記コメント参照 */
+		  t[tid].pa_svcL2flushcycle+=LINESIZE/8; /* ★L2flush コスト加算の考え方に関しては上記コメント参照 */
+		  /* lmmwb=0の場合,EMAXによるDDR更新はないので,L1とL2はdirtyのままでOK */
+		  /* lmmwb=1の場合,EMAXによるDDR更新が有り得るのでL1とL2.dirtyは0に戻す */
+		  if (t[tid].svc_keep_or_drain) { /* 0:keep, 1:drain */
+		    d[i].l2dir[c[cid].l2tag[i][j][k].la*L2WMAXINDEX+j].l2dir_d[cid/64] &= ~(1LL<<(cid%64));
+		    c[cid].l2tag[i][j][k].dirty = 0;
+		  }
+		}
+#endif
+	      }
+	    }
+	  }
+	}
+	switch (exec_svc(tid, t[tid].svc_opcd)) { /* この時点で実際にSVCをHOST実行 */
+	case SVC_MEM_UPDATE:
+	  for (i=0; i<MAXL2BK; i++) {
+	    for (j=0; j<L2WMAXINDEX; j++) {
+	      for (k=0; k<L2WAYS; k++) {
+		int cid = tid2cid(tid);
+		if (c[cid].l2tag[i][j][k].v) {
+		  d[i].l2dir[c[cid].l2tag[i][j][k].la*L2WMAXINDEX+j].l2dir_v[cid/64] &= ~(1LL<<(cid%64));
+		  c[cid].l2tag[i][j][k].v = 0;
+		}
+	      }
+	    }
+	  }
+	case SVC_MEM_NOUPDATE:
+	  t[tid].status = ARM_NORMAL;
+	  break;
+	case SVC_EMAX:
+	  /* EMAX5と異なり,LMM->DDRはARMによる明示的DMAなので,ここでのFLUSHはタイミングが早いが,後続LMM->DMA完了までALOC領域を参照することはないので問題無し */
+	  if (t[tid].svc_keep_or_drain) {
+	    for (i=0; i<MAXL2BK; i++) {
+	      for (j=0; j<L2WMAXINDEX; j++) {
+		for (k=0; k<L2WAYS; k++) {
+		  int cid = tid2cid(tid);
+		  if (c[cid].l2tag[i][j][k].v) {
+#if 1
+		    Uint l2toa = (c[cid].l2tag[i][j][k].la*L2TAGMASK)|((j*MAXL2BK+i)*LINESIZE);
+		    /* ★   3. EMAX実行後のEMAX参照(malloc)領域はL2から消去.それ以外はL2に残す */
+		    if (l2toa >= *(Ull*)&mem[0][HDRADDR] && l2toa < ALOCLIMIT) {
+		      d[i].l2dir[c[cid].l2tag[i][j][k].la*L2WMAXINDEX+j].l2dir_v[cid/64] &= ~(1LL<<(cid%64));
+		      c[cid].l2tag[i][j][k].v = 0;
+		    }
+#endif
+		  }
+		}
+	      }
+	    }
+	  }
+	  t[tid].status = ARM_NORMAL;
+	  break;
+	case SVC_ARM_COMPLETE:
+	  printf("\033[7m%03.3d:EXCSVC ARM normal end\033[0m\n", tid);
+	  t[tid].status = ARM_COMPLETE;
+	  break;
+	case SVC_ARM_STOP:
+	  printf("\033[7m%03.3d:EXCSVC ARM undefined sys_call=%d\033[0m\n", tid, t[tid].svc_opcd);
+	  t[tid].status = ARM_STOP;
+	  break;
+	}
+	alive++;
+        break;
+      case ARM_NORMAL:
+      case ARM_FLUSH:
+	alive++;
+        break;
+      }
+    }
+  }
+
+exit:
+  onintr_exit(0);
+}
+
+/*****************************************************************************/
+
+void onintr_exit(x) int x;
+{
+  Uchar *memp;
+  Uint  tid, cid, did, mid;
+  int   i, j;
+
+  memp = &mem[0][HDRADDR+8]; /* latest malloc pointer */
+  printf("arm_malloc_top = 0x%08.8x\n", *(int*)memp);
+
+  if (x == 0) {
+    printf("==== Program normal end. ==== Hit any key in X.\n");
+    while (x11_checkevent());
+  }
+  else
+    printf("==== Interrupt end. ====\n");
+
+  printf("====debug information (all bitmaps should be 0)====\n");
+
+  printf("l2rq.v_stat:");
+  for (cid=0; cid<MAXCORE; cid++) {
+    for (i=0; i<MAXL2BK; i++)
+      printf("%01.1x ", c[cid].l2rq[i].v_stat);
+  }
+  printf("\n");
+
+  for (did=0; did<MAXL2BK; did++) {
+    printf("d[%02.2d].bm/lk:", did);
+    for (cid=0; cid<MAXCORE; cid++)
+      printf("%01.1x", d[did].l2rq_bitmap[cid]);
+    for (i=MAXCORbitmaps-1; i>=0; i--)
+      printf("/%08.8x_%08.8x ", (Uint)(d[did].l2rq_lock[i]>>32), (Uint)(d[did].l2rq_lock[i]));
+    printf("\n");
+  }
+
+  printf("====execution time====\n");
+  memp = &mem[0][HDRADDR+8]; /* latest malloc pointer */
+  printf("exec_ptime=%d/%d(_SC_CLK_TCK)\n", gettme(), sysconf(_SC_CLK_TCK));
+  printf("malloc_top=%08.8x\n", *memp<<24|*(memp+1)<<16|*(memp+2)<<8|*(memp+3));
+
+  printpa();
+
+  show_rutil();
+
+  exit(x);
+}
+
+char *
+version()
+{
+  char *i;
+
+  for (i=RcsHeader; *i && *i!=' '; i++);
+  for (           ; *i && *i==' '; i++);
+  for (           ; *i && *i!=' '; i++);
+  for (           ; *i && *i==' '; i++);
+  return (i);
+}
+
+/*****************************************************************************/
+
+chck_svc(tid, opcd) Uint tid; Uint opcd;
+{
+  Uint   addr, len;
+  Uint   val, retval;
+
+  switch (opcd) {
+  case 0xf0: /* emax6_pre_with_keep_cache (transaction) */
+  case 0xfd: /* _copyX */
+  case 0xfe: /* _updateX */
+  case 0x69: /* write */
+  case 0x66: /* open */
+  case 0x6b: /* seek */
+  case 0x68: /* close */
+  case 0x6e: /* isatty */
+  case 0x20: /* sbrk */
+    return (0);
+  case 0xf1: /* emax6_pre_with_drain_cache (normal array) */
+  case 0x11: /* _exit */
+  case 0x6a: /* read */
+  case 0x21: /* fstat */
+    return (1);
+  case 0x22: /* times */
+    addr = (Uint)grr(tid, 0);
+    if (!addr)
+      return (0);
+    else
+      return (1);
+  default:
+    return (0);
+  }
+}
+
+exec_svc(tid, opcd) Uint tid; Uint opcd;
+{
+  Uint   color = 0;
+  Uint   addr, len;
+  Uint   val, retval;
+  Uint   gr0, gr1;
+  unsigned char *memp;
+  struct stat fstatbuf;
+  int fstatval;
+
+  if (flag & TRACE_ARM)
+    printf("%03.3d:SVC %08.8x_%08.8x exec_svc: opcd=0x%x\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), opcd);
+
+  switch (opcd) {
+  case 0xf0: /* emax6_pre_with_keep_cache (transaction) */
+    printf("%03.3d:SVC %08.8x_%08.8x emax6_pre_with_keep_cache (transaction)\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps));
+    retval = SVC_EMAX;
+    goto end;
+  case 0xf1: /* emax6_pre_with_drain_cache (normal array) */
+    printf("%03.3d:SVC %08.8x_%08.8x emax6_pre_with_drain_cache (normal array)\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps));
+    retval = SVC_EMAX;
+    goto end;
+  case 0xfd: /* _copyX */
+    gr0 = (Uint)grr(tid, 0); /* id */
+    gr1 = (Uint)grr(tid, 1); /* *from */
+    BGR_to_X(gr0, &mem[0][gr1]);
+    grw(tid, 0, 0LL);
+    retval = SVC_MEM_NOUPDATE;
+    goto end;
+  case 0xfe: /* _updateX */
+    x11_update();
+    grw(tid, 0, 0LL);
+    retval = SVC_MEM_NOUPDATE;
+    goto end;
+  case 0x11: /* _exit */
+    retval = SVC_ARM_COMPLETE;
+    goto end;
+  case 0x6a: /* read */
+    addr = (Uint)grr(tid, 1);
+    len  = (Uint)grr(tid, 2);
+    val  = read((Uint)grr(tid, 0), &mem[0][addr], len);
+    grw(tid, 0, (Sll)val);
+    /* printf("read:addr=%x len=%d val=%d\n", addr, len, val); */
+    retval = SVC_MEM_UPDATE;
+    goto end; /* update mem */
+  case 0x69: /* write */
+    addr = (Uint)grr(tid, 1);
+    len  = (Uint)grr(tid, 2);
+    if ((Uint)grr(tid, 0) == 1) {
+      color = 1;
+      write(1, "\033[36;2m", 7);
+    }
+    val = write((Uint)grr(tid, 0), &mem[0][addr], len);
+    grw(tid, 0, (Sll)val);
+    /* printf("write:addr=%x len=%d val=%d\n", addr, len, val); */
+    if (color) write(1, "\033[0m", 4);
+    retval = SVC_MEM_NOUPDATE;
+    goto end;
+  case 0x66: /* open */
+    if (!strcmp((char*)&mem[0][(Uint)grr(tid, 0)], ":tt")) {
+      if ((Uint)grr(tid, 1) == 0) /* mode="r" */
+	grw(tid, 0, 0LL);
+      else /* mode="w" */
+	grw(tid, 0, 1LL);
+    }
+    else {
+      int fd;
+      if ((Uint)grr(tid, 1)&4)
+	grw(tid, 0, (Sll)open(&mem[0][(Uint)grr(tid, 0)], O_CREAT | O_TRUNC | O_WRONLY, 0644));
+      else
+	grw(tid, 0, (Sll)open(&mem[0][(Uint)grr(tid, 0)], (Uint)grr(tid, 1), (Uint)grr(tid, 2)));
+    }
+    retval = SVC_MEM_NOUPDATE;
+    goto end;
+  case 0x6b: /* seek */
+    grw(tid, 0, (Sll)lseek((Uint)grr(tid, 0), (Uint)grr(tid, 1), (Uint)grr(tid, 2)));
+    retval = SVC_MEM_NOUPDATE;
+    goto end;
+  case 0x68: /* close */
+    grw(tid, 0, (Sll)close((Uint)grr(tid, 0)));
+    retval = SVC_MEM_NOUPDATE;
+    goto end;
+  case 0x6e: /* isatty */
+    grw(tid, 0, (Sll)isatty((Uint)grr(tid, 0)));
+    retval = SVC_MEM_NOUPDATE;
+    goto end;
+  case 0x20: /* sbrk */
+    len = (Uint)grr(tid, 0);
+    memp = &mem[0][HDRADDR+8]; /* malloc top */
+    if (*(Ull*)memp + (Ull)len > (Ull)ALOCLIMIT) {
+      printf("%03.3d:SVC %08.8x_%08.8x %08.8x sbrk size=%08.8x exceeds ALOCLIMIT\n", tid,
+		 (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), t[tid].ib.pc, len);
+      retval = SVC_ARM_COMPLETE;
+      goto end;
+    }
+    grw(tid, 0, *(Ull*)memp);
+    *(Ull*)memp += (Ull)len;
+    retval = SVC_MEM_NOUPDATE;
+    goto end;
+  case 0x21: /* fstat */
+    fstatval = fstat((Uint)grr(tid, 0), &fstatbuf);
+    *(Ushort*)(&mem[0][(Uint)grr(tid, 1)]+ 0) = fstatbuf.st_dev;
+    *(Ushort*)(&mem[0][(Uint)grr(tid, 1)]+ 2) = fstatbuf.st_ino;
+    *(Uint*)  (&mem[0][(Uint)grr(tid, 1)]+ 4) = fstatbuf.st_mode;
+    *(Ull*)   (&mem[0][(Uint)grr(tid, 1)]+16) = fstatbuf.st_size;
+    grw(tid, 0, (Sll)fstatval);
+    retval = SVC_MEM_UPDATE;
+    goto end;
+  case 0x22: /* times */
+    addr = (Uint)grr(tid, 0);
+    if (!addr) {
+      grw(tid, 0, t[tid].total_cycle);
+      retval = SVC_MEM_NOUPDATE;
+    }
+    else {
+      memp = &mem[0][addr];
+      *((Uint*)memp+0) = (Uint)(t[tid].total_cycle/1024); /* tms_utime */
+      *((Uint*)memp+1) = 0;                               /* tms_stime */
+      *((Uint*)memp+2) = (Uint)(t[tid].total_cycle/1024); /* tms_cutime */
+      *((Uint*)memp+3) = 0;                               /* tms_stime */
+      retval = SVC_MEM_UPDATE;
+    }
+    goto end;
+  default:
+    retval = SVC_ARM_STOP;
+    goto end; /* undefined */
+  }
+
+end:
+  return (retval);
+}
+
+struct tms      utms;
+long            tmssave;
+
+restme()
+{
+        times(&utms);
+        tmssave = utms.tms_utime;
+}
+
+long gettme()
+{
+        times(&utms);
+        return (utms.tms_utime-tmssave);
+}
+
+struct rusage rusage;
+
+printpa()
+{
+  int tid, i, j, k;
+
+  printf("====PE steps, cycles, cache statistics (l1:I$ d1:D$ l2:incore-L2$ g2:other-L2$)====\n");
+  for (tid=0; tid<MAXTHRD; tid++) {
+    printf("%03.3d:step=%08.8x_%08.8x cycle=%08.8x_%08.8x i1(%5.1f%%)wait=%08.8x_%08.8x d1(%5.1f%% hit=%08.8x_%08.8x mis=%08.8x_%08.8x)wait=%08.8x_%08.8x l2(%5.1f%% hit=%08.8x_%08.8x mis=%08.8x_%08.8x) g2(%5.1f%% hit=%08.8x_%08.8x mis=%08.8x_%08.8x) flush(L1->%08.8x_%08.8xcycle, L2->%08.8x_%08.8xcycle)\n",
+	   tid,
+	   (Uint)(t[tid].pa_steps>>32),
+	   (Uint)(t[tid].pa_steps),
+	   (Uint)(t[tid].pa_cycle>>32),
+	   (Uint)(t[tid].pa_cycle),
+	   (double)(t[tid].pa_i1hit)*100.0/(t[tid].pa_i1hit+t[tid].pa_i1mis),
+	   (Uint)(t[tid].pa_i1waitcycle>>32),
+	   (Uint)(t[tid].pa_i1waitcycle),
+	   (double)(t[tid].pa_d1hit)*100.0/(t[tid].pa_d1hit+t[tid].pa_d1mis),
+	   (Uint)(t[tid].pa_d1hit>>32), (Uint)t[tid].pa_d1hit,
+	   (Uint)(t[tid].pa_d1mis>>32), (Uint)t[tid].pa_d1mis,
+	   (Uint)(t[tid].pa_d1waitcycle>>32),
+	   (Uint)(t[tid].pa_d1waitcycle),
+	   (double)(t[tid].pa_l2hit)*100.0/(t[tid].pa_l2hit+t[tid].pa_l2mis),
+	   (Uint)(t[tid].pa_l2hit>>32), (Uint)t[tid].pa_l2hit,
+	   (Uint)(t[tid].pa_l2mis>>32), (Uint)t[tid].pa_l2mis,
+	   (double)(t[tid].pa_g2hit)*100.0/(t[tid].pa_g2hit+t[tid].pa_g2mis),
+	   (Uint)(t[tid].pa_g2hit>>32), (Uint)t[tid].pa_g2hit,
+	   (Uint)(t[tid].pa_g2mis>>32), (Uint)t[tid].pa_g2mis,
+	   (Uint)(t[tid].pa_svcL1flushcycle>>32), (Uint)t[tid].pa_svcL1flushcycle,
+	   (Uint)(t[tid].pa_svcL2flushcycle>>32), (Uint)t[tid].pa_svcL2flushcycle);
+  }
+
+#if 0
+  printf("====THREAD instruction counts (over 5%%)====");
+  for (tid=0; tid<MAXTHRD; tid++) {
+    int last_th = -1;
+    extern Uchar **adis;
+    for (i=0; i<128; i++) {
+      if ((double)t[tid].insn_count[i]/(double)(t[tid].insn_total+1) > 0.05) {
+	if (last_th != tid)
+	  printf("\nth%03.3d:", tid);
+	last_th = tid;
+	printf("%5.1f%%:%s", (double)t[tid].insn_count[i]*100.0/(double)(t[tid].insn_total+1), adis[i]);
+      }
+    }
+  }
+  printf("\n");
+#endif
+
+  fflush(stdout);
+
+  for (tid=0; tid<MAXTHRD; tid++) {
+    t[tid].pa_steps       = 0LL;
+    t[tid].pa_cycle       = 0LL;
+    t[tid].pa_i1hit       = 0LL;
+    t[tid].pa_i1mis       = 0LL;
+    t[tid].pa_i1waitcycle = 0LL;
+    t[tid].pa_d1hit       = 0LL;
+    t[tid].pa_d1mis       = 0LL;
+    t[tid].pa_d1waitcycle = 0LL;
+    t[tid].pa_l2hit       = 0LL;
+    t[tid].pa_l2mis       = 0LL;
+    t[tid].pa_g2hit       = 0LL;
+    t[tid].pa_g2mis       = 0LL;
+    t[tid].pa_svcL1flushcycle = 0LL;
+    t[tid].pa_svcL2flushcycle = 0LL;
+    t[tid].insn_total = 0LL;
+    for (i=0; i<128;i++)
+      t[tid].insn_count[i] = 0LL;
+  }
+}
+
+show_rutil()
+{
+  long ticks;
+  times(&utms);
+  ticks = utms.tms_utime-tmssave+1;
+
+  printf("====SELF===\n");
+  getrusage(RUSAGE_SELF, &rusage);
+  printf("\033[31;1m ru_utime   = %d.%06dsec ", rusage.ru_utime.tv_sec, rusage.ru_utime.tv_usec);
+  printf(" ru_stime   = %d.%06dsec\033[0m\n", rusage.ru_stime.tv_sec, rusage.ru_stime.tv_usec);
+  printf(" ru_maxrss  = %6dKB  ", rusage.ru_maxrss);          /* max resident set size */
+  printf(" ru_ixrss   = %6dKB  ", rusage.ru_ixrss/ticks);     /* integral shared text memory size */
+  printf(" ru_idrss   = %6dKB  ", rusage.ru_idrss/ticks);     /* integral unshared data size */
+  printf(" ru_isrss   = %6dKB\n", rusage.ru_isrss/ticks);   /* integral unshared stack size */
+  printf(" ru_minflt  = %8d  ", rusage.ru_minflt);          /* page reclaims */
+  printf(" ru_majflt  = %8d  ", rusage.ru_majflt);          /* page faults */
+  printf(" ru_nswap   = %8d  ", rusage.ru_nswap);           /* swaps */
+  printf(" ru_inblock = %8d\n", rusage.ru_inblock);         /* block input operations */
+  printf(" ru_oublock = %8d  ", rusage.ru_oublock);         /* block output operations */
+  printf(" ru_msgsnd  = %8d  ", rusage.ru_msgsnd);          /* messages sent */
+  printf(" ru_msgrcv  = %8d  ", rusage.ru_msgrcv);          /* messages received */
+  printf(" ru_nsignals= %8d\n", rusage.ru_nsignals);        /* signals received */
+  printf(" ru_nvcsww  = %8d  ", rusage.ru_nvcsw);           /* voluntary context switches */
+  printf(" ru_nivcsw  = %8d\n", rusage.ru_nivcsw);          /* involuntary context switches */
+
+  printf("====CHILD===\n");
+  getrusage(RUSAGE_CHILDREN, &rusage);
+  printf("\033[31;1m ru_utime   = %d.%06dsec ", rusage.ru_utime.tv_sec, rusage.ru_utime.tv_usec);
+  printf(" ru_stime   = %d.%06dsec\033[0m\n", rusage.ru_stime.tv_sec, rusage.ru_stime.tv_usec);
+  printf(" ru_maxrss  = %6dKB  ", rusage.ru_maxrss);          /* max resident set size */
+  printf(" ru_ixrss   = %6dKB  ", rusage.ru_ixrss/ticks);     /* integral shared text memory size */
+  printf(" ru_idrss   = %6dKB  ", rusage.ru_idrss/ticks);     /* integral unshared data size */
+  printf(" ru_isrss   = %6dKB\n", rusage.ru_isrss/ticks);   /* integral unshared stack size */
+  printf(" ru_minflt  = %8d  ", rusage.ru_minflt);          /* page reclaims */
+  printf(" ru_majflt  = %8d  ", rusage.ru_majflt);          /* page faults */
+  printf(" ru_nswap   = %8d  ", rusage.ru_nswap);           /* swaps */
+  printf(" ru_inblock = %8d\n", rusage.ru_inblock);         /* block input operations */
+  printf(" ru_oublock = %8d  ", rusage.ru_oublock);         /* block output operations */
+  printf(" ru_msgsnd  = %8d  ", rusage.ru_msgsnd);          /* messages sent */
+  printf(" ru_msgrcv  = %8d  ", rusage.ru_msgrcv);          /* messages received */
+  printf(" ru_nsignals= %8d\n", rusage.ru_nsignals);        /* signals received */
+  printf(" ru_nvcsww  = %8d  ", rusage.ru_nvcsw);           /* voluntary context switches */
+  printf(" ru_nivcsw  = %8d\n", rusage.ru_nivcsw);          /* involuntary context switches */
+}
+@
+
+
+1.67
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.66 2019/10/19 08:50:30 nakashim Exp nakashim $";
+d12 1
+d28 1
+d35 14
+d71 8
+a78 4
+	  printf("usage: csim [-m -x -p -bxxx -exxx -dxxx] <arm-object> [arm-args]\n");
+	  printf("       -m:    with pthread\n");
+	  printf("       -x:    open image window\n");
+	  printf("       -p:    trace pipe (EMAX6)\n");
+d81 1
+a81 1
+	  printf("       -d:    dump DDR to conf/lmmi/regv/load.dat for FPGA_siml\n");
+@
+
+
+1.66
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.65 2019/03/02 01:53:14 nakashim Exp nakashim $";
+d584 1
+a584 1
+    copy_X(gr0, &mem[0][gr1]);
+@
+
+
+1.65
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.64 2018/12/09 03:31:49 nakashim Exp nakashim $";
+d660 4
+a663 3
+    ((struct stat*)&mem[0][(Uint)grr(tid, 1)])->st_dev  = fstatbuf.st_dev;
+    ((struct stat*)&mem[0][(Uint)grr(tid, 1)])->st_ino  = fstatbuf.st_ino;
+    ((struct stat*)&mem[0][(Uint)grr(tid, 1)])->st_mode = fstatbuf.st_mode;
+@
+
+
+1.64
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.63 2017/11/02 06:07:43 nakashim Exp nakashim $";
+d158 2
+@
+
+
+1.63
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.62 2017/08/16 15:34:11 nakashim Exp nakashim $";
+d195 1
+d337 5
+@
+
+
+1.62
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.61 2017/08/09 14:07:28 nakashim Exp nakashim $";
+d373 1
+d376 1
+a376 1
+		  mmw(((c[cid].l2tag[i][j][k].la*L2TAGMASK)|((j*MAXL2BK+i)*LINESIZE))+l*8, 0xffffffffffffffffLL, c[cid].l2line[i][j][k].d[l]);
+d379 1
+a379 1
+		if (c[cid].l2tag[i][j][k].la*L2TAGMASK >= *(Ull*)&mem[0][HDRADDR] && c[cid].l2tag[i][j][k].la*L2TAGMASK < ALOCLIMIT) {
+d420 1
+d422 1
+a422 1
+		    if (c[cid].l2tag[i][j][k].la*L2TAGMASK >= *(Ull*)&mem[0][HDRADDR] && c[cid].l2tag[i][j][k].la*L2TAGMASK < ALOCLIMIT) {
+@
+
+
+1.61
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.60 2017/07/18 09:17:17 nakashim Exp nakashim $";
+d377 1
+a377 1
+		/* ★   2. EMAX実行前のEMAX参照(malloc)領域以外は，siml上はDDRに書き戻しつつ，flushcycleは計上しない．また，L2から消さない */
+a378 1
+		  /* text/glocal/stack/conf/lmmi/regv領域でなければ計上 */
+d419 1
+a419 1
+		    /* ★   3. EMAX実行後のEMAX参照(malloc)領域はL2から消去. これでACPを模倣 */
+a420 1
+		      /* text/glocal/stack/conf/lmmi/regv領域でなければ消す */
+@
+
+
+1.60
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.59 2017/07/09 23:19:05 nakashim Exp nakashim $";
+d562 1
+a562 1
+    printf("%03.3d:SVC %08.8x_%08.8x exec_svc: opcd=0x%x ", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), opcd);
+d566 1
+a566 1
+    printf("%03.3d:SVC %08.8x_%08.8x emax6_pre_with_keep_cache (transaction) ", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps));
+d570 1
+a570 1
+    printf("%03.3d:SVC %08.8x_%08.8x emax6_pre_with_drain_cache (normal array) ", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps));
+a678 2
+  if (flag & TRACE_EMAX)
+    printf("\n");
+@
+
+
+1.59
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.58 2017/06/10 12:51:44 nakashim Exp nakashim $";
+d535 1
+a535 1
+  case 0xf1: /* emax6_pre_with_flush_cache (normal array) */
+@
+
+
+1.58
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.57 2017/06/04 13:53:31 nakashim Exp nakashim $";
+a338 2
+          for (i=0; i<MAXCORE; i++)
+            show_emax6_pa(i, t[i].pa_cycle);
+@
+
+
+1.57
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.56 2017/04/21 03:28:36 nakashim Exp nakashim $";
+d368 2
+d380 1
+a380 1
+		if (c[cid].l2tag[i][j][k].la*L2TAGMASK > *(Ull*)&mem[0][HDRADDR] && c[cid].l2tag[i][j][k].la*L2TAGMASK <= ALOCLIMIT) {
+d414 21
+a434 1
+	  t[tid].status = ARM_EXCEMAX;
+a446 29
+#if 1
+      case ARM_EXCEMAX:
+	stat = siml_emax6(tid, t[tid].total_cycle, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax6_gr0, t[tid].emax6_gr1);
+	switch (stat) {
+	case 1: /* require L2$flush */
+	  for (i=0; i<MAXL2BK; i++) {
+	    for (j=0; j<L2WMAXINDEX; j++) {
+	      for (k=0; k<L2WAYS; k++) {
+		int cid = tid2cid(tid);
+		if (c[cid].l2tag[i][j][k].v) {
+#if 1
+		  /* ★   3. EMAX実行後のEMAX参照(malloc)領域はL2から消去. これでACPを模倣 */
+		  if (c[cid].l2tag[i][j][k].la*L2TAGMASK > *(Ull*)&mem[0][HDRADDR] && c[cid].l2tag[i][j][k].la*L2TAGMASK <= ALOCLIMIT) {
+		    /* text/glocal/stack/conf/lmmi/regv領域でなければ消す */
+		    d[i].l2dir[c[cid].l2tag[i][j][k].la*L2WMAXINDEX+j].l2dir_v[cid/64] &= ~(1LL<<(cid%64));
+		    c[cid].l2tag[i][j][k].v = 0;
+		  }
+#endif
+		}
+	      }
+	    }
+	  }
+	case 0: /* normal end with transaction */
+	  t[tid].status = ARM_NORMAL;
+	  break;
+	case 2: /* busy */
+	  break;
+	}
+#endif
+d527 1
+a527 1
+  case 0xf0: /* emax6_start_with_keep_cache (transaction) */
+d537 1
+a537 2
+  case 0xf1: /* emax6_start_with_flush_cache (normal array) */
+  case 0xf2: /* emax6a_drain_dirty_lmm (array) */
+d567 6
+a572 7
+  case 0xf0: /* emax6_start_with_keep_cache (transaction) */
+  case 0xf1: /* emax6_start_with_drain_cache (normal array) */
+    t[tid].emax6_gr0  = (Ull)grr(tid, 0); /* emax6 */
+    t[tid].emax6_gr1  = (Ull)grr(tid, 1); /* emax6 */
+    if (flag & TRACE_EMAX)
+      printf("\n");
+    printf("%03.3d:SVC %08.8x_%08.8x EMAX6 start dma_ctrl=%08.8x_%08.8x,reg_ctrl=%08.8x_%08.8x", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), (Uint)(t[tid].emax6_gr0>>32), (Uint)t[tid].emax6_gr0, (Uint)(t[tid].emax6_gr1>>32), (Uint)t[tid].emax6_gr1);
+@
+
+
+1.56
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/csim.c,v 1.55 2017/03/05 10:43:43 nakashim Exp nakashim $";
+d58 1
+a58 1
+	  printf("       -p:    trace pipe (EMAX5)\n");
+d90 1
+a90 1
+  printf("ARM+EMAX5 Simulator Version %s\n", version());
+d340 1
+a340 1
+            show_emax5_pa(i, t[i].pa_cycle);
+d356 1
+a356 1
+	/* ★ただし，ZYNQ+EMAX5の場合,conf[][]はR/Oのためflush不要 */
+d359 1
+a359 1
+	/* ★        以上のことから，以下の区別によりZYNQ+ACP+EMAX5の性能モデル化か可能                                */
+d427 1
+a427 1
+	stat = siml_emax5(tid, t[tid].total_cycle, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2, t[tid].emax5_mode); /* conf, lmmi, regv, mode */
+d534 1
+a534 1
+  case 0xf0: /* emax5_start_with_keep_cache (transaction) */
+d544 2
+a545 2
+  case 0xf1: /* emax5_start_with_flush_cache (normal array) */
+  case 0xf2: /* emax5a_drain_dirty_lmm (array) */
+d575 4
+a578 6
+  case 0xf0: /* emax5_start_with_keep_cache (transaction) */
+  case 0xf1: /* emax5_start_with_drain_cache (normal array) */
+    t[tid].emax5_gr0  = (Ull)grr(tid, 0);
+    t[tid].emax5_gr1  = (Ull)grr(tid, 1);
+    t[tid].emax5_gr2  = (Ull)grr(tid, 2);
+    t[tid].emax5_mode = 1;
+d581 1
+a581 8
+    printf("%03.3d:SVC %08.8x_%08.8x EMAX5 start conf=%08.8x_%08.8x lmmi=%08.8x_%08.8x regv=%08.8x_%08.8x", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), (Uint)(t[tid].emax5_gr0>>32), (Uint)t[tid].emax5_gr0, (Uint)(t[tid].emax5_gr1>>32), (Uint)t[tid].emax5_gr1, (Uint)(t[tid].emax5_gr2>>32), (Uint)t[tid].emax5_gr2);
+    retval = SVC_EMAX;
+    goto end;
+  case 0xf2: /* emax5a_drain_dirty_lmm (array) */
+    t[tid].emax5_mode = 2;
+    if (flag & TRACE_EMAX)
+      printf("\n");
+    printf("%03.3d:SVC %08.8x_%08.8x EMAX5 drain_dirty_lmm", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps));
+@
+
+
+1.55
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.54 2017/02/28 14:49:34 nakashim Exp nakashim $";
+d9 1
+a9 1
+/* bsim.c 2005/3/22 */ 
+d11 1
+a11 1
+#include "bsim.h"
+d55 1
+a55 1
+	  printf("usage: bsim [-m -x -p -bxxx -exxx -dxxx] <arm-object> [arm-args]\n");
+@
+
+
+1.54
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.53 2017/02/28 07:54:16 nakashim Exp nakashim $";
+d372 1
+a372 1
+	      if (c[cid].l2tag[i][j][k].v && c[cid].l2tag[i][j][k].dirty && !c[cid].l2tag[i][j][k].drain) { /* dirtyの場合主記憶へ書き戻す */
+@
+
+
+1.53
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.52 2017/02/25 06:32:54 nakashim Exp nakashim $";
+d372 2
+a373 1
+	      if (c[cid].l2tag[i][j][k].v && c[cid].l2tag[i][j][k].dirty) { /* dirtyの場合主記憶へ書き戻す */
+@
+
+
+1.52
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.51 2017/02/23 11:10:35 nakashim Exp nakashim $";
+d372 1
+a372 1
+	      if (c[cid].l2tag[i][j][k].v && c[cid].l2tag[i][j][k].dirty) {
+d382 6
+a387 2
+		  d[i].l2dir[c[cid].l2tag[i][j][k].la*L2WMAXINDEX+j].l2dir_d[cid/64] &= ~(1LL<<(cid%64));
+		  c[cid].l2tag[i][j][k].dirty = 0;
+d395 1
+a395 1
+	case 1:
+d407 1
+a407 1
+	case 0:
+d410 1
+a410 4
+	case 2:
+	  t[tid].status = ARM_EXCTRANS;
+	  break;
+	case 3:
+d413 1
+a413 1
+	case 4:
+d417 1
+a417 1
+	case 5:
+a424 6
+      case ARM_EXCTRANS:
+	stat = siml_trans(tid, t[tid].total_cycle, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2); /* start, end */
+	if (stat == 0)
+	  t[tid].status = ARM_NORMAL;
+	alive++;
+	break;
+d527 33
+a561 1
+  /* retval 0:normal_end, 1:should_invalidate_L2, 2:TRANS_running, 3:EMAX5_running, 4:exit 5:undef */
+d574 5
+a578 15
+  case 0xf0: /* emax5t_start (transaction) */
+    t[tid].emax5_gr0 = (Ull)grr(tid, 0);
+    t[tid].emax5_gr1 = (Ull)grr(tid, 1);
+    t[tid].emax5_gr2 = (Ull)grr(tid, 2);
+#if 0
+    if (flag & TRACE_EMAX)
+      printf("\n");
+    printf("%03.3d:SVC %08.8x_%08.8x TRANSACTION start %08.8x_%08.8x\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), (Uint)(t[tid].emax5_gr0>32), (Uint)t[tid].emax5_gr0);
+#endif
+    retval = 2;
+    goto end;
+  case 0xf1: /* emax5a_start (array) */
+    t[tid].emax5_gr0 = (Ull)grr(tid, 0);
+    t[tid].emax5_gr1 = (Ull)grr(tid, 1);
+    t[tid].emax5_gr2 = (Ull)grr(tid, 2);
+d583 1
+a583 1
+    retval = 3;
+d590 1
+a590 1
+    retval = 3;
+d597 1
+a597 1
+    retval = 0;
+d602 1
+a602 1
+    retval = 0;
+d605 1
+a605 1
+    retval = 4;
+d613 1
+a613 1
+    retval = 1;
+d626 1
+a626 1
+    retval = 0;
+d642 1
+a642 1
+    retval = 0;
+d646 1
+a646 1
+    retval = 0;
+d650 1
+a650 1
+    retval = 0;
+d654 1
+a654 1
+    retval = 0;
+d662 1
+a662 1
+      retval = 4;
+d667 1
+a667 1
+    retval = 0;
+d675 1
+a675 1
+    retval = 1;
+d681 1
+a681 1
+      retval = 0;
+d689 1
+a689 1
+      retval = 1;
+d693 1
+a693 1
+    retval = 5;
+@
+
+
+1.51
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.50 2017/02/21 01:52:58 nakashim Exp nakashim $";
+d140 2
+a141 2
+  memp = &mem[0][HDRADDR+8];       /* malloc limit */
+  printf(" malloc_limit =0x%08.8x_%08.8x\n", (Uint)((*(Ull*)memp)>>32), (Uint)(*(Ull*)memp));
+d376 3
+a378 2
+		/* ★   2. EMAX実行前のstackは，siml上はDDRに書き戻しつつ，flushcycleは計上しない．また，L2から消さない */
+		if (c[cid].l2tag[i][j][k].la*L2TAGMASK <= ALOCLIMIT) { /* conf/lmmi/regv/stack領域でなければ計上 */
+d440 3
+a442 2
+		  /* ★   3. EMAX実行後のstackは，stack以外の領域（global）をL2から消去. これでACPを模倣 */
+		  if (c[cid].l2tag[i][j][k].la*L2TAGMASK <= ALOCLIMIT) { /* conf/lmmi/regv/stack領域でなければ消す */
+d478 1
+a478 1
+  memp = &mem[0][HDRADDR]; /* initial malloc pointer */
+d507 1
+a507 1
+  memp = &mem[0][HDRADDR]; /* initial malloc pointer */
+d641 1
+a641 1
+    memp = &mem[0][HDRADDR]; /* malloc top */
+@
+
+
+1.50
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.49 2017/02/14 03:56:54 nakashim Exp nakashim $";
+d377 1
+a377 1
+		if (c[cid].l2tag[i][j][k].la*L2TAGMASK <= ALOCLIMIT) { /* stack領域でなければ計上 */
+d440 1
+a440 1
+		  if (c[cid].l2tag[i][j][k].la*L2TAGMASK <= ALOCLIMIT) { /* stack領域でなければ消す */
+@
+
+
+1.49
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.48 2017/02/13 02:27:21 nakashim Exp nakashim $";
+d367 1
+a367 1
+	/*         ・transactionがない場合(lmm_dirty=1が存在)はcacheから追い出してEMAX本体の結果をARMが参照加納とする  */
+@
+
+
+1.48
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.47 2017/02/08 05:39:39 nakashim Exp nakashim $";
+a332 1
+printf("TCUREG->GR3-0:%08.8x %08.8x %08.8x %08.8x\n", (Uint)grr(tid, 3), (Uint)grr(tid, 2), (Uint)grr(tid, 1), (Uint)grr(tid, 0));
+@
+
+
+1.47
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.46 2017/02/04 15:56:30 nakashim Exp nakashim $";
+d13 1
+a13 1
+Ull get_tcureg_finish();
+d192 3
+a194 2
+	/* tcureg_finish: svc   0x01012   tcureg_finish->x0                               */
+	/* tcureg         svc   0x01013   tcureg[3:0]->x3,2,1,0                           */
+d316 2
+a317 2
+	case 0x012: /* fsm[x0].tcureg_finish->x0 */
+	  grw(tid, 0, (Ull)get_tcureg_finish((Uint)grr(tid, 0), (Uint)grr(tid, 1)));
+d321 6
+a326 1
+	case 0x013: /* fsm[x0].tcureg[3:0]->x3,2,1,0 */
+d333 1
+@
+
+
+1.46
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.45 2017/02/04 05:00:32 nakashim Exp nakashim $";
+d351 11
+a361 6
+	/* ★        regv[][]とlmmi[][]はACPバスを経由しL2から直接読み出すため，性能的にはL2のflushオーバヘッドは不要 */
+	/* ★        ACPでもL2ミスすればDDRに行くので論理的にはDDR空間からのloadだが，性能的にはflushしないのと同じ   */
+	/* ★        以上のことから，以下の区別によりZYNQ+ACP+EMAX5の性能モデル化か可能                               */
+	/* ★   1. stack領域には，lmmi[][],regv[][]があり，機能的にはL2へのflushが必要．ただし性能オーバヘッドは不要  */
+	/* ★   2. EMAX実行前のstackは，siml上はDDRに書き戻しつつ，flushcycleは計上しない．また，L2から消さない       */
+	/* ★   3. EMAX実行後のstackは，stack以外の領域（global）をL2から消去. これでACPを模倣                        */
+d425 2
+a426 1
+	if (stat == 0) {
+d443 1
+d445 3
+@
+
+
+1.45
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.44 2017/02/03 12:07:14 nakashim Exp nakashim $";
+d193 1
+a193 2
+	/* tcureg_done:   svc   0x01013   1->tcureg_done                                  */
+	/* tcureg         svc   0x01014   tcureg[3:0]->x3,2,1,0                           */
+d320 1
+a320 6
+	case 0x013: /* fsm[x0].tcureg_done=1 */
+	  put_tcureg_done((Uint)grr(tid, 0), (Uint)grr(tid, 1)); /* cid#,col# */
+	  t[tid].status = ARM_NORMAL;
+	  alive++;
+	  break;
+	case 0x014: /* fsm[x0].tcureg[3:0]->x3,2,1,0 */
+@
+
+
+1.44
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.43 2017/02/03 10:14:21 nakashim Exp nakashim $";
+d190 2
+a191 2
+	/* tcureg_ready:  svc   0x01010   x0->tcureg_ready                                */
+	/* tcureg_valid:  svc   0x01011   tcureg_valid->x0                                */
+d193 2
+a194 1
+	/* tcureg         svc   0x01013   tcureg[3:0]->x3,2,1,0                           */
+d306 2
+a307 2
+	case 0x010: /* fsm[x0].tcureg_ready=1 */
+	  put_tcureg_ready((Uint)grr(tid, 0), (Uint)grr(tid, 1)); /* cid#,col# */
+d311 2
+a312 2
+	case 0x011: /* fsm[x0].tcureg_valid->x0 */
+	  grw(tid, 0, (Ull)get_tcureg_valid((Uint)grr(tid, 0), (Uint)grr(tid, 1)));
+d321 6
+a326 1
+	case 0x013: /* fsm[x0].tcureg[3:0]->x3,2,1,0 */
+@
+
+
+1.43
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.42 2017/02/02 23:25:17 nakashim Exp nakashim $";
+d321 6
+a326 4
+	  grw(tid, 0, (Ull)get_tcureg((Uint)grr(tid, 0), (Uint)grr(tid, 1), 0));
+	  grw(tid, 1, (Ull)get_tcureg((Uint)grr(tid, 0), (Uint)grr(tid, 1), 1));
+	  grw(tid, 2, (Ull)get_tcureg((Uint)grr(tid, 0), (Uint)grr(tid, 1), 2));
+	  grw(tid, 3, (Ull)get_tcureg((Uint)grr(tid, 0), (Uint)grr(tid, 1), 3));
+@
+
+
+1.42
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.41 2017/02/02 22:45:55 nakashim Exp nakashim $";
+d24 1
+a24 1
+  Uint  tid, cid, did, mid, col;
+d306 1
+a306 2
+	  col = (Uint)grr(tid, 0); /* col# */
+	  put_tcureg_ready(tid2cid(tid), col);
+d311 1
+a311 2
+	  col = (Uint)grr(tid, 0); /* col# */
+	  grw(tid, 0, (Ull)get_tcureg_valid(tid2cid(tid), col));
+d316 1
+a316 2
+	  col = (Uint)grr(tid, 0); /* col# */
+	  grw(tid, 0, (Ull)get_tcureg_finish(tid2cid(tid), col));
+d321 4
+a324 5
+	  col = (Uint)grr(tid, 0); /* col# */
+	  grw(tid, 0, get_tcureg(tid2cid(tid), col, 0));
+	  grw(tid, 1, get_tcureg(tid2cid(tid), col, 1));
+	  grw(tid, 2, get_tcureg(tid2cid(tid), col, 2));
+	  grw(tid, 3, get_tcureg(tid2cid(tid), col, 3));
+@
+
+
+1.41
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.40 2017/02/02 03:32:45 nakashim Exp nakashim $";
+d308 2
+d314 2
+d320 2
+d329 2
+@
+
+
+1.40
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.39 2016/11/15 12:57:38 nakashim Exp nakashim $";
+d13 1
+d190 4
+a193 3
+	/* tcureg_valid:  svc   0x01010   tcureg_valid->x0                                */
+	/* tcureg_ready:  svc   0x01011   x0->tcureg_ready                                */
+	/* tcureg         svc   0x01012   tcureg[3:0]->x3,2,1,0                           */
+d305 5
+a309 1
+	case 0x010: /* fsm[x0].tcureg_valid->x0 */
+d313 1
+a313 1
+	case 0x011: /* fsm[x0].tcureg_ready=1 */
+d315 1
+a315 1
+	  put_tcureg_ready(tid2cid(tid), col);
+d317 1
+a317 1
+	case 0x012: /* fsm[x0].tcureg[3:0]->x3,2,1,0 */
+@
+
+
+1.39
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.38 2016/08/24 13:57:24 nakashim Exp $";
+d12 2
+d23 1
+a23 1
+  Uint  tid, cid, did, mid;
+d187 6
+a192 2
+	/* pthread_create:svc	0x01003  no cache_sync                                    */
+	/* pthread_join:  svc	0x01004  no cache_sync                                    */
+d198 1
+a198 1
+	case 0x01: /* _gettid() */
+d203 1
+a203 1
+	case 0x02: /* _barrier(val) */
+d222 1
+a222 1
+	case 0x03: /* pthred_create(int id, NULL, (void*)func, void *arg) */
+d269 1
+a269 1
+	case 0x04: /* pthread_join(int id, NULL) */
+d303 16
+a318 1
+	case 0xff: /* report and reset performance counter */
+@
+
+
+1.38
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.37 2016/08/16 03:09:22 nakashim Exp nakashim $";
+d9 1
+a9 1
+/* bsim.c 2005/3/22 */
+@
+
+
+1.37
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.36 2016/08/04 15:36:00 nakashim Exp nakashim $";
+d58 1
+a58 1
+	  printf("       -d:    dump DDR to conf/lmmi/regv.dat for FPGA_siml\n");
+@
+
+
+1.36
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.35 2016/07/28 06:40:11 nakashim Exp nakashim $";
+d380 1
+a380 1
+	stat = siml_trans(tid, t[tid].total_cycle, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2, t[tid].emax5_gr3, t[tid].emax5_gr4); /* start, end */
+d386 1
+a386 1
+	stat = siml_emax5(tid, t[tid].total_cycle, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2, t[tid].emax5_gr3, t[tid].emax5_gr4, t[tid].emax5_mode); /* conf, lmmi, regv, mode */
+a499 2
+    t[tid].emax5_gr3 = (Ull)grr(tid, 3);
+    t[tid].emax5_gr4 = (Ull)grr(tid, 4);
+a510 2
+    t[tid].emax5_gr3 = (Ull)grr(tid, 3);
+    t[tid].emax5_gr4 = (Ull)grr(tid, 4);
+d514 1
+a514 1
+    printf("%03.3d:SVC %08.8x_%08.8x EMAX5 start smin=%08.8x_%08.8x smax=%08.8x_%08.8x conf=%08.8x_%08.8x lmmi=%08.8x_%08.8x regv=%08.8x_%08.8x", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), (Uint)(t[tid].emax5_gr0>>32), (Uint)t[tid].emax5_gr0, (Uint)(t[tid].emax5_gr1>>32), (Uint)t[tid].emax5_gr1, (Uint)(t[tid].emax5_gr2>>32), (Uint)t[tid].emax5_gr2, (Uint)(t[tid].emax5_gr3>>32), (Uint)t[tid].emax5_gr3, (Uint)(t[tid].emax5_gr4>>32), (Uint)t[tid].emax5_gr4);
+@
+
+
+1.35
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.34 2016/07/01 08:03:37 nakashim Exp nakashim $";
+d380 1
+a380 1
+	stat = siml_trans(tid, t[tid].total_cycle, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2); /* start, end */
+d386 1
+a386 1
+	stat = siml_emax5(tid, t[tid].total_cycle, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2, t[tid].emax5_mode); /* conf, lmmi, regv, mode */
+d500 2
+d513 2
+d518 1
+a518 1
+    printf("%03.3d:SVC %08.8x_%08.8x EMAX5 start conf=%08.8x_%08.8x lmmi=%08.8x_%08.8x regv=%08.8x_%08.8x", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), (Uint)(t[tid].emax5_gr0>>32), (Uint)t[tid].emax5_gr0, (Uint)(t[tid].emax5_gr1>>32), (Uint)t[tid].emax5_gr1, (Uint)(t[tid].emax5_gr2>>32), (Uint)t[tid].emax5_gr2);
+@
+
+
+1.34
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.33 2016/05/20 08:06:55 nakashim Exp nakashim $";
+d49 1
+a49 3
+	  flag |= TRACE_DEMO;
+	  sscanf(*argv+2, "%x", &trace_on);
+	  trace_off = 0xffffffff;
+d58 1
+a58 1
+	  printf("       -dxxx: DEMO from xxx_step)\n");
+a412 12
+    
+    if (flag & TRACE_DEMO) {
+      if ((Uint)(t[0].total_steps>>32) >= 0x00000000) {
+	if ((Uint)(t[0].total_steps) > trace_on) { /* 600000 */
+	  flag |= TRACE_DEMO;
+	}
+      }
+    }
+#if 0
+    if (flag & TRACE_DEMO)
+      show_demo();
+#endif
+@
+
+
+1.33
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.32 2016/05/19 12:50:19 nakashim Exp nakashim $";
+d97 1
+a97 1
+  printf(" L2SIZE    =  %dB (%dway delay=%d, cc=%d)\n", L2SIZE, L2WAYS, L2DELAY, CCDELAY);
+@
+
+
+1.32
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.31 2016/05/19 06:19:18 nakashim Exp nakashim $";
+d324 2
+a325 2
+	/* ★   2. EMAX実行前は， siml上はDDRに書き戻しつつ，flushcycleは計上しない．また，L2から消さない             */
+	/* ★   3. EMAX実行後は， stack以外の領域（global）をL2から消去. これでACPを模倣                              */
+a330 6
+#if 0
+		t[tid].total_cycle       +=LINESIZE/8; /* ★L2flush コスト加算の考え方に関しては上記コメント参照 */
+		t[tid].pa_cycle          +=LINESIZE/8; /* ★L2flush コスト加算の考え方に関しては上記コメント参照 */
+		t[tid].pa_svcL2flushcycle+=LINESIZE/8; /* ★L2flush コスト加算の考え方に関しては上記コメント参照 */
+#endif
+		/* ★   2. EMAX実行前は， siml上はDDRに書き戻しつつ，flushcycleは計上しない．また，L2から消さない*/
+d333 10
+a342 2
+		d[i].l2dir[c[cid].l2tag[i][j][k].la*L2WMAXINDEX+j].l2dir_d[cid/64] &= ~(1LL<<(cid%64));
+		c[cid].l2tag[i][j][k].dirty = 0;
+d395 2
+a396 1
+		  /* ★   3. EMAX実行後は， stack以外の領域（global）をL2から消去. これでACPを模倣 */
+d401 1
+@
+
+
+1.31
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.30 2016/05/19 06:18:59 nakashim Exp $";
+d319 7
+d331 6
+a336 3
+		t[tid].total_cycle       +=LINESIZE/8; /* ★L2flush コスト加算 */
+		t[tid].pa_cycle          +=LINESIZE/8; /* ★L2flush コスト加算 */
+		t[tid].pa_svcL2flushcycle+=LINESIZE/8; /* ★L2flush コスト加算 */
+d393 5
+a397 2
+		  d[i].l2dir[c[cid].l2tag[i][j][k].la*L2WMAXINDEX+j].l2dir_v[cid/64] &= ~(1LL<<(cid%64));
+		  c[cid].l2tag[i][j][k].v = 0;
+@
+
+
+1.30
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.29 2016/05/19 00:03:51 nakashim Exp nakashim $";
+d9 1
+a9 1
+/* bsim.c 2005/3/22 */ 
+@
+
+
+1.29
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.28 2016/05/18 23:59:16 nakashim Exp nakashim $";
+d324 3
+d655 1
+a655 1
+    printf("%03.3d:step=%08.8x_%08.8x cycle=%08.8x_%08.8x i1(%5.1f%%)wait=%08.8x_%08.8x d1(%5.1f%% hit=%08.8x_%08.8x mis=%08.8x_%08.8x)wait=%08.8x_%08.8x l2(%5.1f%% hit=%08.8x_%08.8x mis=%08.8x_%08.8x) g2(%5.1f%% hit=%08.8x_%08.8x mis=%08.8x_%08.8x)\n",
+d674 3
+a676 1
+	   (Uint)(t[tid].pa_g2mis>>32), (Uint)t[tid].pa_g2mis);
+d711 2
+@
+
+
+1.28
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.27 2016/05/08 11:02:17 nakashim Exp nakashim $";
+d367 1
+a367 1
+	stat = siml_trans(tid, t[tid].pa_cycle, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2); /* start, end */
+d373 1
+a373 1
+	stat = siml_emax5(tid, t[tid].pa_cycle, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2, t[tid].emax5_mode); /* conf, lmmi, regv, mode */
+@
+
+
+1.27
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.26 2016/04/27 15:19:05 nakashim Exp nakashim $";
+d367 1
+a367 1
+	stat = siml_trans(tid, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2); /* start, end */
+d373 1
+a373 1
+	stat = siml_emax5(tid, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2, t[tid].emax5_mode); /* conf, lmmi, regv, mode */
+@
+
+
+1.26
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.25 2016/04/18 13:11:10 nakashim Exp nakashim $";
+d483 2
+d596 5
+a600 1
+    grw(tid, 0, (Sll)fstat((Uint)grr(tid, 0), &mem[0][(Uint)grr(tid, 1)]));
+@
+
+
+1.25
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.24 2016/04/17 02:33:24 nakashim Exp nakashim $";
+d373 1
+a373 1
+	stat = siml_emax5(tid, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2); /* conf, lmmi, regv */
+d488 1
+a488 1
+  case 0xf0: /* start transaction */
+d499 1
+a499 1
+  case 0xf1: /* start emax5 */
+d503 1
+d509 7
+@
+
+
+1.24
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.23 2016/03/02 15:32:38 nakashim Exp nakashim $";
+d300 2
+d373 1
+a373 1
+	stat = siml_emax5(tid, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2); /* conf, regv, lmmi */
+d505 1
+a505 1
+    printf("%03.3d:SVC %08.8x_%08.8x EMAX5 start conf=%08.8x_%08.8x", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), (Uint)(t[tid].emax5_gr0>>32), (Uint)t[tid].emax5_gr0);
+@
+
+
+1.23
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.22 2016/02/28 15:09:53 nakashim Exp nakashim $";
+d300 2
+@
+
+
+1.22
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.21 2016/02/28 15:07:15 nakashim Exp nakashim $";
+d363 1
+a363 1
+	stat = trans_start(tid, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2); /* start, end */
+d369 1
+a369 1
+	stat = emax5_start(tid, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1, t[tid].emax5_gr2); /* conf, regv, lmmi */
+@
+
+
+1.21
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.20 2016/02/05 09:28:04 nakashim Exp nakashim $";
+d363 1
+a363 1
+	stat = trans_start(tid, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1); /* start, end */
+d369 1
+a369 1
+	stat = emax5_start(tid, STHREAD_TICKS, flag & TRACE_EMAX, flag & TRACE_PIPE, mem, t[tid].emax5_gr0, t[tid].emax5_gr1); /* start, end */
+@
+
+
+1.20
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.19 2016/02/03 10:00:09 nakashim Exp nakashim $";
+d485 3
+a487 2
+    t[tid].emax5_gr0 = (Uint)grr(tid, 0);
+    t[tid].emax5_gr1 = (Uint)grr(tid, 1);
+d491 1
+a491 1
+    printf("%03.3d:SVC %08.8x_%08.8x TRANSACTION start %08.8x\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), t[tid].emax5_gr0);
+d496 3
+a498 2
+    t[tid].emax5_gr0 = (Uint)grr(tid, 0);
+    t[tid].emax5_gr1 = (Uint)grr(tid, 1);
+d501 1
+a501 1
+    printf("%03.3d:SVC %08.8x_%08.8x EMAX5 start %08.8x", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), t[tid].emax5_gr0);
+@
+
+
+1.19
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.18 2015/09/20 23:39:05 nakashim Exp nakashim $";
+d9 1
+a9 1
+/* bsim.c 2005/3/22 */
+@
+
+
+1.18
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.17 2015/09/16 13:52:43 nakashim Exp nakashim $";
+d361 1
+a361 1
+#if 0
+@
+
+
+1.17
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.16 2015/09/14 12:35:54 nakashim Exp nakashim $";
+d194 1
+a194 1
+	case 0x1001: /* _gettid() */
+d199 1
+a199 1
+	case 0x1002: /* _barrier(val) */
+d218 1
+a218 1
+	case 0x1003: /* pthred_create(int id, NULL, (void*)func, void *arg) */
+d265 1
+a265 1
+	case 0x1004: /* pthread_join(int id, NULL) */
+d299 1
+a299 1
+	case 0x10ff: /* report and reset performance counter */
+@
+
+
+1.16
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.15 2015/09/14 04:51:12 nakashim Exp nakashim $";
+d591 4
+a594 4
+      *((Uint*)memp+0) = (Uint)(t[tid].total_cycle/CLK_TCK); /* tms_utime */
+      *((Uint*)memp+1) = 0;                                  /* tms_stime */
+      *((Uint*)memp+2) = (Uint)(t[tid].total_cycle/CLK_TCK); /* tms_cutime */
+      *((Uint*)memp+3) = 0;                                  /* tms_stime */
+@
+
+
+1.15
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.14 2015/09/13 11:36:48 nakashim Exp nakashim $";
+d583 15
+@
+
+
+1.14
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.13 2015/09/08 22:53:18 nakashim Exp nakashim $";
+d575 1
+a576 1
+    grw(tid, 0, *(Ull*)memp);
+@
+
+
+1.13
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.12 2015/09/08 12:05:42 nakashim Exp nakashim $";
+d521 1
+a521 2
+    if (val < 0) grw(tid, 0, (Sll)val);
+    else         grw(tid, 0, (Sll)(len-val));
+d533 1
+a533 2
+    if (val < 0) grw(tid, 0, (Sll)val);
+    else         grw(tid, 0, (Sll)(len-val));
+@
+
+
+1.12
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.11 2015/09/01 09:32:15 nakashim Exp nakashim $";
+a239 1
+		grw(target, 29, (Ull)(STACKINIT-STACKPERTHREAD*target));
+d241 1
+@
+
+
+1.11
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.10 2015/09/01 07:33:46 nakashim Exp nakashim $";
+d240 2
+a241 2
+		grw(target, 13, (Ull)(STACKINIT-STACKPERTHREAD*target));
+		grw(target, 14, 0LL); /* for detecting pthread exits */
+@
+
+
+1.10
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.9 2015/08/30 22:43:58 nakashim Exp nakashim $";
+d208 1
+a208 1
+	    ccw(tid, 0LL<<60);
+d213 1
+a213 1
+	    ccw(tid, (Ull)CC_Z<<60);
+@
+
+
+1.9
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.8 2015/08/30 11:59:58 nakashim Exp nakashim $";
+d593 1
+a593 1
+  return(retval);
+d608 1
+a608 1
+        return(utms.tms_utime-tmssave);
+@
+
+
+1.8
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.7 2015/08/30 11:00:22 nakashim Exp nakashim $";
+d57 1
+a57 1
+	  printf("       -p:    trace pipe (EMAX4)\n");
+d89 1
+a89 1
+  printf("ARM+EMAX4 Simulator Version %s\n", version());
+d361 24
+d473 1
+a473 1
+  /* retval 0:normal_end, 1:should_invalidate_L2, 2:TRANS_running, 3:EMAX4_running, 4:exit 5:undef */
+d485 2
+a486 2
+    t[tid].emax4_gr0 = (Uint)grr(tid, 0);
+    t[tid].emax4_gr1 = (Uint)grr(tid, 1);
+d490 1
+a490 1
+    printf("%03.3d:SVC %08.8x_%08.8x TRANSACTION start %08.8x\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), t[tid].emax4_gr0);
+d494 3
+a496 3
+  case 0xf1: /* start emax4 */
+    t[tid].emax4_gr0 = (Uint)grr(tid, 0);
+    t[tid].emax4_gr1 = (Uint)grr(tid, 1);
+d499 1
+a499 1
+    printf("%03.3d:SVC %08.8x_%08.8x EMAX4 start %08.8x", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), t[tid].emax4_gr0);
+@
+
+
+1.7
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.6 2015/08/30 06:12:49 nakashim Exp nakashim $";
+a394 1
+  printf("====\n");
+d559 1
+a559 1
+    retval = 0;
+@
+
+
+1.6
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.5 2015/08/29 15:52:28 nakashim Exp nakashim $";
+a505 1
+printf("=================WRITE addr=%08.8x len=%d\n", addr, len);
+@
+
+
+1.5
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.4 2015/08/29 14:21:22 nakashim Exp nakashim $";
+d455 1
+d547 10
+a556 1
+    grw(tid, 0, 0LL); /* dummy */
+@
+
+
+1.4
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.3 2015/08/27 06:47:08 nakashim Exp nakashim $";
+d546 1
+a546 1
+    grw(tid, 0, (Sll)sbrk(&mem[0][(Uint)grr(tid, 0)]));
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.2 2015/08/22 04:49:10 nakashim Exp nakashim $";
+d497 2
+a498 2
+    if (val < 0) grw(tid, 0, (Ull)val);
+    else         grw(tid, 0, (Ull)(len-val));
+d505 1
+d511 2
+a512 2
+    if (val < 0) grw(tid, 0, (Ull)val);
+    else         grw(tid, 0, (Ull)(len-val));
+d527 1
+a527 1
+	grw(tid, 0, (Ull)open(&mem[0][(Uint)grr(tid, 0)], O_CREAT | O_TRUNC | O_WRONLY, 0644));
+d529 1
+a529 1
+	grw(tid, 0, (Ull)open(&mem[0][(Uint)grr(tid, 0)], (Uint)grr(tid, 1), (Uint)grr(tid, 2)));
+d534 1
+a534 1
+    grw(tid, 0, (Ull)lseek((Uint)grr(tid, 0), (Uint)grr(tid, 1), (Uint)grr(tid, 2)));
+d538 1
+a538 1
+    grw(tid, 0, (Ull)close((Uint)grr(tid, 0)));
+d542 1
+a542 1
+    grw(tid, 0, (Ull)isatty((Uint)grr(tid, 0)));
+d546 1
+a546 1
+    grw(tid, 0, (Ull)sbrk(&mem[0][(Uint)grr(tid, 0)]));
+d550 1
+a550 1
+    grw(tid, 0, (Ull)fstat((Uint)grr(tid, 0), &mem[0][(Uint)grr(tid, 1)]));
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/bsim.c,v 1.1 2015/07/21 05:44:37 nakashim Exp nakashim $";
+d184 2
+a185 2
+	/* _gettid:       swi   0x010001   no cache_sync                                  */
+	/* _barrier:      swi   0x010002   barrier0 write b[pid]=%o0 and wait for all=%o0 */
+d187 2
+a188 2
+	/* pthread_create:swi	0x010003  no cache_sync                                   */
+	/* pthread_join:  swi	0x010004  no cache_sync                                   */
+d192 3
+a194 3
+		 (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), t[tid].ib.pc, t[tid].swi_opcd);
+	switch (t[tid].swi_opcd) {
+	case 0x01: /* _gettid() */
+d199 1
+a199 1
+	case 0x02: /* _barrier(val) */
+d218 1
+a218 1
+	case 0x03: /* pthred_create(int id, NULL, (void*)func, void *arg) */
+d265 1
+a265 1
+	case 0x04: /* pthread_join(int id, NULL) */
+d299 1
+a299 1
+	case 0xff: /* report and reset performance counter */
+d328 1
+a328 1
+	switch (exec_swi(tid, t[tid].swi_opcd)) { /* この時点で実際にSWIをHOST実行 */
+d355 1
+a355 1
+	  printf("\033[7m%03.3d:EXCSVC ARM undefined sys_call=%d\033[0m\n", tid, t[tid].swi_opcd);
+d448 1
+a448 1
+exec_swi(tid, opcd) Uint tid; Uint opcd;
+d457 1
+a457 1
+    printf("%03.3d:SWI %08.8x_%08.8x exec_swi: opcd=0x%x ", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), opcd);
+d466 1
+a466 1
+    printf("%03.3d:SWI %08.8x_%08.8x TRANSACTION start %08.8x\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), t[tid].emax4_gr0);
+d475 1
+a475 1
+    printf("%03.3d:SWI %08.8x_%08.8x EMAX4 start %08.8x", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), t[tid].emax4_gr0);
+a489 4
+  case 0x10: /* getenv */
+    grw(tid, 0, 0LL);
+    retval = 0;
+    goto end;
+a535 4
+  case 0x60: /* geterrno */
+    /* grw(tid, 0, 0); dummy */
+    retval = 0;
+    goto end;
+d540 2
+a541 2
+  case 0x64: /* remove */
+    grw(tid, 0, (Ull)remove(&mem[0][(Uint)grr(tid, 0)]));
+d544 2
+a545 2
+  case 0x65: /* rename */
+    grw(tid, 0, (Ull)rename(&mem[0][(Uint)grr(tid, 0)], &mem[0][(Uint)grr(tid, 1)]));
+d548 2
+a549 7
+  case 0x63: /* time */
+    if (!(Uint)grr(tid, 0)) {grw(tid, 0, (Ull)time(NULL));}
+    else              {grw(tid, 0, (Ull)time((time_t*)&mem[0][(Uint)grr(tid, 0)]));}
+    retval = 1;
+    goto end; /* update mem */
+  case 0x6e: /* isatty */
+    grw(tid, 0, (Ull)isatty((Uint)grr(tid, 0)));
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm32/src/bsim/RCS/bsim.c,v 1.28 2015/01/21 06:54:17 nakashim Exp nakashim $";
+d208 1
+a208 1
+	    ccw(tid, (Ull)(0<<28));
+d213 1
+a213 1
+	    ccw(tid, (Ull)(CC_Z<<28));
+@

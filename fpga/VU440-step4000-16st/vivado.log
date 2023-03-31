@@ -1,0 +1,186 @@
+#-----------------------------------------------------------
+# Vivado v2018.3.1 (64-bit)
+# SW Build 2489853 on Tue Mar 26 04:18:30 MDT 2019
+# IP Build 2486929 on Tue Mar 26 06:44:21 MDT 2019
+# Start of session at: Thu Mar 30 09:38:51 2023
+# Process ID: 15679
+# Current directory: /home/nakashim/proj-arm64/fpga/VU440-step4000-16st
+# Command line: vivado -stack 10000 VU440_16st.xpr
+# Log file: /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/vivado.log
+# Journal file: /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/vivado.jou
+#-----------------------------------------------------------
+Sourcing tcl script '/home/nakashim/.Xilinx/Vivado/Vivado_init.tcl'
+start_gui
+open_project VU440_16st.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/xilinx/Vivado/2018.3/data/ip'.
+WARNING: [IP_Flow 19-3664] IP 'fpga_bram64' generated file not found '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/ip/fpga_bram64/fpga_bram64.vho'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'fpga_bram64' generated file not found '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/ip/fpga_bram64/fpga_bram64.veo'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'fpga_bram64' generated file not found '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/ip/fpga_bram64/simulation/blk_mem_gen_v8_4.v'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'fpga_bram64' generated file not found '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/ip/fpga_bram64/sim/fpga_bram64.v'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'fpga_bram64' generated file not found '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/ip/fpga_bram64/summary.log'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'fpga_bram64' generated file not found '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/ip/fpga_bram64/misc/blk_mem_gen_v8_4.vhd'. Please regenerate to continue.
+WARNING: [IP_Flow 19-3664] IP 'fpga_bram64' generated file not found '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/ip/fpga_bram64/doc/blk_mem_gen_v8_4_changelog.txt'. Please regenerate to continue.
+CRITICAL WARNING: [Common 17-1649] The Vivado message database '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.runs/synth_1/vivado.pb' contains 25316 messages. Restoring all messages from this message database will impact Vivado performance, so only WARNING, CRITICAL WARNING, and ERROR messages will be restored. To restore all messages from this file use the tcl command 'set_param messaging.loadPbLimit 25317' and re-open the project.
+open_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:08 . Memory (MB): peak = 9038.113 ; gain = 216.801 ; free physical = 88612 ; free virtual = 125591
+update_compile_order -fileset sources_1
+update_module_reference design_1_emax6_0_0
+INFO: [IP_Flow 19-5107] Inferred bus interface 'axi_m' of definition 'xilinx.com:interface:aximm:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-5107] Inferred bus interface 'axi_s' of definition 'xilinx.com:interface:aximm:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-5107] Inferred bus interface 'ARESETN' of definition 'xilinx.com:signal:reset:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-5107] Inferred bus interface 'ACLK' of definition 'xilinx.com:signal:clock:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-4728] Bus Interface 'ARESETN': Added interface parameter 'POLARITY' with value 'ACTIVE_LOW'.
+INFO: [IP_Flow 19-4728] Bus Interface 'ACLK': Added interface parameter 'ASSOCIATED_BUSIF' with value 'axi_m'.
+INFO: [IP_Flow 19-4728] Bus Interface 'ACLK': Added interface parameter 'ASSOCIATED_RESET' with value 'ARESETN'.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+Adding cell -- xilinx.com:ip:util_ds_buf:2.1 - clk_78m_buff
+Adding cell -- xilinx.com:ip:util_ds_buf:2.1 - clk_150m_buff
+Adding cell -- xilinx.com:ip:util_ds_buf:2.1 - util_ds_buf_0
+Adding cell -- xilinx.com:ip:util_ds_buf:2.1 - util_ds_buf_1
+Adding cell -- xilinx.com:ip:aurora_64b66b:11.2 - aurora_64b66b_0
+Adding cell -- xilinx.com:ip:aurora_64b66b:11.2 - aurora_64b66b_1
+Adding cell -- xilinx.com:ip:util_ds_buf:2.1 - util_ds_buf_2
+Adding cell -- xilinx.com:ip:util_ds_buf:2.1 - util_ds_buf_3
+Adding cell -- xilinx.com:ip:xlconstant:1.1 - xlconstant_0
+Adding cell -- xilinx.com:module_ref:HEARTBEAT:1.0 - HEARTBEAT_0
+Adding cell -- xilinx.com:module_ref:RESET_CTRL:1.0 - RESET_CTRL_0
+Adding cell -- xilinx.com:module_ref:C2C_MASTER_TOP:1.0 - C2C_MASTER_TOP_0
+Adding cell -- xilinx.com:module_ref:C2C_SLAVE_TOP:1.0 - C2C_SLAVE_TOP_0
+Adding cell -- xilinx.com:ip:system_ila:1.1 - system_ila_0
+Adding cell -- xilinx.com:module_ref:emax6:1.0 - emax6_0
+WARNING: [BD 41-1731] Type mismatch between connected pins: /C2C_SLAVE_TOP_0/POWER_DOWN(undef) and /aurora_64b66b_0/power_down(rst)
+WARNING: [BD 41-1731] Type mismatch between connected pins: /RESET_CTRL_0/PERI_RESET_N(rst) and /C2C_MASTER_TOP_0/M_AXI_RESET_N(undef)
+WARNING: [BD 41-1731] Type mismatch between connected pins: /RESET_CTRL_0/PERI_RESET_N(rst) and /C2C_MASTER_TOP_0/AURORA_RESET_N(undef)
+WARNING: [BD 41-1731] Type mismatch between connected pins: /RESET_CTRL_0/PERI_RESET_N(rst) and /C2C_SLAVE_TOP_0/S_AXI_RESET_N(undef)
+WARNING: [BD 41-1731] Type mismatch between connected pins: /RESET_CTRL_0/PERI_RESET_N(rst) and /C2C_SLAVE_TOP_0/AURORA_RESET_N(undef)
+WARNING: [BD 41-1731] Type mismatch between connected pins: /C2C_MASTER_TOP_0/POWER_DOWN(undef) and /aurora_64b66b_1/power_down(rst)
+Successfully read diagram <design_1> from BD file </home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd>
+Upgrading '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd'
+INFO: [IP_Flow 19-1972] Upgraded design_1_emax6_0_0 from emax6_v1_0 1.0 to emax6_v1_0 1.0
+Wrote  : </home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd> 
+Wrote  : </home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+reset_target all [get_files  /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd]
+export_ip_user_files -of_objects  [get_files  /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd] -sync -no_script -force -quiet
+generate_target all [get_files  /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd]
+WARNING: [BD 41-1781] Updates have been made to one or more nets/interface connections marked for debug.
+Debug nets, which are already connected to System ILA IP core in the block-design, will be automatically available for debug in Hardware Manager.
+For unconnected Debug nets, please open synthesized design and use 'Set Up Debug' wizard to insert, modify or delete Debug Cores. Failure to do so could result in critical warnings and errors in the implementation flow.
+INFO: [Device 21-403] Loading part xcvu440-flga2892-2-e
+CRITICAL WARNING: [BD 41-1348] Reset pin /system_ila_0/resetn (associated clock /system_ila_0/clk) is connected to asynchronous reset source /RESET_CTRL_0/PERI_RESET_N.
+This may prevent design from meeting timing. Please add Processor System Reset module to create a reset that is synchronous to the associated clock source /util_ds_buf_1/BUFG_O.
+CRITICAL WARNING: [BD 41-1348] Reset pin /emax6_0/ARESETN (associated clock /emax6_0/ACLK) is connected to asynchronous reset source /RESET_CTRL_0/PERI_RESET_N.
+This may prevent design from meeting timing. Please add Processor System Reset module to create a reset that is synchronous to the associated clock source /util_ds_buf_1/BUFG_O.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_0 NOTE : gt_diff_refclk1 of /aurora_64b66b_0 (Aurora IP) has input port frequency configured as 156250000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_0 NOTE : USER CLK OUT of /aurora_64b66b_0 (Aurora IP) has input port frequency configured as 78125000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_0 NOTE : SYNC CLK OUT of /aurora_64b66b_0 (Aurora IP) has input port frequency configured as 156250000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_0 NOTE : gt_refclk1_out of /aurora_64b66b_0 (Aurora IP) has input port frequency configured as 156250000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_0 NOTE : init_clk of /aurora_64b66b_0 (Aurora IP) has input port frequency configured as 78125000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_0 NOTE : init_clk of /aurora_64b66b_0 (Aurora IP) has input port frequency configured as 78125000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_1 NOTE : gt_diff_refclk1 of /aurora_64b66b_1 (Aurora IP) has input port frequency configured as 156250000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_1 NOTE : USER CLK OUT of /aurora_64b66b_1 (Aurora IP) has input port frequency configured as 78125000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_1 NOTE : SYNC CLK OUT of /aurora_64b66b_1 (Aurora IP) has input port frequency configured as 156250000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_1 NOTE : gt_refclk1_out of /aurora_64b66b_1 (Aurora IP) has input port frequency configured as 156250000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_1 NOTE : init_clk of /aurora_64b66b_1 (Aurora IP) has input port frequency configured as 78125000 Hz.
+INFO: [xilinx.com:ip:aurora_64b66b:11.2-5910] /aurora_64b66b_1 NOTE : init_clk of /aurora_64b66b_1 (Aurora IP) has input port frequency configured as 78125000 Hz.
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /emax6_0/axi_s(0) and /C2C_MASTER_TOP_0/M_AXI(1)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /emax6_0/axi_s(0) and /C2C_MASTER_TOP_0/M_AXI(1)
+WARNING: [BD 41-237] Bus Interface property AWUSER_WIDTH does not match between /C2C_SLAVE_TOP_0/S_AXI(1) and /emax6_0/axi_m(0)
+WARNING: [BD 41-237] Bus Interface property ARUSER_WIDTH does not match between /C2C_SLAVE_TOP_0/S_AXI(1) and /emax6_0/axi_m(0)
+WARNING: [BD 41-927] Following properties on pin /HEARTBEAT_0/CLK have been updated from connected ip. They may not be synchronized with cell properties. You can set property on pin directly to confirm the value and resolve the warning.
+	CLK_DOMAIN=design_1_clk_78m_buff_0_IBUF_OUT 
+WARNING: [BD 41-927] Following properties on pin /RESET_CTRL_0/MAIN_CLK have been updated from connected ip. They may not be synchronized with cell properties. You can set property on pin directly to confirm the value and resolve the warning.
+	CLK_DOMAIN=design_1_clk_150m_buff_0_IBUF_OUT 
+WARNING: [BD 41-927] Following properties on pin /RESET_CTRL_0/EXT_RESET have been updated from connected ip. They may not be synchronized with cell properties. You can set property on pin directly to confirm the value and resolve the warning.
+	POLARITY=ACTIVE_HIGH 
+WARNING: [BD 41-927] Following properties on pin /C2C_MASTER_TOP_0/M_AXI_CLK have been updated from connected ip. They may not be synchronized with cell properties. You can set property on pin directly to confirm the value and resolve the warning.
+	CLK_DOMAIN=design_1_clk_150m_buff_0_IBUF_OUT 
+WARNING: [BD 41-927] Following properties on pin /C2C_MASTER_TOP_0/AURORA_CLK have been updated from connected ip. They may not be synchronized with cell properties. You can set property on pin directly to confirm the value and resolve the warning.
+	CLK_DOMAIN=design_1_aurora_64b66b_1_0_user_clk_out 
+WARNING: [BD 41-927] Following properties on pin /C2C_SLAVE_TOP_0/S_AXI_CLK have been updated from connected ip. They may not be synchronized with cell properties. You can set property on pin directly to confirm the value and resolve the warning.
+	CLK_DOMAIN=design_1_clk_150m_buff_0_IBUF_OUT 
+WARNING: [BD 41-927] Following properties on pin /C2C_SLAVE_TOP_0/AURORA_CLK have been updated from connected ip. They may not be synchronized with cell properties. You can set property on pin directly to confirm the value and resolve the warning.
+	CLK_DOMAIN=design_1_aurora_64b66b_0_0_user_clk_out 
+WARNING: [BD 41-927] Following properties on pin /emax6_0/ACLK have been updated from connected ip. They may not be synchronized with cell properties. You can set property on pin directly to confirm the value and resolve the warning.
+	CLK_DOMAIN=design_1_clk_150m_buff_0_IBUF_OUT 
+Wrote  : </home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd> 
+WARNING: [BD 41-235] Width mismatch when connecting pin: '/system_ila_0/SLOT_1_AXI_awlock'(1) to net 'C2C_MASTER_TOP_0_M_AXI_AWLOCK'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-235] Width mismatch when connecting pin: '/system_ila_0/SLOT_1_AXI_arlock'(1) to net 'C2C_MASTER_TOP_0_M_AXI_ARLOCK'(2) - Only lower order bits will be connected.
+VHDL Output written to : /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/synth/design_1.v
+WARNING: [BD 41-235] Width mismatch when connecting pin: '/system_ila_0/SLOT_1_AXI_awlock'(1) to net 'C2C_MASTER_TOP_0_M_AXI_AWLOCK'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-235] Width mismatch when connecting pin: '/system_ila_0/SLOT_1_AXI_arlock'(1) to net 'C2C_MASTER_TOP_0_M_AXI_ARLOCK'(2) - Only lower order bits will be connected.
+VHDL Output written to : /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/sim/design_1.v
+VHDL Output written to : /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_78m_buff .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_150m_buff .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block util_ds_buf_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block util_ds_buf_1 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block RESET_CTRL_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block aurora_64b66b_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block aurora_64b66b_1 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block util_ds_buf_2 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block util_ds_buf_3 .
+WARNING: [IP_Flow 19-5160] IP 'design_1_xlconstant_0_0' detected simulation language mismatch. Simulation type 'tlm' does not support 'Verilog' outputs (see project's "simulator_language" property), delivering 'SystemC' outputs instead.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block xlconstant_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block HEARTBEAT_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block C2C_SLAVE_TOP_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block C2C_MASTER_TOP_0 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0.hwh
+Generated Block Design Tcl file /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0_bd.tcl
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/synth/design_1_system_ila_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block system_ila_0 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Block Design Tcl file /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/hw_handoff/design_1_bd.tcl
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/synth/design_1.hwdef
+generate_target: Time (s): cpu = 00:00:20 ; elapsed = 00:00:28 . Memory (MB): peak = 13948.598 ; gain = 0.000 ; free physical = 87424 ; free virtual = 124589
+export_ip_user_files -of_objects [get_files /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet
+export_simulation -of_objects [get_files /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd] -directory /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.ip_user_files/sim_scripts -ip_user_files_dir /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.ip_user_files -ipstatic_source_dir /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/modelsim} {questa=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/questa} {ies=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/ies} {xcelium=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/xcelium} {vcs=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/vcs} {riviera=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+reset_target all [get_files  /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd]
+export_ip_user_files -of_objects  [get_files  /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd] -sync -no_script -force -quiet
+generate_target all [get_files  /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd]
+INFO: [BD 41-1662] The design 'design_1.bd' is already validated. Therefore parameter propagation will not be re-run.
+WARNING: [BD 41-235] Width mismatch when connecting pin: '/system_ila_0/SLOT_1_AXI_awlock'(1) to net 'C2C_MASTER_TOP_0_M_AXI_AWLOCK'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-235] Width mismatch when connecting pin: '/system_ila_0/SLOT_1_AXI_arlock'(1) to net 'C2C_MASTER_TOP_0_M_AXI_ARLOCK'(2) - Only lower order bits will be connected.
+VHDL Output written to : /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/synth/design_1.v
+WARNING: [BD 41-235] Width mismatch when connecting pin: '/system_ila_0/SLOT_1_AXI_awlock'(1) to net 'C2C_MASTER_TOP_0_M_AXI_AWLOCK'(2) - Only lower order bits will be connected.
+WARNING: [BD 41-235] Width mismatch when connecting pin: '/system_ila_0/SLOT_1_AXI_arlock'(1) to net 'C2C_MASTER_TOP_0_M_AXI_ARLOCK'(2) - Only lower order bits will be connected.
+VHDL Output written to : /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/sim/design_1.v
+VHDL Output written to : /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_78m_buff .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block clk_150m_buff .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block util_ds_buf_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block util_ds_buf_1 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block RESET_CTRL_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block aurora_64b66b_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block aurora_64b66b_1 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block util_ds_buf_2 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block util_ds_buf_3 .
+WARNING: [IP_Flow 19-5160] IP 'design_1_xlconstant_0_0' detected simulation language mismatch. Simulation type 'tlm' does not support 'Verilog' outputs (see project's "simulator_language" property), delivering 'SystemC' outputs instead.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block xlconstant_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block HEARTBEAT_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block emax6_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block C2C_SLAVE_TOP_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block C2C_MASTER_TOP_0 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0.hwh
+Generated Block Design Tcl file /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/hw_handoff/design_1_system_ila_0_0_bd.tcl
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/ip/design_1_system_ila_0_0/bd_0/synth/design_1_system_ila_0_0.hwdef
+INFO: [BD 41-1029] Generation completed for the IP Integrator block system_ila_0 .
+Exporting to file /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Block Design Tcl file /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/hw_handoff/design_1_bd.tcl
+Generated Hardware Definition File /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/synth/design_1.hwdef
+generate_target: Time (s): cpu = 00:00:11 ; elapsed = 00:00:16 . Memory (MB): peak = 14391.914 ; gain = 0.000 ; free physical = 87339 ; free virtual = 124505
+export_ip_user_files -of_objects [get_files /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet
+export_simulation -of_objects [get_files /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.srcs/sources_1/bd/design_1/design_1.bd] -directory /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.ip_user_files/sim_scripts -ip_user_files_dir /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.ip_user_files -ipstatic_source_dir /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.ip_user_files/ipstatic -lib_map_path [list {modelsim=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/modelsim} {questa=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/questa} {ies=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/ies} {xcelium=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/xcelium} {vcs=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/vcs} {riviera=/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.cache/compile_simlib/riviera}] -use_ip_compiled_libs -force -quiet
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 16
+[Thu Mar 30 09:44:14 2023] Launched synth_1...
+Run output will be captured here: /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.runs/synth_1/runme.log
+[Thu Mar 30 09:44:14 2023] Launched impl_1...
+Run output will be captured here: /home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.runs/impl_1/runme.log
+CRITICAL WARNING: [Common 17-1649] The Vivado message database '/home/nakashim/proj-arm64/fpga/VU440-step4000-16st/VU440_16st.runs/synth_1/vivado.pb' contains 25317 messages. Restoring all messages from this message database will impact Vivado performance, so only WARNING, CRITICAL WARNING, and ERROR messages will be restored. To restore all messages from this file use the tcl command 'set_param messaging.loadPbLimit 25318' and re-open the project.
+exit
+INFO: [Common 17-206] Exiting Vivado at Thu Mar 30 14:55:55 2023...

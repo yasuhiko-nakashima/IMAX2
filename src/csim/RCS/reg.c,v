@@ -1,0 +1,2550 @@
+head	1.45;
+access;
+symbols;
+locks
+	nakashim:1.45; strict;
+comment	@ * @;
+
+
+1.45
+date	2017.09.11.15.40.44;	author nakashim;	state Exp;
+branches;
+next	1.44;
+
+1.44
+date	2017.09.03.11.47.06;	author nakashim;	state Exp;
+branches;
+next	1.43;
+
+1.43
+date	2017.08.31.07.37.58;	author nakashim;	state Exp;
+branches;
+next	1.42;
+
+1.42
+date	2017.08.23.15.27.39;	author nakashim;	state Exp;
+branches;
+next	1.41;
+
+1.41
+date	2017.07.30.06.22.13;	author nakashim;	state Exp;
+branches;
+next	1.40;
+
+1.40
+date	2017.07.18.09.17.17;	author nakashim;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	2017.07.10.10.05.13;	author nakashim;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	2017.06.18.00.17.48;	author nakashim;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	2017.06.07.01.26.51;	author nakashim;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	2017.06.04.13.53.51;	author nakashim;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	2017.04.21.03.29.02;	author nakashim;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2017.03.12.19.06.26;	author nakashim;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2017.03.05.10.43.43;	author nakashim;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2017.03.04.12.27.58;	author nakashim;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2017.02.28.14.49.38;	author nakashim;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2017.02.28.07.54.36;	author nakashim;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2015.09.19.11.50.03;	author nakashim;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2015.09.19.10.22.21;	author nakashim;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2015.09.18.02.17.21;	author nakashim;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2015.09.12.15.50.38;	author nakashim;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2015.09.12.12.33.30;	author nakashim;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2015.09.10.11.48.27;	author nakashim;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2015.09.09.11.48.15;	author nakashim;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2015.09.07.00.02.20;	author nakashim;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2015.09.03.14.01.21;	author nakashim;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2015.09.02.11.43.13;	author nakashim;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2015.09.02.10.30.02;	author nakashim;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2015.09.01.09.32.36;	author nakashim;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2015.09.01.08.04.13;	author nakashim;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2015.09.01.07.43.34;	author nakashim;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2015.09.01.07.33.46;	author nakashim;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.09.01.06.36.18;	author nakashim;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.09.01.06.13.55;	author nakashim;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.09.01.06.13.38;	author nakashim;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.09.01.06.05.27;	author nakashim;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.09.01.05.35.16;	author nakashim;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.09.01.04.09.27;	author nakashim;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.09.01.02.58.37;	author nakashim;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.09.01.01.49.42;	author nakashim;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.08.31.09.59.54;	author nakashim;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.08.26.15.16.10;	author nakashim;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.08.26.08.33.20;	author nakashim;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.08.22.13.27.04;	author nakashim;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.08.20.09.29.03;	author nakashim;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.07.21.05.44.37;	author nakashim;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.45
+log
+@*** empty log message ***
+@
+text
+@
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.44 2017/09/03 11:47:06 nakashim Exp nakashim $";
+
+/* SPARC Simulator                     */
+/*         Copyright (C) 2010 by NAIST */
+/*         Primary writer: Y.Nakashima */
+/*                nakashim@@is.naist.jp */
+
+/* reg.c 2010/7/10 */
+
+#include "csim.h"
+
+Uint ex_srr(tid, val1, val0, rob, pos) Uint tid; Ull *val1, *val0; struct rob *rob; Uint pos; /* sr[0-5] */
+{
+  Uint cid = tid2cid(tid);
+
+  if (pos > 5) {
+    printf(":ex_srr.pos=%d internal error", pos);
+    *val0 = 0LL;
+    *val1 = 0LL;
+  }
+  else {
+    if (rob->sr[pos].t==0) 
+      printf(":ex_grr.sr[%d].t=%d internal error", pos, rob->sr[pos].t);
+    *val0 = rob->sr[pos].t==0 ? 0 :
+            rob->sr[pos].t==1 ? rob->sr[pos].n : /* PC is included here */
+            rob->sr[pos].x==0 ? ((rob->sr[pos].n<=USRREGTOP+USRREG-1) ? t[tid].usr[rob->sr[pos].n] :
+		  	         (rob->sr[pos].n<=AUXREGTOP+AUXREG-1) ? t[tid].aux[rob->sr[pos].n-AUXREGTOP] :
+			         (rob->sr[pos].n==CPSREGTOP+CPSREG-1) ? t[tid].cpsr :
+                                 (rob->sr[pos].n< VECREGTOP         ) ? 0 : /* not reached */
+			         (rob->sr[pos].n<=VECREGTOP+VECREG-1) ? t[tid].vec[rob->sr[pos].n-VECREGTOP].d[0] : 0) :
+                                c[cid].rob[rob->sr[pos].n].dr[rob->sr[pos].x].val[0];
+    if (val1) {
+      *val1 = rob->sr[pos].t==0 ? 0 :
+              rob->sr[pos].t==1 ? 0 :
+              rob->sr[pos].x==0 ? ((rob->sr[pos].n< VECREGTOP         ) ? 0 : /* not reached */
+	  		           (rob->sr[pos].n<=VECREGTOP+VECREG-1) ? t[tid].vec[rob->sr[pos].n-VECREGTOP].d[1] : 0) :
+                                  c[cid].rob[rob->sr[pos].n].dr[rob->sr[pos].x].val[1];
+    }
+  }
+  if (flag&TRACE_ARM) {
+    switch (rob->sr[pos].t) {
+    case 1:
+      printf(":IMM%08.8x_%08.8x", (Uint)(*val0>>32), (Uint)*val0);
+      break;
+    case 2:
+      if (rob->sr[pos].n< VECREGTOP) {
+	if (rob->sr[pos].x==0)
+	  printf(":R%02.2d->%08.8x_%08.8x", (Uint)rob->sr[pos].n, (Uint)(*val0>>32), (Uint)*val0);
+	else
+	  printf(":ROB%03.3d.%d->%08.8x_%08.8x", (Uint)rob->sr[pos].n, rob->sr[pos].x, (Uint)(*val0>>32), (Uint)*val0);
+      }
+      else {
+	if (rob->sr[pos].x==0)
+	  printf(":V%02.2d->%08.8x_%08.8x_%08.8x_%08.8x", (Uint)rob->sr[pos].n-VECREGTOP, (Uint)(*val1>>32), (Uint)*val1, (Uint)(*val0>>32), (Uint)*val0);
+	else
+	  printf(":ROB%03.3d.%d->%08.8x_%08.8x_%08.8x_%08.8x", (Uint)rob->sr[pos].n, rob->sr[pos].x, (Uint)(*val1>>32), (Uint)*val1, (Uint)(*val0>>32), (Uint)*val0);
+      }
+      break;
+    }
+  }
+  
+  return (0);
+}
+
+Uint ex_drw(tid, val1, val0, rob, pos) Uint tid; Ull val1, val0; struct rob *rob; Uint pos; /* dr[1-3] */
+{
+  Uint cid = tid2cid(tid);
+  Ull tval[2];
+  int i, j;
+
+  if (pos > 3) {
+    printf(":ex_drw.pos=%d internal error", pos);
+  }
+  else {
+    if (rob->dr[pos].t==0) 
+      printf(":ex_drw.dr[%d].t=%d v=%08.8x_%08.8x_%08.8x_%08.8x internal error", pos, rob->dr[pos].t, (Uint)(val1>>32), (Uint)val1, (Uint)(val0>>32), (Uint)val0);
+    /* ldの場合,stbfとマージのためmask参照 */
+    tval[0] = (rob->dr[pos].val[0] & rob->dr[pos].mask[0]) | (val0 & ~rob->dr[pos].mask[0]);
+    tval[1] = (rob->dr[pos].val[1] & rob->dr[pos].mask[1]) | (val1 & ~rob->dr[pos].mask[1]);
+    if (rob->ptw && pos==1) { /* partial_reg_write */
+      Ull mask[2];
+      switch (rob->opcd) { /* 8:VLDRB(8), 9:VlDRH(16), 10:VLDRS(32), 11:VLDRD(64) */
+      case 8:  /* VLDRB(8) */
+	if (rob->idx >= 8) { /* 15-8 */
+	  mask[1] = 0x00000000000000ffLL << ((rob->idx-8)*8);
+	  tval[1] = tval[0]              << ((rob->idx-8)*8);
+	  mask[0] = 0x0000000000000000LL;
+	  tval[0] = 0x0000000000000000LL;
+	}
+	else {               /* 7-0 */
+	  mask[1] = 0x0000000000000000LL;
+	  tval[1] = 0x0000000000000000LL;
+	  mask[0] = 0x00000000000000ffLL << (rob->idx*8);
+	  tval[0] = tval[0]              << (rob->idx*8);
+	}
+	break;
+      case 9:  /* VlDRH(16) */
+	if (rob->idx >= 8) { /* 15-8 */
+	  mask[1] = 0x000000000000ffffLL << ((rob->idx-8)*8);
+	  tval[1] = tval[0]              << ((rob->idx-8)*8);
+	  mask[0] = 0x0000000000000000LL;
+	  tval[0] = 0x0000000000000000LL;
+	}
+	else {               /* 7-0 */
+	  mask[1] = 0x0000000000000000LL;
+	  tval[1] = 0x0000000000000000LL;
+	  mask[0] = 0x000000000000ffffLL << (rob->idx*8);
+	  tval[0] = tval[0]              << (rob->idx*8);
+	}
+	break;
+      case 10: /* VLDRS(32) */
+	if (rob->idx >= 8) { /* 15-8 */
+	  mask[1] = 0x00000000ffffffffLL << ((rob->idx-8)*8);
+	  tval[1] = tval[0]              << ((rob->idx-8)*8);
+	  mask[0] = 0x0000000000000000LL;
+	  tval[0] = 0x0000000000000000LL;
+	}
+	else {               /* 7-0 */
+	  mask[1] = 0x0000000000000000LL;
+	  tval[1] = 0x0000000000000000LL;
+	  mask[0] = 0x00000000ffffffffLL << (rob->idx*8);
+	  tval[0] = tval[0]              << (rob->idx*8);
+	}
+	break;
+      case 11: /* VLDRD(64) */
+	if (rob->idx >= 8) { /* 15-8 */
+	  mask[1] = 0xffffffffffffffffLL;
+	  tval[1] = tval[0];
+	  mask[0] = 0x0000000000000000LL;
+	  tval[0] = 0x0000000000000000LL;
+	}
+	else {               /* 7-0 */
+	  mask[1] = 0x0000000000000000LL;
+	  tval[1] = 0x0000000000000000LL;
+	  mask[0] = 0xffffffffffffffffLL;
+	  tval[0] = tval[0];
+	}
+	break;
+      }
+      rob->dr[pos].val[0] = (rob->dr[0].val[0] & ~mask[0]) | (tval[0] & mask[0]);
+      rob->dr[pos].val[1] = (rob->dr[0].val[1] & ~mask[1]) | (tval[1] & mask[1]);
+    }
+    else if (rob->rep && pos==1) { /* repeat in reg */
+      switch (rob->opcd) { /* 8:VLDRB(8), 9:VlDRH(16), 10:VLDRS(32), 11:VLDRD(64) */
+      case 8:  /* VLDRB(8) */
+	if (rob->dbl) {
+	  rob->dr[pos].val[0] = (tval[0]<<56)|(tval[0]<<48)|(tval[0]<<40)|(tval[0]<<32)|(tval[0]<<24)|(tval[0]<<16)|(tval[0]<<8)|tval[0];
+	  rob->dr[pos].val[1] = (tval[0]<<56)|(tval[0]<<48)|(tval[0]<<40)|(tval[0]<<32)|(tval[0]<<24)|(tval[0]<<16)|(tval[0]<<8)|tval[0];
+	}
+	else {
+	  rob->dr[pos].val[0] = (tval[0]<<56)|(tval[0]<<48)|(tval[0]<<40)|(tval[0]<<32)|(tval[0]<<24)|(tval[0]<<16)|(tval[0]<<8)|tval[0];
+	  rob->dr[pos].val[1] = 0LL;
+	}
+	break;
+      case 9:  /* VlDRH(16) */
+	if (rob->dbl) {
+	  rob->dr[pos].val[0] = (tval[0]<<48)|(tval[0]<<32)|(tval[0]<<16)|tval[0];
+	  rob->dr[pos].val[1] = (tval[0]<<48)|(tval[0]<<32)|(tval[0]<<16)|tval[0];
+	}
+	else {
+	  rob->dr[pos].val[0] = (tval[0]<<48)|(tval[0]<<32)|(tval[0]<<16)|tval[0];
+	  rob->dr[pos].val[1] = 0LL;
+	}
+	break;
+      case 10: /* VLDRS(32) */
+	if (rob->dbl) {
+	  rob->dr[pos].val[0] = (tval[0]<<32)|tval[0];
+	  rob->dr[pos].val[1] = (tval[0]<<32)|tval[0];
+	}
+	else {
+	  rob->dr[pos].val[0] = (tval[0]<<32)|tval[0];
+	  rob->dr[pos].val[1] = 0LL;
+	}
+	break;
+      case 11: /* VLDRD(64) */
+	if (rob->dbl) {
+	  rob->dr[pos].val[0] = tval[0];
+	  rob->dr[pos].val[1] = tval[1];
+	}
+	else {
+	  rob->dr[pos].val[0] = tval[0];
+	  rob->dr[pos].val[1] = 0LL;
+	}
+	break;
+      }
+    }
+    else {
+      rob->dr[pos].val[0] = tval[0];
+      rob->dr[pos].val[1] = tval[1];
+    }
+    for (i=rob-&c[cid].rob[0]; i!=c[cid].rob_top; i=(i+1)%CORE_ROBSIZE) {
+      for (j=0; j<6; j++) {
+	if (c[cid].rob[i].sr[j].t==3 && c[cid].rob[i].sr[j].x == pos && c[cid].rob[i].sr[j].n == rob->dr[pos].p)
+	  c[cid].rob[i].sr[j].t = 2; /* ready */
+      }
+    }
+  }
+  if (flag&TRACE_ARM) {
+    if (rob->dr[pos].t) {
+      if (rob->dr[pos].n < VECREGTOP)
+	printf(":ROB%03.3d.%d(R%02.2d)<-%08.8x_%08.8x", rob->dr[pos].p, pos, rob->dr[pos].n, (Uint)(rob->dr[pos].val[0]>>32), (Uint)rob->dr[pos].val[0]);
+      else
+	printf(":ROB%03.3d.%d(V%02.2d)<-%08.8x_%08.8x_%08.8x_%08.8x", rob->dr[pos].p, pos, rob->dr[pos].n-VECREGTOP, (Uint)(rob->dr[pos].val[1]>>32), (Uint)rob->dr[pos].val[1], (Uint)(rob->dr[pos].val[0]>>32), (Uint)rob->dr[pos].val[0]);
+    }
+  }
+
+  return (0);
+}
+
+Uint rt_drw(tid, regno, val) Uint tid, regno; Ull *val;
+{
+  if (regno >= MAXLREG) {
+    printf(":rt_drw.regno=%d internal error", regno);
+  }
+  else {
+    if      (regno <= USRREGTOP+USRREG-1) {t[tid].usr[regno]                = val[0];}
+    else if (regno <= AUXREGTOP+AUXREG-1) {t[tid].aux[regno-AUXREGTOP]      = val[0];}
+    else if (regno == CPSREGTOP+CPSREG-1) {t[tid].cpsr                      = val[0];}
+    else if (regno <  VECREGTOP         ) {} /* non existent */
+    else if (regno <= VECREGTOP+VECREG-1) {t[tid].vec[regno-VECREGTOP].d[0] = val[0];
+					   t[tid].vec[regno-VECREGTOP].d[1] = val[1];}
+    else                                  {} /* non existent */
+  }
+  if (flag&TRACE_ARM) {
+    if (regno < VECREGTOP)
+      printf(":R%02.2d<-%08.8x_%08.8x", regno, (Uint)(val[0]>>32), (Uint)val[0]);
+    else
+      printf(":V%02.2d<-%08.8x_%08.8x_%08.8x_%08.8x", regno-VECREGTOP, (Uint)(val[1]>>32), (Uint)val[1], (Uint)(val[0]>>32), (Uint)val[0]);
+  }
+
+  return (0);
+}
+
+Ull grr(tid, n) Uint tid, n;
+{
+  Ull val;
+
+  if (n < 32) val = t[tid].usr[n];
+  else        val = t[tid].ib.pc;
+
+  if (flag&TRACE_ARM)
+    printf(":R%02.2d->%08.8x_%08.8x", n, (Uint)(val>>32), (Uint)val);
+  
+  return (val);
+}
+
+Uint grw(tid, n, val) Uint tid, n; Ull val;
+{
+  if (n < 32) t[tid].usr[n] = val;
+  else        t[tid].ib.pc = val;
+
+  if (flag&TRACE_ARM)
+    printf(":R%02.2d<-%08.8x_%08.8x", n, (Uint)(val>>32), (Uint)val);
+
+  return (0);
+}
+
+Uint ccw(tid, val) Uint tid; Ull val;
+{
+  t[tid].cpsr = val;
+
+  if (flag&TRACE_ARM)
+    printf(":CC<-%08.8x_%08.8x", (Uint)(val>>32), (Uint)val);
+
+  return (0);
+}
+
+/* I-fetchから呼び出すインタフェース */
+int o_ifetch(tid, addr, val, ib) Uint tid, addr; Uint *val; struct ib *ib;
+     /* retval=0:normal_end, 1:l1rq enqueued, 2:l1rq busy, 3:error (out of range) */
+{
+  Uint cid    = tid2cid(tid);
+  Uint l1bank = (addr/LINESIZE)%MAXL1BK;
+  int  stat, pull_way;
+
+  if ((addr & 3) || addr < MINADDR || ALOCLIMIT <= addr)
+    return (3);
+
+  stat = i1r(tid, addr, val, &pull_way); /* I1-cache */
+
+  if (stat == 2) { /* miss */
+    if (c[cid].l1rq[l1bank].v_stat)
+      return (1);
+    c[cid].l1rq[l1bank].rv_l1fil = 1; /* for load */
+    c[cid].l1rq[l1bank].t    = I1DELAY;
+    c[cid].l1rq[l1bank].tid  = tid;
+    c[cid].l1rq[l1bank].type = 3;  /* load */
+    c[cid].l1rq[l1bank].opcd = 15; /* I-fetch */
+    c[cid].l1rq[l1bank].rq_push = 0;
+    c[cid].l1rq[l1bank].push_ADR = 0; /* not used */
+    c[cid].l1rq[l1bank].rq_pull = 1;
+    c[cid].l1rq[l1bank].pull_ADR = addr;
+    c[cid].l1rq[l1bank].pull_way = pull_way;
+    c[cid].l1rq[l1bank].STD[0] = 0LL; /* not used */
+    c[cid].l1rq[l1bank].STD[1] = 0LL; /* not used */
+    c[cid].l1rq[l1bank].ib = ib;
+    c[cid].l1rq[l1bank].rob = NULL; /* not used */
+    c[cid].l1rq[l1bank].v_stat = (3<<2)|(1); /* valid */
+    /* L1:index=10bit,linesize=6bit,L2:bank=2bit,blocksize=12bitなので,L1の同一ラインはL2の同一バンクになる */
+    /* このため，push_ADRとpull_ADRは同一バンクとなるので，bitmap更新は1bitだけでよい */
+    return (2);
+  }
+  else
+    return (0);
+}
+
+/* L1-flushインタフェース */
+int o_flush(tid, addr, keep_or_drain) Uint tid, addr, keep_or_drain;
+     /* retval 0:normal_end, 1:mem_wait(queue-full), 2:mem_wait(queue-ok), 3:error, 4:flush_end */
+     /* flush=0:keep v&dirty, flush=1:clear v&dirty */
+{
+  Uint cid    = tid2cid(tid);
+  Uint l1bank = (addr/LINESIZE)%MAXL1BK;
+  int  stat, pull_way, rq_push;
+  Uint push_adr;
+
+  stat = d1w(tid, 0, addr, NULL, 1, keep_or_drain, NULL, &pull_way, &rq_push, &push_adr, c[cid].l1rq[l1bank].BUF); /* D1-cache */
+  /* DSM領域にL1-dirtyは存在しないのでmode=0でOK */
+  if (stat == 2) { /* dirty */
+    if (c[cid].l1rq[l1bank].v_stat)
+      return (1);
+    c[cid].l1rq[l1bank].rv_l1fil = 0;
+    c[cid].l1rq[l1bank].t    = D1DELAY;
+    c[cid].l1rq[l1bank].tid  = tid;
+    c[cid].l1rq[l1bank].type = 0;
+    c[cid].l1rq[l1bank].opcd = 0;
+    c[cid].l1rq[l1bank].rq_push = 1;
+    c[cid].l1rq[l1bank].push_ADR = push_adr;
+    c[cid].l1rq[l1bank].rq_pull = 0;
+    c[cid].l1rq[l1bank].pull_ADR = 0;
+    c[cid].l1rq[l1bank].pull_way = 0;
+    c[cid].l1rq[l1bank].STD[0] = 0LL; /* not used */
+    c[cid].l1rq[l1bank].STD[1] = 0LL; /* not used */
+    c[cid].l1rq[l1bank].ib  = NULL;
+    c[cid].l1rq[l1bank].rob  = NULL;
+    c[cid].l1rq[l1bank].v_stat = (3<<2)|(1); /* valid */
+    /* L1:index=10bit,linesize=6bit,L2:bank=2bit,blocksize=12bitなので,L1の同一ラインはL2の同一バンクになる */
+    /* このため，push_ADRとpull_ADRは同一バンクとなるので，bitmap更新は1bitだけでよい */
+    if (flag & TRACE_ARM)
+      printf("%03.3d:FL %08.8x_%08.8x delayed(miss) queued push_A=%08.8x\n",
+	     tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), push_adr);
+    return (2);
+  }
+  else
+    return (0);
+}
+
+/* LD/ST命令から呼び出すインタフェース */
+int o_ldst(tid, type, opcd, addr, mask, rot, val, rob)
+     Uint tid, type, opcd, addr; Ull *mask; Uint rot; Ull *val; struct rob *rob;
+     /* type=3:load, 4:store */
+     /* retval=0:normal_end, 1:l1rq busy, 2:l1rq enqueued, 3:error (out of range) */
+{
+  Uint cid    = tid2cid(tid);
+  Uint l1bank = (addr/LINESIZE)%MAXL1BK;
+  Uint push_adr, a, o;
+  Ull  m[2], dm[2], dv[2], lv[2];
+  int  i, stat, rq_push, pull_way, inhibit_replace;
+
+  if (addr < MINADDR || MEM_VALID_ADDR < addr)
+    return (3);
+
+  /***for EMAX6-I/O****/
+  if (type == 3 && MEMSIZE <= addr) { /* I/O space */
+    /*emax6_ctl(tid, 3, opcd, addr, mask, val); type=3:load */
+
+    /* check preceeding rob.stbf *//*★★★IOLDは,先行(IO)STの完了を待ち合わせる★★★*/
+    for (i=c[cid].rob_bot; i!=rob-&c[cid].rob[0]; i=(i+1)%CORE_ROBSIZE) {
+      if (c[cid].rob[i].stat == ROB_MAPPED && c[cid].rob[i].type == 4) { /* ROB_MAPPED: rob->ls_addr is unknown .. all succeeding loads should wait */
+	if (flag & TRACE_ARM)
+	  printf(":(waiting prev_store rob[%d].stat=%d)", i, c[cid].rob[i].stat);
+	return (1);
+      }
+      else if ((c[cid].rob[i].stat == ROB_STREXWAIT || c[cid].rob[i].stat == ROB_COMPLETE || c[cid].rob[i].stat == ROB_D1WRQWAIT) && c[cid].rob[i].tid == tid && c[cid].rob[i].stbf.t) { /* ROB_COMPLETE: rob->stbf.t = 1 */ 
+	if (flag & TRACE_ARM)
+	  printf(":(waiting prev_store rob[%d].stat=%d)", i, c[cid].rob[i].stat);
+	return (1);
+      }
+    }
+
+    if (c[cid].iorq.v_stat)
+      return (1);
+    else {
+      rob->ls_addr = addr;
+      c[cid].iorq.tid  = tid;
+      c[cid].iorq.type = type; /* load */
+      c[cid].iorq.opcd = opcd; /* OP-fetch */
+      c[cid].iorq.ADR = addr;
+      c[cid].iorq.BUF[0] = val[0]; /* for store */
+      c[cid].iorq.BUF[1] = val[1]; /* for store */
+      c[cid].iorq.rob = rob;
+      c[cid].iorq.v_stat = (3<<2)|(1); /* valid */
+      if (flag & TRACE_ARM)
+	printf("%03.3d:IO %08.8x_%08.8x cycle=%08.8x_%08.8x ---EMAX6 IOR type=%x adr=%08.8x----", cid, (Uint)(t[cid].total_steps>>32), (Uint)t[cid].total_steps, (Uint)(t[cid].total_cycle>>32), (Uint)t[cid].total_cycle, c[cid].iorq.type, c[cid].iorq.ADR);
+      return (2);
+    }
+  }
+  /***for EMAX6-I/O****/
+
+  /* NON-BLOCKING-CACHE */
+  if (c[cid].l1rq[l1bank].v_stat)
+    inhibit_replace = 1;
+  else
+    inhibit_replace = 0;
+
+#if 0
+  /* Specualtive execution can produce unaligned error */
+  if (( mask[1]                         && (addr & 15)) ||
+      ((mask[0] & 0xffffffff00000000LL) && (addr &  7)) ||
+      ((mask[0] & 0x00000000ffff0000LL) && (addr &  3)) ||
+      ((mask[0] & 0x000000000000ff00LL) && (addr &  1))) {
+    if (flag & TRACE_ARM) printf("\n");
+    printf("%03.3d:LDST %08.8x_%08.8x %08.8x A=%08.8x M=%08.8x_%08.8x_%08.8x_%08.8x =unaligned=",
+	   tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps),
+	   rob->pc, addr, (Uint)(mask[1]>>32), (Uint)mask[1], (Uint)(mask[0]>>32), (Uint)mask[0]);
+    if (!(flag & TRACE_ARM)) printf("\n");
+  }
+#endif
+
+  switch (type) {
+  case 3: /* load */
+    a  = addr & ~15;
+    o  = ((addr&8)!=0); /* 0:even, 1:odd */
+    m[o]   = mask[0]<<((addr&7)<<3);
+    m[1-o] = mask[1]; /* if odd, mask[1] is all-0 */
+    dm[0] = 0x0000000000000000LL; /* valid mask from prev stbf */
+    dm[1] = 0x0000000000000000LL; /* valid mask from prev stbf */
+    dv[0] = 0x0000000000000000LL; /* valid data from prev stbf */
+    dv[1] = 0x0000000000000000LL; /* valid data from prev stbf */
+    /* check preceeding l1rq.STD */
+    if (c[cid].l1rq[l1bank].v_stat && c[cid].l1rq[l1bank].type == 4) {
+      Uint sa, so; Ull sm[2], sv[2];
+      sa = c[cid].l1rq[l1bank].pull_ADR & ~15;
+      so = ((c[cid].l1rq[l1bank].pull_ADR&8)!=0); /* 0:evan, 1:odd */
+      switch (c[cid].l1rq[l1bank].opcd) {
+      case 0: /* STRB */
+      case 8: /* VSTRB */
+	sm[so]   = 0x00000000000000ffLL       <<((c[cid].l1rq[l1bank].pull_ADR&7)<<3);
+	sv[so]   = (c[cid].l1rq[l1bank].STD[0]<<((c[cid].l1rq[l1bank].pull_ADR&7)<<3));
+	sm[1-so] = 0x0000000000000000LL;
+	sv[1-so] = 0x0000000000000000LL;
+	break;
+      case 1: /* STRH */
+      case 9: /* VSTRH */
+	sm[so]   = 0x000000000000ffffLL       <<((c[cid].l1rq[l1bank].pull_ADR&6)<<3);
+	sv[so]   = (c[cid].l1rq[l1bank].STD[0]<<((c[cid].l1rq[l1bank].pull_ADR&6)<<3));
+	sm[1-so] = 0x0000000000000000LL;
+	sv[1-so] = 0x0000000000000000LL;
+	break;
+      case 2: /* STRW */
+      case 7: /* STREX */
+      case 10: /* VSTRS */
+	sm[so]   = 0x00000000ffffffffLL       <<((c[cid].l1rq[l1bank].pull_ADR&4)<<3);
+	sv[so]   = (c[cid].l1rq[l1bank].STD[0]<<((c[cid].l1rq[l1bank].pull_ADR&4)<<3));
+	sm[1-so] = 0x0000000000000000LL;
+	sv[1-so] = 0x0000000000000000LL;
+	break;
+      case 3: /* STR */
+      case 11: /* VSTRD */
+	sm[so]   = 0xffffffffffffffffLL;
+	sv[so]   = c[cid].l1rq[l1bank].STD[0];
+	sm[1-so] = 0x0000000000000000LL;
+	sv[1-so] = 0x0000000000000000LL;
+	break;
+      case 12: /* VSTRQ */
+	sm[so]   = 0xffffffffffffffffLL;
+	sv[so]   = c[cid].l1rq[l1bank].STD[0];
+	sm[1-so] = 0xffffffffffffffffLL;
+	sv[1-so] = c[cid].l1rq[l1bank].STD[1];
+	break;
+      }
+      if (a == sa) {
+	if (m[0] & sm[0]) {
+	  dm[0] =  dm[0] | (m[0] & sm[0]);
+	  dv[0] = (dv[0] & ~(m[0] & sm[0])) | (sv[0] & (m[0] & sm[0]));
+	}
+	if (m[1] & sm[1]) {
+	  dm[1] =  dm[1] | (m[1] & sm[1]);
+	  dv[1] = (dv[1] & ~(m[1] & sm[1])) | (sv[1] & (m[1] & sm[1]));
+	}
+      }
+    }
+    /* check preceeding rob.stbf */
+    for (i=c[cid].rob_bot; i!=rob-&c[cid].rob[0]; i=(i+1)%CORE_ROBSIZE) {
+      if (c[cid].rob[i].stat == ROB_MAPPED && c[cid].rob[i].type == 4) { /* ROB_MAPPED: rob->ls_addr is unknown .. all succeeding loads should wait */
+	if (flag & TRACE_ARM)
+	  printf(":(waiting prev_store rob[%d].stat=%d)", i, c[cid].rob[i].stat);
+	return (1);
+      }
+      else if ((c[cid].rob[i].stat == ROB_STREXWAIT || c[cid].rob[i].stat == ROB_COMPLETE || c[cid].rob[i].stat == ROB_D1WRQWAIT) && c[cid].rob[i].tid == tid && c[cid].rob[i].stbf.t) { /* ROB_COMPLETE: rob->stbf.t = 1 */ 
+	Uint sa, so; Ull sm[2], sv[2];
+	sa = c[cid].rob[i].ls_addr & ~15;
+	so = ((c[cid].rob[i].ls_addr&8)!=0); /* 0:evan, 1:odd */
+	sm[so]   = c[cid].rob[i].stbf.mask[0]<<((c[cid].rob[i].ls_addr&7)<<3);
+	sv[so]   = c[cid].rob[i].stbf.val[0] <<((c[cid].rob[i].ls_addr&7)<<3);
+	sm[1-so] = c[cid].rob[i].stbf.mask[1];
+	sv[1-so] = c[cid].rob[i].stbf.val[1];
+	if (a == sa) {
+	  if (c[cid].rob[i].stbf.t == 3) { /* wait for previous store */
+	    if ((m[0] & sm[0]) || (m[1] & sm[1])) {
+	      if (flag & TRACE_ARM)
+		printf(":(waiting prev_store rob[%d].stat=%d)", i, c[cid].rob[i].stat);
+	      return (1);
+	    }
+	  }
+	  else if (c[cid].rob[i].stbf.t == 1) { /* valid previous store */
+	    if (m[0] & sm[0]) {
+	      dm[0] =  dm[0] | (m[0] & sm[0]);
+	      dv[0] = (dv[0] & ~(m[0] & sm[0])) | (sv[0] & (m[0] & sm[0]));
+	    }
+	    if (m[1] & sm[1]) {
+	      dm[1] =  dm[1] | (m[1] & sm[1]);
+	      dv[1] = (dv[1] & ~(m[1] & sm[1])) | (sv[1] & (m[1] & sm[1]));
+	    }
+	  }
+	}
+      }
+    }
+
+    if (o==0) { /* even */
+      dm[0] = dm[0] >> ((addr&7)<<3);
+      dv[0] = dv[0] >> ((addr&7)<<3);
+      dm[1] = dm[1];
+      dv[1] = dv[1];
+    }
+    else { /* odd */
+      dm[0] = dm[1] >> ((addr&7)<<3);
+      dv[0] = dv[1] >> ((addr&7)<<3);
+      dm[1] = 0LL;
+      dv[1] = 0LL;
+    }
+    if (dm[0]) {
+      rob->dr[1].mask[0] = dm[0];
+      rob->dr[1].val[0]  = dv[0];
+    }
+    if (dm[1]) {
+      rob->dr[1].mask[1] = dm[1];
+      rob->dr[1].val[1]  = dv[1];
+    }
+    if (dm[0] == mask[0] && dm[1] == mask[1]) {
+      val[0] = dv[0];
+      val[1] = dv[1];
+      if (opcd == 7) /* ldrex should not get value from bypass */
+	return (1);
+      else
+	return (0);
+    }
+
+    /* stbf does not cover all mask */
+    lv[0] = 0LL;
+    lv[1] = 0LL;
+    stat = d1r(tid, opcd, addr, mask, rot, lv, &pull_way, &rq_push, &push_adr, inhibit_replace?NULL:c[cid].l1rq[l1bank].BUF); /* I1-cache */
+    val[0] = (dv[0] & dm[0]) | (lv[0] & ~dm[0]);
+    val[1] = (dv[1] & dm[1]) | (lv[1] & ~dm[1]);
+    break;
+  case 4: /* store */
+    /* store to rob.stbf */
+    stat = 0;
+    rob->ls_addr      = addr;
+    rob->stbf.t       = (opcd==7)?3:1; /* valid */
+    rob->stbf.mask[0] = mask[0];
+    rob->stbf.mask[1] = mask[1];
+    rob->stbf.val[0]  = val[0];
+    rob->stbf.val[1]  = val[1];
+    break;
+  default: /* not implemented */
+    if (flag & TRACE_ARM)
+      printf(":o_ldst A=%08.8x type=%d not implemented", addr, type);
+    else {
+      if (flag & TRACE_ARM) printf("\n");
+      printf("%03.3d:WARNING %08.8x_%08.8x o_ldst A=%08.8x type=%d not implemented",
+	     tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), addr, type);
+      if (!(flag & TRACE_ARM)) printf("\n");
+    }
+    return (3);
+  }
+
+  if (stat == 2 || stat == 1) { /* d1r:miss d1w:miss|!dirty|shared || DDR-miss */
+    if (inhibit_replace) { /* busy */
+      if (flag & TRACE_ARM)
+	printf(":(inhibit_replace=1 tid=%d type=%d opcd=%d rob=%d)", tid, type, opcd, rob-&c[cid].rob[0]);
+      return (1);
+    }
+    rob->ls_addr = addr;
+    c[cid].l1rq[l1bank].rv_l1fil = 1; /* for load */
+    c[cid].l1rq[l1bank].t    = D1DELAY;
+    c[cid].l1rq[l1bank].tid  = tid;
+    c[cid].l1rq[l1bank].type = type; /* load/store/ldstub */
+    c[cid].l1rq[l1bank].opcd = opcd; /* OP-fetch */
+    c[cid].l1rq[l1bank].rq_push = rq_push;   /* miss:repl_d !dirty|shared:0 */
+    c[cid].l1rq[l1bank].push_ADR = push_adr;
+    c[cid].l1rq[l1bank].rq_pull = 1;   /* miss:pull !dirty|shared:1(本来不要だがプロトコル簡単化のため) */
+    c[cid].l1rq[l1bank].pull_ADR = addr;
+    c[cid].l1rq[l1bank].pull_way = pull_way;
+    c[cid].l1rq[l1bank].STD[0] = val[0]; /* for store */
+    c[cid].l1rq[l1bank].STD[1] = val[1]; /* for store */
+    c[cid].l1rq[l1bank].ib = NULL; /* not used */
+    c[cid].l1rq[l1bank].rob = rob;
+    c[cid].l1rq[l1bank].v_stat = (3<<2)|(1); /* valid */
+    /* L1:index=10bit,linesize=6bit,L2:bank=2bit,blocksize=12bitなので,L1の同一ラインはL2の同一バンクになる */
+    /* このため，push_ADRとpull_ADRは同一バンクとなるので，bitmap更新は1bitだけでよい */
+    return (2);
+  }
+  else
+    return (0);
+}
+
+int i1r(tid, addr, val, pull_way) Uint tid, addr; Uint *val; int *pull_way;
+     /* アドレス空間の判別後に使用 */
+     /* return 0:normal end, 2:miss */
+{
+  Uint cid = tid2cid(tid);
+  Uint l1bank = (addr/LINESIZE)%MAXL1BK;
+  Uint index  = (addr/LINESIZE/MAXL1BK)%I1WMAXINDEX;
+  Ull  membuf;
+  int  fmin, i, j, k, w, hit;
+
+  fmin = MAXINT;
+  j = -1;
+  k = -1;
+  hit = 0;
+  for (w=0; w<I1WAYS; w++) {
+    if (c[cid].i1tag[l1bank][index][w].lru)
+      c[cid].i1tag[l1bank][index][w].lru--;
+    if (c[cid].i1tag[l1bank][index][w].v && c[cid].i1tag[l1bank][index][w].la == addr/I1TAGMASK) { /* hit */
+      c[cid].i1tag[l1bank][index][w].lru = 127; /* reset lru */
+      j = w;
+      hit = 1;
+    }
+    else if (!c[cid].i1tag[l1bank][index][w].v) { /* first empty entry */
+      if (j < 0)
+	j = w;
+    }
+    else { /* fixed nonbusy entry */
+      if (fmin > c[cid].i1tag[l1bank][index][w].lru) {
+	fmin = c[cid].i1tag[l1bank][index][w].lru;
+	k = w;
+      }
+    }
+  }
+  if (!hit) {
+    if (j >= 0) /* first empty entry */
+      *pull_way = j;
+    else /* least used entry */
+      *pull_way = k;
+    return (2); /* miss */
+  }
+  else { /* hit */
+    membuf = c[cid].i1line[l1bank][index][j].d[(addr%LINESIZE)>>3];
+    val[0] = membuf>>((addr&4)<<3);
+    return (0); /* hit */
+  }
+}
+
+int d1r(tid, opcd, addr, mask, rot, val, pull_way, rq_push, push_adr, repl_d)
+     Uint tid, opcd, addr; Ull *mask; Uint rot; Ull *val;
+     int *pull_way, *rq_push; Uint *push_adr; Ull *repl_d;
+     /* アドレス空間の判別後に使用 */
+     /* return 0:normal end, 1:wait for CC, 2:miss + after-care */
+{
+  int cid = tid2cid(tid);
+  Uint l1bank = (addr/LINESIZE)%MAXL1BK;
+  Uint index  = (addr/LINESIZE/MAXL1BK)%D1WMAXINDEX;
+  Ull  membuf;
+  Uint a;
+  int  fmin, i, j, k, l, w, hit;
+  
+  a = addr & ~7;
+
+  fmin = MAXINT;
+  j = -1;
+  k = -1;
+  hit = 0;
+  for (w=0; w<D1WAYS; w++) {
+    if (c[cid].d1tag[l1bank][index][w].lru)
+      if (repl_d) c[cid].d1tag[l1bank][index][w].lru--;
+    if (c[cid].d1tag[l1bank][index][w].v && c[cid].d1tag[l1bank][index][w].la == a/D1TAGMASK) { /* hit */
+      c[cid].d1tag[l1bank][index][w].lru = 127; /* reset lru */
+      j = w;
+      hit = 1;
+    }
+    else if (!c[cid].d1tag[l1bank][index][w].v) { /* first empty entry */
+      if (j < 0)
+	j = w;
+    }
+    else { /* fixed nonbusy entry */
+      if (fmin > c[cid].d1tag[l1bank][index][w].lru) {
+	fmin = c[cid].d1tag[l1bank][index][w].lru;
+	k = w;
+      }
+    }
+  }
+  if (!hit) {
+    if (j >= 0) /* first empty entry */
+      *pull_way = j;
+    else /* least used entry */
+      *pull_way = k;
+    if (c[cid].d1tag[l1bank][index][*pull_way].v) {
+      *rq_push  =  c[cid].d1tag[l1bank][index][*pull_way].dirty;
+      *push_adr = (c[cid].d1tag[l1bank][index][*pull_way].la * D1TAGMASK)|((index*MAXL1BK+l1bank) * LINESIZE);
+      if (*rq_push && repl_d) { /* L1CTを使う場合（non-blocking-cache），repl_d=NULLで来る */
+	c[cid].d1tag[l1bank][index][*pull_way].v = 0;
+	for (l=0; l<LINESIZE/8; l++) /* 4wayなので実際にどこかに読み出してあるはず */
+	  repl_d[l] = c[cid].d1line[l1bank][index][*pull_way].d[l]; /* osimでは代わりにL2_ctl.d[]を使用 */
+      }
+    }
+    else { /* least used entry */
+      *rq_push = 0;
+      *push_adr = 0;
+    }
+#if 1
+    if (flag & TRACE_ARM)
+      printf(":D1R miss (l1bank=%d A=%08.8x rq_push=%d pushA=%08.8x)", l1bank, addr, *rq_push, *push_adr);
+#endif
+    return (2); /* miss */
+  }
+  else if (opcd == 7 && (!c[cid].d1tag[l1bank][index][j].dirty || c[cid].d1tag[l1bank][index][j].share)) { /* LDREX hit but !dirty|shared */
+    /* LDREXが後続STREXの成功確率を上げるためにdirty=1,share=0を目指す(保証はしない) */
+    *pull_way = j;
+    *rq_push = 0;
+    *push_adr = 0;
+#if 1
+    if (flag & TRACE_ARM)
+      printf(":D1R LDREX !dirty|shared dirty=%d share=%d (l1bank=%d A=%08.8x)",
+	     c[cid].d1tag[l1bank][index][j].dirty, c[cid].d1tag[l1bank][index][j].share, l1bank, addr);
+#endif
+    return (1); /* wait for c-coherence */
+  }
+  else { /* hit */
+    if (opcd == 7) { /* ldrex */
+      if (c[cid].d1tag[l1bank][index][j].thr_per_core == -1) { /* check thr_per_core */
+	if (flag & TRACE_ARM)
+	  printf(":LDREX KEEP");
+	c[cid].d1tag[l1bank][index][j].thr_per_core = tid/MAXCORE; /* keep */
+      }
+      else {
+	if (flag & TRACE_ARM)
+	  printf(":LDREX MISS");
+      }
+    }
+    if      (mask[1] & 0xffffffffffffffffLL) {
+      membuf = c[cid].d1line[l1bank][index][j].d[((a|8)&(LINESIZE-1))>>3];
+#ifdef CHECK_CACHE
+      {
+	Ull membuf2;
+	membuf2 = mmr_chkc(tid, a|8);
+	if (membuf != membuf2) {
+	  if (flag & TRACE_ARM) printf("\n");
+	  printf("%03.3d:D1R %08.8x_%08.8x hit (l1bank=%d,index=%d,way=%d,A=%08.8x->%08.8x_%08.8x mismatch mmr %08.8x_%08.8x",
+		 tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps),
+		 l1bank,index, j, a|8, (Uint)(membuf>>32), (Uint)membuf, (Uint)(membuf2>>32), (Uint)membuf2);
+	  if (!(flag & TRACE_ARM)) printf("\n");
+	}
+      }
+#endif
+      val[1] = membuf;
+    }
+    membuf = c[cid].d1line[l1bank][index][j].d[(a&(LINESIZE-1))>>3];
+#ifdef CHECK_CACHE
+    {
+      Ull membuf2;
+      membuf2 = mmr_chkc(tid, a);
+      if (membuf != membuf2) {
+	if (flag & TRACE_ARM) printf("\n");
+	printf("%03.3d:D1R %08.8x_%08.8x hit (l1bank=%d,index=%d,way=%d,A=%08.8x->%08.8x_%08.8x mismatch mmr %08.8x_%08.8x",
+	       tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps),
+	       l1bank,index, j, a, (Uint)(membuf>>32), (Uint)membuf, (Uint)(membuf2>>32), (Uint)membuf2);
+	if (!(flag & TRACE_ARM)) printf("\n");
+      }
+    }
+#endif
+    if      (mask[0] & 0xffffffff00000000LL) val[0] = membuf;
+    else if (mask[0] & 0x00000000ffff0000LL) {
+      if (rot)
+	rot = (addr & 3)*8;
+      val[0]=(membuf>>((addr&4)<<3))&mask[0];
+      if (rot)
+	val[0]=((val[0]<<(32-rot))|(val[0]>>rot))&mask[0];
+    }
+    else if (mask[0] & 0x000000000000ff00LL) val[0]=(membuf>>((addr&6)<<3))&mask[0];
+    else if (mask[0] & 0x00000000000000ffLL) val[0]=(membuf>>((addr&7)<<3))&mask[0];
+#if 1
+    if (flag & TRACE_ARM)
+      printf(":l1bank=%d,index=%d,way=%d,A=%08.8x,M=%08.8x_%08.8x_%08.8x_%08.8x->%08.8x_%08.8x_%08.8x_%08.8x,d=%d,s=%d",
+	     l1bank,index, j,
+	     addr,
+	     (Uint)(mask[1]>>32), (Uint)mask[1], (Uint)(mask[0]>>32), (Uint)mask[0],
+	     (Uint)(val[1]>>32), (Uint)(val[1]), (Uint)(val[0]>>32), (Uint)(val[0]),
+	     c[cid].d1tag[l1bank][index][j].dirty, c[cid].d1tag[l1bank][index][j].share);
+#endif
+
+#if 1
+    /* check inclusive w/ L2 */
+    {
+      Uint l2bank = (addr/LINESIZE)%MAXL2BK;
+      Uint index = (addr/LINESIZE/MAXL2BK)%L2WMAXINDEX;
+      int w;
+      for (w=0; w<L2WAYS; w++) {
+	if (c[cid].l2tag[l2bank][index][w].v && c[cid].l2tag[l2bank][index][w].la == addr/L2TAGMASK) { /* hit */
+	  break;
+	}
+      }
+      if (w == L2WAYS) {
+	if (flag & TRACE_ARM)
+	  printf(":d1r violates inclusive L2 cache l1bank=%d l2bank=%d A=%08.8x (malfunction)", l1bank, l2bank, addr);
+	else {
+	  if (flag & TRACE_ARM) printf("\n");
+	  printf("%03.3d:WARNING %08.8x_%08.8x d1r violates inclusive L2 cache l1bank=%d l2bank=%d A=%08.8x (malfunction)",
+		 tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), l1bank, l2bank, addr);
+	  if (!(flag & TRACE_ARM)) printf("\n");
+	}
+      }
+    }
+#endif
+    return (0); /* hit */
+  }
+}
+
+int d1w(tid, opcd, addr, mask, flush, keep_or_drain, val, pull_way, rq_push, push_adr, repl_d)
+     Uint tid, opcd, flush, keep_or_drain; Uint addr; Ull *mask, *val; 
+     int *pull_way, *rq_push; Uint *push_adr; Ull *repl_d;
+     /* アドレス空間の判別後に使用 */
+     /* DSM missの場合,repl_dは更新しないが,上位ではl1rqにstore-REQ発行 */
+     /* return 0:normal end, 1:wait for CC, 2:miss + after-care */
+     /* keep_or_drain: t[tid].status == ARM_DRAIN */
+{
+  int cid = tid2cid(tid);
+  Uint l1bank = (addr/LINESIZE)%MAXL1BK;
+  Uint index  = (addr/LINESIZE/MAXL1BK)%D1WMAXINDEX;
+  Ull  membuf, m;
+  Uint a;
+  int fmin, i, j, k, l, w, hit;
+
+  a = addr & ~7;
+
+  if (flush) {
+    *rq_push = 0;
+    *push_adr = 0;
+    w = (addr/D1TAGMASK)%D1WAYS;
+    if (c[cid].d1tag[l1bank][index][w].v) {
+      if (keep_or_drain) /* 0:keep,1:drain */
+	c[cid].d1tag[l1bank][index][w].v = 0;
+      if (c[cid].d1tag[l1bank][index][w].dirty && (keep_or_drain || !c[cid].d1tag[l1bank][index][w].drain)) {
+	c[cid].d1tag[l1bank][index][w].drain = 1; /* mark */
+	*rq_push = 1;
+	*push_adr = (c[cid].d1tag[l1bank][index][w].la * D1TAGMASK)|((index*MAXL1BK+l1bank) * LINESIZE);
+	if (repl_d) {
+	  for (l=0; l<LINESIZE/8; l++) /* 4wayなので実際にどこかに読み出してあるはず */
+	    repl_d[l] = c[cid].d1line[l1bank][index][w].d[l]; /* osimでは代わりにL2_ctl.d[]を使用 */
+	}
+	return (2);
+      }
+      return (1);
+    }
+    return (0);
+  }
+
+  fmin = MAXINT;
+  j = -1;
+  k = -1;
+  hit = 0;
+  for (w=0; w<D1WAYS; w++) {
+    if (c[cid].d1tag[l1bank][index][w].lru)
+      if (repl_d) c[cid].d1tag[l1bank][index][w].lru--;
+    if (c[cid].d1tag[l1bank][index][w].v && c[cid].d1tag[l1bank][index][w].la == a/D1TAGMASK) { /* hit */
+      c[cid].d1tag[l1bank][index][w].lru = 127; /* reset lru */
+      j = w;
+      hit = 1;
+    }
+    else if (!c[cid].d1tag[l1bank][index][w].v) { /* first empty entry */
+      if (j < 0)
+	j = w;
+    }
+    else { /* fixed nonbusy entry */
+      if (fmin > c[cid].d1tag[l1bank][index][w].lru) {
+	fmin = c[cid].d1tag[l1bank][index][w].lru;
+	k = w;
+      }
+    }
+  }
+  if (!hit) {
+    if (j >= 0) /* first empty entry */
+      *pull_way = j;
+    else /* least used entry */
+      *pull_way = k;
+    if (c[cid].d1tag[l1bank][index][*pull_way].v) { /* strex時は無変更 */
+      *rq_push  =  c[cid].d1tag[l1bank][index][*pull_way].dirty;
+      *push_adr = (c[cid].d1tag[l1bank][index][*pull_way].la * D1TAGMASK)|((index*MAXL1BK+l1bank) * LINESIZE);
+      if (*rq_push && repl_d) { /* L1CTを使う場合（non-blocking-cache），repl_d=NULLで来る */
+	c[cid].d1tag[l1bank][index][*pull_way].v = 0;
+	for (l=0; l<LINESIZE/8; l++) /* 4wayなので実際にどこかに読み出してあるはず */
+	  repl_d[l] = c[cid].d1line[l1bank][index][*pull_way].d[l]; /* osimでは代わりにL2_ctl.d[]を使用 */
+      }
+    }
+    else {
+      *rq_push = 0;
+      *push_adr = 0;
+    }
+#if 1
+    if (flag & TRACE_ARM)
+      printf(":D1W miss (l1bank=%d A=%08.8x rq_push=%d pushA=%08.8x)", l1bank, addr, *rq_push, *push_adr);
+#endif
+    return (2); /* miss */
+  }
+  else if (!c[cid].d1tag[l1bank][index][j].dirty || c[cid].d1tag[l1bank][index][j].share) { /* hit but !dirty|shared */
+    /* ストアデータが待っているが,この時点では書き込みできない(CC解決後に改めて書き込む) */
+    *pull_way = j;
+    *rq_push = 0;
+    *push_adr = 0;
+#if 1
+    if (flag & TRACE_ARM)
+      printf(":D1W !dirty|shared dirty=%d share=%d (l1bank=%d A=%08.8x)",
+	     c[cid].d1tag[l1bank][index][j].dirty, c[cid].d1tag[l1bank][index][j].share, l1bank, addr);
+#endif
+    return (1); /* wait for c-coherence */
+  }
+  else { /* hit and dirty & !shared */
+    if (opcd == 7) { /* strex */
+      if (c[cid].d1tag[l1bank][index][j].thr_per_core == tid/MAXCORE) { /* check thr_per_core */
+	if (flag & TRACE_ARM)
+	  printf(":STREX SUCCEEDED");
+	c[cid].d1tag[l1bank][index][j].thr_per_core = -1; /* reset */
+      }
+      else {
+	if (flag & TRACE_ARM)
+	  printf(":STREX FAIL current thr_per_core=%d", c[cid].d1tag[l1bank][index][j].thr_per_core);
+	return (1); /* strex failed */
+      }
+    }
+
+    if      (mask[1] & 0xffffffffffffffffLL) {
+      m = 0xffffffffffffffffLL;
+      membuf = val[1];
+      c[cid].d1line[l1bank][index][j].d[((a|8)&(LINESIZE-1))>>3] = membuf;
+#ifdef CHECK_CACHE
+      mmw_chkc(tid, a|8, m, membuf);
+#endif
+    }
+    if      (mask[0] & 0xffffffff00000000LL) { m = 0xffffffffffffffffLL;                membuf = (val[0]               );}
+    else if (mask[0] & 0x00000000ffff0000LL) { m = 0x00000000ffffffffLL<<((addr&4)<<3); membuf = (val[0]<<((addr&4)<<3));}
+    else if (mask[0] & 0x000000000000ff00LL) { m = 0x000000000000ffffLL<<((addr&6)<<3); membuf = (val[0]<<((addr&6)<<3));}
+    else if (mask[0] & 0x00000000000000ffLL) { m = 0x00000000000000ffLL<<((addr&7)<<3); membuf = (val[0]<<((addr&7)<<3));}
+    c[cid].d1line[l1bank][index][j].d[(a&(LINESIZE-1))>>3] = (c[cid].d1line[l1bank][index][j].d[(a&(LINESIZE-1))>>3]&~m)|(membuf&m);
+#ifdef CHECK_CACHE
+    mmw_chkc(tid, a, m, membuf);
+#endif
+#if 1
+    if (flag & TRACE_ARM)
+      printf(":l1bank=%d,index=%d,way=%d,A=%08.8x,M=%08.8x_%08.8x_%08.8x_%08.8x<-%08.8x_%08.8x_%08.8x_%08.8x,d=%d,s=%d",
+	     l1bank,index, j,
+	     addr,
+	     (Uint)(mask[1]>>32), (Uint)mask[1], (Uint)(mask[0]>>32), (Uint)mask[0],
+	     (Uint)(val[1]>>32), (Uint)val[1], (Uint)(val[0]>>32), (Uint)val[0],
+	     c[cid].d1tag[l1bank][index][j].dirty, c[cid].d1tag[l1bank][index][j].share);
+#endif
+
+#if 1
+    /* check inclusive w/ L2 */
+    {
+      Uint l2bank = (addr/LINESIZE)%MAXL2BK;
+      Uint index = (addr/LINESIZE/MAXL2BK)%L2WMAXINDEX;
+      int w;
+      for (w=0; w<L2WAYS; w++) {
+	if (c[cid].l2tag[l2bank][index][w].v && c[cid].l2tag[l2bank][index][w].la == addr/L2TAGMASK) { /* hit */
+	  break;
+	}
+      }
+      if (w == L2WAYS) {
+	if (flag & TRACE_ARM)
+	  printf(":d1w violates inclusive L2 cache l1bank=%d l2bank=%d A=%08.8x (malfunction)", l1bank, l2bank, addr);
+	else
+	  printf("%03.3d:WARNING %08.8x_%08.8x d1w violates inclusive L2 cache l1bank=%d l2bank=%d A=%08.8x (malfunction)\n",
+		 tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), l1bank, l2bank, addr);
+      }
+    }
+#endif
+    return (0); /* hit */
+  }
+}
+
+int l2r(tid, write, addr, val, rv_share, pull_way, rq_push, push_adr, repl_d)
+     Uint tid, write, addr; Ull *val; Uint *rv_share;
+     int *pull_way, *rq_push; Uint *push_adr; Ull *repl_d;
+     /* return 0:normal end, 2:miss + after care */
+{
+  int cid = tid2cid(tid);
+  Uint l1bank = (addr/LINESIZE)%MAXL1BK;
+  Uint l2bank = (addr/LINESIZE)%MAXL2BK;
+  Uint index  = (addr/LINESIZE/MAXL2BK)%L2WMAXINDEX;
+  Uint a;
+  int fmin, i, j, k, l, w, hit;
+
+  a = addr & ~(LINESIZE-1);
+
+  fmin = MAXINT;
+  j = -1;
+  k = -1;
+  hit = 0;
+  for (w=0; w<L2WAYS; w++) {
+    if (c[cid].l2tag[l2bank][index][w].lru)
+      if (repl_d) c[cid].l2tag[l2bank][index][w].lru--;
+    if (c[cid].l2tag[l2bank][index][w].v && c[cid].l2tag[l2bank][index][w].la == a/L2TAGMASK) { /* hit */
+      c[cid].l2tag[l2bank][index][w].lru = 127; /* reset lru */
+      j = w;
+      hit = 1;
+    }
+    else if (!c[cid].l2tag[l2bank][index][w].v) { /* first empty entry */
+      if (j < 0)
+	j = w;
+    }
+    else { /* fixed nonbusy entry */
+      if (fmin > c[cid].l2tag[l2bank][index][w].lru) {
+	fmin = c[cid].l2tag[l2bank][index][w].lru;
+	k = w;
+      }
+    }
+  }
+  if (!hit) {
+    if (j >= 0) /* first empty entry */
+      *pull_way = j;
+    else /* least used entry */
+      *pull_way = k;
+    if (c[cid].l2tag[l2bank][index][*pull_way].v) {
+      *rq_push  =  c[cid].l2tag[l2bank][index][*pull_way].dirty;
+      *push_adr = (c[cid].l2tag[l2bank][index][*pull_way].la * L2TAGMASK)|((index*MAXL2BK+l2bank) * LINESIZE);
+      if (!*rq_push || repl_d) { /* L2CTを使う場合（non-blocking-cache），repl_d=NULLで来る */
+	c[cid].l2tag[l2bank][index][*pull_way].v = 0;
+	if (*rq_push && repl_d) {
+	  for (l=0; l<LINESIZE/8; l++) /* 4wayなので実際にどこかに読み出してあるはず */
+	    repl_d[l] = c[cid].l2line[l2bank][index][*pull_way].d[l]; /* osimでは代わりにL2_ctl.d[]を使用 */
+	}
+	index = (*push_adr/LINESIZE/MAXL1BK)%D1WMAXINDEX;
+	for (w=0; w<D1WAYS; w++) {
+	  if (c[cid].d1tag[l1bank][index][w].v && c[cid].d1tag[l1bank][index][w].la == *push_adr/D1TAGMASK) /* hit */
+	    break;
+	}
+	if (w<D1WAYS) {
+	  c[cid].d1tag[l1bank][index][w].v = 0; /* invalidate */
+	  if (*rq_push && repl_d) {
+	    for (l=0; l<LINESIZE/8; l++) /* 4wayなので実際にどこかに読み出してあるはず */
+	      repl_d[l] = c[cid].d1line[l1bank][index][w].d[l]; /* osimでは代わりにL2_ctl.d[]を使用 */
+	  }
+	}
+      }
+    }
+    else { /* least used entry */
+      *rq_push = 0;
+      *push_adr = 0;
+    }
+#if 1
+    if (flag & TRACE_ARM)
+      printf("%03.3d:L2R %08.8x_%08.8x miss (l2bank=%d A=%08.8x)\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), l2bank, addr);
+#endif
+    return (2); /* miss */
+  }
+  else if (write && (!c[cid].l2tag[l2bank][index][j].dirty || c[cid].l2tag[l2bank][index][j].share)) { /* hit but !dirty|shared */
+    /* d1-missストアのために必要なl2有効データは読み出しておく */
+    for (l=0; l<LINESIZE/8; l++) {
+      *(val+l) = c[cid].l2line[l2bank][index][j].d[l];
+#if 1
+      if (flag & TRACE_ARM)
+        printf("%03.3d:L2R %08.8x_%08.8x hit (A=%08.8x->%08.8x_%08.8x)\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), (a+l*8), (Uint)(*(val+l)>>32), (Uint)*(val+l));
+#endif
+    }
+    *pull_way = j;
+    *rq_push = 0;
+    *push_adr = 0;
+#if 1
+    if (flag & TRACE_ARM)
+      printf("%03.3d:L2R %08.8x_%08.8x for store !dirty|shared dirty=%d share=%d (l2bank=%d A=%08.8x)\n",
+	     tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), c[cid].l2tag[l2bank][index][j].dirty, c[cid].l2tag[l2bank][index][j].share, l2bank, addr);
+#endif
+    return (1); /* wait for c-coherence */
+  }
+  else { /* hit */
+    for (l=0; l<LINESIZE/8; l++) {
+      *(val+l) = c[cid].l2line[l2bank][index][j].d[l];
+#if 1
+      if (flag & TRACE_ARM)
+        printf("%03.3d:L2R %08.8x_%08.8x hit (A=%08.8x->%08.8x_%08.8x)\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), (a+l*8), (Uint)(*(val+l)>>32), (Uint)*(val+l));
+#endif
+    }
+    *rv_share = c[cid].l2tag[l2bank][index][j].share;
+    *rq_push = 0;
+    *push_adr = 0;
+    return (0); /* hit */
+  }
+}
+
+int l2w(tid, addr, val, pull_way, rq_push, push_adr, repl_d)
+     Uint tid, addr; Ull *val;
+     int *pull_way, *rq_push; Uint *push_adr; Ull *repl_d;
+     /* return 0:normal end, 1:wait for CC, 2:miss + after care */
+{
+  int cid = tid2cid(tid);
+  Uint l1bank = (addr/LINESIZE)%MAXL1BK;
+  Uint l2bank = (addr/LINESIZE)%MAXL2BK;
+  Uint index  = (addr/LINESIZE/MAXL2BK)%L2WMAXINDEX;
+  Uint a;
+  int  fmin, i, j, k, l, w, hit;
+
+  a = addr & ~(LINESIZE-1);
+
+  fmin = MAXINT;
+  j = -1;
+  k = -1;
+  hit = 0;
+  for (w=0; w<L2WAYS; w++) {
+    if (c[cid].l2tag[l2bank][index][w].lru)
+      if (repl_d) c[cid].l2tag[l2bank][index][w].lru--;
+    if (c[cid].l2tag[l2bank][index][w].v && c[cid].l2tag[l2bank][index][w].la == a/L2TAGMASK) { /* hit */
+      c[cid].l2tag[l2bank][index][w].lru = 127; /* reset lru */
+      j = w;
+      hit = 1;
+    }
+    else if (!c[cid].l2tag[l2bank][index][w].v) { /* first empty entry */
+      if (j < 0)
+	j = w;
+    }
+    else { /* fixed nonbusy entry */
+      if (fmin > c[cid].l2tag[l2bank][index][w].lru) {
+	fmin = c[cid].l2tag[l2bank][index][w].lru;
+	k = w;
+      }
+    }
+  }
+  if (!hit) {
+    if (j >= 0) /* first empty entry */
+      *pull_way = j;
+    else /* least used entry */
+      *pull_way = k;
+    if (c[cid].l2tag[l2bank][index][*pull_way].v) {
+      *rq_push  =  c[cid].l2tag[l2bank][index][*pull_way].dirty;
+      *push_adr = (c[cid].l2tag[l2bank][index][*pull_way].la * L2TAGMASK)|((index*MAXL2BK+l2bank) * LINESIZE);
+      if (!*rq_push || repl_d) { /* L2CTを使う場合（non-blocking-cache），repl_d=NULLで来る */
+	c[cid].l2tag[l2bank][index][*pull_way].v = 0;
+	if (*rq_push && repl_d) { /* L2CTを使う場合（non-blocking-cache），repl_d=NULLで来る */
+	  for (l=0; l<LINESIZE/8; l++) /* 4wayなので実際にどこかに読み出してあるはず */
+	    repl_d[l] = c[cid].l2line[l2bank][index][*pull_way].d[l]; /* osimでは代わりにL2_ctl.d[]を使用 */
+	}
+	index = (*push_adr/LINESIZE/MAXL1BK)%D1WMAXINDEX;
+	for (w=0; w<D1WAYS; w++) {
+	  if (c[cid].d1tag[l1bank][index][w].v && c[cid].d1tag[l1bank][index][w].la == *push_adr/D1TAGMASK) /* hit */
+	    break;
+	}
+	if (w<D1WAYS) {
+	  c[cid].d1tag[l1bank][index][w].v = 0; /* invalidate */
+	  if (*rq_push && repl_d) { /* L2CTを使う場合（non-blocking-cache），repl_d=NULLで来る */
+	    for (l=0; l<LINESIZE/8; l++) /* 4wayなので実際にどこかに読み出してあるはず */
+	      repl_d[l] = c[cid].d1line[l1bank][index][w].d[l]; /* osimでは代わりにL2_ctl.d[]を使用 */
+	  }
+	}
+      }
+    }
+    else { /* least used entry */
+      *rq_push = 0;
+      *push_adr = 0;
+    }
+#if 1
+    if (flag & TRACE_ARM)
+      printf("%03.3d:L2W %08.8x_%08.8x miss (l2bank=%d A=%08.8x rq_push=%d pushA=%08.8x)\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), l2bank, addr, *rq_push, *push_adr);
+#endif
+    return (2); /* miss */
+  }
+  else if (!c[cid].l2tag[l2bank][index][j].dirty /*|| c[cid].l2tag[l2bank][index][j].share*/) { /* hit but !dirty|shared */
+    /* d1から追い出されたdirtyデータが待っているが,この時点では書き込みできない(CC解決後に改めて書き込む) */
+    *pull_way = j;
+    *rq_push = 0;
+    *push_adr = 0;
+#if 1
+    if (flag & TRACE_ARM)
+      printf("%03.3d:L2W %08.8x_%08.8x !dirty|shared dirty=%d share=%d (l2bank=%d A=%08.8x)\n",
+	     tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), c[cid].l2tag[l2bank][index][j].dirty, c[cid].l2tag[l2bank][index][j].share, l2bank, addr);
+#endif
+    return (1); /* wait for c-coherence */
+  }
+  else { /* hit and dirty & !shared */
+    for (l=0; l<LINESIZE/8; l++) {
+#if 0
+	    int oid, dirindex, index1, l1way, l2way;
+	    dirindex = a/LINESIZE/MAXL2BK;
+	    index1 = (a/LINESIZE/MAXL1BK)%D1WMAXINDEX;
+	    for (oid=0; oid<MAXCORE; oid++) {
+	      if (oid == cid) continue;
+	      if (d[l2bank].l2dir[dirindex].l2dir_v[0] & (1LL<<oid)) {
+		int l1hit = 0;
+		for (l1way=0; l1way<D1WAYS; l1way++) {
+		  if (c[oid].d1tag[l1bank][index1][l1way].v && c[oid].d1tag[l1bank][index1][l1way].la == a/D1TAGMASK) {
+		    l1hit = 1;
+		    if (c[oid].d1line[l1bank][index1][l1way].d[l] != *(val+l)) {
+		      printf("%03.3d:L2W A=%08.8x->%08.8x_%08.8x mismatch cid=%d L1 %08.8x_%08.8x\n",
+			     tid, 
+			     (a&~(LINESIZE-1))+l*8,
+			     (Uint)(*(val+l)>>32), (Uint)*(val+l),
+			     oid, 
+			     (Uint)(c[oid].d1line[l1bank][index1][l1way].d[l]>>32), (Uint)c[oid].d1line[l1bank][index1][l1way].d[l]);
+		    }
+		  }
+		}
+		if (!l1hit) {
+		  for (l2way=0; l2way<L2WAYS; l2way++) {
+		    if (c[oid].l2tag[l2bank][index][l2way].v && c[oid].l2tag[l2bank][index][l2way].la == a/L2TAGMASK) {
+		      if (c[oid].l2line[l2bank][index][l2way].d[l] != *(val+l)) {
+			printf("%03.3d:L2W A=%08.8x->%08.8x_%08.8x mismatch cid=%d L2 %08.8x_%08.8x\n",
+			       tid, 
+			       (a&~(LINESIZE-1))+l*8,
+			       (Uint)(*(val+l)>>32), (Uint)*(val+l),
+			       oid,
+			       (Uint)(c[oid].l2line[l2bank][index][l2way].d[l]>>32), (Uint)c[oid].l2line[l2bank][index][l2way].d[l]);
+		      }
+		    }
+		  }
+		}
+	      }
+	    }
+#endif
+      c[cid].l2line[l2bank][index][j].d[l] = *(val+l); /* L2LIへ単純に書き込み */
+#if 1
+      if (flag & TRACE_ARM)
+        printf("%03.3d:L2W %08.8x_%08.8x hit (A=%08.8x<-%08.8x_%08.8x) clean store\n", tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), (a+l*8), (Uint)(*(val+l)>>32), (Uint)*(val+l));
+#endif
+    }
+    *rq_push = 0;
+    *push_adr = 0;
+    return (0); /* hit */
+  }
+}
+@
+
+
+1.44
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.43 2017/08/31 07:37:58 nakashim Exp nakashim $";
+d367 15
+@
+
+
+1.43
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.42 2017/08/23 15:27:39 nakashim Exp nakashim $";
+d379 2
+a380 1
+      printf("%03.3d:IO %08.8x_%08.8x cycle=%08.8x_%08.8x ---EMAX6 IOR type=%x adr=%08.8x----\n", cid, (Uint)(t[cid].total_steps>>32), (Uint)t[cid].total_steps, (Uint)(t[cid].total_cycle>>32), (Uint)t[cid].total_cycle, c[cid].iorq.type, c[cid].iorq.ADR);
+@
+
+
+1.42
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.41 2017/07/30 06:22:13 nakashim Exp nakashim $";
+d379 1
+@
+
+
+1.41
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.40 2017/07/18 09:17:17 nakashim Exp nakashim $";
+d271 1
+a271 1
+     /* retval=0:normal_end, 1:l1rq <enqueued, 2:l1rq busy, 3:error (out of range) */
+d352 1
+a352 1
+     /* type=8:load, 9:store, 10:ldstub, 11:svc */
+d364 20
+d643 1
+a643 1
+     /* return 0:normal end, 2:miss + after care */
+a651 5
+  if (addr >= MEMSIZE) { /* I/O space */
+    emax6_ctl(tid, 8, opcd, addr, mask, val); /* type=8:load */
+    return (0); /* regard as hit */
+  }
+
+d808 1
+a808 1
+     /* return 0:normal end, 1:wait for CC, 2:miss + after care */
+a817 5
+  if (addr >= MEMSIZE) { /* I/O space */
+    emax6_ctl(tid, 9, opcd, addr, mask, val); /* type=9:store */
+    return (0); /* regard as hit */
+  }
+
+@
+
+
+1.40
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.39 2017/07/10 10:05:13 nakashim Exp nakashim $";
+d361 1
+a361 1
+  if (addr < MINADDR || MEMSIZE <= addr)
+d632 1
+a632 1
+  if (addr >= DMA_BASE2_PHYS) { /* I/O space */
+d803 1
+a803 1
+  if (addr >= DMA_BASE2_PHYS) { /* I/O space */
+@
+
+
+1.39
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.38 2017/06/18 00:17:48 nakashim Exp nakashim $";
+a518 23
+#if 1
+    /* check inclusive w/ L2 */
+    if (stat == 0 || stat == 1) {
+      Uint l2bank = (addr/LINESIZE)%MAXL2BK;
+      Uint index = (addr/LINESIZE/MAXL2BK)%L2WMAXINDEX;
+      int w;
+      for (w=0; w<L2WAYS; w++) {
+	if (c[cid].l2tag[l2bank][index][w].v && c[cid].l2tag[l2bank][index][w].la == addr/L2TAGMASK) { /* hit */
+	  break;
+	}
+      }
+      if (w == L2WAYS) {
+	if (flag & TRACE_ARM)
+	  printf(":d1r violates inclusive L2 cache l1bank=%d l2bank=%d A=%08.8x (malfunction)", l1bank, l2bank, addr);
+	else {
+	  if (flag & TRACE_ARM) printf("\n");
+	  printf("%03.3d:WARNING %08.8x_%08.8x d1r violates inclusive L2 cache l1bank=%d l2bank=%d A=%08.8x (malfunction)",
+		 tid, (Uint)(t[tid].total_steps>>32), (Uint)(t[tid].total_steps), l1bank, l2bank, addr);
+	  if (!(flag & TRACE_ARM)) printf("\n");
+	}
+      }
+    }
+#endif
+d760 24
+d930 21
+@
+
+
+1.38
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.37 2017/06/07 01:26:51 nakashim Exp nakashim $";
+d803 1
+a803 1
+    emax6_ctl_reg(tid, 9, opcd, addr, mask, val); /* type=9:store */
+@
+
+
+1.37
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.36 2017/06/04 13:53:51 nakashim Exp nakashim $";
+d656 1
+a656 1
+    emax6_ctl_reg(tid, 8, opcd, addr, mask, val); /* type=8:load */
+@
+
+
+1.36
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.35 2017/04/21 03:29:02 nakashim Exp nakashim $";
+a363 5
+  if (addr >= DMA_BASE2_PHYS) { /* I/O space */
+    emax6_ctl_reg(tid, type, opcd, addr, mask, val, rob);
+    return (0);
+  }
+
+d655 5
+d802 5
+@
+
+
+1.35
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/reg.c,v 1.34 2017/03/12 19:06:26 nakashim Exp nakashim $";
+d364 5
+@
+
+
+1.34
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.33 2017/03/05 10:43:43 nakashim Exp nakashim $";
+d11 1
+a11 1
+#include "bsim.h"
+@
+
+
+1.33
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.32 2017/03/04 12:27:58 nakashim Exp nakashim $";
+d454 1
+a454 1
+      else if ((c[cid].rob[i].stat == ROB_STREXWAIT || c[cid].rob[i].stat == ROB_COMPLETE || c[cid].rob[i].stat == ROB_D1WRQWAIT) && c[cid].rob[i].stbf.t) { /* ROB_COMPLETE: rob->stbf.t = 1 */ 
+@
+
+
+1.32
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.31 2017/02/28 14:49:38 nakashim Exp nakashim $";
+d806 1
+a806 1
+      if (c[cid].d1tag[l1bank][index][w].dirty && !c[cid].d1tag[l1bank][index][w].drain) {
+@
+
+
+1.31
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.30 2017/02/28 07:54:36 nakashim Exp nakashim $";
+d613 1
+a613 1
+      c[cid].i1tag[l1bank][index][w].lru = I1WAYS-1; /* reset lru */
+d665 1
+a665 1
+      c[cid].d1tag[l1bank][index][w].lru = D1WAYS-1; /* reset lru */
+d829 1
+a829 1
+      c[cid].d1tag[l1bank][index][w].lru = D1WAYS-1; /* reset lru */
+d945 1
+a945 1
+      c[cid].l2tag[l2bank][index][w].lru = L2WAYS-1; /* reset lru */
+d1054 1
+a1054 1
+      c[cid].l2tag[l2bank][index][w].lru = L2WAYS-1; /* reset lru */
+@
+
+
+1.30
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.29 2015/09/19 11:50:03 nakashim Exp nakashim $";
+d806 2
+a807 1
+      if (c[cid].d1tag[l1bank][index][w].dirty) {
+@
+
+
+1.29
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.28 2015/09/19 10:22:21 nakashim Exp nakashim $";
+d309 1
+a309 1
+int o_flush(tid, addr) Uint tid, addr;
+d311 1
+d318 1
+a318 1
+  stat = d1w(tid, 0, addr, NULL, 1, NULL, &pull_way, &rq_push, &push_adr, c[cid].l1rq[l1bank].BUF); /* D1-cache */
+d782 2
+a783 2
+int d1w(tid, opcd, addr, mask, flush, val, pull_way, rq_push, push_adr, repl_d)
+     Uint tid, opcd, flush; Uint addr; Ull *mask, *val; 
+d788 1
+d804 2
+a805 1
+      c[cid].d1tag[l1bank][index][w].v = 0;
+@
+
+
+1.28
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.27 2015/09/18 02:17:21 nakashim Exp nakashim $";
+d81 1
+a81 1
+    if (rob->ptw) {
+d144 44
+d202 1
+a202 1
+	printf(":ROB%03.3d.%d(R%02.2d)<-%08.8x_%08.8x", rob->dr[pos].p, pos, rob->dr[pos].n, (Uint)(val0>>32), (Uint)val0);
+d204 1
+a204 1
+	printf(":ROB%03.3d.%d(V%02.2d)<-%08.8x_%08.8x_%08.8x_%08.8x", rob->dr[pos].p, pos, rob->dr[pos].n-VECREGTOP, (Uint)(val1>>32), (Uint)val1, (Uint)(val0>>32), (Uint)val0);
+@
+
+
+1.27
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.26 2015/09/12 15:50:38 nakashim Exp nakashim $";
+d69 1
+d79 69
+a147 2
+    rob->dr[pos].val[0] = (rob->dr[pos].val[0] & rob->dr[pos].mask[0]) | (val0 & ~rob->dr[pos].mask[0]);
+    rob->dr[pos].val[1] = (rob->dr[pos].val[1] & rob->dr[pos].mask[1]) | (val1 & ~rob->dr[pos].mask[1]);
+@
+
+
+1.26
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.25 2015/09/12 12:33:30 nakashim Exp nakashim $";
+d28 1
+a28 1
+		  	         (rob->sr[pos].n==AUXREGTOP+AUXREG-1) ? t[tid].aux :
+d105 3
+a107 3
+    if      (regno <= USRREGTOP+USRREG-1) {t[tid].usr[regno] = val[0];}
+    else if (regno == AUXREGTOP+AUXREG-1) {t[tid].aux        = val[0];}
+    else if (regno == CPSREGTOP+CPSREG-1) {t[tid].cpsr       = val[0];}
+@
+
+
+1.25
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.24 2015/09/10 11:48:27 nakashim Exp nakashim $";
+d257 2
+d269 1
+@
+
+
+1.24
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.23 2015/09/09 11:48:15 nakashim Exp nakashim $";
+d55 1
+a55 1
+	  printf(":V%02.2d->%08.8x_%08.8x_%08.8x_%08.8x", (Uint)rob->sr[pos].n, (Uint)(*val1>>32), (Uint)*val1, (Uint)(*val0>>32), (Uint)*val0);
+d92 1
+a92 1
+	printf(":ROB%03.3d.%d(V%02.2d)<-%08.8x_%08.8x_%08.8x_%08.8x", rob->dr[pos].p, pos, rob->dr[pos].n, (Uint)(val1>>32), (Uint)val1, (Uint)(val0>>32), (Uint)val0);
+d117 1
+a117 1
+      printf(":V%02.2d<-%08.8x_%08.8x_%08.8x_%08.8x", regno, (Uint)(val[1]>>32), (Uint)val[1], (Uint)(val[0]>>32), (Uint)val[0]);
+@
+
+
+1.23
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.22 2015/09/07 00:02:20 nakashim Exp nakashim $";
+d282 1
+a282 1
+      so = ((sa&8)!=0); /* 0:evan, 1:odd */
+d341 1
+a341 1
+	so = ((sa&8)!=0); /* 0:evan, 1:odd */
+@
+
+
+1.22
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.21 2015/09/03 14:01:21 nakashim Exp nakashim $";
+d285 1
+d292 1
+a299 17
+	sm[so]   = 0x00000000ffffffffLL       <<((c[cid].l1rq[l1bank].pull_ADR&4)<<3);
+	sv[so]   = (c[cid].l1rq[l1bank].STD[0]<<((c[cid].l1rq[l1bank].pull_ADR&4)<<3));
+	sm[1-so] = 0x0000000000000000LL;
+	sv[1-so] = 0x0000000000000000LL;
+	break;
+      case 8: /* VSTRB */
+	sm[so]   = 0x00000000000000ffLL       <<((c[cid].l1rq[l1bank].pull_ADR&7)<<3);
+	sv[so]   = (c[cid].l1rq[l1bank].STD[0]<<((c[cid].l1rq[l1bank].pull_ADR&7)<<3));
+	sm[1-so] = 0x0000000000000000LL;
+	sv[1-so] = 0x0000000000000000LL;
+	break;
+      case 9: /* VSTRH */
+	sm[so]   = 0x000000000000ffffLL       <<((c[cid].l1rq[l1bank].pull_ADR&6)<<3);
+	sv[so]   = (c[cid].l1rq[l1bank].STD[0]<<((c[cid].l1rq[l1bank].pull_ADR&6)<<3));
+	sm[1-so] = 0x0000000000000000LL;
+	sv[1-so] = 0x0000000000000000LL;
+	break;
+d306 1
+@
+
+
+1.21
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.20 2015/09/02 11:43:13 nakashim Exp nakashim $";
+d257 11
+d431 3
+a433 2
+	else
+	  printf("%03.3d:WARNING %08.8x_%08.8x d1r violates inclusive L2 cache l1bank=%d l2bank=%d A=%08.8x (malfunction)\n",
+d435 2
+d454 3
+a456 2
+    else
+      printf("%03.3d:WARNING %08.8x_%08.8x o_ldst A=%08.8x type=%d not implemented\n",
+d458 2
+d632 3
+a634 2
+	if (membuf != membuf2)
+	  printf("%03.3d:D1R %08.8x_%08.8x hit (l1bank=%d,index=%d,way=%d,A=%08.8x->%08.8x_%08.8x mismatch mmr %08.8x_%08.8x\n",
+d637 2
+d648 3
+a650 2
+      if (membuf != membuf2)
+	printf("%03.3d:D1R %08.8x_%08.8x hit (l1bank=%d,index=%d,way=%d,A=%08.8x->%08.8x_%08.8x mismatch mmr %08.8x_%08.8x\n",
+d653 2
+@
+
+
+1.20
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.19 2015/09/02 10:30:02 nakashim Exp nakashim $";
+d292 19
+a310 1
+      case 3: /* STR */
+d316 6
+@
+
+
+1.19
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.18 2015/09/01 09:32:36 nakashim Exp nakashim $";
+d585 1
+a585 1
+    if      (mask[1] & 0xffffffff00000000LL) {
+d742 1
+a742 1
+    if      (mask[1] & 0xffffffff00000000LL) {
+@
+
+
+1.18
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.17 2015/09/01 08:04:13 nakashim Exp nakashim $";
+d244 2
+a245 2
+  Uint push_adr, a;
+  Ull  m, dm, dv, lv;
+d259 8
+a266 4
+    a  = addr & ~7;
+    m  = mask[0] << ((addr&7)<<3);
+    dm = 0x0000000000000000LL; /* valid mask from prev stbf */
+    dv = 0x0000000000000000LL; /* valid data from prev stbf */
+d269 3
+a271 2
+      Uint sa; Ull sm, sv;
+      sa = c[cid].l1rq[l1bank].pull_ADR & ~7;
+d274 4
+a277 2
+	sm = 0x00000000000000ffLL<<((c[cid].l1rq[l1bank].pull_ADR&7)<<3);
+	sv = (c[cid].l1rq[l1bank].STD[0]<<((c[cid].l1rq[l1bank].pull_ADR&7)<<3));
+d280 4
+a283 2
+	sm = 0x000000000000ffffLL<<((c[cid].l1rq[l1bank].pull_ADR&6)<<3);
+	sv = (c[cid].l1rq[l1bank].STD[0]<<((c[cid].l1rq[l1bank].pull_ADR&6)<<3));
+d287 4
+a290 2
+	sm = 0x00000000ffffffffLL<<((c[cid].l1rq[l1bank].pull_ADR&4)<<3);
+	sv = (c[cid].l1rq[l1bank].STD[0]<<((c[cid].l1rq[l1bank].pull_ADR&4)<<3));
+d293 4
+a296 2
+	sm = 0xffffffffffffffffLL;
+	sv = c[cid].l1rq[l1bank].STD[0];
+d299 9
+a307 3
+      if (a == sa && (m & sm)) {
+	dm =  dm | (m & sm);
+	dv = (dv & ~(m & sm)) | (sv & (m & sm));
+d318 8
+a325 5
+	Uint sa; Ull sm, sv;
+	sa = c[cid].rob[i].ls_addr & ~7;
+	sm = c[cid].rob[i].stbf.mask[0] << ((c[cid].rob[i].ls_addr&7)<<3);
+	sv = c[cid].rob[i].stbf.val[0]  << ((c[cid].rob[i].ls_addr&7)<<3);
+	if (a == sa && (m & sm)) {
+d327 5
+a331 3
+	    if (flag & TRACE_ARM)
+	      printf(":(waiting prev_store rob[%d].stat=%d)", i, c[cid].rob[i].stat);
+	    return (1);
+d333 9
+a341 3
+	  if (c[cid].rob[i].stbf.t == 1) { /* valid previous store */
+	    dm =  dm | (m & sm);
+	    dv = (dv & ~(m & sm)) | (sv & (m & sm));
+d347 23
+a369 8
+    dm = dm >> ((addr&7)<<3);
+    dv = dv >> ((addr&7)<<3);
+    if (dm) {
+      rob->dr[1].mask[0] = dm;
+      rob->dr[1].val[0]  = dv;
+    }
+    if (dm == mask[0]) {
+      val[0] = dv;
+d377 5
+a381 4
+    lv = 0LL;
+    stat = d1r(tid, opcd, addr, mask, rot, &lv, &pull_way, &rq_push, &push_adr, inhibit_replace?NULL:c[cid].l1rq[l1bank].BUF); /* I1-cache */
+    val[0] = (dv & dm) | (lv & ~dm);
+
+d409 1
+d411 1
+d440 1
+a493 1
+  i1r_hit:
+d585 14
+a602 2
+      /* ★★★ キャッシュhit後のLOAD処理 ★★★ */
+      /* ★★★  ここで主記憶と値比較可能 ★★★ */
+d610 2
+a611 3
+  d1r_hit:
+    if      (mask[0] & 0xff00000000000000LL) val[0] = membuf;
+    else if (mask[0] & 0x00000000ff000000LL) {
+d622 1
+a622 1
+      printf(":l1bank=%d,index=%d,way=%d,A=%08.8x,M=%08.8x_%08.8x->%08.8x_%08.8x,d=%d,s=%d",
+d624 3
+a626 1
+	     addr, (Uint)(mask[0]>>32), (Uint)mask[0], (Uint)(val[0]>>32), (Uint)(val[0]),
+a740 8
+    if      (mask[0] & 0xff00000000000000LL) m = 0xffffffffffffffffLL;
+    else if (mask[0] & 0x00000000ff000000LL) m = 0x00000000ffffffffLL<<((addr&4)<<3);
+    else if (mask[0] & 0x000000000000ff00LL) m = 0x000000000000ffffLL<<((addr&6)<<3);
+    else if (mask[0] & 0x00000000000000ffLL) m = 0x00000000000000ffLL<<((addr&7)<<3);
+    if      (mask[0] & 0xff00000000000000LL) membuf = (val[0]               );
+    else if (mask[0] & 0x00000000ff000000LL) membuf = (val[0]<<((addr&4)<<3));
+    else if (mask[0] & 0x000000000000ff00LL) membuf = (val[0]<<((addr&6)<<3));
+    else if (mask[0] & 0x00000000000000ffLL) membuf = (val[0]<<((addr&7)<<3));
+d742 12
+d756 1
+a756 5
+    {
+      /* ★★★ キャッシュhit後のSTORE処理 ★★★ */
+      /* ★★★  ここで主記憶に書き込み可能 ★★★ */
+      mmw_chkc(tid, a, m, membuf);
+    }
+@
+
+
+1.17
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.16 2015/09/01 07:43:34 nakashim Exp nakashim $";
+d13 1
+a13 1
+Ull ex_srr(tid, rob, pos) Uint tid; struct rob *rob; Uint pos; /* sr[0-5] */
+a15 1
+  Ull val;
+d19 2
+a20 1
+    val = 0;
+d25 15
+a39 8
+    val = rob->sr[pos].t==0 ? 0 :
+          rob->sr[pos].t==1 ? rob->sr[pos].n : /* PC is included here */
+          rob->sr[pos].x==0 ? ((rob->sr[pos].n<=USRREGTOP+USRREG-1) ? t[tid].usr[rob->sr[pos].n] :
+			       (rob->sr[pos].n==AUXREGTOP+AUXREG-1) ? t[tid].aux :
+			       (rob->sr[pos].n==CPSREGTOP+CPSREG-1) ? t[tid].cpsr :
+                               (rob->sr[pos].n<=VECREGTOP       -1) ? 0 : /* not reached */
+			       (rob->sr[pos].n<=VECREGTOP+VECREG-1) ? t[tid].vec[rob->sr[pos].n-VECREGTOP].d[0] : 0) :
+                              c[cid].rob[rob->sr[pos].n].dr[rob->sr[pos].x].val[0];
+d44 1
+a44 1
+      printf(":IMM%08.8x_%08.8x", (Uint)(val>>32), (Uint)val);
+d47 12
+a58 4
+      if (rob->sr[pos].x==0)
+	printf(":R%02.2d->%08.8x_%08.8x", (Uint)rob->sr[pos].n, (Uint)(val>>32), (Uint)val);
+      else
+	printf(":ROB%03.3d.%d->%08.8x_%08.8x", (Uint)rob->sr[pos].n, rob->sr[pos].x, (Uint)(val>>32), (Uint)val);
+d63 1
+a63 1
+  return (val);
+d108 1
+a108 1
+    else if (regno <= VECREGTOP       -1) {} /* non existent */
+@
+
+
+1.16
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.15 2015/09/01 07:33:46 nakashim Exp nakashim $";
+d51 1
+a51 1
+Uint ex_drw(tid, val, rob, pos) Uint tid; Ull val; struct rob *rob; Uint pos; /* dr[1-3] */
+d61 1
+a61 1
+      printf(":ex_drw.dr[%d].t=%d v=%08.8x_%08.8x internal error", pos, rob->dr[pos].t, (Uint)(val>>32), (Uint)val);
+d63 2
+a64 1
+    rob->dr[pos].val[0] = (rob->dr[pos].val[0] & rob->dr[pos].mask[0]) | (val & ~rob->dr[pos].mask[0]);
+d73 6
+a78 2
+    if (rob->dr[pos].t)
+      printf(":ROB%03.3d.%d(R%02.2d)<-%08.8x_%08.8x", rob->dr[pos].p, pos, rob->dr[pos].n, (Uint)(val>>32), (Uint)val);
+@
+
+
+1.15
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.14 2015/09/01 06:36:18 nakashim Exp nakashim $";
+d41 1
+a41 1
+	printf(":G%02.2d->%08.8x_%08.8x", (Uint)rob->sr[pos].n, (Uint)(val>>32), (Uint)val);
+d73 1
+a73 1
+      printf(":ROB%03.3d.%d(G%02.2d)<-%08.8x_%08.8x", rob->dr[pos].p, pos, rob->dr[pos].n, (Uint)(val>>32), (Uint)val);
+d79 1
+a79 1
+Uint rt_drw(tid, regno, val) Uint tid, regno; Ull val;
+d85 3
+a87 3
+    if      (regno <= USRREGTOP+USRREG-1) t[tid].usr[regno] = val;
+    else if (regno == AUXREGTOP+AUXREG-1) t[tid].aux        = val;
+    else if (regno == CPSREGTOP+CPSREG-1) t[tid].cpsr       = val;
+d89 2
+a90 1
+    else if (regno <= VECREGTOP+VECREG-1) t[tid].vec[regno-VECREGTOP].d[0] = val;
+d93 6
+a98 2
+  if (flag&TRACE_ARM)
+    printf(":G%02.2d<-%08.8x_%08.8x", regno, (Uint)(val>>32), (Uint)val);
+d111 1
+a111 1
+    printf(":G%02.2d->%08.8x_%08.8x", n, (Uint)(val>>32), (Uint)val);
+d122 1
+a122 1
+    printf(":G%02.2d<-%08.8x_%08.8x", n, (Uint)(val>>32), (Uint)val);
+@
+
+
+1.14
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.13 2015/09/01 06:13:55 nakashim Exp nakashim $";
+d48 1
+a48 1
+  return(val);
+d108 1
+a108 1
+  return(val);
+@
+
+
+1.13
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.12 2015/09/01 06:13:38 nakashim Exp $";
+d32 1
+a32 1
+                              c[cid].rob[rob->sr[pos].n].dr[rob->sr[pos].x].val;
+d63 1
+a63 1
+    rob->dr[pos].val = (rob->dr[pos].val & rob->dr[pos].mask) | (val & ~rob->dr[pos].mask);
+d295 2
+a296 2
+      rob->dr[1].mask = dm;
+      rob->dr[1].val  = dv;
+@
+
+
+1.12
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.11 2015/09/01 06:05:27 nakashim Exp nakashim $";
+d9 1
+a9 1
+/* reg.c 2010/7/10 */ 
+@
+
+
+1.11
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.10 2015/09/01 05:35:16 nakashim Exp nakashim $";
+d32 1
+a32 1
+                              c[cid].rob[rob->sr[pos].n].dr[rob->sr[pos].x].d;
+d63 1
+a63 1
+    rob->dr[pos].d = (rob->dr[pos].d & rob->dr[pos].mask) | (val & ~rob->dr[pos].mask);
+d296 1
+a296 1
+      rob->dr[1].d    = dv;
+@
+
+
+1.10
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.9 2015/09/01 04:09:27 nakashim Exp nakashim $";
+d32 1
+a32 1
+                              c[cid].rob[rob->sr[pos].n].dr[rob->sr[pos].x].v;
+d63 1
+a63 1
+    rob->dr[pos].v = (rob->dr[pos].v & rob->dr[pos].mask) | (val & ~rob->dr[pos].mask);
+d296 1
+a296 1
+      rob->dr[1].v    = dv;
+@
+
+
+1.9
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.8 2015/09/01 02:58:37 nakashim Exp nakashim $";
+d13 1
+a13 1
+Ull ex_srr(tid, rob, pos) Uint tid; struct rob *rob; Uint pos; /* sr[0-8] */
+d18 1
+a18 1
+  if (pos > 8) {
+d65 1
+a65 1
+      for (j=0; j<9; j++) {
+@
+
+
+1.8
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.7 2015/09/01 01:49:42 nakashim Exp nakashim $";
+d213 1
+a213 1
+     Uint tid, type, opcd, addr; Ull mask; Uint rot; Ull *val; struct rob *rob;
+d235 1
+a235 1
+    m  = mask << ((addr&7)<<3);
+d298 1
+a298 1
+    if (dm == mask) {
+d337 2
+a338 2
+    rob->stbf.mask[0] = mask;
+    rob->stbf.val[0]  = *val;
+d366 1
+a366 1
+    c[cid].l1rq[l1bank].STD[0] = *val; /* for store */
+d427 1
+a427 1
+     Uint tid, opcd, addr; Ull mask; Uint rot; Ull *val;
+d526 2
+a527 2
+    if      (mask & 0xff00000000000000LL) *val= membuf;
+    else if (mask & 0x00000000ff000000LL) {
+d530 1
+a530 1
+      *val=(membuf>>((addr&4)<<3))&mask;
+d532 1
+a532 1
+	*val=((*val<<(32-rot))|(*val>>rot))&mask;
+d534 2
+a535 2
+    else if (mask & 0x000000000000ff00LL) *val=(membuf>>((addr&6)<<3))&mask;
+    else if (mask & 0x00000000000000ffLL) *val=(membuf>>((addr&7)<<3))&mask;
+d540 1
+a540 1
+	     addr, (Uint)(mask>>32), (Uint)mask, (Uint)(*val>>32), (Uint)(*val),
+@
+
+
+1.7
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.6 2015/08/31 09:59:54 nakashim Exp nakashim $";
+d158 2
+a159 1
+    c[cid].l1rq[l1bank].STD = 0LL; /* not used */
+d180 1
+a180 1
+  stat = d1w(tid, 0, addr, 0LL, 1, 0LL, &pull_way, &rq_push, &push_adr, c[cid].l1rq[l1bank].BUF); /* D1-cache */
+d195 2
+a196 1
+    c[cid].l1rq[l1bank].STD = 0LL; /* not used */
+d245 1
+a245 1
+	sv = (c[cid].l1rq[l1bank].STD<<((c[cid].l1rq[l1bank].pull_ADR&7)<<3));
+d249 1
+a249 1
+	sv = (c[cid].l1rq[l1bank].STD<<((c[cid].l1rq[l1bank].pull_ADR&6)<<3));
+d254 1
+a254 1
+	sv = (c[cid].l1rq[l1bank].STD<<((c[cid].l1rq[l1bank].pull_ADR&4)<<3));
+d258 1
+a258 1
+	sv = c[cid].l1rq[l1bank].STD;
+d276 2
+a277 2
+	sm = c[cid].rob[i].stbf.mask << ((c[cid].rob[i].ls_addr&7)<<3);
+	sv = c[cid].rob[i].stbf.val  << ((c[cid].rob[i].ls_addr&7)<<3);
+d299 1
+a299 1
+      *val = dv;
+d309 1
+a309 1
+    *val = (dv & dm) | (lv & ~dm);
+d335 4
+a338 4
+    rob->ls_addr   = addr;
+    rob->stbf.t    = (opcd==7)?3:1; /* valid */
+    rob->stbf.mask = mask;
+    rob->stbf.val  = *val;
+d366 1
+a366 1
+    c[cid].l1rq[l1bank].STD = *val; /* for store */
+d421 1
+a421 1
+    *val = membuf>>((addr&4)<<3);
+d548 1
+a548 1
+     Uint tid, opcd, flush; Uint addr; Ull mask, val; 
+d655 8
+a662 8
+    if      (mask & 0xff00000000000000LL) m = 0xffffffffffffffffLL;
+    else if (mask & 0x00000000ff000000LL) m = 0x00000000ffffffffLL<<((addr&4)<<3);
+    else if (mask & 0x000000000000ff00LL) m = 0x000000000000ffffLL<<((addr&6)<<3);
+    else if (mask & 0x00000000000000ffLL) m = 0x00000000000000ffLL<<((addr&7)<<3);
+    if      (mask & 0xff00000000000000LL) membuf = (val               );
+    else if (mask & 0x00000000ff000000LL) membuf = (val<<((addr&4)<<3));
+    else if (mask & 0x000000000000ff00LL) membuf = (val<<((addr&6)<<3));
+    else if (mask & 0x00000000000000ffLL) membuf = (val<<((addr&7)<<3));
+d674 1
+a674 1
+      printf(":l1bank=%d,index=%d,way=%d,A=%08.8x,M=%08.8x_%08.8x<-%08.8x_%08.8x,d=%d,s=%d",
+d676 3
+a678 1
+	     addr, (Uint)(mask>>32), (Uint)mask, (Uint)(val>>32), (Uint)val,
+@
+
+
+1.6
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.5 2015/08/26 15:16:10 nakashim Exp nakashim $";
+d30 2
+a31 2
+                               (rob->sr[pos].n<=FLOREGTOP       -1) ? 0 : /* not reached */
+			       (rob->sr[pos].n<=FLOREGTOP+FLOREG-1) ? t[tid].flo[rob->sr[pos].n-FLOREGTOP] : 0) :
+d88 2
+a89 2
+    else if (regno <= FLOREGTOP       -1) {} /* non existent */
+    else if (regno <= FLOREGTOP+FLOREG-1) t[tid].flo[regno-FLOREGTOP] = val;
+d292 3
+a294 7
+    if ((Uint)dm) {
+      rob->dr[1].mask = (Uint)dm;
+      rob->dr[1].v    = (Uint)dv;
+    }
+    if ((Uint)(dm>>32)) {
+      rob->dr[2].mask = (Uint)(dm>>32);
+      rob->dr[2].v    = (Uint)(dv>>32);
+@
+
+
+1.5
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.4 2015/08/26 08:33:20 nakashim Exp nakashim $";
+a240 1
+	/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+@
+
+
+1.4
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.3 2015/08/22 13:27:04 nakashim Exp nakashim $";
+d255 1
+a255 2
+      case 12: /* VSTR */
+      case 13: /* VSTM */
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.2 2015/08/20 09:29:03 nakashim Exp nakashim $";
+d242 1
+a242 1
+      case 0: /* STB */
+d246 1
+a246 1
+      case 1: /* STH */
+d250 2
+a251 3
+      case 4: /* STW */
+      case 5: /* STM */
+      case 6: /* STREX */
+d304 1
+a304 1
+      if (opcd == 6) /* ldrex should not get value from bypass */
+d340 1
+a340 1
+    rob->stbf.t    = (opcd==6)?3:1; /* valid */
+d492 1
+a492 1
+  else if (opcd == 6 && (!c[cid].d1tag[l1bank][index][j].dirty || c[cid].d1tag[l1bank][index][j].share)) { /* LDREX hit but !dirty|shared */
+d505 1
+a505 1
+    if (opcd == 6) { /* ldrex */
+d647 1
+a647 1
+    if (opcd == 6) { /* strex */
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/reg.c,v 1.1 2015/07/21 05:44:37 nakashim Exp nakashim $";
+d37 1
+a37 1
+      printf(":IMM%08.8x", val);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm32/src/bsim/RCS/reg.c,v 1.47 2015/03/03 08:40:22 nakashim Exp nakashim $";
+d41 1
+a41 1
+	printf(":G%02.2d->%08.8x_%08.8x", rob->sr[pos].n, (Uint)(val>>32), (Uint)val);
+d43 1
+a43 1
+	printf(":ROB%03.3d.%d->%08.8x_%08.8x", rob->sr[pos].n, rob->sr[pos].x, (Uint)(val>>32), (Uint)val);
+@

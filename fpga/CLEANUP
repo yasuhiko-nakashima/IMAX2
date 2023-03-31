@@ -1,0 +1,9 @@
+#!/bin/csh -f
+find .       -name "*.naist*.jp"                  -ls -exec rm -rf {} \;
+find .       -name "design_1_wrapper*backup*.vdi" -ls -exec rm -f {} \;
+find .       -name "vivado*backup*"               -ls -exec rm -f {} \;
+find .       -name "vivado_pid[0-9]*.str"         -ls -exec rm -f {} \;
+find .       -name "hs_err_pid[0-9]*.log"         -ls -exec rm -f {} \;
+find */*runs -name "*.dcp"                        -ls -exec rm -f {} \;
+find .       -name "vrs_config*.xml"              -ls -exec rm -f {} \;
+find .       -name ".Xil"                         -ls -exec rmdir {} \;

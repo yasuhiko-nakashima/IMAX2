@@ -1,0 +1,1038 @@
+
+\chapter{IMAX Software}
+
+\section{IMAX interface mapped on CPU memory space}
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6MMAP.eps,width=0.98\textwidth}
+\caption{\label{mmap}Physical memory space}
+\end{figure}
+
+Figure \ref {mmap} shows the physical memory space of the CPU.  Physical
+memory space related to IMAX includes: (1) FPDDMA-CH1 DMA control register
+space that controls DMA between CPU physical memory space and LMM (DMA
+control register space: 4KB), (2) The LMM DMA space (pAddr2 space: 2GB)
+which maps the LMM to the CPU physical memory space and refers by DMA, the
+control register space (pAddr2+ space: 2GB) which refers to the registers in
+IMAX by PIO, (3) Consists of a DDR memory space (pAddr space: 2GB) that
+connect DMA with LMM. Therefore, the space that can be referenced by
+physical connection with IMAX is pAddr2 space: 2GB and pAddr2+ space: 2GB.
+Since the total capacity of the LMM in the IMAX is 16MB (256KB * 64stages)
+and the data bus width is 256bit (32B), at least 19bit is required for the
+address width and 4bit is required for masking (1bit write mask for each
+1dword (64bit)).  The physical memory space, which includes the control
+register space, is mapped to the physical memory space of the CPU.
+
+\begin{table}[htbp]
+\center\footnotesize
+\caption{\label{logicinterface}Logical interface}
+\tabcolsep 0.2pc
+\begin{tabular}{l|c|l|p{3.4in}}\hline\hline
+制御レジスタ空間(pAddr2+)	& R/W	& Bit位置    & 備考 \\\hline
+STATUS				&	&	     & \\
+0x400000007-0x400000000		& R	& bit3-0     & EXRING状態 0:IDLE, 1:BUSY(SCON/EXEC動作中) \\
+				&  	& bit7-4     & LMRING状態 0:IDLE, 1:BUSY(PIO/DMA動作中) \\
+				&  	& bit11-8    & 0:EMAX\_DEPTH=8,  1:EMAX\_DEPTH=16 \\
+				&  	&            & 2:EMAX\_DEPTH=32, 3:EMAX\_DEPTH=64 \\
+				&  	& bit15-12   & 0:LMM\_SIZE=32KB, 1:LMM\_SIZE=64KB, 2:LMM\_SIZE=128KB \\
+				&       & bit63-16   & reserved by 0 \\\hline
+COMMAND				&	&	     & IMAXへの指示 \\
+0x400000017-0x400000010		& W	& bit1-0     & 0:NOP, 1:RESET, 2:SCON, 3:EXEC \\
+				&       & bit31-2    & reserved by 0 \\
+				&       & bit35-32   & chip番号(0を書き込むとchip間を順次伝搬)\\
+				&       & bit63-36   & reserved by 0 \\\hline
+ADRTRANS			&	&	     & vAddr-pAddr2 \\
+0x400000027-0x400000020		& W	& bit63-0    & DDR-LMM間DMA時のアドレス変換情報 \\\hline
+COLSELECT			&	&	     & vAddr-pAddr2 \\
+0x400000037-0x400000030		& W	& bit1-0     & DMA/LDDMQ/TRANS時の明示的論理col指定 \\
+				&       & bit63-2    & reserved by 0 \\\hline
+CONF	  			& 	&            & \\
+0x40000201f-0x400002000		& W 	& bit255-0   & 論理UNIT\#0.0のconf \\
+0x40000203f-0x400002020		& W 	& bit255-0   & 論理UNIT\#0.1のconf \\
+:                            	& :	&            & : \\
+0x400003fff-0x400003fe0		& W 	& bit255-0   & 論理UNIT\#63.3のconf \\\hline
+REGV-BR				&	&            & BR書き込み \\
+0x40000401f-0x400004000		& W	& bit255-0   & 論理UNIT\#0.0のBR[3:0] \\
+0x40000403f-0x400004020		& W	& bit255-0   & 論理UNIT\#0.1のBR[3:0] \\
+:				& :	&            & : \\
+0x400005fff-0x400005fe0		& W	& bit255-0   & 論理UNIT\#63.3のBR[3:0] \\\hline
+REGV-EAR/vAddr-range		&	&            & EAB,EAO書き込み \\
+				&	&            & LMM先頭addr(max2GB),LMM有効dword数(max8KDW) \\
+0x40000600f-0x400006000		& W	& bit49-32,17-0   & 論理UNIT\#0.0のea0o,ea0b(virt-addr)    \\
+				&  	& bit113-96,81-64 & 論理UNIT\#0.0のea1o,ea1b(virt-addr)    \\
+0x400006017-0x400006010		& W	& bit30-0    & 論理UNIT\#0.0のtop(virt-addr)    \\
+				&  	& bit62-32   & 論理UNIT\#0.0のbot(virt-addr)    \\
+0x40000602f-0x400006020		& W	& bit49-32,17-0   & 論理UNIT\#0.1のea0o,ea0b(virt-addr)    \\
+				&  	& bit113-96,81-64 & 論理UNIT\#0.1のea1o,ea1b(virt-addr)    \\
+0x400006037-0x400006030		& W	& bit30-0    & 論理UNIT\#0.1のtop(virt-addr)    \\
+				&  	& bit62-32   & 論理UNIT\#0.1のbot(virt-addr)    \\
+:				& :	&            & : \\
+0x400007fef-0x400007fe0		& W	& bit49-32,17-0   & 論理UNIT\#63.3のea0o,ea0b(virt-addr)   \\
+				&  	& bit113-96,81-64 & 論理UNIT\#63.3のea1o,ea1b(virt-addr)   \\
+0x400007ff7-0x400007ff0		& W	& bit30-0    & 論理UNIT\#63.3のtop(virt-addr)   \\
+				&  	& bit62-32   & 論理UNIT\#63.3のbot(virt-addr)   \\\hline
+LDDMQ/TRANS-R			&	&	     & LMMからLDDMQ/TRANS要求を読み出す \\
+0x40000801f-0x400008000		& R	& bit255-0   & 論理UNIT\#0.0のLMM \\
+0x40000803f-0x400008020		& R	& bit255-0   & 論理UNIT\#0.1のLMM \\
+:                            	& :	&            & : \\
+0x400009fff-0x400009fe0		& R	& bit255-0   & 論理UNIT\#63.3のLMM \\\hline
+LDDMQ-W				&	&	     & TRへの書き戻し \\
+0x40000801f-0x400008000		& W	& bit255-0   & 論理UNIT\#0.0のTR \\
+0x40000803f-0x400008020		& W	& bit255-0   & 論理UNIT\#0.1のTR \\
+:                            	& :	&            & : \\
+0x400009fff-0x400009fe0		& W	& bit255-0   & 論理UNIT\#63.3のTR \\\hline\hline
+LMM空間(pAddr2)			& R/W	& Addr境界   & 備考 \\\hline
+0x4ffffffff-0x480000000		& R/W	& 32B        & DDR-High(0x87fffffff-0x800000000)の対応位置に該当するLMMの内容をR/Wする．\\\hline
+\end{tabular}
+\end{table}
+
+Table \ref {logicinterface} shows the logical interface provided through the
+physical memory interface. Within the physical memory space,
+0x4ffffffff-0x480000000 (pAddr2) is a continuous physical space used by the
+FPDDMA mechanism for DMA between DDR-High and LMM corresponding to
+0x87fffffff-0x800000000 (pAddr).  The user program does not refer to the
+continuous virtual space (vAddr2) obtained by the mmap () of the continuous
+physical space (pAddr2) by PIO, but is obtained exclusively by the mmap ()
+of the DDR-High continuous physical area (pAddr). Refers only to the
+continuous virtual space (vAddr). Specifically, IMAX uses vAddr when
+referencing LMM in conjunction with computation unit. In order to obtain the
+same contents of the DDR-High address from the LMM, the CPU must transfer
+the contents of vAddr to the LMM in advance.  The destination LMM is
+specified by comparing it with the vAddr-range register provided for each
+UNIT. As the write destination address, we use vAddr obtained by adding
+pAddr2 (notified from FPDDMA to FSM) with the value of the address
+conversion register in FSM (vAddr-pAddr2). The vAddr-range register provided
+in each UNIT is associated with the latest logical UNIT number obtained by
+subtracting the conf.mapdist value of each UNIT for each SCON
+instruction. Therefore, when the LMM is ideally reused with instruction
+shift, it corresponds to the newly enabled LMM. Only writing to the
+vAddr-range register needs to be performed.
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6PROC.eps,width=0.98\textwidth}
+\caption{\label{proc}Procedure from start-up to termination}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6LMRING.eps,width=0.98\textwidth}
+\caption{\label{lmring}Relationship between logical interface and data capture mechanism in each line}
+\end{figure}
+
+Figure\ref{proc} is a comparison of the operation outline from start to
+termination of EMAX5 and IMAX. In the case of EMAX5, CPU activates FSM in
+EMAX via HPM, and FSM operates as AXI-MASTER until IDLE status is notified
+to CPU.  In the case of IMAX, the CPU side becomes AXI-MASTER, and FSM
+operates as AXI-SLAVE. The DMA-CHAIN function of FPDDMA is used for DRAIN
+and LOAD, and PIO is used for CONF, SCON, REGV, RANGE, and EXEC.  The LMMI
+placed in EMAX5 is managed by the CPU in case of IMAX, and transmission to
+IMAX is not required, but a new update of vAddr-range (RANGE) is required.
+Using Fig.\ref{lmring}, the hardware operation in each procedure shown in
+Fig. \ref {proc} is explained. Note that CONF, SCON, REGV, and RANGE can
+only operate independently, while EXEC and DMA can operate simultaneously
+(DMA is started immediately after EXEC is started).
+
+\begin{description}
+\itemsep 0in
+\parskip 0in
+\item[RESET] The CPU initializes the IMAX internal state by writing RESET
+to COMMAND, and initializes the writing to the physical stage \# (fixed
+value) in logical stage \# for all units. This function is for debugging
+during IMAX development, and does not need to be used by user programs. When
+IMAX is in RESET operation, BUSY is displayed in STATUS.EXRING.
+
+\item[CONF] CPU can update CONF continuously by PIO when STATUS.EXRING and
+STATUS.LMRING are IDLE. The CONF is assigned a physical address
+corresponding to the logical UNIT number. By writing to the specified
+physical address, the CONF of the logical UNIT having the logical stage \#
+corresponding to the logical row number (bits 12-7 of pAddr2 +) is
+updated. If IMAX is writing CONF, BUSY is displayed in STATUS.LMRING.
+
+\item[SCON] By writing SCON to COMMAND when STATUS.EXRING is IDLE, CPU can
+instruct all lines to start shifting CONF according to the value of
+conf.mapdist stored in each line. For all rows, in the first cycle, the
+first 256 bits of the own CONF information (256 bits * 4set) are written to
+BR, and in the second cycle, the CONF information of all the rows from the
+BR in the previous row is imported to the own row. By repeating the above
+four times, all CONF information is shifted down by one line. Also, decrease
+the value of logical stage \# by one. By repeating the above process
+conf.mapdist times, all CONF information is shifted by conf.mapdist lines,
+and the value of logical stage \# is reduced by conf.mapdist. The contents
+of REGV are destroyed by SCON. When IMAX is in SCON operation, BUSY is
+displayed in STATUS.EXRING.
+
+\item[REGV] CPU can update REGV-EAR and REGV-BR continuously by PIO when
+STATUS.EXRING and STATUS.LMRING are IDLE. The REGV is assigned a physical
+address corresponding to the logical UNIT number. By writing to the
+specified physical address, the REGV of the logical UNIT having the logical
+stage \# that matches the logical line number (bits 12-7 of pAddr2 +) is
+updated. When IMAX is writing REGV, then BUSY is displayed in STATUS.LMRING.
+
+\item[RANGE] The CPU can continuously update vAddr-range by PIO when
+STATUS.EXRING and STATUS.LMRING are IDLE. In the vAddr-range, a physical
+address is assigned corresponding to the logical UNIT number, and by writing
+to the specified physical address, a logical having a logical stage \#
+corresponding to the logical line number (bits 12-7 of pAddr2 +) UNIT
+vAddr-range is updated. The instruction (conf.lmm \_mode) to specify the LMM
+as invalid, no division, two divisions, or four divisions is included in the
+above CONF. If IMAX is writing vAddr-range, then BUSY is displayed in
+STATUS.LMRING.
+
+\item[DMA] When STATUS.LMRING is IDLE, the CPU can start continuous DDR-LMM
+transfer by DMA. In EMAX5, the function realized by fsm is performed by the
+CPU in DMA in IMAX. Specifically, the old lmmi must be compared with the new
+lmmi, and when the old lmmi is the write destination, or when the old lmmi
+is a target for forced STORE (lmx with different top address from the next),
+the DMA must be started to expel the LMM to main memory.  If the area
+corresponding to the new lmmi does not exist in the LMM, or if it is a
+target for forced LOAD (lmf, lmx with different top address from the
+previous), the DMA from the main memory to the LMM must be started. If IMAX
+is in DMA operation, then BUSY is displayed in STATUS.LMRING.
+
+\item[EXEC] When STATUS.EXRING is IDLE, the CPU can instruct EXEC to start
+execution for all lines by writing EXEC to COMMAND. When IMAX is in EXEC
+operation, BUSY is displayed in STATUS.EXRING.
+
+\item[LDDMQ] During EXEC operation, in the logical UNIT to which OP \_LDDMQ
+is mapped, the main memory reference request is queued in the LMM. The
+queuing state is notified to fsm, and fsm reads a reference request
+(starting virtual address) from the LMM. At this time, fsm identifies the
+target logical UNIT by setting the logical row number in bits 12-7 of imax
+\_rw = 0, imax \_ty = 1, imax \_a [31: 5]. The read data is stored in the
+buffer inside fsm and prepares for reading from CPU.  CPU should issue a
+read request for a specific register space at appropriate intervals. When
+LDDMQ request is queued in the LMM, the requests are output using a set of
+\textbf{avo}, \textbf{sqo}, and \textbf{do}.  After acquiring the virtual
+address, the CPU must refer to DDR-High and write to the TR of that UNIT.
+
+\item[TRANS] During EXEC operation, in a logical UNIT to which OP \_TR is
+mapped, a main memory reference request is queued in the LMM. The queuing
+state is notified to fsm, and fsm reads a TRANS request from the LMM. At
+this time, fsm specifies the target logical unit by setting the logical line
+number in bits 12-7 of imax \_rw = 0, imax \_ty = 2, and imax \_a [31:
+5]. The read data is stored in the buffer inside fsm and prepares for
+reading from CPU. CPU should issue a read request for a specific register
+space at appropriate intervals. When TRANS requests are queued in the LMM,
+the requests are output using a set of \textbf{avo}, \textbf{sqo}, and
+\textbf{do}.  The CPU must execute the Transaction after acquiring the TRANS
+request.
+\end{description}
+
+\section{Control Registers}
+
+Figure \ref {reg_ctrl} shows the detailed structure of the control
+registers.  Figure \ref {conf} shows the detailed structure of the registers
+in units set by CONF.
+
+\begin{figure}[htbp]
+\center
+\begin{screen}
+\footnotesize
+\begin{verbatim}
+struct reg_ctrl {
+ struct i0 {
+  Ull  stat; /* +0000 bit15-12:LMM_SIZE, bit11-8:EMAX_DEPTH, bit7-4:LMRING, bit3-0:EXRING */
+  Uint mcid; /* +0008 maximum chip-ID of IMAX (<EMAX_NCHIP) to be chained (activated) */
+  Uint dmy0;
+  Uint cmd;  /* +0010 host writes Ull cmd then chip# is propagated to succesors */
+/*Uint cid;*//* +0012 chip# ( set by write to cmd ) */
+  Uint dmy1;
+  Ull  dmy2;
+  Ull  adtr; /* +0020 */
+  Ull  dmy3;
+  Ull  csel; /* +0030 */
+  Ull  dmrp; /* +0038 DMAREAD-PREF */
+  Ull  dmy4[1016];
+  struct conf                    conf[AMAP_DEPTH][EMAX_WIDTH];  /* +2000-3fff */
+  struct {Ull  br[UNIT_WIDTH];}  breg[AMAP_DEPTH][EMAX_WIDTH];  /* +4000-5fff */
+  struct {
+    Uint ea0b ; /* ea0 base   (for avoiding ld-mask-st, */
+  /*Ull  dmy0 :14;*/        /* should be extended to 32bits (lower 18bit is available)) */
+    Uint ea0o ; /* ea0 offset (for avoiding ld-mask-st, */
+  /*Ull  dmy1 :14;*/        /* should be extended to 32bits (lower 18bit is available)) */
+    Uint ea1b ; /* ea1 base   (for avoiding ld-mask-st, */
+  /*Ull  dmy2 :14;*/        /* should be extended to 32bits (lower 18bit is available)) */
+    Uint ea1o ; /* ea1 offset (for avoiding ld-mask-st, */
+  /*Ull  dmy3 :14;*/        /* should be extended to 32bits (lower 18bit is available)) */
+    Uint top  ; /* LMM-top virtual-address */
+  /*Ull  dmy4 : 1;*/
+    Uint bot  ; /* LMM-bot virtual-address */
+  /*Ull  dmy5 : 1;*/
+    Ull  dmy6 ;}           addr[AMAP_DEPTH][EMAX_WIDTH];       /* +6000-7fff */
+  struct {Ull reg[UNIT_WIDTH];} lddmrw[AMAP_DEPTH][EMAX_WIDTH];/* +8000-9fff *//*lddmq/trans-r,lddmq-w*/
+  Ull dmy5[3072]; /* +a000-ffff */
+ } i[EMAX_NCHIP]; /* 0000-ffff */
+};
+\end{verbatim}
+\end{screen}
+\caption{\label{reg_ctrl}Control Registers}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[htbp]
+\center
+\begin{screen}
+\footnotesize
+\begin{verbatim}
+struct conf { /* final configuration info. for IMAX-CGRA */
+  struct cdw0 { /* select EXE-in */
+    Ull  v      :  1; /* 0:inv, 1:insn mapped */
+    Ull  op1    :  6; /* alu_opcd */
+    Ull  op2    :  3; /* logical_opcd */
+    Ull  op3    :  3; /* sft_opcd */
+    Ull  ex1brs :  4; /* 0:br0_0, 1:br0_1, ... 15:3_3 */
+    Ull  ex1s   :  1; /* 0:ex1brs, 1:exdr(self-loop) */
+    Ull  ex1exp :  3; /* 0:H3210, 1:H1010, 2:H3232, 3:B5410, 4:B7632 */
+    Ull  ex2brs :  4; /* 0:br0_0, 1:br0_1, ... 15:3_3 */
+    Ull  ex2exp :  3; /* 0:H3210, 1:H1010, 2:H3232, 3:B5410, 4:B7632 */
+    Ull  ex3brs :  4; /* 0:br0_0, 1:br0_1, ... 15:3_3 */
+    Ull  ex3exp :  3; /* 0:H3210, 1:H1010, 2:H3232, 3:B5410, 4:B7632 */
+    Ull  e2is   :  2; /* 0:e2imm, 1:ex2, 2:ex3 */
+#define E3IMMBITS  6
+    Ull  e3imm  : E3IMMBITS;
+    Ull  e3is   :  1; /* 0:e3imm, 1:ex3 */
+    Ull  init   :  2; /* bit0:activate s1+INIT0 bit1:activate s2+INIT0 */
+    Ull  fold   :  1; /* 0:normal, 1:load-exe-store folding */
+    Ull  mex0op :  2; /* mex(sparse matrix) conditional 0:NOP, 1:AL, 2:OP_CMPA_LE, 3:GE */
+    Ull  mex0init: 1; /* mex(sparse matrix) 0:none, 1:INIT0? */
+    Ull  mex0dist: 3; /* distance 0:0, 1:1, 2:2, 3:4, 4:8, 5:16, 6:32, 7:64byte */
+    Ull  mex1op :  2; /* mex(sparse matrix) conditional 0:NOP, 1:AL, 2:OP_CMPA_LE, 3:GE */
+    Ull  mex1init: 1; /* mex(sparse matrix) 0:none, 1:INIT0? */
+    Ull  mex1dist: 3; /* distance 0:0, 1:1, 2:2, 3:4, 4:8, 5:16, 6:32, 7:64byte */
+    Ull  mexlimit: 4; /* limit 0:0, 1:8, 2:16, .... 10:4096, 11:8192, 12:16384, 13:32768 */
+    Ull  dmy00  :  1;
+  } cdw0;
+  struct cdw1 { /* select CEX-in and EAG-in */
+    Ull  cs0    :  4; /* 0:br0_0, 1:br0_1, ... 15:3_3 */
+    Ull  cs1    :  4; /* 0:br0_0, 1:br0_1, ... 15:3_3 */
+    Ull  cs2    :  4; /* 0:br0_0, 1:br0_1, ... 15:3_3 */
+    Ull  cs3    :  4; /* 0:br0_0, 1:br0_1, ... 15:3_3 */
+    Ull  cex_tab: 16; /* c3.c2.c1.c0の組合せ (cop=NOPの場合,ffff) */
+                      /* 1111,1110,1101,1100,....,0001,0000 の各々に0/1を割り当てた16bitを指定 */
+    Ull  ea0op  :  5; /* mem_opcd */
+    Ull  ea0bs  :  2; /* 0:ea0br, 1:ea0dr(ea0br+self-loop), 2:eabbrs, 3:ea0dr(eabbrs+self-loop) */
+    Ull  ea0os  :  1; /* 0:ea0or, 1:eaobrs */
+    Ull  ea0msk :  4; /* 14:64bit, 13:word1, 12:word0, 11-8:half3-0, 7-0:byte7-0 of offset */
+    Ull  ea1op  :  5; /* mem_opcd */
+    Ull  ea1bs  :  2; /* 0:ea1br, 1:ea1dr(ea1br+self-loop), 2:eabbrs, 3:ea1dr(self-loop) */
+    Ull  ea1os  :  1; /* 0:ea1or, 1:eaobrs */
+    Ull  ea1msk :  4; /* 14:64bit, 13:word1, 12:word0, 11-8:half3-0, 7-0:byte7-0 of offset */
+    Ull  eabbrs :  4; /* 0:br0_0, 1:br0_1, ... 15:3_3 */
+    Ull  eaobrs :  4; /* 0:br0_0, 1:br0_1, ... 15:3_3 */
+  } cdw1;
+  struct cdw2 { /* select TR/BR-in */
+    Ull  ts0    :  4; /* 0:br0_0, 1:br0_1, ... 15:br3_3 */
+    Ull  ts1    :  4; /* 0:br0_0, 1:br0_1, ... 15:br3_3 */
+    Ull  ts2    :  4; /* 0:br0_0, 1:br0_1, ... 15:br3_3 */
+    Ull  ts3    :  4; /* 0:br0_0, 1:br0_1, ... 15:br3_3 */
+    Ull  trs0   :  2; /* 0:lmwd0, 1:exdr, 2:ts0 *//* 0:TR外部書き込み用, 1,2:EX/TS書き込み用 */
+    Ull  trs1   :  2; /* 0:lmwd1, 1:exdr, 2:ts1 */
+    Ull  trs2   :  2; /* 0:lmwd2. 1:exdr, 2:ts2 */
+    Ull  trs3   :  2; /* 0:lmwd3, 1:exdr, 2:ts3 */
+    Ull  mwsa   :  1; /* 0:lmwa,  1:ea0d        *//* 0:常時lmwd可能, 1,2:EXEC時以外は強制lmwd可能 */
+    Ull  mws0   :  2; /* 0:lmwd0, 1:exdr, 2:ts0 *//* 0:常時lmwd可能, 1,2:EXEC時以外は強制lmwd可能 */
+    Ull  mws1   :  2; /* 0:lmwd1, 1:exdr, 2:ts1 */
+    Ull  mws2   :  2; /* 0:lmwd2, 1:exdr, 2:ts2 */
+    Ull  mws3   :  2; /* 0:lmwd3, 1:exdr, 2:ts3 */
+    Ull  brs0   :  2; /* 0:off, 1:mr10, 2:tr0, 3:mr0  */
+    Ull  brs1   :  2; /* 0:off, 1:mr11, 2:tr1, 3:mr1  */
+    Ull  brs2   :  2; /* 0:off, 1:mr12, 2:tr2, 3:exdr */
+    Ull  brs3   :  2; /* 0:off, 1:mr13, 2:tr3         */
+    Ull  mapdist:  6; /* 論理UNIT毎にあるが,本来は物理UNITに1つでよい */
+    Ull  lmm_mode: 2; /* 論理LMM毎にセット 0:無効, 1:分割無, 2:2分割, 3:4分割 */
+    Ull  lmm_axiw: 1; /* AXI->LMM write対象(lmp/lmr/lmf/lmxの場合1) */
+    Ull  lmm_axir: 1; /* AXI<-LMM read 対象(lmd/lmw/lmx    の場合1) */
+    Ull  dmy20  : 13;
+  } cdw2;
+  struct cdw3 { /* e2 immediate */
+    Ull  e2imm  : 64;
+  } cdw3;
+} conf[EMAX_DEPTH][EMAX_WIDTH]; /* 4dwords/unit costs 1cycle/unit: 4-parallel conf costs 1cycle/stage */
+\end{verbatim}
+\end{screen}
+\caption{\label{conf}Configuration Registers}
+\end{figure}
+
+\clearpage
+
+\section{Programming model}
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=IMAXMODEL.eps,width=0.98\textwidth}
+\caption{\label{imaxmodel}Programming model of IMAX based on load-exec-store}
+\end{figure}
+
+It is common to employ compiler optimization to optimize a program for which
+the algorithm has been determined. However, in the case of von Neumann
+computers, the ultimate method for achieving high efficiency is still
+programming in assembly language. Since machine language instructions are
+executed logically in sequential, debugging is relatively easy with moderate
+knowledge. Similarly, CGRA aims to improve efficiency by mapping machine
+instruction level functions to a large number of arithmetic units at high
+density. However, in the conventional CGRA in which arithmetic units are
+interconnected in a mesh shape, it is difficult to accurately express the
+operation by a sequential execution model such as the Neumann type, and it
+is extremely difficult to optimize and debug at the assembly language level. 
+In addition, since the arithmetic unit group and the external memory are
+separated, a wide memory bus and SIMD operations are required. In order to
+improve the above points, IMAX uses a pair of arithmetic unit and memory as
+a basic component, and adopts a ring connection instead of a mesh connection
+for the network between arithmetic units. Therefore, it is not restricted by
+the SIMD operations and has a high degree of freedom regarding the mapping
+position of load-exec-store. The programming procedure is first
+load-exec-store dataflow description, then selection of appropriate local
+memory location and mapping of addresses, and finally tuning for maximum
+reuse of local memory.
+
+Figure\ref{imaxmodel} shows a typical IMAX programming model. One logical
+UNIT (colored by light blue) has an ALU, two address generators (EAG), and
+dual port local memory, and four logical UNITs make up one row and four
+columns of CGRA. Each line of source code can also contain position
+information. The compiler selects one of the mapping patterns (a)-(d)
+depending on the presence or absence of position information and the data
+dependency, and maps it to an appropriate logical UNIT. (a) is a simple case
+where "D = C + B * A" is calculated by using dual SIMD on arrays A, B, C,
+and D without describing the position information. First, load A, load B,
+and load C are mapped to the first row of CGRA (the fourth column is
+omitted). In the second row, fused multiplication and addition (FMA) and
+Store D are mapped (third and fourth columns are omitted). If no position
+information is described, a simple data flow from top to bottom is formed
+like this way.
+
+On the other hand, (b) is a case where "D = C + B * A" is calculated on
+arrays A, B, and C, and the result is written back to C. Position
+information is attached to the register C for load destination and register
+D for FMA destination, and the load and store to the array C are performed
+at the same time. Load A and load B are mapped on the first row of CGRA, and
+load C is mapped on the second row. When the temporal destination D of FMA
+operation is specified on the same row as register C, the inputs A, B, and C
+for the arithmetic unit are once sent to the bottom registers of the current
+row and then forwarded to the input of ALU. Since register D for storing to
+array C is also mapped to the same row, it becomes load-exec-store for array
+C in the same local memory.
+
+(c) is a case where (b) is integrated in one row. Physically, only one
+dual-port local memory is located in one row of CGRA, and it looks like a
+four logical memory structure by time-domain multiplexing. Therefore, in
+(b), one physical local memory is shared by arrays A and B, whereas in (c),
+array C is also shared, so the available memory space per array
+decreases. If there is still a merit of integrating in one row, the position
+information is not attached to the destination register C, but the position
+information is attached only to the destination register D of FMA. First,
+load A, load B, and load C are mapped, and the FMA operation and store D
+operation for the array C are also mapped to the same row.
+
+(d) is a case where the FMA operation is described as "C = C + B * A" without
+using the temporary register D. No position information is attached to store
+C. On the source code, it is a repetition of the FMA operation that reloads
+the data stored in the local memory. However, the calculation that loads
+data from the same address after the previous store completes has a large
+overhead, and such kind of hardware operation should be avoided even by the
+CPU. On the other hand, in the case of CGRA, this operation can be easily
+absorbed by the accumulation in the arithmetic unit. The difference from (c)
+is that the FMA is not a simple load-exec-store, but the input C0 is the
+load result of the array C only for the first time of loop, and the result
+of the first FMA is connected to the next load-exec-store operation. Of
+course, in the case of a pipelined floating point arithmetic unit, the
+accumulation in the arithmetic unit cannot be executed every cycle. As
+mentioned above, IMAX has the advantage of not causing overhead in the
+operation of logical UNIT even if there is an accumulation due to 4-column
+multithreading, so (d) can be used without fear of performance degradation.
+
+\section{Templates of instructions}
+
+\leftline{\shabox{\bf
+cex(OP\_CEXE, \&ex0-9, c3, c2, c1, c0, 16bit-pattern)
+}}
+
+\vskip .1in
+
+The c3, c2, c2, and c1 are 64bit values respectively. The each of 4bit
+result of the concatenation of four bit32 values and the concatenation of
+four bit0 values becomes an bit position of 16bit-pattern.  Each of bit1 and
+bit0 of ex[0-9] are set to the bit value extracted from the 16bit-pattern.
+The bit1 and the bit0 of ex[0-9] correspond to the upper 32 bits and the
+lower 32 bits of the conditional store.
+
+\vskip .1in
+
+\leftline{\shabox{\bf
+\leftline{exe(OP\_X, \&var$|$\&AR[0-63][0-3], s1, e1, s2, e2, s3, e3, OP\_Y, s4, OP\_Z, s5)}
+\leftline{ex4(OP\_X, \&var$|$\&AR[0-63], s1, e1, s2, e2, s3, e3, OP\_Y, s4, OP\_Z, s5)}
+}}
+
+\vskip .1in
+
+Var or AR[0-63][0-3] is the destination of ALU, the former corresponds to no
+position information, and the latter corresponds to the position
+information. Each of 64-bit value of s1, s2 and s3 is sent to the ALU after
+modification by e1, e2 and e3 respectively. The modifiers are as follows.
+
+\begin{description}
+\itemsep 0in
+\parskip 0in
+\item[EXP\_H3210:] no modification
+\item[EXP\_H1010:] lower 32bit is copied to upper/lower 32bit
+\item[EXP\_H3232:] upper 32bit is copied to upper/lower 32bit
+\item[EXP\_B5410:] byte5,4,1,0 is zero-extented to 16bit and concatenated
+\item[EXP\_B7632:] byte7,6,3,2 is zero-extented to 16bit and concatenated
+\end{description}
+OP\_X, OP\_Y and OP\_Z cover arithmetic operations, logical operations and
+shift operations respectively. Each operation has dual SIMD mode where the
+upper 32bit and lower 32bit are managed independently. exe() is dual SIMD,
+and ex4() is octal SIMD.
+
+\vskip .1in
+
+\leftline{\shabox{\bf
+exe(OP\_X, \&var, INIT0?var:var, e1, s2, e2, s3, e3, OP\_Y, s4, OP\_Z, s5)
+}}
+
+\vskip .1in
+
+"INIT0?var:var" is redundant in the meaning of C language because it is
+always "var". This expression is used by CGRA compiler as a hint to deal
+with multiple loops in CGRA without host intervention.  Before starting the
+multiple loop, the host sets each initial value for the inner loop in the
+CGRA. Normally, when the inner loop is completed, the host needs to
+intervene to reinitialize the internal registers. However, in IMAX, the
+variable in which "INIT0?var:var" is described can be reinitialized by CGRA
+using the initial values, and can successfully eliminate the overhead of
+host intervention. Specifically, assuming that the initial value is set in
+var, the initial value set in advance by the host is used as the first input
+of the ALU for the first time (INIT0=1) of LOOP0, and the operation can be
+continued by switching the input to the output of ALU.
+
+\vskip .1in
+
+\leftline{\shabox{\bf
+exe(OP\_X, \&var, var, e1, INIT0?s2:0, e2, s3, e3, OP\_Y, s4, OP\_Z, s5)
+}}
+
+\vskip .1in
+
+This is also a hint to deal with multiple loops in CGRA without host
+intervention. When "INIT0?S2:0" is described, the data path is switched so
+that s2 is the second input of the ALU for the first time (INIT0=1) of
+LOOP0, and 0 is the second input from the next iteration. It can be used to
+calculate the start address of a 2D subarray.
+
+\vskip .1in
+
+\leftline{\shabox{\bf
+mex(OP\_MEX2, \&s2, INIT0?s20:s2, INIT0?0:expr, OP\_MEX1, \&s1, INIT0?s10:s1, INIT0?0:expr, limit, BR[0-63][0-3][1], BR[0-63][0-3][0])
+}}
+
+\vskip .1in
+
+This is an address calculation auxiliary description for performing
+multiple-loop sparse matrix calculation and merge sort without host intervention.
+"INIT0?s20:s2" and "INIT0?s10:s1" correspond to the base address, and "INIT0?0:expr"
+corresponds to the offset for increment. For the first time (INIT0=1) of
+LOOP0, s20 and s10 (initial values) are stored in s2 and s1 respectively.
+From the next iteration, the upper 32 bit of the two 64bit data read from the local memory last time are compared,
+and s2 and s1, that are the output of EAGs, are added with 0 or expr depending on the comparison. 
+And limit is the distance for merge sort. Refer to the sample program for detail. OP\_MEX is as follows.
+\begin{description}
+\itemsep 0in
+\parskip 0in
+\item[OP\_NOP:]      always base is used
+\item[OP\_ALWAYS:]   always base+offset is used
+\item[OP\_CMPA\_LE:] if upper 32bit (BR[][][1]) $\le$ upper 32bit (BR[][][0]) then base+offset, else base is used
+\item[OP\_CMPA\_GE:] if upper 32bit (BR[][][1]) $\ge$ upper 32bit (BR[][][0]) then base+offset, else base is used
+\end{description}
+
+\vskip .1in
+
+\leftline{\shabox{\bf
+\leftline{mop(OP\_X, ex9-0, \&src$|$\&dst, base, offset, mask, top, len, block, force, ptop, plen)}
+\leftline{mo4(OP\_X, ex9-0, \&src$|$\&dst, base, offset, mask, top, len, block, force, ptop, plen)}
+}}
+
+\vskip .1in
+
+Description of load or store operations for local memory. Each field is as follows.
+\begin {description}
+\itemsep 0in
+\parskip 0in
+\item[OP\_X:] dual SIMD load or store operation according to the data width, mo4 is for octal SIMD
+\item[ex0-9:] constant "3" for unconditional store, variable for conditional store
+\item[src$|$dst:] destination register for load, source source register for store
+\item[base:] the base part of the memory address "base + mask (offset)", the
+host memory address can be used as it is, no need to be aware of address
+translation because the address in local memory is automatically translated
+by the cooperation of the compiler and hardware
+\item[offset:] the offset part, note that the unit of offset is 1 byte
+\item[mask:] the final address is base plus the value of the offset register
+modified by mask, the mask is as follows
+\begin{description}
+\itemsep 0in
+\parskip 0in
+\item[MSK\_B0:] 64bit zero-extension of bit7-0
+\item[MSK\_B1:] 64bit zero-extension of bit15-8
+\item[MSK\_B2:] 64bit zero-extension of bit23-16
+\item[MSK\_B3:] 64bit zero-extension of bit31-24
+\item[MSK\_B4:] 64bit zero-extension of bit39-32
+\item[MSK\_B5:] 64bit zero-extension of bit47-40
+\item[MSK\_B6:] 64bit zero-extension of bit55-48
+\item[MSK\_B7:] 64bit zero-extension of bit63-56
+\item[MSK\_H0:] 64bit zero-extension of bit15-0
+\item[MSK\_H1:] 64bit zero-extension of bit31-16
+\item[MSK\_H2:] 64bit zero-extension of bit47-32
+\item[MSK\_H3:] 64bit zero-extension of bit63-48
+\item[MSK\_W0:] 64bit zero-extension of bit31-0
+\item[MSK\_W1:] 64bit zero-extension of bit63-32
+\item[MSK\_D0:] bit63-0 as it is
+\end{description}
+\item[top:] the start address of the host main memory for burst operation,
+in which host DMA controller transmit data to/from LMM
+\item[len:] the length of the burst operation, the unit is 1 word (4 bytes)
+and the rate is 256 bits per cycle.  If constant(0) is specified, DMA is
+supressed.  This case is used for double buffering in the same LMM.
+\item[block:] not used in IMAX (only for DMA gather parameter in EMAX5)
+\item[force:] different behavior in load or store operation as follows
+\begin {description}
+\itemsep 0in
+\parskip 0in
+\item[0:] In the case of load, if the start address and length of DMA last
+time are the same, DMA is not started and LMM is reused. In the case of
+store, data is transferred from the LMM to the host main memory after the
+burst operation. However, if the delayed drain (with the next burst
+operation) is specified, DMA is suppressed.
+\item[1:] In the case of load, DMA from the host main memory to LMM is
+always invoked.  Typical case is when the contents are different even if the
+address is the same, such as the input of an external device. In the case of
+store, a partial store (store only in some selected some addresses) is
+assumed, and data is temporarily transferred in advance from the host main
+memory to LMM before the burst operationn. However, if the address range is
+the same as the previous, DMA is suppressed.
+\end{description}
+\item[ptop:] start address of overlapped DMA performed during burst
+operation. In the case of load, the input required for the next burst
+operation is transferred from the host main memory to LMM during the burst
+operation (prefetch). In the case of store, the result of the previous burst
+operation is transferred from LMM to the host main memory during the burst
+operation (delayed drain). When mapdist=0, load / store and prefetch / drain
+are performed on the same LMM.
+\item[plen:] length of overlapped DMA. The unit is 1 word (4 bytes).
+\end{description}
+
+\clearpage
+
+\section{List of instructions}
+
+\begin{table}[htbp]
+\center
+\footnotesize
+\caption{\label{lmm-operation}Memory operations}
+\tabcolsep 0.2pc
+\begin{tabular}{l|ll|p{0.9in}|p{1.1in}}\hline\hline
+unit    & usage  &                                                                                & mode                & description\\\hline
+MEX     & \multicolumn{2}{l|}{\_ALWAYS,CMPA\_LE,\_GE (\&base, INIT0?init:base, INIT0?0:[0-64], s2, s1)}  & sparse matrix& LMM indexed-access\\\hline
+LD      & LDR    & (-,      (Ull*)d, base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & 64bit      lmm      & LMM rand-access\\
+        & LDWR   & (-,      (Ull*)d, base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & u32bit     lmm      & LMM rand-access\\
+%%      & LDHR   & (-,      (Ull*)d, base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & u16bit     lmm      & LMM rand-access\\
+        & LDBR   & (-,      (Ull*)d, base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & u8bit      lmm      & LMM rand-access\\
+        & LDRQ   & (-,      (Ull*)d, base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & 64bit*4    lmm      & LMM rand-access\\
+        & LDDMQ  & (ex(b0), (Ull*)d, base(++), offs, msk,   -,   -,   -,          -,    -,    -)  & 64bit*4    mem      & Direct access to MM\\\hline
+ST      & STR    & (ex,     s,       base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & 64bit      lmm      & LMM rand-access\\
+        & STWR   & (ex(b0), s,       base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & 32bit      lmm      & LMM rand-access\\
+%%      & STHR   & (ex(b0), s,       base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & 16bit      lmm      & LMM rand-access\\
+        & STBR   & (ex(b0), s,       base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & 8bit       lmm      & LMM rand-access\\\cline{2-5}
+        & STRQ   & (-,      (Ull*)s, base(++), offs, msk, top, len, blk, force-read, ptop, plen)  & 64bit*4    lmm      & LMM rand-access\\
+        & TR     & (ex(b0), (Ull*)s,        -,    -,   -, func(), -,  -,          -,    -,    -)  & 64bit*4    exec     & Send transaction\\\hline
+\multicolumn{5}{l}{- pair of LDR(BR[][][1], adr+8) and LDR(BR[][][0], adr) w/ 8B-aligned adr can load two 64bit data to BR[][][1/0] from LMM.}\\
+\multicolumn{5}{l}{- pair of LDR(BR[][][1], adr+8) and LDR(BR[][][0], adr) w/ 8B-unaligned adr can load 64bit data to BR[][][0] from LMM.}\\
+\multicolumn{5}{l}{- ex is 2bit (b1 controls word1, b0 controls word0)                                                    }\\
+\multicolumn{5}{l}{- msk is 14:64bit, 13:word1, 12:word0, 11-8:half3-0, 7-0:byte7-0 of offset                             }\\
+\multicolumn{5}{l}{- base++ increments address by the size of element.                                                    }\\\hline
+\multicolumn{5}{l}{- LD with force-read=0 and ptop==NULL generates current(lmr) and reuse LMM                             }\\
+\multicolumn{5}{l}{\hspace{.1in}実行前に主記憶からLMMへデータ転送. 先頭アドレスが前回と同一の場合は再利用                          }\\
+\multicolumn{5}{l}{- LD with force-read=1 and ptop==NULL generates current(lmf) and !reuse LMM                            }\\
+\multicolumn{5}{l}{\hspace{.1in}実行前に必ず主記憶からLMMへデータ転送. 動画データ等,先頭アドレスが同一でも内容が異なる場合に使用   }\\
+\multicolumn{5}{l}{- LD with force-read=0 and ptop!=NULL generates current(lmr) and next(lmp)                             }\\
+\multicolumn{5}{l}{\hspace{.1in}実行前の主記憶からLMMへのデータ転送はせず,次回実行中にプリフェッチ                                 }\\
+\multicolumn{5}{l}{\hspace{.1in}mapdist=0の場合,同一LMMにて,LDと実行中プリフェッチを同時実行                                       }\\
+\multicolumn{5}{l}{- LDDMQ set f=1 and p=1 in lmmc automatically                                                          }\\\hline
+\multicolumn{5}{l}{- ST with force-read=0 and ptop==NULL generates current(lmw) and reuse+wback LMM                       }\\
+\multicolumn{5}{l}{\hspace{.1in}実行後にLMMから主記憶Mへデータ転送                                                                 }\\
+\multicolumn{5}{l}{- ST with force-read=1 and ptop==NULL generates current(lmx) and !reuse+wback LMM                      }\\
+\multicolumn{5}{l}{\hspace{.1in}先頭アドレスが前回と同一の場合,実行後のLMMから主記憶へのデータ転送はしない                         }\\
+\multicolumn{5}{l}{\hspace{.1in}先頭アドレスが変化しないLMMへの追加的累算の場合,初回のみ主記憶からLMMへ初期値を転送し,             }\\
+\multicolumn{5}{l}{\hspace{.1in}途中の主記憶-LMM間転送はしない.最後に先頭アドレスが変化した際に主記憶へ書き戻す                    }\\
+\multicolumn{5}{l}{- ST with force-read=0 and ptop!=NULL generates current(lmw) and prev(lmd)                             }\\
+\multicolumn{5}{l}{\hspace{.1in}実行後のLMMから主記憶へのデータ転送はせず,次回実行中にドレイン                                     }\\
+\multicolumn{5}{l}{\hspace{.1in}mapdist=0の場合,同一LMMにて,STと実行中ドレインを同時実行                                           }\\
+\multicolumn{5}{l}{- TR set f=1 and p=1 in lmmc automatically                                                          }\\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\center
+\footnotesize
+\caption{\label{alu-operation}ALU operations}
+\tabcolsep 0.2pc
+\begin{tabular}{l|ll|p{0.7in}|p{2.5in}}\hline\hline
+unit    & usage   &                                                  & mode          & description\\\hline
+CEX     & CEXE    & ((char*)ex, c3, c2, c1, c0, imm)                 & 2bit 4in 16bit& word-wise(w1/w0) conditional execution\\\hline
+EX      & ex4.SFMA& (Ull*)d$|$s1,   (s1, (Ull*)s2, (Ull*)s3, s4)     & 8bit*32   3in & stochastic s1+s2*s3 div=s4 -> 8bit\\
+1,2,3   & ex4.FMA & (Ull*)d$|$s1,   ((Ull*)s1, (Ull*)s2, (Ull*)s3)   & 32bit*2*4 3in & floating-point s1+s2*s3\\
+        & ex4.FMS & (Ull*)d$|$s1,   ((Ull*)s1, (Ull*)s2, (Ull*)s3)   & 32bit*2*4 3in & floating-point s1-s2*s3\\
+        & ex4.FAD & (Ull*)d$|$s1,   ((Ull*)s1, (Ull*)s2,        -)   & 32bit*2*4 2in & floating-point s1+s2\\
+        & ex4.FML & (Ull*)d$|$s1,   ((Ull*)s1, (Ull*)s2,        -)   & 32bit*2*4 2in & floating-point s1*s2\\\cline{2-5}
+        & CFMA    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 32bit*1 3in   & floating-point s1+s2*s3 if hi(s2)==hi(s3)\\
+        & FMA     & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 32bit*2 3in   & floating-point s1+s2*s3\\
+        & FMS     & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 32bit*2 3in   & floating-point s1-s2*s3\\
+        & FAD     & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 32bit*2 2in   & floating-point s1+s2\\
+        & FML     & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 32bit*2 2in   & floating-point s1*s2\\\hline
+EX1     & ex4.ADD3& (Ull*)d$|$s1,   ((Ull*)s1, (Ull*)s2, (Ull*)s3)   & 32bit*2*4 3in & integer add s1+s2+s3\\
+        & ex4.SUB3& (Ull*)d$|$s1,   ((Ull*)s1, (Ull*)s2, (Ull*)s3)   & 32bit*2*4 3in & integer subtract s1-(s2+s3)\\
+        & ex4.ADD & (Ull*)d$|$s1,   ((Ull*)s1, (Ull*)s2,        -)   & 32bit*2*4 2in & integer add s1+s2\\
+        & ex4.SUB & (Ull*)d$|$s1,   ((Ull*)s1, (Ull*)s2,        -)   & 32bit*2*4 2in & integer subtract s1-s2\\\cline{2-5}
+        & ADD3    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 32bit*2 3in   & integer add s1+(s2+s3)\\
+        & SUB3    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 32bit*2 3in   & integer subtract s1-(s2+s3)\\
+        & ADD     & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 32bit*2 2in   & integer add s1+s2\\
+        & SUB     & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 32bit*2 2in   & integer subtract s1-s2\\
+        & \multicolumn{2}{l|}{CMP\_\{EQ$|$NE$|$LT$|$LE$|$GT$|$GE\} ((Ull*)d, s1, s2)}& 32bit*2 2in & word-wise(w1/w0) compare and set 1*2bit-CC\\
+        & CMOV    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 2,32bit*2 2in & word-wise(w1/w0) conditional move\\\cline{2-5}
+        & MAUH3   & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 16bit*4 3in   & s1.exp+(s2.exp+s3.exp)\\
+        & MAUH    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 16bit*4 2in   & s1.exp+s2.exp\\
+        & MSUH3   & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 16bit*4 3in   & s1.exp-(s2.exp+s3.exp)\\
+        & MSUH    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 16bit*4 2in   & s1.exp-s2.exp\\
+        & MLUH    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & (11bit*4)*9bit& s1.exp*s2.exp\\
+        & MMRG    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 8bit*2 3in    & s1.b4$|$s2.b4$|$s3.b4$|$0$\rightarrow$w1,s1.b0$|$s2.b0$|$s3.b0$|$0$\rightarrow$w0\\
+        & MSSAD   & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 16bit*4       & s1.h3+df(s2.b7,s3.b7)+df(s2.b6,s3.b6)$\rightarrow$d.h3\\
+        &         &                                                  & 8bit*8 2in    & s1.h2+df(s2.b5,s3.b5)+df(s2.b4,s3.b4)$\rightarrow$d.h2\\
+        &         &                                                  &               & s1.h1+df(s2.b3,s3.b3)+df(s2.b2,s3.b2)$\rightarrow$d.h1\\
+        &         &                                                  &               & s1.h0+df(s2.b1,s3.b1)+df(s2.b0,s3.b0)$\rightarrow$d.h0\\
+        & MSAD    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 16bit*4       & df(s1.b7,s2.b7)+df(s1.b6,s2.b6)$\rightarrow$d.h3\\
+        &         &                                                  & 8bit*8 2in    & df(s1.b5,s2.b5)+df(s1.b4,s2.b4)$\rightarrow$d.h2\\
+        &         &                                                  &               & df(s1.b3,s2.b3)+df(s1.b2,s2.b2)$\rightarrow$d.h1\\
+        &         &                                                  &               & df(s1.b1,s2.b1)+df(s1.b0,s2.b0)$\rightarrow$d.h0\\
+        & MINL3   & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 16bit*4 3in   & (s3.h3$<$s3.h2)?s1.h3$|$s3.h3:s2.h3$|$s3.h2$\rightarrow$d.w1\\
+        &         &                                                  &               & (s3.h1$<$s3.h0)?s1.h1$|$s3.h1:s2.h1$|$s3.h0$\rightarrow$d.w0\\
+        & MINL    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 16bit*4 2in   & (s1.h2$<$s2.h2)?s1.w1:s2.w1$\rightarrow$d.w1\\
+        &         &                                                  &               & (s1.h0$<$s2.h0)?s1.w0:s2.w0$\rightarrow$d.w0\\
+        & MH2BW   & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 16bit*4 2in   & s1.b6$|$s1.b4$|$s2.b6$|$s2.b4$|$s1.b2$|$s1.b0$|$s2.b2$|$s2.b0\\
+        & MCAS    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 16bit*2 2in   & (s1.h2$<$s2.h2)?0:0xff$\rightarrow$d.b4\\
+        &         &                                                  &               & (s1.h0$<$s2.h0)?0:0xff$\rightarrow$d.b0\\
+        & MMID3   & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 8bit*8  3in   & bytewise compare and output middle\\
+        & MMAX3   & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 8bit*8  3in   & bytewise compare and output maximum\\
+        & MMIN3   & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 8bit*8  3in   & bytewise compare and output minimum\\
+        & MMAX    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 8bit*8  2in   & bytewise compare and output maximum\\
+        & MMIN    & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,   -,   -)  & 8bit*8  2in   & bytewise compare and output minimum\\
+        & MAJ     & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 32bit*2 3in   & (r1$\&$0xffffffff0..0LL)$|$(((r1$\&$r2)$\wedge$(r1$\&$r3)$\wedge$(r2$\&$r3))$\&$0xffffffffLL)\\
+        & CH      & (Ull*)d$|\&$s1, (   s1, exp, s2, exp,  s3, exp)  & 32bit*2 3in   & (r1$\&$0xffffffff0..0LL)$|$(((r1$\&$r2)$\wedge$($\sim$r1$\&$r3))$\&$0xffffffffLL)\\\hline
+EX2     & AND     & (Ull*)d, (s4) \hfill cascadable                  & 64bit   2in   & logical and s1\&s2\\
+        & OR      & (Ull*)d, (s4) \hfill cascadable                  & 64bit   2in   & logical or s1$|$s2\\
+        & XOR     & (Ull*)d, (s4) \hfill cascadable                  & 64bit   2in   & logical xor s1$\wedge$s2\\
+        & SUMHH   & (Ull*)d, ( -) \hfill cascadable                  & 16bit*4 1in   & s1.h3+s1.h2$\rightarrow$d.h3, s1.h1+s1.h0$\rightarrow$d.h1\\
+        & SUMHL   & (Ull*)d, ( -) \hfill cascadable                  & 16bit*4 1in   & s1.h3+s1.h2$\rightarrow$d.h2, s1.h1+s1.h0$\rightarrow$d.h0\\
+        & ROTS    & (Ull*)d, (s4) \hfill cascadable                  & 32bit*2 2in   & rotr(s1.w1,s4.b6),rotr(s1.w1,s4.b5),rotr(s1.w1,s4.b4)$\rightarrow$d.w1\\
+        &         &                                                  &               & rotr(s1.w0,s4.b2),rotr(s1.w0,s4.b1),rotr(s1.w0,s4.b0)$\rightarrow$d.w0\\\hline
+EX3     & SLL     & (Ull*)d, (s5) \hfill cascadable                  & 32bit*2 2in   & 32bit logical shift to left\\
+        & SRL     & (Ull*)d, (s5) \hfill cascadable                  & 32bit*2 2in   & 32bit logical shift to right\\
+        & SRAA    & (Ull*)d, (s5) \hfill cascadable                  & 32bit*2 2in   & 32bit arith shift to right (bit63,31 is ext.)\\
+        & SRAB    & (Ull*)d, (s5) \hfill cascadable                  & 32bit*2 2in   & 32bit arith shift to right (bit55,23 is ext.)\\
+%%      & SRAC    & (Ull*)d, (s5) \hfill cascadable                  & 32bit*2 2in   & 32bit arith shift to right (bit47,15 is ext.)\\
+%%      & SRAD    & (Ull*)d, (s5) \hfill cascadable                  & 32bit*2 2in   & 32bit arith shift to right (bit39,7 is ext.)\\
+        & SRLM    & (Ull*)d, (s5) \hfill cascadable                  & 16bit*4 2in   & 16bit logical shift to right\\\hline
+\multicolumn{5}{l}{\hspace{.8in}- exp is 0:64bit$\rightarrow$16bit[4], 1:low32bit$\rightarrow$32bit[2], 2:high32bit$\rightarrow$32bit[2]}\\
+\multicolumn{5}{l}{\hspace{.8in}- exp is 3:byte5,4,1,0$\rightarrow$16bit[4], 4:byte7,6,3,2$\rightarrow$16bit[4]}\\
+\multicolumn{5}{l}{\hspace{.8in}- (Ull*)s1,(Ull*)s2,(Ull*)s3,(Ull*)d are pointers and s1, s2, s3 are values}\\
+\multicolumn{5}{l}{\hspace{.8in}- c3, c2, c1, c0 are 1*2bit-values, and (char*)ex is a pointer}\\
+\multicolumn{5}{l}{\hspace{.8in}- .b[7:0] is 8bit portion, .h[3:0] is 16bit portion and .w1$|$w0 is 32bit portion in 64bit respectively}\\
+\multicolumn{5}{l}{\hspace{.8in}- d$|$s1 is d:normal operation, s1:accumulation. succeeding operations with s1 reffer the result.}\\\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6ALU.eps,width=1.00\textwidth}
+\caption{\label{alu}Connection network between registers and arithmetic units}
+\end{figure}
+
+Table \ref{lmm-operation} shows the memory operation description format for
+IMAX.  For the programming, the location of the store data should be focused
+first.  The store address should be aligned to the width of data.
+
+Table \ref{alu-operation} shows the ALU operation description format for
+IMAX.  The register width is 64 bits, and the basic data type is two-element
+concatenation of single precision operation for floating-point arithmetic,
+two-element concatenation of 32-bit width for integer arithmetic, and
+four-element concatenation of 16-bit width or eight-element concatenation
+for media operation.  AND, OR, XOR, SUMHH, and SUMHL can independently input
+the previous stage’s register outputs. By specifying the output \textbf{d}
+of integer-add/sub as the input, cascade operation inside the unit is
+possible.  In addition, SLL, SRL, SRAA, SRAB, and SRLM can independently use
+the output register of the previous stage as input. By specifying the output
+\textbf{d} of integer-add/sub and the output \textbf{D} of AND, OR, XOR,
+SUMHH, and SUMHL as input, cascade operation inside the unit is possible.
+That is, there are maximum of three operations can be cascaded inside unit:
+integer-add/sub, logical operation, and shift operation.  CMP, CEXE, and
+CMOV are descriptions for conditional execution. A condition code can be
+generated by CMP, an execution condition for load store combining multiple
+condition codes can be generated by CEXE, and conditional assignment by a
+single condition code can be performed by CMOV.  The output of CEX can be
+used for the execution condition ex of the load/store description described
+above. Figure \ref {alu} shows the relationship between the operation
+description and the operation unit mapping.
+
+\section{Overlapping of prefetch and drain}
+
+In the stencil calculation, (1) the immediately preceding continuous
+operation writes back the operation result stored in the LMM to the main
+memory, (2) Continuous operation of arithmetic unit using input data
+prepared in LMM, and (3) prefetches data (that is necessary for the next
+continuous operation) from the main memory to the LMM. (1), (2), and (3) can
+be performed simultaneously for high speed.  Following methods will be
+explained: (a) Method in which a programmer explicitly describes all of (1)
+to (3).  (b) Method in which only (2) is described while (1) and (3) are
+automatically generated by the compiler.  In the former case, only (3) is
+enabled because the input data is not completed in the first continuous
+operation. Similarly, in the final continuous operation, a mechanism that
+enables only (1) is required.  In the latter case, (3) cannot be
+automatically generated from the information in (2) unless it is a simple
+stencil calculation, and cannot correspond to a discrete stencil. It is also
+difficult to detect the last (2) and automatically add the single (1). From
+the above, the former is adopted in IMAX.  Figure \ref {pref} is an example
+of kernel\_cgra (): Regarding (1), in post\_processing part inside
+kernel\_top (), writing the calculation result remaining in the LMM where
+the STRQ is stored to the main memory can be performed by calling
+emax5\_drain\_dirty\_lmm ().  Regarding (3), the start address, distance,
+and length for prefetching data to the LMM for the next stage (the distance
+between stages is specified by map\_dist) can be performed at the same time
+with reading data from the LMM. That can be set by the last three arguments
+of LDRQ Instruction.
+
+\begin{figure}[htbp]
+\center
+\begin{screen}
+\scriptsize
+\begin{verbatim}
+#define XSIZE 1024
+#define YSIZE 1024
+double A[YSIZE][XSIZE];
+double B[YSIZE][XSIZE];
+double C[YSIZE][XSIZE];
+double D[YSIZE][XSIZE];
+
+kernel_top(status) int *status; /* CPU always starts from kernel_top() */
+{
+  pre_processing;
+  for (y=0; y<YSIZE; y++)
+    kernel_cgra(y);
+//EMAX5A drain_dirty_lmm ←(1)★
+  return (status);
+}
+kernel_cgra(y) int y; /* If CGRA is not available, CPU executes. */
+{ /* D = A * B + C */
+//EMAX5A begin map_dist=1
+  while (loop--) { /* mapped to while() on BR[15][0][0] */
+    mo4(LDRQ, 1, src1, a++, 0, msk, A[y], XSIZE, 0, 0, A[y+1]); /* prefetch   */←(3)★
+    mo4(LDRQ, 1, src2, b++, 0, msk, B[y], XSIZE, 0, 0, B[y+1]); /* prefetch   */←(3)★
+    mo4(LDRQ, 1, src3, c++, 0, msk, C[y], XSIZE, 0, 0, C[y+1]); /* prefetch   */←(3)★
+    ex4(FMA, dst1, src1, src2, src3);
+    mo4(STRQ, 1, dst1, d++, 0, msk, NULL, XSIZE, 0, 0, D[y-1]); /* late drain */←(1)★
+  }
+//EMAX5A end
+}
+\end{verbatim}
+\end{screen}
+\caption{\label{pref}Overlapping with prefetch/drain}
+\end{figure}
+
+\section{Multichip support}
+
+In an application program written in C language, the acceleration target
+program is embedded as an ARMv8 binary by the IMAX compiler, and when the
+ARM enters the acceleration target program, the mapping information of IMAX
+is written to a predetermined main storage address. ARM activates IMAX after
+transferring necessary data to the LMM group of IMAX by DMA. Operating
+applications include stereo matching, two types of light field image
+processing, nine types of image filters including super resolution, matrix
+multiplication (mm), convolutional neural network (cnn), three types of
+tensor kernels, five types of stencil computations (grapes, jacobi, fd6,
+resid, wave2d), three types of inverse matrix kernels, three types of VBGMM
+kernels, and string search.  To use the multi-loop execution function and
+multi-chip function of IMAX, the description capability was improved and the
+compiler function was extended. One important point of description method is
+that: For a specific source code, EMAX compiler can generate the same binary
+output results as the normal CPU-compilers do.  Figure \ref{sample} shows a
+description example after expansion. This is a function in which the triple
+loop description starting from EMAX5A is mapped to the entire system in one
+start-up time of IMAX. The outermost loop is associated with multiple chips,
+and the middle and innermost loops are associated with multiple loop
+execution functions in each chip. In this source program, binaries can be
+generated by a normal compiler by creating a library of exe (operation) and
+mop (memory reference) functions of each unit, and the algorithm can be
+verified by a normal debugger. After confirming the algorithm, a binary for
+IMAX is generated using the IMAX compiler (9K lines in C language, etc.) 
+that has supported the multiple loop execution function and the multichip
+function. When developing environment for CGRA accelerator,\textbf{ there
+should be a method to determine the cause is from the algorithm or from the
+implementation once the program does not operate as expected}. \textbf{We
+can provide such method by arrange units of IMAX linearly (linear array)
+instead of two-dimensional arrangement found in normal CGRAs.}
+
+\begin{figure}[htbp]
+\center
+\begin{screen}
+\scriptsize
+\begin{verbatim}
+//EMAX5A begin x1 mapdist=0
+ /*3*/ for (CHIP=0; CHIP<NCHIP; CHIP++) {
+  /*2*/ for (INIT1=1,LOOP1=RMGRP,rofs=0-M*4; LOOP1--; INIT1=0)
+   /*1*/ for (INIT0=1,LOOP0=M-2,cofs=(0-4)&0x00000000ffffffffLL; LOOP0--; INIT0=0) {
+    exe(OP_ADD,    &cofs, INIT0?cofs:cofs, EXP_H3210, 4, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);
+    exe(OP_ADD,    &rofs, rofs, EXP_H3210, INIT0?M*4:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);
+    exe(OP_ADD,    &oofs, rofs, EXP_H3210, cofs, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);
+    mop(OP_LDWR,   1, &BR[2][0][1],  (Ull)kp00[CHIP], 0LL, MSK_D0, (Ull)ker, IC*OC*K*K, 0, 0, (Ull)NULL, IC*OC*K*K);
+    mop(OP_LDWR,   1, &BR[2][0][0],  (Ull)kp01[CHIP], 0LL, MSK_D0, (Ull)ker, IC*OC*K*K, 0, 0, (Ull)NULL, IC*OC*K*K);
+    mop(OP_LDWR,   1, &BR[2][1][1],  (Ull)kp02[CHIP], 0LL, MSK_D0, (Ull)ker, IC*OC*K*K, 0, 0, (Ull)NULL, IC*OC*K*K);
+    mop(OP_LDWR,   1, &BR[2][1][0],  (Ull)kp03[CHIP], 0LL, MSK_D0, (Ull)ker, IC*OC*K*K, 0, 0, (Ull)NULL, IC*OC*K*K);
+    mop(OP_LDWR,   1, &BR[2][2][1],  (Ull)ip00, oofs, MSK_D0, (Ull)it00, M*RMGRP, 0, 0, (Ull)NULL, M*RMGRP);
+\end{verbatim}
+\end{screen}
+\caption{\label{sample}Description example of multi-chip and multi-loop by \textbf{for} statement}
+\end{figure}
+
+\section{Dynamic DMA concatenation and invocation}
+
+Normally, one DMA is activated for each mop or mo4. However, if top and len
+are the same as a string, the compiler merges all DMAs into one DMA in the
+same unit, the same row, the same chip, and all IMAX. Dynamic DMA
+concatenation, on the other hand, checks at run time if the current top+len
+is equal to the top of the next row, even if they are not identical as
+strings. If they are the same, the DMA can be concatenated. Dynamic DMA
+concatenation is a function to combine DMAs into one when it is a continuous
+memory area as a whole. Each LMM of IMAX2 knows its own memory range,
+constantly inspects the address information flowing from the AXI interface,
+and performs READ / WRITE if applicable. If the number of DMA activations is
+reduced by dynamic DMA concatenation, the overall speed can be increased
+with no loss of the function. Dynamic DMA concatenation and the condition of
+DMA invocation is shown in Figure \ref{dma}.
+
+\begin{figure}[htbp]
+\center
+\begin{screen}
+\tiny
+\begin{verbatim}
+emax6_check_lmmi_and_dma(int mode, int phase, int lastdist, int c, int i, int j)
+{
+  int k, m = (i+lastdist)%EMAX_DEPTH; /* lmmo-index */
+  int lmmc_topz;
+  int lmmc_ofsz;
+  int lmmo_stat;
+  int lmmc_stat;
+  int lmm_ready;
+  int lmm_readz;
+  int mark;
+  struct lmmi *lmmiop  = &emax6.lmmi[c][m][j][emax6.lmmio];
+  struct lmmi *lmmicp  = &emax6.lmmi[c][i][j][emax6.lmmic];
+  struct lmmi *lmmiop1 = &emax6.lmmi[c][(m+1)%EMAX_DEPTH][j][emax6.lmmio];
+  struct lmmi *lmmicp1 = &emax6.lmmi[c][(i+1)%EMAX_DEPTH][j][emax6.lmmic];
+  Ull dmadr;
+  int dmlen;
+  Ull dmnxt;
+  int dmrw; /* 0:mem->lmm 1:lmm->mem */
+  static Ull concat_adr[EMAX_NCHIP]; /* NULL:invalid, !NULL:top_addr */
+  static int concat_len[EMAX_NCHIP]; /* byte-len */
+  /* check_lmmi */
+  if ((phase == 1 && mode == 0) || phase == 2 || phase == 3) { /* (drain && array) || load || exec */
+    lmmc_topz = (lmmicp->top == 0);
+    lmmc_ofsz = (lmmicp->ofs == 0);
+    lmmo_stat = (lmmiop->v<<3)|(lmmiop->rw<<2)|(lmmiop->f<<1)|(lmmiop->p); /* v|rw|f|p */
+    lmmc_stat =((lmmicp->v & ~lmmicp->hcopy & ~lmmicp->vcopy & ((lmmicp->f&lmmicp->p) | !lmmc_topz))<<3)|(lmmicp->rw<<2)|(lmmicp->f<<1)|(lmmicp->p);
+    lmm_ready = (lmmiop->v && lmmiop->blk == lmmicp->blk && lmmiop->len == lmmicp->len && lmmiop->top == lmmicp->top);
+    lmm_readz = (lmmiop->v && lmmiop->blk == lmmicp->blk && lmmiop->len == lmmicp->len &&(lmmiop->top+(Sll)(int)lmmiop->ofs) == lmmicp->top);
+  }
+  /* lmx: bitmapを検査し,現addr+lenと次addrを比べ,連続なら連結した次addr/lenを保存.最終または不連続なら保存addr/lenまたは現addr/lenを使ってDMA */
+  if      (phase == 1) { /* drain */
+    if      (mode==0 && lmmo_stat==12 && lmmc_stat!=13 && (emax6.lmmd[m][j]&1<<c))
+                                { mark=1;emax6.lmmd[m][j]&=~(1<<c);dmadr=lmmiop->top;dmlen=lmmiop->len;dmnxt=lmmiop1->top;dmrw=1;}/* ●2 lmw&!lmd drain */
+    else if (mode==0 && lmmo_stat==14 && !lmm_ready    && (emax6.lmmd[m][j]&1<<c))
+                                { mark=1;emax6.lmmd[m][j]&=~(1<<c);dmadr=lmmiop->top;dmlen=lmmiop->len;dmnxt=lmmiop1->top;dmrw=1;}/* ●4 lmx      drain */
+    else if (mode==1 &&                                   (emax6.lmmd[i][j]&1<<c))
+                                { mark=1;emax6.lmmd[i][j]&=~(1<<c);dmadr=lmmicp->top;dmlen=lmmicp->len;dmnxt=lmmicp1->top;dmrw=1;}/* ☆ drain_dirty_lmm */
+    else                        { mark=0;                                                                                        }
+  }
+  else if (phase == 2) { /* load */
+    if     ((lmmc_stat== 8               && !lmm_ready)                                                                           /* ●1 lmr & !ready */
+         || (lmmc_stat== 9               && !lmm_readz)                                                                           /* ●7 lmp & !readz */
+         || (lmmc_stat==10                            )                                                                           /* ●3 lmf always load */
+         || (lmmc_stat==14               && !lmm_ready)) { mark=1; dmadr=lmmicp->top;dmlen=lmmicp->len;dmnxt=lmmicp1->top;dmrw=0;}/* ●3 lmx always load */
+    else                                                 { mark=0;                                                               }/* skip load */
+  }
+  else if (phase == 3) { /* exec */
+    if      (lmmc_stat== 9 && (lastdist||!lmmc_ofsz)) { mark=1;                                   dmadr=lmmicp->top;dmlen=lmmicp->len;dmrw=0;}/* ●5 lmp */
+    else if (lmmc_stat==12||lmmc_stat==14){mark=0;emax6.lmmd[i][j]|=(1<<c);                                                                  }/* ●6 lmw/lmx */
+    else if (lmmc_stat==13     ){mark=emax6.lmmd[m][j]& (1<<c);emax6.lmmd[m][j]|=((!lastdist)<<c);dmadr=lmmicp->top;dmlen=lmmicp->len;dmrw=1;}/* ●6 lmd & dirty */
+    else                        {mark=0;                                                                                                   }/* skip pdrain/pload */
+  }
+  if (mark) {
+    if (phase == 1) { /* drain */
+      /* concat_adr=0        adr0,L=0        | adr1,L=0        | adr2,L=0        */
+      /* concat_adr=adr0,L=0 adr0,L=0,mark=0 | adr1,L=0        | adr2,L=0        */
+      /* concat_adr=adr0,L=1          mark=0 | adr1,L=0,mark=0 | adr2,L=0        */
+      /* concat_adr=adr0,L=2          mark=0 |          mark=0 | adr2,L=0,mark=1 */
+      if ((emax6.lmmd[(m+1)%EMAX_DEPTH][j]&(1<<c)) && (dmadr+(dmlen+1)*sizeof(Uint)) == dmnxt) {
+        if (!concat_adr[c]) { concat_adr[c] = dmadr; concat_len[c] = dmlen; }
+        else             { concat_len[c] += dmlen+1; }
+        if (concat_len[c] < 8192) mark = 0;
+      }
+      else {
+        if (concat_adr[c])  { concat_len[c] += dmlen+1; }
+      }
+    }
+    else if (phase == 2) { /* load */
+      if (lmmicp1->v && (dmadr+(dmlen+1)*sizeof(Uint)) == dmnxt) {
+        if (!concat_adr[c]) { concat_adr[c] = dmadr; concat_len[c] = dmlen; }
+        else             { concat_len[c] += dmlen+1; }
+        if (concat_len[c] < 8192) mark = 0;
+      }
+      else {
+        if (concat_adr[c])  { concat_len[c] += dmlen+1; }
+      }
+    }
+  }
+  /* dma */
+  if (mark) {
+    emax6.rw = dmrw;
+    if (phase == 1) { /* drain */
+      emax6.ddraddr = (concat_adr[c])?concat_adr[c]:dmadr; /* address should be 4B-aligned */
+      emax6.lmmaddr = emax6.ddraddr;
+      emax6.dmalen  = (concat_adr[c])?concat_len[c]:dmlen; /* length should be # of words */
+    }
+    else if (phase == 3 && dmrw==1) { /* pdrain */
+      emax6.ddraddr = dmadr+(Sll)(int)lmmicp->ofs; /* ★★★PDRAIN address should be 4B-aligned */
+      emax6.lmmaddr = emax6.ddraddr;
+      emax6.dmalen  = dmlen; /* length should be # of words */
+    }
+    else if (phase == 2                /* load */
+          ||(phase == 3 && dmrw==0)) { /* pload *//* address should be 4B-aligned *//* length should be # of words */
+      if (lmmicp->blk==0) { /* inf */
+        if (phase == 2) { /* load */
+          emax6.ddraddr = (concat_adr[c])?concat_adr[c]:dmadr; /* address should be 4B-aligned */
+          emax6.lmmaddr = emax6.ddraddr;
+          emax6.dmalen  = (concat_adr[c])?concat_len[c]:dmlen; /* length should be # of words */
+        }
+        else {
+          emax6.ddraddr = dmadr+(Sll)(int)lmmicp->ofs; /* ★★★PLOAD address should be 4B-aligned */
+          emax6.lmmaddr = emax6.ddraddr;
+          emax6.dmalen  = dmlen; /* length should be # of words */
+        }
+      }
+    }
+    concat_adr[c] = 0;
+    emax6_kick_dma(j);
+  }
+}
+\end{verbatim}
+\end{screen}
+\caption{\label{dma}Dynamic DMA concatenation and condition of DMA invocation}
+\end{figure}

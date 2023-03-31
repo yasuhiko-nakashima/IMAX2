@@ -1,0 +1,296 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0x0",
+      "device": "xcvm1802-vsva2197-2MP-e-S",
+      "gen_directory": "../../../../VMK180_32st.gen/sources_1/bd/design_1",
+      "name": "design_1",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "None",
+      "tool_version": "2021.2",
+      "validated": "true"
+    },
+    "design_tree": {
+      "versal_cips_0": "",
+      "proc_sys_reset_0": "",
+      "proc_sys_reset_1": "",
+      "clk_wizard_0": "",
+      "smartconnect_0": "",
+      "emax6_0": ""
+    },
+    "components": {
+      "versal_cips_0": {
+        "vlnv": "xilinx.com:ip:versal_cips:3.1",
+        "xci_name": "design_1_versal_cips_0_0",
+        "xci_path": "ip/design_1_versal_cips_0_0/design_1_versal_cips_0_0.xci",
+        "inst_hier_path": "versal_cips_0",
+        "parameters": {
+          "CLOCK_MODE": {
+            "value": "REF CLK 33.33 MHz"
+          },
+          "PS_PL_CONNECTIVITY_MODE": {
+            "value": "Custom"
+          },
+          "PS_PMC_CONFIG": {
+            "value": "CLOCK_MODE {REF CLK 33.33 MHz} PMC_ALT_REF_CLK_FREQMHZ 33.333 PMC_CRP_EFUSE_REF_CTRL_SRCSEL IRO_CLK/4 PMC_CRP_HSM0_REF_CTRL_FREQMHZ 33.333 PMC_CRP_HSM1_REF_CTRL_FREQMHZ 133.333 PMC_CRP_LSBUS_REF_CTRL_FREQMHZ 100 PMC_CRP_NOC_REF_CTRL_FREQMHZ 960 PMC_CRP_PL0_REF_CTRL_FREQMHZ 100 PMC_CRP_PL5_REF_CTRL_FREQMHZ 400 PMC_PL_ALT_REF_CLK_FREQMHZ 33.333 PS_GEN_IPI_PMCNOBUF_ENABLE 0 PS_GEN_IPI_PMC_ENABLE 0 PS_GEN_IPI_PSM_ENABLE 0 PS_NUM_FABRIC_RESETS 1 PS_PL_CONNECTIVITY_MODE Custom PS_USE_M_AXI_FPD 1 PS_USE_PMCPL_CLK0 1 PS_USE_PMCPL_IRO_CLK 1 SMON_ALARMS Set_Alarms_On SMON_ENABLE_TEMP_AVERAGING 0 SMON_TEMP_AVERAGING_SAMPLES 0 "
+          },
+          "PS_PMC_CONFIG_APPLIED": {
+            "value": "1"
+          }
+        },
+        "interface_ports": {
+          "M_AXI_FPD": {
+            "mode": "Master",
+            "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "parameters": {
+              "master_id": {
+                "value": "1"
+              }
+            },
+            "address_space_ref": "M_AXI_FPD",
+            "base_address": {
+              "minimum": "0xA4000000",
+              "maximum": "0x04FFFFFFFFFF",
+              "width": "44"
+            }
+          }
+        },
+        "addressing": {
+          "address_spaces": {
+            "M_AXI_FPD": {
+              "range": "16T",
+              "width": "44",
+              "local_memory_map": {
+                "name": "M_AXI_FPD",
+                "description": "Address Space Segments",
+                "address_blocks": {
+                  "M_AXI_FPD:APERTURE_0": {
+                    "name": "M_AXI_FPD:APERTURE_0",
+                    "display_name": "APERTURE_0",
+                    "base_address": "0xA4000000",
+                    "range": "192M",
+                    "width": "32",
+                    "usage": "register"
+                  },
+                  "M_AXI_FPD:APERTURE_1": {
+                    "name": "M_AXI_FPD:APERTURE_1",
+                    "display_name": "APERTURE_1",
+                    "base_address": "0xB0000000",
+                    "range": "256M",
+                    "width": "32",
+                    "usage": "register"
+                  },
+                  "M_AXI_FPD:APERTURE_2": {
+                    "name": "M_AXI_FPD:APERTURE_2",
+                    "display_name": "APERTURE_2",
+                    "base_address": "0x000400000000",
+                    "range": "8G",
+                    "width": "35",
+                    "usage": "register"
+                  },
+                  "M_AXI_FPD:APERTURE_3": {
+                    "name": "M_AXI_FPD:APERTURE_3",
+                    "display_name": "APERTURE_3",
+                    "base_address": "0x040000000000",
+                    "range": "1T",
+                    "width": "43",
+                    "usage": "register"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "proc_sys_reset_0": {
+        "vlnv": "xilinx.com:ip:proc_sys_reset:5.0",
+        "xci_name": "design_1_proc_sys_reset_0_0",
+        "xci_path": "ip/design_1_proc_sys_reset_0_0/design_1_proc_sys_reset_0_0.xci",
+        "inst_hier_path": "proc_sys_reset_0"
+      },
+      "proc_sys_reset_1": {
+        "vlnv": "xilinx.com:ip:proc_sys_reset:5.0",
+        "xci_name": "design_1_proc_sys_reset_1_0",
+        "xci_path": "ip/design_1_proc_sys_reset_1_0/design_1_proc_sys_reset_1_0.xci",
+        "inst_hier_path": "proc_sys_reset_1"
+      },
+      "clk_wizard_0": {
+        "vlnv": "xilinx.com:ip:clk_wizard:1.0",
+        "xci_name": "design_1_clk_wizard_0_0",
+        "xci_path": "ip/design_1_clk_wizard_0_0/design_1_clk_wizard_0_0.xci",
+        "inst_hier_path": "clk_wizard_0",
+        "parameters": {
+          "CLKOUT_DRIVES": {
+            "value": "BUFG,BUFG,BUFG,BUFG,BUFG,BUFG,BUFG"
+          },
+          "CLKOUT_DYN_PS": {
+            "value": "None,None,None,None,None,None,None"
+          },
+          "CLKOUT_GROUPING": {
+            "value": "Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+          },
+          "CLKOUT_MATCHED_ROUTING": {
+            "value": "false,false,false,false,false,false,false"
+          },
+          "CLKOUT_PORT": {
+            "value": "clk_out1,clk_out2,clk_out3,clk_out4,clk_out5,clk_out6,clk_out7"
+          },
+          "CLKOUT_REQUESTED_DUTY_CYCLE": {
+            "value": "50.000,50.000,50.000,50.000,50.000,50.000,50.000"
+          },
+          "CLKOUT_REQUESTED_OUT_FREQUENCY": {
+            "value": "300,200,100.000,100.000,100.000,100.000,100.000"
+          },
+          "CLKOUT_REQUESTED_PHASE": {
+            "value": "0.000,0.000,0.000,0.000,0.000,0.000,0.000"
+          },
+          "CLKOUT_USED": {
+            "value": "true,true,false,false,false,false,false"
+          }
+        }
+      },
+      "smartconnect_0": {
+        "vlnv": "xilinx.com:ip:smartconnect:1.0",
+        "xci_name": "design_1_smartconnect_0_0",
+        "xci_path": "ip/design_1_smartconnect_0_0/design_1_smartconnect_0_0.xci",
+        "inst_hier_path": "smartconnect_0",
+        "parameters": {
+          "NUM_CLKS": {
+            "value": "2"
+          },
+          "NUM_SI": {
+            "value": "1"
+          }
+        },
+        "interface_ports": {
+          "S00_AXI": {
+            "mode": "Slave",
+            "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "parameters": {
+              "NUM_READ_OUTSTANDING": {
+                "value": "2"
+              },
+              "NUM_WRITE_OUTSTANDING": {
+                "value": "2"
+              }
+            },
+            "bridges": [
+              "M00_AXI"
+            ]
+          },
+          "M00_AXI": {
+            "mode": "Master",
+            "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "parameters": {
+              "MAX_BURST_LENGTH": {
+                "value": "128"
+              },
+              "NUM_READ_OUTSTANDING": {
+                "value": "2"
+              },
+              "NUM_READ_THREADS": {
+                "value": "1"
+              },
+              "NUM_WRITE_OUTSTANDING": {
+                "value": "2"
+              },
+              "NUM_WRITE_THREADS": {
+                "value": "1"
+              },
+              "RUSER_BITS_PER_BYTE": {
+                "value": "0"
+              },
+              "SUPPORTS_NARROW_BURST": {
+                "value": "0"
+              },
+              "WUSER_BITS_PER_BYTE": {
+                "value": "0"
+              }
+            }
+          }
+        }
+      },
+      "emax6_0": {
+        "vlnv": "comparch:user:emax6:1.0",
+        "xci_name": "design_1_emax6_0_0",
+        "xci_path": "ip/design_1_emax6_0_0/design_1_emax6_0_0.xci",
+        "inst_hier_path": "emax6_0"
+      }
+    },
+    "interface_nets": {
+      "smartconnect_0_M00_AXI": {
+        "interface_ports": [
+          "smartconnect_0/M00_AXI",
+          "emax6_0/axi_s"
+        ]
+      },
+      "versal_cips_0_M_AXI_FPD": {
+        "interface_ports": [
+          "smartconnect_0/S00_AXI",
+          "versal_cips_0/M_AXI_FPD"
+        ]
+      }
+    },
+    "nets": {
+      "clk_wizard_0_clk_out1": {
+        "ports": [
+          "clk_wizard_0/clk_out1",
+          "versal_cips_0/m_axi_fpd_aclk",
+          "smartconnect_0/aclk"
+        ]
+      },
+      "clk_wizard_0_clk_out2": {
+        "ports": [
+          "clk_wizard_0/clk_out2",
+          "smartconnect_0/aclk1",
+          "proc_sys_reset_0/slowest_sync_clk",
+          "emax6_0/ACLK"
+        ]
+      },
+      "proc_sys_reset_0_peripheral_aresetn": {
+        "ports": [
+          "proc_sys_reset_0/peripheral_aresetn",
+          "emax6_0/ARESETN"
+        ]
+      },
+      "proc_sys_reset_1_interconnect_aresetn": {
+        "ports": [
+          "proc_sys_reset_1/interconnect_aresetn",
+          "smartconnect_0/aresetn"
+        ]
+      },
+      "versal_cips_0_pl0_ref_clk": {
+        "ports": [
+          "versal_cips_0/pl0_ref_clk",
+          "clk_wizard_0/clk_in1",
+          "proc_sys_reset_1/slowest_sync_clk"
+        ]
+      },
+      "versal_cips_0_pl0_resetn": {
+        "ports": [
+          "versal_cips_0/pl0_resetn",
+          "proc_sys_reset_0/ext_reset_in",
+          "proc_sys_reset_1/ext_reset_in"
+        ]
+      }
+    },
+    "addressing": {
+      "/versal_cips_0": {
+        "address_spaces": {
+          "M_AXI_FPD": {
+            "segments": {
+              "SEG_emax6_0_reg0": {
+                "address_block": "/emax6_0/axi_s/reg0",
+                "offset": "0x40000000000",
+                "range": "4G"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

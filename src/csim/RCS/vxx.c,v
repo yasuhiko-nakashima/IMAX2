@@ -1,0 +1,3401 @@
+head	1.35;
+access;
+symbols;
+locks
+	nakashim:1.35; strict;
+comment	@ * @;
+
+
+1.35
+date	2022.10.11.08.06.56;	author nakashim;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2019.02.07.13.36.59;	author nakashim;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2017.04.21.03.29.32;	author nakashim;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2016.05.29.05.07.22;	author nakashim;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2016.05.28.15.50.12;	author nakashim;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2016.05.28.14.45.25;	author nakashim;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2016.05.28.08.15.06;	author nakashim;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2016.05.28.06.35.32;	author nakashim;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2016.05.28.02.32.17;	author nakashim;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2016.05.28.01.01.36;	author nakashim;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2016.05.27.14.54.56;	author nakashim;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2016.05.27.08.04.22;	author nakashim;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2016.05.11.14.37.57;	author nakashim;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2016.05.11.12.12.21;	author nakashim;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2015.10.20.23.48.02;	author nakashim;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2015.09.20.11.00.53;	author nakashim;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2015.09.20.09.16.28;	author nakashim;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2015.09.20.08.03.21;	author nakashim;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2015.09.20.05.10.19;	author nakashim;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2015.09.20.04.39.20;	author nakashim;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2015.09.20.03.48.25;	author nakashim;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.09.20.02.29.40;	author nakashim;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.09.19.17.13.30;	author nakashim;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.09.16.13.52.08;	author nakashim;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.09.05.14.54.27;	author nakashim;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.09.01.12.45.00;	author nakashim;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.09.01.10.07.19;	author nakashim;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.09.01.09.42.25;	author nakashim;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.09.01.09.32.53;	author nakashim;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.09.01.08.04.13;	author nakashim;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.09.01.06.53.27;	author nakashim;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.09.01.06.30.56;	author nakashim;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.09.01.05.35.03;	author nakashim;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.09.01.04.51.03;	author nakashim;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.07.21.05.44.37;	author nakashim;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.35
+log
+@*** empty log message ***
+@
+text
+@
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/vxx.c,v 1.34 2019/02/07 13:36:59 nakashim Exp nakashim $";
+
+/* ARM Instruction Simulator           */
+/*        Copyright (C) 2007 by NAIST. */
+/*         Primary writer: Y.Nakashima */
+/*                nakashim@@is.naist.jp */
+
+/* vxx.c 2005/3/22 */
+
+#include "csim.h"
+
+insn_exec_vxx(tid, rob) Uint tid; struct rob *rob;
+{
+  Uint cid = tid2cid(tid);
+  union {
+    Ull x;
+    Uint w[2];
+    Ushort h[4];
+    Uchar b[8];
+    double d;
+    float s[2];
+  } S1[2], S2[2], S3[2], D0[2];
+  Uint NZCV;
+  Uint i, index;
+  int  shift;
+  Ull  fill;
+
+  if (rob->sr[0].t) ex_srr(tid, &S1[1].x, &S1[0].x, rob, 0);
+  if (rob->sr[1].t) ex_srr(tid, &S2[1].x, &S2[0].x, rob, 1);
+  if (rob->sr[2].t) ex_srr(tid, &S3[1].x, &S3[0].x, rob, 2);
+
+  if (rob->opcd <= 14) { /* other than FDIV */
+    switch (rob->opcd) {
+    case 0: /* FMOVL/FMOVH */
+      /* rob->dir 0:RR<-VR, 1:VR<-RR */
+      /* rob->dbl 0:WR, 1:XR */
+      switch (rob->sop) {
+      case 0: /* FMOVL */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = S1[0].w[0];}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = S1[0].x;}
+	if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;  D0[0].w[1] = 0; D0[0].w[0] = S1[0].w[0];}
+	if (rob->dir==1 && rob->dbl==1) { D0[1].x = S2[1].x;              D0[0].x    = S1[0].x;}
+	break;
+      case 1: /* FMOVH */
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = S1[1].x;}
+	if (rob->dir==1 && rob->dbl==1) { D0[1].x = S1[0].x;              D0[0].x    = S2[0].x;}
+	break;
+      case 4: /* C7.3.133 FMOV.mov */
+	if (rob->dbl==0) {                D0[0].w[0] = S1[0].w[0];}
+	else             {                D0[0].x    = S1[0].x;}
+	break;
+      case 5: /* C7.3.133 FMOV.abs */
+	if (rob->dbl==0) {                D0[0].w[0] = S1[0].w[0] & 0x7fffffff;}
+	else             {                D0[0].x    = S1[0].x    & 0x7fffffffffffffffLL;}
+	break;
+      case 6: /* C7.3.133 FMOV.neg */
+	if (rob->dbl==0) {                D0[0].w[0] = S1[0].w[0] ^ 0x80000000;}
+	else             {                D0[0].x    = S1[0].x    ^ 0x8000000000000000LL;}
+	break;
+      case 7: /* C7.3.133 FMOV.sqrt */
+	return (ROB_EXECERR); /* N.A. */
+      default: /* undef */
+	return (ROB_EXECERR); /* error */
+      }
+      break;
+    case 1: /* FCVT */
+      switch (rob->sop) {
+      case 0: /* single<-half */
+	return (ROB_EXECERR); /* unimplemented */
+      case 1: /* double<-half */
+	return (ROB_EXECERR); /* unimplemented */
+      case 2: /* half  <-single */
+	return (ROB_EXECERR); /* unimplemented */
+      case 3: /* double<-single */
+	D0[0].d = (double)S1[0].s[0];
+	D0[1].x = 0LL;
+	break;
+      case 4: /* half  <-double */
+	return (ROB_EXECERR); /* unimplemented */
+      case 5: /* single<-double */
+	D0[0].s[0] = (float)S1[0].d;
+	D0[0].w[1] = 0;
+	D0[1].x = 0LL;
+	break;
+      case 6: /* FRINTM(floor32) */
+	D0[0].s[0] = floorf(S1[0].s[0]);
+	D0[0].w[1] = 0;
+	D0[1].x = 0LL;
+	break;
+      case 7: /* FRINTM(floor64) */
+	D0[0].d = floor(S1[0].d);
+	D0[1].x = 0LL;
+	break;
+      default: /* undef */
+	return (ROB_EXECERR); /* error */
+      }
+      break;
+    case 2: /* CVTSS,CVTSD */
+      switch (rob->sop) {
+	/* CVTSS */
+      case 0: /* 0:rint */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)rintf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)rintf(S1[0].s[0]);}
+	break;
+      case 1: /* 1:ceil */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)ceilf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)ceilf(S1[0].s[0]);}
+	break;
+      case 2: /* 2:floor */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)floorf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)floorf(S1[0].s[0]);}
+	break;
+      case 3: /* 3:trunc */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)truncf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)truncf(S1[0].s[0]);}
+	break;
+      case 4: /* 4:round */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)roundf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)roundf(S1[0].s[0]);}
+	if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;  D0[0].s[1] = 0; D0[0].s[0] = (float)(int)S1[0].w[0];}
+	if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;  D0[0].s[1] = 0; D0[0].s[0] = (float)(Sll)S1[0].x;}
+	break;
+	/* CVTSD */
+      case 8: /* 0:rint */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)rint(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)rint(S1[0].d);}
+	break;
+      case 9: /* 1:ceil */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)ceil(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)ceil(S1[0].d);}
+	break;
+      case 10: /* 2:floor */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)floor(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)floor(S1[0].d);}
+	break;
+      case 11: /* 3:trunc */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)trunc(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)trunc(S1[0].d);}
+	break;
+      case 12: /* 4:round */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)round(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)round(S1[0].d);}
+	if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;                  D0[0].d    = (double)(int)S1[0].w[0];}
+	if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;                  D0[0].d    = (double)(Sll)S1[0].x;}
+	break;
+      }
+      break;
+    case 3: /* CVTUS,CVTUD */
+      switch (rob->sop) {
+	/* CVTUS */
+      case 0: /* 0:rint */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)rintf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) rintf(S1[0].s[0]);}
+	break;
+      case 1: /* 1:ceil */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)ceilf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) ceilf(S1[0].s[0]);}
+	break;
+      case 2: /* 2:floor */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)floorf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) floorf(S1[0].s[0]);}
+	break;
+      case 3: /* 3:trunc */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)truncf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) truncf(S1[0].s[0]);}
+	break;
+      case 4: /* 4:round */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)roundf(S1[0].s[0]);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) roundf(S1[0].s[0]);}
+	if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;  D0[0].s[1] = 0; D0[0].s[0] = (float)S1[0].w[0];}
+	if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;  D0[0].s[1] = 0; D0[0].s[0] = (float)S1[0].x;}
+	break;
+	/* CVTUD */
+      case 8: /* 0:rint */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)rint(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) rint(S1[0].d);}
+	break;
+      case 9: /* 1:ceil */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)ceil(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) ceil(S1[0].d);}
+	break;
+      case 10: /* 2:floor */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)floor(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) floor(S1[0].d);}
+	break;
+      case 11: /* 3:trunc */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)trunc(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) trunc(S1[0].d);}
+	break;
+      case 12: /* 4:round */
+	if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)round(S1[0].d);}
+	if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) round(S1[0].d);}
+	if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;                  D0[0].d    = (double)S1[0].w[0];}
+	if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;                  D0[0].d    = (double)S1[0].x;}
+	break;
+      }
+      break;
+    case 4: /* SHIFT */
+      switch (rob->sop) {
+      case 0: /* SSHR(scalar) */
+	shift = 64*2 - S2[0].b[0];
+	if (shift < 0)
+	  return (ROB_EXECERR); /* error */
+	D0[0].x = (Sll)S1[0].x >> shift;
+	D0[1].x = 0LL;
+	break;
+      case 1: /* USHR(scalar) */
+	shift = 64*2 - S2[0].b[0];
+	if (shift < 0)
+	  return (ROB_EXECERR); /* error */
+	D0[0].x = S1[0].x >> shift;
+	D0[1].x = 0LL;
+	break;
+      case 2: /* SSHR(vector) */
+	switch (S2[0].b[0] >> 3) { /* immh */
+	case 1: /* 8B/16B */
+	  shift = 8*2 - S2[0].b[0];
+	  for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i] >> shift;
+	  if (rob->dbl)
+	    for (i=0; i<8; i++) D0[1].b[i] = (char)S1[1].b[i] >> shift;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 2:	case 3: /* 4H/8H */
+	  shift = 16*2 - S2[0].b[0];
+	  for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i] >> shift;;
+	  if (rob->dbl)
+	    for (i=0; i<4; i++) D0[1].h[i] = (short)S1[1].h[i] >> shift;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 4:	case 5:	case 6:	case 7: /* 2S/4S */
+	  shift = 32*2 - S2[0].b[0];
+	  for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i] >> shift;
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].w[i] = (int)S1[1].w[i] >> shift;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: /* 2D */
+	  shift = 64*2 - S2[0].b[0];
+	  if (rob->dbl) {
+	    D0[0].x = (Sll)S1[0].x >> shift;
+	    D0[1].x = (Sll)S1[1].x >> shift;
+	  }
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      case 3: /* USHR(vector) */
+	switch (S2[0].b[0] >> 3) { /* immh */
+	case 1: /* 8B/16B */
+	  shift = 8*2 - S2[0].b[0];
+	  for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i] >> shift;
+	  if (rob->dbl)
+	    for (i=0; i<8; i++) D0[1].b[i] = S1[1].b[i] >> shift;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 2:	case 3: /* 4H/8H */
+	  shift = 16*2 - S2[0].b[0];
+	  for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i] >> shift;;
+	  if (rob->dbl)
+	    for (i=0; i<4; i++) D0[1].h[i] = S1[1].h[i] >> shift;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 4:	case 5:	case 6:	case 7: /* 2S/4S */
+	  shift = 32*2 - S2[0].b[0];
+	  for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i] >> shift;
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].w[i] = S1[1].w[i] >> shift;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: /* 2D */
+	  shift = 64*2 - S2[0].b[0];
+	  if (rob->dbl) {
+	    D0[0].x = S1[0].x >> shift;
+	    D0[1].x = S1[1].x >> shift;
+	  }
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      case 4: /* SHL(scalar) */
+	shift = S2[0].b[0] - 64;
+	if (shift < 0)
+	  return (ROB_EXECERR); /* error */
+	D0[0].x = S1[0].x << shift;
+	D0[1].x = 0LL;
+	break;
+      case 5: /* SHL(vector) */
+	switch (S2[0].b[0] >> 3) { /* immh */
+	case 1: /* 8B/16B */
+	  shift = S2[0].b[0] - 8;
+	  for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i] << shift;
+	  if (rob->dbl)
+	    for (i=0; i<8; i++) D0[1].b[i] = S1[1].b[i] << shift;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 2:	case 3: /* 4H/8H */
+	  shift = S2[0].b[0] - 16;
+	  for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i] << shift;;
+	  if (rob->dbl)
+	    for (i=0; i<4; i++) D0[1].h[i] = S1[1].h[i] << shift;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 4:	case 5:	case 6:	case 7: /* 2S/4S */
+	  shift = S2[0].b[0] - 32;
+	  for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i] << shift;
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].w[i] = S1[1].w[i] << shift;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: /* 2D */
+	  shift = S2[0].b[0] - 64;
+	  if (rob->dbl) {
+	    D0[0].x = S1[0].x << shift;
+	    D0[1].x = S1[1].x << shift;
+	  }
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      case 6: /* SSHLL/SSHLL2(vector) */
+	switch (S2[0].b[0] >> 3) { /* immh */
+	case 1: /* 8B/16B */
+	  shift = S2[0].b[0] - 8;
+	  if (!rob->dbl) { /* lower64 */
+	    for (i=0; i<4; i++) D0[0].h[i] = (short)(char)S1[0].b[i  ] << shift;
+	    for (i=0; i<4; i++) D0[1].h[i] = (short)(char)S1[0].b[i+4] << shift;
+	  }
+	  else { /* upper64 */
+	    for (i=0; i<4; i++) D0[0].h[i] = (short)(char)S1[1].b[i  ] << shift;
+	    for (i=0; i<4; i++) D0[1].h[i] = (short)(char)S1[1].b[i+4] << shift;
+	  } 
+	  break;
+	case 2:	case 3: /* 4H/8H */
+	  shift = S2[0].b[0] - 16;
+	  if (!rob->dbl) { /* lower64 */
+	    for (i=0; i<2; i++) D0[0].w[i] = (int)(short)S1[0].h[i  ] << shift;
+	    for (i=0; i<2; i++) D0[1].w[i] = (int)(short)S1[0].h[i+2] << shift;
+	  }
+	  else { /* upper64 */
+	    for (i=0; i<2; i++) D0[0].w[i] = (int)(short)S1[1].h[i  ] << shift;
+	    for (i=0; i<2; i++) D0[1].w[i] = (int)(short)S1[1].h[i+2] << shift;
+	  } 
+	  break;
+	case 4:	case 5:	case 6:	case 7: /* 2S/4S */
+	  shift = S2[0].b[0] - 32;
+	  if (!rob->dbl) { /* lower64 */
+	    for (i=0; i<1; i++) D0[0].x = (Sll)(int)S1[0].w[i  ] << shift;
+	    for (i=0; i<1; i++) D0[1].x = (Sll)(int)S1[0].w[i+1] << shift;
+	  }
+	  else { /* upper64 */
+	    for (i=0; i<1; i++) D0[0].x = (Sll)(int)S1[1].w[i  ] << shift;
+	    for (i=0; i<1; i++) D0[1].x = (Sll)(int)S1[1].w[i+1] << shift;
+	  } 
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      case 7: /* USHLL/USHLL2(vector) */
+	switch (S2[0].b[0] >> 3) { /* immh */
+	case 1: /* 8B/16B */
+	  shift = S2[0].b[0] - 8;
+	  if (!rob->dbl) { /* lower64 */
+	    for (i=0; i<4; i++) D0[0].h[i] = (Ushort)S1[0].b[i  ] << shift;
+	    for (i=0; i<4; i++) D0[1].h[i] = (Ushort)S1[0].b[i+4] << shift;
+	  }
+	  else { /* upper64 */
+	    for (i=0; i<4; i++) D0[0].h[i] = (Ushort)S1[1].b[i  ] << shift;
+	    for (i=0; i<4; i++) D0[1].h[i] = (Ushort)S1[1].b[i+4] << shift;
+	  } 
+	  break;
+	case 2:	case 3: /* 4H/8H */
+	  shift = S2[0].b[0] - 16;
+	  if (!rob->dbl) { /* lower64 */
+	    for (i=0; i<2; i++) D0[0].w[i] = (Uint)S1[0].h[i  ] << shift;
+	    for (i=0; i<2; i++) D0[1].w[i] = (Uint)S1[0].h[i+2] << shift;
+	  }
+	  else { /* upper64 */
+	    for (i=0; i<2; i++) D0[0].w[i] = (Uint)S1[1].h[i  ] << shift;
+	    for (i=0; i<2; i++) D0[1].w[i] = (Uint)S1[1].h[i+2] << shift;
+	  } 
+	  break;
+	case 4:	case 5:	case 6:	case 7: /* 2S/4S */
+	  shift = S2[0].b[0] - 32;
+	  if (!rob->dbl) { /* lower64 */
+	    for (i=0; i<1; i++) D0[0].x = (Ull)S1[0].w[i  ] << shift;
+	    for (i=0; i<1; i++) D0[1].x = (Ull)S1[0].w[i+1] << shift;
+	  }
+	  else { /* upper64 */
+	    for (i=0; i<1; i++) D0[0].x = (Ull)S1[1].w[i  ] << shift;
+	    for (i=0; i<1; i++) D0[1].x = (Ull)S1[1].w[i+1] << shift;
+	  } 
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      default: /* not used */
+	return (ROB_EXECERR); /* error */
+      }
+      break;
+    case 5: /* COMPARE */
+      if (!rob->iinv) { /* register */
+	switch (rob->sop) {
+	case 0: /* CMGT(scalar) *//*01011110--1-----001101*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = (Sll)S1[0].x>(Sll)S2[0].x ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 1: /* CMGT(vector) *//*0Q001110--1-----001101*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>(char)S2[0].b[i] ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>(char)S2[0].b[i] ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = (char)S1[1].b[i]>(char)S2[1].b[i] ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>(short)S2[0].h[i] ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>(short)S2[0].h[i] ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = (short)S1[1].h[i]>(short)S2[1].h[i] ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>(int)S2[0].w[i] ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>(int)S2[0].w[i] ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = (int)S1[1].w[i]>(int)S2[1].w[i] ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = (Sll)S1[0].x>(Sll)S2[0].x ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = (Sll)S1[1].x>(Sll)S2[1].x ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	case 2: /* CMHI(scalar) *//*01111110--1-----001101*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = S1[0].x>S2[0].x ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 3: /* CMHI(vector) *//*0Q101110--1-----001101*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]>S2[0].b[i] ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]>S2[0].b[i] ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = S1[1].b[i]>S2[1].b[i] ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]>S2[0].h[i] ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]>S2[0].h[i] ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = S1[1].h[i]>S2[1].h[i] ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]>S2[0].w[i] ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]>S2[0].w[i] ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = S1[1].w[i]>S2[1].w[i] ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = S1[0].x>S2[0].x ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = S1[1].x>S2[1].x ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	case 4: /* CMGE(scalar) *//*01011110--1-----001111*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = (Sll)S1[0].x>=(Sll)S2[0].x ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 5: /* CMGE(vector) *//*0Q001110--1-----001111*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>=(char)S2[0].b[i] ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>=(char)S2[0].b[i] ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = (char)S1[1].b[i]>=(char)S2[1].b[i] ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>=(short)S2[0].h[i] ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>=(short)S2[0].h[i] ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = (short)S1[1].h[i]>=(short)S2[1].h[i] ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>=(int)S2[0].w[i] ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>=(int)S2[0].w[i] ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = (int)S1[1].w[i]>=(int)S2[1].w[i] ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = (Sll)S1[0].x>=(Sll)S2[0].x ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = (Sll)S1[1].x>=(Sll)S2[1].x ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	case 6: /* CMHS(scalar) *//*01111110--1-----001111*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = S1[0].x>=S2[0].x ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 7: /* CMHS(vector) *//*0Q101110--1-----001111*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]>=S2[0].b[i] ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]>=S2[0].b[i] ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = S1[1].b[i]>=S2[1].b[i] ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]>=S2[0].h[i] ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]>=S2[0].h[i] ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = S1[1].h[i]>=S2[1].h[i] ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]>=S2[0].w[i] ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]>=S2[0].w[i] ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = S1[1].w[i]>=S2[1].w[i] ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = S1[0].x>=S2[0].x ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = S1[1].x>=S2[1].x ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	case 8: /* CMTST(scalar) *//*01011110--1-----100011*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = S1[0].x&S2[0].x ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 9: /* CMTST(vector) *//*0Q001110--1-----100011*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]&S2[0].b[i] ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]&S2[0].b[i] ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = S1[1].b[i]&S2[1].b[i] ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]&S2[0].h[i] ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]&S2[0].h[i] ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = S1[1].h[i]&S2[1].h[i] ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]&S2[0].w[i] ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]&S2[0].w[i] ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = S1[1].w[i]&S2[1].w[i] ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = S1[0].x&S2[0].x ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = S1[1].x&S2[1].x ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	case 10: /* CMEQ(scalar) *//*01111110--1-----100011*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = S1[0].x==S2[0].x ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 11: /* CMEQ(vector) *//*0Q101110--1-----100011*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]==S2[0].b[i] ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]==S2[0].b[i] ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = S1[1].b[i]==S2[1].b[i] ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]==S2[0].h[i] ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]==S2[0].h[i] ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = S1[1].h[i]==S2[1].h[i] ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]==S2[0].w[i] ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]==S2[0].w[i] ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = S1[1].w[i]==S2[1].w[i] ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = S1[0].x==S2[0].x ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = S1[1].x==S2[1].x ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	default: /* not used */
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      else { /* zero */
+	switch (rob->sop) {
+	case 0: /* CMGTZ(scalar) *//*01011110--100000100010*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = (Sll)S1[0].x>0LL ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 1: /* CMGTZ(vector) *//*0Q001110--100000100010*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>0 ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>0 ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = (char)S1[1].b[i]>0 ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>0 ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>0 ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = (short)S1[1].h[i]>0 ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>0 ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>0 ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = (int)S1[1].w[i]>0 ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = (Sll)S1[0].x>0LL ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = (Sll)S1[1].x>0LL ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	case 2: /* CMGEZ(scalar) *//*01111110--100000100010*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = (Sll)S1[0].x>=0LL ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 3: /* CMGEZ(vector) *//*0Q101110--100000100010*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>=0 ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>=0 ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = (char)S1[1].b[i]>=0 ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>=0 ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>=0 ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = (short)S1[1].h[i]>=0 ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>=0 ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>=0 ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = (int)S1[1].w[i]>=0 ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = (Sll)S1[0].x>=0LL ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = (Sll)S1[1].x>=0LL ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	case 4: /* CMEQZ(scalar) *//*01011110--100000100110*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = S1[0].x==0LL ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 5: /* CMEQZ(vector) *//*0Q001110--100000100110*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]==0 ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]==0 ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = S1[1].b[i]==0 ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]==0 ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]==0 ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = S1[1].h[i]==0 ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]==0 ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]==0 ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = S1[1].w[i]==0 ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = S1[0].x==0LL ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = S1[1].x==0LL ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	case 6: /* CMLEZ(scalar) *//*01111110--100000100110*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = (Sll)S1[0].x<=0LL ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 7: /* CMLEZ(vector) *//*0Q101110--100000100110*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]<=0 ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]<=0 ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = (char)S1[1].b[i]<=0 ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]<=0 ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]<=0 ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = (short)S1[1].h[i]<=0 ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]<=0 ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]<=0 ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = (int)S1[1].w[i]<=0 ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = (Sll)S1[0].x<=0LL ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = (Sll)S1[1].x<=0LL ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	case 8: /* CMLTZ(scalar) *//*01011110--100000101010*/
+	  if (rob->size != 3)
+	    return (ROB_EXECERR); /* error */
+	  D0[0].x = (Sll)S1[0].x<0LL ? 0xffffffffffffffffLL:0LL;
+	  D0[1].x = 0LL;
+	  break;
+	case 9: /* CMLTZ(vector) *//*0Q001110--100000101010*/
+	  switch (rob->size) {
+	  case 0: /* 8B/16B */
+	    if (!rob->dbl) {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]<0 ? 0xff:0x00;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]<0 ? 0xff:0x00;
+	      for (i=0; i<8; i++) D0[1].b[i] = (char)S1[1].b[i]<0 ? 0xff:0x00;
+	    }
+	    break;
+	  case 1: /* 4H/8H */
+	    if (!rob->dbl) {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]<0 ? 0xffff:0x0000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]<0 ? 0xffff:0x0000;
+	      for (i=0; i<4; i++) D0[1].h[i] = (short)S1[1].h[i]<0 ? 0xffff:0x0000;
+	    }
+	    break;
+	  case 2: /* 2S/4S */
+	    if (!rob->dbl) {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]<0 ? 0xffffffff:0x00000000;
+	      D0[1].x = 0LL;
+	    }
+	    else {
+	      for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]<0 ? 0xffffffff:0x00000000;
+	      for (i=0; i<2; i++) D0[1].w[i] = (int)S1[1].w[i]<0 ? 0xffffffff:0x00000000;
+	    }
+	    break;
+	  case 3: /* 2D */
+	    if (!rob->dbl)
+	      return (ROB_EXECERR); /* error */
+	    for (i=0; i<1; i++) D0[0].x = (Sll)S1[0].x<0LL ? 0xffffffffffffffffLL:0LL;
+	    for (i=0; i<1; i++) D0[1].x = (Sll)S1[1].x<0LL ? 0xffffffffffffffffLL:0LL;
+	    break;
+	  default: /* undef */
+	    return (ROB_EXECERR); /* error */
+          }
+	  break;
+	default: /* not used */
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      break;
+    case 6: /* MOVI/MVNI/ORR/BIC/BIF/BIT/BSL/EOR */
+      switch (rob->sop) {
+      case 0: /* MOVI/MVNI */
+	if (!rob->iinv) { /* MOVI */
+	  D0[0].x =            S2[0].x;
+	  D0[1].x = (rob->dbl)?S2[0].x:0x0000000000000000LL;
+	}
+	else { /* MVNI */
+	  D0[0].x =            ~S2[0].x;
+	  D0[1].x = (rob->dbl)?~S2[0].x:0x0000000000000000LL;
+	}
+	break;
+      case 1: /* OR */
+	if (!rob->iinv) { /* ORR */
+	  D0[0].x =             S1[0].x|S2[0].x;
+	  D0[1].x = (rob->dbl)?(S1[1].x|S2[0].x):0x0000000000000000LL;
+	}
+	else { /* ORN */
+	  D0[0].x =             S1[0].x|~S2[0].x;
+	  D0[1].x = (rob->dbl)?(S1[1].x|~S2[0].x):0x0000000000000000LL;
+	}
+	break;
+      case 2: /* AND */
+	if (!rob->iinv) { /* AND */
+	  D0[0].x =             S1[0].x&S2[0].x;
+	  D0[1].x = (rob->dbl)?(S1[1].x&S2[0].x):0x0000000000000000LL;
+	}
+	else { /* BIC */
+	  D0[0].x =             S1[0].x&~S2[0].x;
+	  D0[1].x = (rob->dbl)?(S1[1].x&~S2[0].x):0x0000000000000000LL;
+	}
+	break;
+      case 4: /* EOR */
+	if (!rob->dbl) {
+	  D0[0].x = S3[0].x ^ ((0LL ^ S2[0].x) & 0xffffffffffffffffLL);
+	  D0[1].x = 0LL;
+	}
+	else {
+	  D0[0].x = S3[0].x ^ ((0LL ^ S2[0].x) & 0xffffffffffffffffLL);
+	  D0[1].x = S3[1].x ^ ((0LL ^ S2[1].x) & 0xffffffffffffffffLL);
+	}
+	break;
+      case 5: /* BSL */
+	if (!rob->dbl) {
+	  D0[0].x = S3[0].x ^ ((S3[0].x ^ S2[0].x) & S1[0].x);
+	  D0[1].x = 0LL;
+	}
+	else {
+	  D0[0].x = S3[0].x ^ ((S3[0].x ^ S2[0].x) & S1[0].x);
+	  D0[1].x = S3[1].x ^ ((S3[1].x ^ S2[1].x) & S1[1].x);
+	}
+	break;
+      case 6: /* BIT */
+	if (!rob->dbl) {
+	  D0[0].x = S1[0].x ^ ((S1[0].x ^ S2[0].x) & S3[0].x);
+	  D0[1].x = 0LL;
+	}
+	else {
+	  D0[0].x = S1[0].x ^ ((S1[0].x ^ S2[0].x) & S3[0].x);
+	  D0[1].x = S1[1].x ^ ((S1[1].x ^ S2[1].x) & S3[1].x);
+	}
+	break;
+      case 7: /* BIF */
+	if (!rob->dbl) {
+	  D0[0].x = S1[0].x ^ ((S1[0].x ^ S2[0].x) & ~S3[0].x);
+	  D0[1].x = 0LL;
+	}
+	else {
+	  D0[0].x = S1[0].x ^ ((S1[0].x ^ S2[0].x) & ~S3[0].x);
+	  D0[1].x = S1[1].x ^ ((S1[1].x ^ S2[1].x) & ~S3[1].x);
+	}
+	break;
+      default:
+	return (ROB_EXECERR); /* error */
+      }
+      break;
+    case 7: /* DUP(vector), XTN, UMOV, INS, MAXMIN */
+      switch (rob->sop) {
+      case 0: /* DUP */
+	index = rob->idx; /* 15-0 */
+	fill = (index>=8)?S1[1].x>>((index-8)*8):S1[0].x>>(index*8);
+	switch (rob->size) {
+	case 1: /* 1B */
+	  fill &= 0x00000000000000ffLL;
+	  for (i=0; i<8; i++) D0[0].b[i] = fill;
+	  if (rob->dbl)
+	    for (i=0; i<8; i++) D0[1].b[i] = fill;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 2: /* 2B */
+	  fill &= 0x000000000000ffffLL;
+	  for (i=0; i<4; i++) D0[0].h[i] = fill;
+	  if (rob->dbl)
+	    for (i=0; i<4; i++) D0[1].h[i] = fill;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 4: /* 4B */
+	  fill &= 0x00000000ffffffffLL;
+	  for (i=0; i<2; i++) D0[0].w[i] = fill;
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].w[i] = fill;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 8: /* 8B */
+	  fill &= 0xffffffffffffffffLL;
+	  D0[0].x = fill;
+	  if (rob->dbl)
+	    D0[1].x = fill;
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	}
+	break;
+      case 1: /* XTN,XTN2 */
+	switch (rob->size) {
+	case 0: /* 8B/16B */
+	  if (!rob->dbl) {
+	    for (i=0; i<4; i++) D0[0].b[i  ] = S1[0].h[i];
+	    for (i=0; i<4; i++) D0[0].b[i+4] = S1[1].h[i];
+	    D0[1].x = S1[1].x;
+	  }
+	  else {
+	    D0[0].x = S1[0].x;
+	    for (i=0; i<4; i++) D0[1].b[i  ] = S1[0].h[i];
+	    for (i=0; i<4; i++) D0[1].b[i+4] = S1[1].h[i];
+	  }
+	  break;
+	case 1: /* 4H/8H */
+	  if (!rob->dbl) {
+	    for (i=0; i<2; i++) D0[0].h[i  ] = S1[0].w[i];
+	    for (i=0; i<2; i++) D0[0].h[i+2] = S1[1].w[i];
+	    D0[1].x = S1[1].x;
+	  }
+	  else {
+	    D0[0].x = S1[0].x;
+	    for (i=0; i<2; i++) D0[1].h[i  ] = S1[0].w[i];
+	    for (i=0; i<2; i++) D0[1].h[i+2] = S1[1].w[i];
+	  }
+	  break;
+	case 2: /* 2S/4S */
+	  if (!rob->dbl) {
+	    for (i=0; i<1; i++) D0[0].w[i  ] = S1[0].x;
+	    for (i=0; i<1; i++) D0[0].w[i+1] = S1[1].x;
+	    D0[1].x = S1[1].x;
+	  }
+	  else {
+	    D0[0].x = S1[0].x;
+	    for (i=0; i<1; i++) D0[1].w[i  ] = S1[0].x;
+	    for (i=0; i<1; i++) D0[1].w[i+1] = S1[1].x;
+	  }
+	  break;
+	default: /* undef */
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      case 2: /* UMOV */
+	index = rob->idx; /* 15-0 */
+	fill = (index>=8)?S1[1].x>>((index-8)*8):S1[0].x>>(index*8);
+	switch (rob->size) {
+	case 1: /* 1B */
+	  fill &= 0x00000000000000ffLL;
+	  break;
+	case 2: /* 1H */
+	  fill &= 0x000000000000ffffLL;
+	  break;
+	case 4: /* 1S */
+	  fill &= 0x00000000ffffffffLL;
+	  break;
+	case 8: /* 1D */
+	  fill &= 0xffffffffffffffffLL;
+	  break;
+	}
+	if (rob->dbl)
+	  D0[0].x = fill;
+	else
+	  D0[0].x = fill & 0x00000000ffffffffLL;
+	break;
+      case 3: /* INS */
+	index = rob->idx; /* 15-0 */
+	switch (rob->size) {
+	case 1: /* 1B */
+	  if (index<8) {
+	    D0[0].x = (S1[0].x & ~(0x00000000000000ffLL<<(index  )*8)) | (S2[0].b[0]<<(index  )*8);
+	    D0[1].x =  S1[1].x;
+	  }
+	  else {
+	    D0[0].x =  S1[0].x;
+	    D0[1].x = (S1[1].x & ~(0x00000000000000ffLL<<(index-8)*8)) | (S2[0].b[0]<<(index-8)*8);
+	  }
+	  break;
+	case 2: /* 1H */
+	  if (index<8) {
+	    D0[0].x = (S1[0].x & ~(0x000000000000ffffLL<<(index  )*8)) | (S2[0].h[0]<<(index  )*8);
+	    D0[1].x =  S1[1].x;
+	  }
+	  else {
+	    D0[0].x =  S1[0].x;
+	    D0[1].x = (S1[1].x & ~(0x000000000000ffffLL<<(index-8)*8)) | (S2[0].h[0]<<(index-8)*8);
+	  }
+	  break;
+	case 4: /* 1S */
+	  if (index<8) {
+	    D0[0].x = (S1[0].x & ~(0x00000000ffffffffLL<<(index  )*8)) | (S2[0].w[0]<<(index  )*8);
+	    D0[1].x =  S1[1].x;
+	  }
+	  else {
+	    D0[0].x =  S1[0].x;
+	    D0[1].x = (S1[1].x & ~(0x00000000ffffffffLL<<(index-8)*8)) | (S2[0].w[0]<<(index-8)*8);
+	  }
+	  break;
+	case 8: /* 1D */
+	  if (index<8) {
+	    D0[0].x = S2[0].x;
+	    D0[1].x = S1[1].x;
+	  }
+	  else {
+	    D0[0].x = S1[0].x;
+	    D0[1].x = S2[0].x;
+	  }
+	  break;
+	}
+	break;
+      case 4: /* SMAX */
+	switch (rob->size) {
+	case 0: /* 8B/16B */
+	  if (!rob->dbl) {
+	    for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>(char)S2[0].b[i] ? S1[0].b[i]:S2[0].b[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]>(char)S2[0].b[i] ? S1[0].b[i]:S2[0].b[i];
+	    for (i=0; i<8; i++) D0[1].b[i] = (char)S1[1].b[i]>(char)S2[1].b[i] ? S1[1].b[i]:S2[1].b[i];
+	  }
+	  break;
+	case 1: /* 4H/8H */
+	  if (!rob->dbl) {
+	    for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>(short)S2[0].h[i] ? S1[0].h[i]:S2[0].h[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]>(short)S2[0].h[i] ? S1[0].h[i]:S2[0].h[i];
+	    for (i=0; i<4; i++) D0[1].h[i] = (short)S1[1].h[i]>(short)S2[1].h[i] ? S1[1].h[i]:S2[1].h[i];
+	  }
+	  break;
+	case 2: /* 2S/4S */
+	  if (!rob->dbl) {
+	    for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>(int)S2[0].w[i] ? S1[0].w[i]:S2[0].w[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]>(int)S2[0].w[i] ? S1[0].w[i]:S2[0].w[i];
+	    for (i=0; i<2; i++) D0[1].w[i] = (int)S1[1].w[i]>(int)S2[1].w[i] ? S1[1].w[i]:S2[1].w[i];
+	  }
+	  break;
+	default: /* undef */
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      case 5: /* UMAX */
+	switch (rob->size) {
+	case 0: /* 8B/16B */
+	  if (!rob->dbl) {
+	    for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]>S2[0].b[i] ? S1[0].b[i]:S2[0].b[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]>S2[0].b[i] ? S1[0].b[i]:S2[0].b[i];
+	    for (i=0; i<8; i++) D0[1].b[i] = S1[1].b[i]>S2[1].b[i] ? S1[1].b[i]:S2[1].b[i];
+	  }
+	  break;
+	case 1: /* 4H/8H */
+	  if (!rob->dbl) {
+	    for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]>S2[0].h[i] ? S1[0].h[i]:S2[0].h[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]>S2[0].h[i] ? S1[0].h[i]:S2[0].h[i];
+	    for (i=0; i<4; i++) D0[1].h[i] = S1[1].h[i]>S2[1].h[i] ? S1[1].h[i]:S2[1].h[i];
+	  }
+	  break;
+	case 2: /* 2S/4S */
+	  if (!rob->dbl) {
+	    for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]>S2[0].w[i] ? S1[0].w[i]:S2[0].w[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]>S2[0].w[i] ? S1[0].w[i]:S2[0].w[i];
+	    for (i=0; i<2; i++) D0[1].w[i] = S1[1].w[i]>S2[1].w[i] ? S1[1].w[i]:S2[1].w[i];
+	  }
+	  break;
+	default: /* undef */
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      case 6: /* SMIN */
+	switch (rob->size) {
+	case 0: /* 8B/16B */
+	  if (!rob->dbl) {
+	    for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]<(char)S2[0].b[i] ? S1[0].b[i]:S2[0].b[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<8; i++) D0[0].b[i] = (char)S1[0].b[i]<(char)S2[0].b[i] ? S1[0].b[i]:S2[0].b[i];
+	    for (i=0; i<8; i++) D0[1].b[i] = (char)S1[1].b[i]<(char)S2[1].b[i] ? S1[1].b[i]:S2[1].b[i];
+	  }
+	  break;
+	case 1: /* 4H/8H */
+	  if (!rob->dbl) {
+	    for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]<(short)S2[0].h[i] ? S1[0].h[i]:S2[0].h[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<4; i++) D0[0].h[i] = (short)S1[0].h[i]<(short)S2[0].h[i] ? S1[0].h[i]:S2[0].h[i];
+	    for (i=0; i<4; i++) D0[1].h[i] = (short)S1[1].h[i]<(short)S2[1].h[i] ? S1[1].h[i]:S2[1].h[i];
+	  }
+	  break;
+	case 2: /* 2S/4S */
+	  if (!rob->dbl) {
+	    for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]<(int)S2[0].w[i] ? S1[0].w[i]:S2[0].w[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<2; i++) D0[0].w[i] = (int)S1[0].w[i]<(int)S2[0].w[i] ? S1[0].w[i]:S2[0].w[i];
+	    for (i=0; i<2; i++) D0[1].w[i] = (int)S1[1].w[i]<(int)S2[1].w[i] ? S1[1].w[i]:S2[1].w[i];
+	  }
+	  break;
+	default: /* undef */
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      case 7: /* UMIN */
+	switch (rob->size) {
+	case 0: /* 8B/16B */
+	  if (!rob->dbl) {
+	    for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]<S2[0].b[i] ? S1[0].b[i]:S2[0].b[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<8; i++) D0[0].b[i] = S1[0].b[i]<S2[0].b[i] ? S1[0].b[i]:S2[0].b[i];
+	    for (i=0; i<8; i++) D0[1].b[i] = S1[1].b[i]<S2[1].b[i] ? S1[1].b[i]:S2[1].b[i];
+	  }
+	  break;
+	case 1: /* 4H/8H */
+	  if (!rob->dbl) {
+	    for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]<S2[0].h[i] ? S1[0].h[i]:S2[0].h[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<4; i++) D0[0].h[i] = S1[0].h[i]<S2[0].h[i] ? S1[0].h[i]:S2[0].h[i];
+	    for (i=0; i<4; i++) D0[1].h[i] = S1[1].h[i]<S2[1].h[i] ? S1[1].h[i]:S2[1].h[i];
+	  }
+	  break;
+	case 2: /* 2S/4S */
+	  if (!rob->dbl) {
+	    for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]<S2[0].w[i] ? S1[0].w[i]:S2[0].w[i];
+	    D0[1].x = 0LL;
+	  }
+	  else {
+	    for (i=0; i<2; i++) D0[0].w[i] = S1[0].w[i]<S2[0].w[i] ? S1[0].w[i]:S2[0].w[i];
+	    for (i=0; i<2; i++) D0[1].w[i] = S1[1].w[i]<S2[1].w[i] ? S1[1].w[i]:S2[1].w[i];
+	  }
+	  break;
+	default: /* undef */
+	  return (ROB_EXECERR); /* error */
+	}
+	break;
+      default:
+	return (ROB_EXECERR); /* error */
+      }
+      break;
+    case 8: /* FADD/FSUB(vector) */
+      if (rob->iinv==0) { /* FADD */
+	switch (rob->sop) {
+	case 0: /* 2S/4S */
+	  for (i=0; i<2; i++) D0[0].s[i] = S1[0].s[i] + S2[0].s[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].s[i] = S1[1].s[i] + S2[1].s[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 1: /* 2D */
+	  D0[0].d = S1[0].d + S2[0].d;
+	  if (rob->dbl)
+	    D0[1].d = S1[1].d + S2[1].d;
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	case 2: /* pair-2S/4S */
+	  D0[0].s[0] = S1[0].s[0] + S1[0].s[1];
+	  D0[0].s[1] = S1[1].s[0] + S1[1].s[1];
+	  if (rob->dbl) {
+	    D0[1].s[0] = S2[0].s[0] + S2[0].s[1];
+	    D0[1].s[1] = S2[1].s[0] + S2[1].s[1];
+	  }
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 3: /* pair-2D */
+	  D0[0].d = S1[0].d + S1[1].d;
+	  if (rob->dbl)
+	    D0[1].d = S2[0].d + S2[1].d;
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      else { /* FSUB */
+	switch (rob->sop) {
+	case 0: /* 2S/4S */
+	  for (i=0; i<2; i++) D0[0].s[i] = S1[0].s[i] - S2[0].s[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].s[i] = S1[1].s[i] - S2[1].s[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 1: /* 2D */
+	  D0[0].d = S1[0].d - S2[0].d;
+	  if (rob->dbl)
+	    D0[1].d = S1[1].d - S2[1].d;
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	case 2: /* pair-2S/4S */
+	  D0[0].s[0] = S1[0].s[0] - S1[0].s[1];
+	  D0[0].s[1] = S1[1].s[0] - S1[1].s[1];
+	  if (rob->dbl) {
+	    D0[1].s[0] = S2[0].s[0] - S2[0].s[1];
+	    D0[1].s[1] = S2[1].s[0] - S2[1].s[1];
+	  }
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 3: /* pair-2D */
+	  D0[0].d = S1[0].d - S1[1].d;
+	  if (rob->dbl)
+	    D0[1].d = S2[0].d - S2[1].d;
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      break;
+    case 9: /* FMLA/FMLS(vector) */
+      if (rob->iinv==0) { /* FMLA */
+	switch (rob->sop) {
+	case 0: /* 2S/4S */
+	  for (i=0; i<2; i++) D0[0].s[i] = S3[0].s[i] + S1[0].s[i] * S2[0].s[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].s[i] = S3[1].s[i] + S1[1].s[i] * S2[1].s[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 1: /* 2D */
+	  D0[0].d = S3[0].d + S1[0].d * S2[0].d;
+	  if (rob->dbl)
+	    D0[1].d = S3[1].d + S1[1].d * S2[1].d;
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      else { /* FMLS */
+	switch (rob->sop) {
+	case 0: /* 2S/4S */
+	  for (i=0; i<2; i++) D0[0].s[i] = S3[0].s[i] - S1[0].s[i] * S2[0].s[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].s[i] = S3[1].s[i] - S1[1].s[i] * S2[1].s[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 1: /* 2D */
+	  D0[0].d = S3[0].d - S1[0].d * S2[0].d;
+	  if (rob->dbl)
+	    D0[1].d = S3[1].d - S1[1].d * S2[1].d;
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      break;
+    case 10: /* FMUL(vector) */
+      switch (rob->sop) {
+      case 0: /* 2S/4S */
+	for (i=0; i<2; i++) D0[0].s[i] = S1[0].s[i] * S2[0].s[i];
+	if (rob->dbl)
+	  for (i=0; i<2; i++) D0[1].s[i] = S1[1].s[i] * S2[1].s[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 1: /* 2D */
+	D0[0].d = S1[0].d * S2[0].d;
+	if (rob->dbl)
+	  D0[1].d = S1[1].d * S2[1].d;
+	else
+	  return (ROB_EXECERR); /* error */
+	break;
+      default:
+	return (ROB_EXECERR); /* error */
+      }
+      break;
+    case 11: /* MLA/MLS(vector) */
+      if (rob->iinv==0) { /* MLA */
+	switch (rob->sop) {
+	case 0: /* 8B/16B */
+	  for (i=0; i<8; i++) {
+	    D0[0].b[i] =           S3[0].b[i] + S1[0].b[i] * (rob->sr[1].t?S2[0].b[i]:1);
+	    D0[1].b[i] = rob->dbl?(S3[1].b[i] + S1[1].b[i] * (rob->sr[1].t?S2[1].b[i]:1)):0;
+	  }
+	  break;
+	case 1: /* 4H/8H */
+	  for (i=0; i<4; i++) {
+	    D0[0].h[i] =           S3[0].h[i] + S1[0].h[i] * (rob->sr[1].t?S2[0].h[i]:1);
+	    D0[1].h[i] = rob->dbl?(S3[1].h[i] + S1[1].h[i] * (rob->sr[1].t?S2[1].h[i]:1)):0;
+	  }
+	  break;
+	case 2: /* 2S/4S */
+	  for (i=0; i<2; i++) {
+	    D0[0].w[i] =           S3[0].w[i] + S1[0].w[i] * (rob->sr[1].t?S2[0].w[i]:1);
+	    D0[1].w[i] = rob->dbl?(S3[1].w[i] + S1[1].w[i] * (rob->sr[1].t?S2[1].w[i]:1)):0;
+	  }
+	  break;
+	case 3: /* 1D for ADD(scalar)/2D for ADD(vector) */
+  	    D0[0].x    =           S3[0].x    + S1[0].x    * (rob->sr[1].t?S2[0].x:1LL);
+	    D0[1].x    = rob->dbl?(S3[1].x    + S1[1].x    * (rob->sr[1].t?S2[1].x:1LL)):0LL;
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      else { /* MLS */
+	switch (rob->sop) {
+	case 0: /* 8B/16B */
+	  for (i=0; i<8; i++) {
+	    D0[0].b[i] =           S3[0].b[i] - S1[0].b[i] * (rob->sr[1].t?S2[0].b[i]:1);
+	    D0[1].b[i] = rob->dbl?(S3[1].b[i] - S1[1].b[i] * (rob->sr[1].t?S2[1].b[i]:1)):0;
+	  }
+	  break;
+	case 1: /* 4H/8H */
+	  for (i=0; i<4; i++) {
+	    D0[0].h[i] =           S3[0].h[i] - S1[0].h[i] * (rob->sr[1].t?S2[0].h[i]:1);
+	    D0[1].h[i] = rob->dbl?(S3[1].h[i] - S1[1].h[i] * (rob->sr[1].t?S2[1].h[i]:1)):0;
+	  }
+	  break;
+	case 2: /* 2S/4S */
+	  for (i=0; i<2; i++) {
+	    D0[0].w[i] =           S3[0].w[i] - S1[0].w[i] * (rob->sr[1].t?S2[0].w[i]:1);
+	    D0[1].w[i] = rob->dbl?(S3[1].w[i] - S1[1].w[i] * (rob->sr[1].t?S2[1].w[i]:1)):0;
+	  }
+	  break;
+	case 3: /* 1D for SUB(scalar)/2D for SUB(vector) */
+  	    D0[0].x    =           S3[0].x    - S1[0].x    * (rob->sr[1].t?S2[0].x:1LL);
+	    D0[1].x    = rob->dbl?(S3[1].x    - S1[1].x    * (rob->sr[1].t?S2[1].x:1LL)):0LL;
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      break;
+    case 12: /* FADD/FSUB(scalar) */
+      if (rob->iinv==0) { /* FADD */
+	if (rob->dbl) {
+	  D0[0].d = S1[0].d + S2[0].d;
+	  D0[1].x = 0LL;
+	}
+	else {
+	  D0[0].s[0] = S1[0].s[0] + S2[0].s[0];
+	  D0[0].w[1] = 0;
+	  D0[1].x = 0LL;
+	}
+      }
+      else { /* FSUB/FCMP */
+	if (rob->dbl) {
+	  D0[0].d = S1[0].d - S2[0].d;
+	  D0[1].x = 0LL;
+	  /* eq: NZCV=0110 */
+	  /* lt: NZCV=1000 */
+	  /* gt: NZCV=0010 */
+	  /* uo: NZCV=0011 */
+	  if      (S1[0].d == S2[0].d) NZCV = 0x6; /* eq */
+	  else if (S1[0].d <  S2[0].d) NZCV = 0x8; /* lt */
+	  else                         NZCV = 0x2; /* gt */
+	}
+	else {
+	  D0[0].s[0] = S1[0].s[0] - S2[0].s[0];
+	  D0[0].w[1] = 0;
+	  D0[1].x = 0LL;
+	  /* eq: NZCV=0110 */
+	  /* lt: NZCV=1000 */
+	  /* gt: NZCV=0010 */
+	  /* uo: NZCV=0011 */
+	  if      (S1[0].s[0] == S2[0].s[0]) NZCV = 0x6; /* eq */
+	  else if (S1[0].s[0] <  S2[0].s[0]) NZCV = 0x8; /* lt */
+	  else                               NZCV = 0x2; /* gt */
+	}
+      }
+      break;
+    case 13: /* FMADD/FMSUB(scalar) */
+      if (rob->dbl) {
+	if (rob->iinv)
+	  S3[0].d = -S3[0].d;
+	if (rob->oinv)
+	  S1[0].d = -S1[0].d;
+	D0[0].d = S3[0].d + S1[0].d * S2[0].d;
+	D0[1].x = 0LL;
+      }
+      else {
+	if (rob->iinv)
+	  S3[0].s[0] = -S3[0].s[0];
+	if (rob->oinv)
+	  S1[0].s[0] = -S1[0].s[0];
+	D0[0].s[0] = S3[0].s[0] + S1[0].s[0] * S2[0].s[0];
+	D0[0].w[1] = 0;
+	D0[1].x = 0LL;
+      }
+      break;
+    case 14: /* FMUL(scalar) */
+      if (rob->dbl) {
+	D0[0].d = S1[0].d * S2[0].d;
+	if (rob->oinv) /* 0:normal, 1:negate */
+	  D0[0].d = -D0[0].d;
+	D0[1].x = 0LL;
+      }
+      else {
+	D0[0].s[0] = S1[0].s[0] * S2[0].s[0];
+	if (rob->oinv) /* 0:normal, 1:negate */
+	  D0[0].s[0] = -D0[0].s[0];
+	D0[0].w[1] = 0;
+	D0[1].x = 0LL;
+      }
+      break;
+    default:
+      return (ROB_EXECERR); /* error */
+    }
+
+    c[cid].vecpipe[0].v = 1;
+    c[cid].vecpipe[0].tid = tid;
+    c[cid].vecpipe[0].rob = rob;
+    if (rob->dr[1].t) {
+      c[cid].vecpipe[0].dr1t = 1;
+      c[cid].vecpipe[0].dr1v[0] = D0[0].x;
+      c[cid].vecpipe[0].dr1v[1] = D0[1].x;
+    }
+    else
+      c[cid].vecpipe[0].dr1t = 0;
+    if (rob->dr[3].t) {
+      c[cid].vecpipe[0].dr3t = 1;
+      c[cid].vecpipe[0].dr3v = NZCV;
+    }
+    else
+      c[cid].vecpipe[0].dr3t = 0;
+
+    return (ROB_ISSUED); /* issued */
+  }
+ 
+  else { /* FDIV */
+    if (c[cid].divque.v)
+      return (ROB_MAPPED); /* no change */
+
+    switch (rob->opcd) {
+    case 15: /* FDIV(scalar) */
+      if (rob->dbl) {
+	D0[0].d = S1[0].d / S2[0].d;
+	D0[1].x = 0LL;
+      }
+      else {
+	D0[0].s[0] = S1[0].s[0] / S2[0].s[0];
+	D0[0].w[1] = 0;
+	D0[1].x = 0LL;
+      }
+      break;
+    default:
+      return (ROB_EXECERR); /* error */
+    }
+
+    c[cid].divque.v = 1;
+    c[cid].divque.t = CORE_DIVDELAY;
+    c[cid].divque.tid = tid;
+    c[cid].divque.rob = rob;
+    if (rob->dr[1].t) {
+      c[cid].divque.dr1t = 1;
+      c[cid].divque.dr1v = D0[0].x;
+    }
+    else
+      c[cid].divque.dr1t = 0;
+
+    return (ROB_ISSUED); /* issued */
+  }
+}
+@
+
+
+1.34
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/vxx.c,v 1.33 2017/04/21 03:29:32 nakashim Exp nakashim $";
+d86 9
+@
+
+
+1.33
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/vxx.c,v 1.32 2016/05/29 05:07:22 nakashim Exp nakashim $";
+d1469 4
+a1472 5
+	  for (i=0; i<8; i++) D0[0].b[i] = S3[0].b[i] + S1[0].b[i] * S2[0].b[i];
+	  if (rob->dbl)
+	    for (i=0; i<8; i++) D0[1].b[i] = S3[1].b[i] + S1[1].b[i] * S2[1].b[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+d1475 4
+a1478 5
+	  for (i=0; i<4; i++) D0[0].h[i] = S3[0].h[i] + S1[0].h[i] * S2[0].h[i];
+	  if (rob->dbl)
+	    for (i=0; i<4; i++) D0[1].h[i] = S3[1].h[i] + S1[1].h[i] * S2[1].h[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+d1481 4
+a1484 5
+	  for (i=0; i<2; i++) D0[0].w[i] = S3[0].w[i] + S1[0].w[i] * S2[0].w[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].w[i] = S3[1].w[i] + S1[1].w[i] * S2[1].w[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+d1486 3
+a1488 3
+	case 3: /* 1D for ADD(scalar) */
+	  D0[0].x = S1[0].x + S2[0].x;
+	  D0[1].x = 0x0000000000000000LL;
+d1497 4
+a1500 5
+	  for (i=0; i<8; i++) D0[0].b[i] = S3[0].b[i] - S1[0].b[i] * S2[0].b[i];
+	  if (rob->dbl)
+	    for (i=0; i<8; i++) D0[1].b[i] = S3[1].b[i] - S1[1].b[i] * S2[1].b[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+d1503 4
+a1506 5
+	  for (i=0; i<4; i++) D0[0].h[i] = S3[0].h[i] - S1[0].h[i] * S2[0].h[i];
+	  if (rob->dbl)
+	  for (i=0; i<4; i++) D0[1].h[i] = S3[1].h[i] - S1[1].h[i] * S2[1].h[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+d1509 4
+a1512 5
+	  for (i=0; i<2; i++) D0[0].w[i] = S3[0].w[i] - S1[0].w[i] * S2[0].w[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].w[i] = S3[1].w[i] - S1[1].w[i] * S2[1].w[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+d1514 3
+a1516 3
+	case 3: /* 1D for SUB(scalar) */
+	  D0[0].x = S1[0].x - S2[0].x;
+	  D0[1].x = 0x0000000000000000LL;
+@
+
+
+1.32
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.31 2016/05/28 15:50:12 nakashim Exp nakashim $";
+d11 1
+a11 1
+#include "bsim.h"
+@
+
+
+1.31
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.30 2016/05/28 14:45:25 nakashim Exp nakashim $";
+d954 1
+a954 1
+    case 6: /* MOVI/MVNI/ORR/BIC */
+d986 40
+@
+
+
+1.30
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.29 2016/05/28 08:15:06 nakashim Exp nakashim $";
+d709 5
+a713 1
+	case 0: /* CMEQZ(scalar) */
+d715 41
+a755 1
+	case 1: /* CMEQZ(vector) */
+d757 5
+a761 1
+	case 2: /* CMGEZ(scalar) */
+d763 41
+a803 1
+	case 3: /* CMGEZ(vector) */
+d805 5
+a809 1
+	case 4: /* CMGTZ(scalar) */
+d811 41
+a851 1
+	case 5: /* CMGTZ(vector) */
+d853 5
+a857 1
+	case 6: /* CMLEZ(scalar) */
+d859 41
+a899 1
+	case 7: /* CMLEZ(vector) */
+d901 5
+a905 1
+	case 8: /* CMLTZ(scalar) */
+d907 41
+a947 1
+	case 9: /* CMLTZ(vector) */
+@
+
+
+1.29
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.28 2016/05/28 06:35:32 nakashim Exp nakashim $";
+a70 1
+	break;
+a72 1
+	break;
+a74 1
+	break;
+a80 1
+	break;
+d196 2
+a197 4
+	else {
+	  D0[0].x = (Sll)S1[0].x >> shift;
+	  D0[1].x = 0LL;
+	}
+d203 2
+a204 4
+	else {
+	  D0[0].x = S1[0].x >> shift;
+	  D0[1].x = 0LL;
+	}
+d288 2
+a289 4
+	else {
+	  D0[0].x = S1[0].x << shift;
+	  D0[1].x = 0LL;
+	}
+d412 322
+a733 2
+    case 5: /* not used */
+      return (ROB_EXECERR); /* error */
+d1342 1
+a1342 1
+     return (ROB_EXECERR); /* error */
+@
+
+
+1.28
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.27 2016/05/28 02:32:17 nakashim Exp nakashim $";
+d428 1
+a428 1
+	  D0[0].x = S2[0].x;
+d432 1
+a432 1
+	  D0[0].x = ~S2[0].x;
+d436 1
+a436 1
+      case 1: /* ORR/BIC */
+d438 1
+a438 1
+	  D0[0].x = S1[0].x|S2[0].x;
+d441 10
+d452 1
+a452 1
+	  D0[0].x = S1[0].x&~S2[0].x;
+@
+
+
+1.27
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.26 2016/05/28 01:01:36 nakashim Exp nakashim $";
+d25 3
+a27 2
+  Uint i, index, shift;
+  Ull fill;
+d194 1
+a194 1
+    case 4: /* SHR */
+d198 5
+a202 11
+	if (shift==0) {
+	  D0[0].x = S1[0].x;
+	  D0[1].x = S1[1].x;
+	}
+	else if (shift<64) {
+	  D0[0].x = (S1[1].x << (64-shift)) | (S1[0].x >> shift);
+	  D0[1].x = (Sll)S1[1].x >> shift;
+	}
+	else { /* 64-127 */
+	  D0[0].x = (Sll)S1[1].x >> (shift-64);
+	  D0[1].x = (Sll)S1[1].x >> 63;
+d207 4
+a210 10
+	if (shift==0) {
+	  D0[0].x = S1[0].x;
+	  D0[1].x = S1[1].x;
+	}
+	else if (shift<64) {
+	  D0[0].x = (S1[1].x << (64-shift)) | (S1[0].x >> shift);
+	  D0[1].x = S1[1].x >> shift;
+	}
+	else { /* 64-127 */
+	  D0[0].x = S1[1].x >> (shift-64);
+d292 126
+@
+
+
+1.26
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.25 2016/05/27 14:54:56 nakashim Exp nakashim $";
+d335 1
+a335 1
+    case 7: /* DUP(vector), UMOV */
+d484 144
+d650 9
+a658 9
+	D0[0].s[0] = S1[0].s[0] + S1[0].s[1];
+	D0[0].s[1] = S1[1].s[0] + S1[1].s[1];
+	if (rob->dbl) {
+	  D0[1].s[0] = S2[0].s[0] + S2[0].s[1];
+	  D0[1].s[1] = S2[1].s[0] + S2[1].s[1];
+	}
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+@
+
+
+1.25
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.24 2016/05/27 08:04:22 nakashim Exp nakashim $";
+d193 1
+a193 1
+    case 4: /* USHR */
+d195 70
+a264 1
+      case 0: /* USHR */
+@
+
+
+1.24
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.23 2016/05/11 14:37:57 nakashim Exp nakashim $";
+d262 2
+a266 2
+      index = rob->idx; /* 15-0 */
+      fill = (index>=8)?S1[1].x>>((index-8)*8):S1[0].x>>(index*8);
+d269 2
+d306 45
+a350 1
+      case 1: /* UMOV */
+d355 1
+a355 1
+	case 2: /* 2B */
+d358 1
+a358 1
+	case 4: /* 4B */
+d361 1
+a361 1
+	case 8: /* 8B */
+d370 47
+@
+
+
+1.23
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.22 2016/05/11 12:12:21 nakashim Exp nakashim $";
+d25 1
+a25 1
+  Uint i, index;
+d93 1
+a93 1
+    case 2: /* CVTSS */
+d95 1
+d118 2
+a119 5
+      }
+      break;
+    case 3: /* CVTSD */
+      switch (rob->sop) {
+      case 0: /* 0:rint */
+d123 1
+a123 1
+      case 1: /* 1:ceil */
+d127 1
+a127 1
+      case 2: /* 2:floor */
+d131 1
+a131 1
+      case 3: /* 3:trunc */
+d135 1
+a135 1
+      case 4: /* 4:round */
+d143 1
+a143 1
+    case 4: /* CVTUS */
+d145 1
+d161 1
+a161 1
+      break;
+d168 2
+a169 5
+      }
+      break;
+    case 5: /* CVTUD */
+      switch (rob->sop) {
+      case 0: /* 0:rint */
+d173 1
+a173 1
+      case 1: /* 1:ceil */
+d177 1
+a177 1
+      case 2: /* 2:floor */
+d181 1
+a181 1
+      case 3: /* 3:trunc */
+d185 1
+a185 1
+      case 4: /* 4:round */
+d193 47
+d241 2
+a242 1
+      if (rob->sop==0) { /* MOVI/MVNI */
+d251 2
+a252 2
+      }
+      else { /* ORR/BIC */
+d261 1
+d264 1
+a264 1
+    case 7: /* DUP(vector) */
+d268 35
+a302 7
+      case 1: /* 1B */
+	fill &= 0x00000000000000ffLL;
+	for (i=0; i<8; i++) D0[0].b[i] = fill;
+	if (rob->dbl)
+	  for (i=0; i<8; i++) D0[1].b[i] = fill;
+	else
+	  D0[1].x = 0x0000000000000000LL;
+d304 15
+a318 11
+      case 2: /* 2B */
+	fill &= 0x000000000000ffffLL;
+	for (i=0; i<4; i++) D0[0].h[i] = fill;
+	if (rob->dbl)
+	  for (i=0; i<4; i++) D0[1].h[i] = fill;
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 4: /* 4B */
+	fill &= 0x00000000ffffffffLL;
+	for (i=0; i<2; i++) D0[0].w[i] = fill;
+d320 1
+a320 1
+	  for (i=0; i<2; i++) D0[1].w[i] = fill;
+d322 1
+a322 9
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 8: /* 8B */
+	fill &= 0xffffffffffffffffLL;
+	D0[0].x = fill;
+	if (rob->dbl)
+	  D0[1].x = fill;
+	else
+	  D0[1].x = 0x0000000000000000LL;
+@
+
+
+1.22
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.21 2015/10/20 23:48:02 nakashim Exp nakashim $";
+d24 1
+d471 1
+a471 1
+      else { /* FSUB */
+d475 7
+d487 7
+d545 6
+@
+
+
+1.21
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.20 2015/09/20 11:00:53 nakashim Exp nakashim $";
+d36 2
+a37 1
+      if (rob->sop==0) { /* FMOVL */
+d42 2
+a43 2
+      }
+      else { /* FMOVH */
+d46 17
+@
+
+
+1.20
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.19 2015/09/20 09:16:28 nakashim Exp nakashim $";
+d400 4
+d431 4
+@
+
+
+1.19
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.18 2015/09/20 08:03:21 nakashim Exp nakashim $";
+d33 1
+a33 1
+    case 0: /* FMOVL */
+d36 10
+a45 4
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w[1] = 0; D0[0].w[0] = S1[0].w[0];}
+      if (rob->dir==0 && rob->dbl==1) {                                   D0[0].x    = S1[0].x;}
+      if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;    D0[0].w[1] = 0; D0[0].w[0] = S1[0].w[0];}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = S2[1].x;                D0[0].x    = S1[0].x;}
+d47 26
+a72 5
+    case 1: /* FMOVH */
+      /* rob->dir 0:RR<-VR, 1:VR<-RR */
+      /* rob->dbl 0:WR, 1:XR */
+      if (rob->dir==0 && rob->dbl==1) {                                   D0[0].x    = S1[1].x;}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = S1[0].x;                D0[0].x    = S2[0].x;}
+@
+
+
+1.18
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.17 2015/09/20 05:10:19 nakashim Exp nakashim $";
+d329 20
+@
+
+
+1.17
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.16 2015/09/20 04:39:20 nakashim Exp nakashim $";
+d24 2
+a25 1
+  Uint i;
+d173 36
+a208 54
+    case 7: /* MLA/MLS(vector) */
+      if (rob->iinv==0) { /* MLA */
+	switch (rob->sop) {
+	case 0: /* 8B/16B */
+	  for (i=0; i<8; i++) D0[0].b[i] = S3[0].b[i] + S1[0].b[i] * S2[0].b[i];
+	  if (rob->dbl)
+	    for (i=0; i<8; i++) D0[1].b[i] = S3[1].b[i] + S1[1].b[i] * S2[1].b[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 1: /* 4H/8H */
+	  for (i=0; i<4; i++) D0[0].h[i] = S3[0].h[i] + S1[0].h[i] * S2[0].h[i];
+	  if (rob->dbl)
+	    for (i=0; i<4; i++) D0[1].h[i] = S3[1].h[i] + S1[1].h[i] * S2[1].h[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 2: /* 2S/4S */
+	  for (i=0; i<2; i++) D0[0].w[i] = S3[0].w[i] + S1[0].w[i] * S2[0].w[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].w[i] = S3[1].w[i] + S1[1].w[i] * S2[1].w[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      else { /* MLS */
+	switch (rob->sop) {
+	case 0: /* 8B/16B */
+	  for (i=0; i<8; i++) D0[0].b[i] = S3[0].b[i] - S1[0].b[i] * S2[0].b[i];
+	  if (rob->dbl)
+	    for (i=0; i<8; i++) D0[1].b[i] = S3[1].b[i] - S1[1].b[i] * S2[1].b[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 1: /* 4H/8H */
+	  for (i=0; i<4; i++) D0[0].h[i] = S3[0].h[i] - S1[0].h[i] * S2[0].h[i];
+	  if (rob->dbl)
+	  for (i=0; i<4; i++) D0[1].h[i] = S3[1].h[i] - S1[1].h[i] * S2[1].h[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 2: /* 2S/4S */
+	  for (i=0; i<2; i++) D0[0].w[i] = S3[0].w[i] - S1[0].w[i] * S2[0].w[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].w[i] = S3[1].w[i] - S1[1].w[i] * S2[1].w[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+d329 56
+@
+
+
+1.16
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.15 2015/09/20 03:48:25 nakashim Exp nakashim $";
+d172 1
+a172 1
+    case 7: /* MLA/MLS */
+d228 1
+a228 43
+    case 9: /* FMLA/FMLS */
+      if (rob->iinv==0) { /* FMLA */
+	switch (rob->sop) {
+	case 0: /* 2S/4S */
+	  for (i=0; i<2; i++) D0[0].s[i] = S3[0].s[i] + S1[0].s[i] * S2[0].s[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].s[i] = S3[1].s[i] + S1[1].s[i] * S2[1].s[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 1: /* 2D */
+	  D0[0].d = S3[0].d + S1[0].d * S2[0].d;
+	  if (rob->dbl)
+	    D0[1].d = S3[1].d + S1[1].d * S2[1].d;
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      else { /* FMLS */
+	switch (rob->sop) {
+	case 0: /* 2S/4S */
+	  for (i=0; i<2; i++) D0[0].s[i] = S3[0].s[i] - S1[0].s[i] * S2[0].s[i];
+	  if (rob->dbl)
+	    for (i=0; i<2; i++) D0[1].s[i] = S3[1].s[i] - S1[1].s[i] * S2[1].s[i];
+	  else
+	    D0[1].x = 0x0000000000000000LL;
+	  break;
+	case 1: /* 2D */
+	  D0[0].d = S3[0].d - S1[0].d * S2[0].d;
+	  if (rob->dbl)
+	    D0[1].d = S3[1].d - S1[1].d * S2[1].d;
+	  else
+	    return (ROB_EXECERR); /* error */
+	  break;
+	default:
+	  return (ROB_EXECERR); /* error */
+	}
+      }
+      break;
+    case 10: /* FADD/FSUB */
+d304 67
+a370 1
+    case 13: /* FMADD/FMSUB */
+d389 1
+a389 1
+    case 14: /* FMUL */
+d427 1
+a427 1
+    case 15: /* FDIV */
+@
+
+
+1.15
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.14 2015/09/20 02:29:40 nakashim Exp nakashim $";
+d228 1
+a228 1
+    case 8: /* FMLA/FMLS */
+d270 1
+a270 1
+    case 12: /* FADD/FSUB */
+d346 19
+d381 1
+a381 1
+      return (ROB_EXECERR); /* error */
+@
+
+
+1.14
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.13 2015/09/19 17:13:30 nakashim Exp nakashim $";
+d150 10
+a159 4
+    case 6: /* MOVI/MVNI */
+      if (!rob->iinv) { /* MOVI */
+	D0[0].x = S2[0].x;
+	D0[1].x = (rob->dbl)?S2[0].x:0x0000000000000000LL;
+d161 9
+a169 3
+      else { /* MVNI */
+	D0[0].x = ~S2[0].x;
+	D0[1].x = (rob->dbl)?~S2[0].x:0x0000000000000000LL;
+d172 27
+a198 4
+    case 7: /* ORR/BIC */
+      if (!rob->iinv) { /* ORR */
+	D0[0].x = S1[0].x|S2[0].x;
+	D0[1].x = (rob->dbl)?(S1[1].x|S2[0].x):0x0000000000000000LL;
+d200 26
+a225 3
+      else { /* BIC */
+	D0[0].x = S1[0].x&~S2[0].x;
+	D0[1].x = (rob->dbl)?(S1[1].x&~S2[0].x):0x0000000000000000LL;
+d228 18
+a245 14
+    case 8: /* FMLA */
+      switch (rob->sop) {
+      case 0: /* 2S/4S */
+	for (i=0; i<2; i++) D0[0].s[i] = S3[0].s[i] + S1[0].s[i] * S2[0].s[i];
+	if (rob->dbl)
+	  for (i=0; i<2; i++) D0[1].s[i] = S3[1].s[i] + S1[1].s[i] * S2[1].s[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 1: /* 2D */
+	D0[0].d = S3[0].d + S1[0].d * S2[0].d;
+	if (rob->dbl)
+	  D0[1].d = S3[1].d + S1[1].d * S2[1].d;
+	else
+d247 1
+a247 3
+	break;
+      default:
+	return (ROB_EXECERR); /* error */
+d249 17
+a265 15
+      break;
+    case 9: /* FMLS */
+      switch (rob->sop) {
+      case 0: /* 2S/4S */
+	for (i=0; i<2; i++) D0[0].s[i] = S3[0].s[i] - S1[0].s[i] * S2[0].s[i];
+	if (rob->dbl)
+	  for (i=0; i<2; i++) D0[1].s[i] = S3[1].s[i] - S1[1].s[i] * S2[1].s[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 1: /* 2D */
+	D0[0].d = S3[0].d - S1[0].d * S2[0].d;
+	if (rob->dbl)
+	  D0[1].d = S3[1].d - S1[1].d * S2[1].d;
+	else
+d267 1
+a267 30
+	break;
+      default:
+	return (ROB_EXECERR); /* error */
+      }
+      break;
+    case 10: /* MLA */
+      switch (rob->sop) {
+      case 0: /* 8B/16B */
+	for (i=0; i<8; i++) D0[0].b[i] = S3[0].b[i] + S1[0].b[i] * S2[0].b[i];
+	if (rob->dbl)
+	  for (i=0; i<8; i++) D0[1].b[i] = S3[1].b[i] + S1[1].b[i] * S2[1].b[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 1: /* 4H/8H */
+	for (i=0; i<4; i++) D0[0].h[i] = S3[0].h[i] + S1[0].h[i] * S2[0].h[i];
+	if (rob->dbl)
+	  for (i=0; i<4; i++) D0[1].h[i] = S3[1].h[i] + S1[1].h[i] * S2[1].h[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 2: /* 2S/4S */
+	for (i=0; i<2; i++) D0[0].w[i] = S3[0].w[i] + S1[0].w[i] * S2[0].w[i];
+	if (rob->dbl)
+	  for (i=0; i<2; i++) D0[1].w[i] = S3[1].w[i] + S1[1].w[i] * S2[1].w[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      default:
+	return (ROB_EXECERR); /* error */
+d270 18
+a287 44
+    case 11: /* MLS */
+      switch (rob->sop) {
+      case 0: /* 8B/16B */
+	for (i=0; i<8; i++) D0[0].b[i] = S3[0].b[i] - S1[0].b[i] * S2[0].b[i];
+	if (rob->dbl)
+	  for (i=0; i<8; i++) D0[1].b[i] = S3[1].b[i] - S1[1].b[i] * S2[1].b[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 1: /* 4H/8H */
+	for (i=0; i<4; i++) D0[0].h[i] = S3[0].h[i] - S1[0].h[i] * S2[0].h[i];
+	if (rob->dbl)
+	  for (i=0; i<4; i++) D0[1].h[i] = S3[1].h[i] - S1[1].h[i] * S2[1].h[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 2: /* 2S/4S */
+	for (i=0; i<2; i++) D0[0].w[i] = S3[0].w[i] - S1[0].w[i] * S2[0].w[i];
+	if (rob->dbl)
+	  for (i=0; i<2; i++) D0[1].w[i] = S3[1].w[i] - S1[1].w[i] * S2[1].w[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      default:
+	return (ROB_EXECERR); /* error */
+      }
+      break;
+    case 12: /* FADD */
+      switch (rob->sop) {
+      case 0: /* 2S/4S */
+	for (i=0; i<2; i++) D0[0].s[i] = S1[0].s[i] + S2[0].s[i];
+	if (rob->dbl)
+	  for (i=0; i<2; i++) D0[1].s[i] = S1[1].s[i] + S2[1].s[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 1: /* 2D */
+	D0[0].d = S1[0].d + S2[0].d;
+	if (rob->dbl)
+	  D0[1].d = S1[1].d + S2[1].d;
+	else
+	  return (ROB_EXECERR); /* error */
+	break;
+      case 2: /* pair-2S/4S */
+d297 8
+a304 5
+      case 3: /* pair-2D */
+	D0[0].d = S1[0].d + S1[1].d;
+	if (rob->dbl)
+	  D0[1].d = S2[0].d + S2[1].d;
+	else
+d306 1
+a306 3
+	break;
+      default:
+	return (ROB_EXECERR); /* error */
+d308 34
+a341 15
+      break;
+    case 13: /* FSUB */
+      switch (rob->sop) {
+      case 0: /* 2S/4S */
+	for (i=0; i<2; i++) D0[0].s[i] = S1[0].s[i] - S2[0].s[i];
+	if (rob->dbl)
+	  for (i=0; i<2; i++) D0[1].s[i] = S1[1].s[i] - S2[1].s[i];
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 1: /* 2D */
+	D0[0].d = S1[0].d - S2[0].d;
+	if (rob->dbl)
+	  D0[1].d = S1[1].d - S2[1].d;
+	else
+a342 7
+	break;
+      case 2: /* pair-2S/4S */
+	D0[0].s[0] = S1[0].s[0] - S1[0].s[1];
+	D0[0].s[1] = S1[1].s[0] - S1[1].s[1];
+	if (rob->dbl) {
+	  D0[1].s[0] = S2[0].s[0] - S2[0].s[1];
+	  D0[1].s[1] = S2[1].s[0] - S2[1].s[1];
+a343 12
+	else
+	  D0[1].x = 0x0000000000000000LL;
+	break;
+      case 3: /* pair-2D */
+	D0[0].d = S1[0].d - S1[1].d;
+	if (rob->dbl)
+	  D0[1].d = S2[0].d - S2[1].d;
+	else
+	  return (ROB_EXECERR); /* error */
+	break;
+      default:
+	return (ROB_EXECERR); /* error */
+@
+
+
+1.13
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.12 2015/09/16 13:52:08 nakashim Exp nakashim $";
+d30 119
+a148 38
+  switch (rob->opcd) {
+  case 0: /* FMOVL */
+    /* rob->dir 0:RR<-VR, 1:VR<-RR */
+    /* rob->dbl 0:WR, 1:XR */
+    if (rob->dir==0 && rob->dbl==0) {                   D0[0].w[1] = 0; D0[0].w[0] = S1[0].w[0];}
+    if (rob->dir==0 && rob->dbl==1) {                                   D0[0].x    = S1[0].x;}
+    if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;    D0[0].w[1] = 0; D0[0].w[0] = S1[0].w[0];}
+    if (rob->dir==1 && rob->dbl==1) { D0[1].x = S2[1].x;                D0[0].x    = S1[0].x;}
+    break;
+  case 1: /* FMOVH */
+    /* rob->dir 0:RR<-VR, 1:VR<-RR */
+    /* rob->dbl 0:WR, 1:XR */
+    if (rob->dir==0 && rob->dbl==1) {                                   D0[0].x    = S1[1].x;}
+    if (rob->dir==1 && rob->dbl==1) { D0[1].x = S1[0].x;                D0[0].x    = S2[0].x;}
+    break;
+  case 2: /* CVTSS */
+    switch (rob->sop) {
+    case 0: /* 0:rint */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)rintf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)rintf(S1[0].s[0]);}
+      break;
+    case 1: /* 1:ceil */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)ceilf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)ceilf(S1[0].s[0]);}
+      break;
+    case 2: /* 2:floor */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)floorf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)floorf(S1[0].s[0]);}
+      break;
+    case 3: /* 3:trunc */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)truncf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)truncf(S1[0].s[0]);}
+      break;
+    case 4: /* 4:round */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)roundf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)roundf(S1[0].s[0]);}
+      if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;  D0[0].s[1] = 0; D0[0].s[0] = (float)(int)S1[0].w[0];}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;  D0[0].s[1] = 0; D0[0].s[0] = (float)(Sll)S1[0].x;}
+d150 59
+a208 25
+    }
+    break;
+  case 3: /* CVTSD */
+    switch (rob->sop) {
+    case 0: /* 0:rint */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)rint(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)rint(S1[0].d);}
+      break;
+    case 1: /* 1:ceil */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)ceil(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)ceil(S1[0].d);}
+      break;
+    case 2: /* 2:floor */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)floor(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)floor(S1[0].d);}
+      break;
+    case 3: /* 3:trunc */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)trunc(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)trunc(S1[0].d);}
+      break;
+    case 4: /* 4:round */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (int)round(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Sll)round(S1[0].d);}
+      if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;                  D0[0].d    = (double)(int)S1[0].w[0];}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;                  D0[0].d    = (double)(Sll)S1[0].x;}
+d210 26
+a235 25
+    }
+    break;
+  case 4: /* CVTUS */
+    switch (rob->sop) {
+    case 0: /* 0:rint */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)rintf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) rintf(S1[0].s[0]);}
+      break;
+    case 1: /* 1:ceil */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)ceilf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) ceilf(S1[0].s[0]);}
+      break;
+    case 2: /* 2:floor */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)floorf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) floorf(S1[0].s[0]);}
+      break;
+    case 3: /* 3:trunc */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)truncf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) truncf(S1[0].s[0]);}
+      break;
+    case 4: /* 4:round */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)roundf(S1[0].s[0]);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) roundf(S1[0].s[0]);}
+      if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;  D0[0].s[1] = 0; D0[0].s[0] = (float)S1[0].w[0];}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;  D0[0].s[1] = 0; D0[0].s[0] = (float)S1[0].x;}
+d237 26
+a262 25
+    }
+    break;
+  case 5: /* CVTUD */
+    switch (rob->sop) {
+    case 0: /* 0:rint */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)rint(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) rint(S1[0].d);}
+      break;
+    case 1: /* 1:ceil */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)ceil(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) ceil(S1[0].d);}
+      break;
+    case 2: /* 2:floor */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)floor(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) floor(S1[0].d);}
+      break;
+    case 3: /* 3:trunc */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)trunc(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) trunc(S1[0].d);}
+      break;
+    case 4: /* 4:round */
+      if (rob->dir==0 && rob->dbl==0) {                 D0[0].w[1] = 0; D0[0].w[0] = (Uint)round(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                 D0[0].x    = (Ull) round(S1[0].d);}
+      if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;                  D0[0].d    = (double)S1[0].w[0];}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;                  D0[0].d    = (double)S1[0].x;}
+d264 34
+a297 36
+    }
+    break;
+  case 6: /* MOVI/MVNI */
+    if (!rob->iinv) { /* MOVI */
+      D0[0].x = S2[0].x;
+      D0[1].x = (rob->dbl)?S2[0].x:0x0000000000000000LL;
+    }
+    else { /* MVNI */
+      D0[0].x = ~S2[0].x;
+      D0[1].x = (rob->dbl)?~S2[0].x:0x0000000000000000LL;
+    }
+    break;
+  case 7: /* ORR/BIC */
+    if (!rob->iinv) { /* ORR */
+      D0[0].x = S1[0].x|S2[0].x;
+      D0[1].x = (rob->dbl)?(S1[1].x|S2[0].x):0x0000000000000000LL;
+    }
+    else { /* BIC */
+      D0[0].x = S1[0].x&~S2[0].x;
+      D0[1].x = (rob->dbl)?(S1[1].x&~S2[0].x):0x0000000000000000LL;
+    }
+    break;
+  case 8: /* FMLA */
+    switch (rob->sop) {
+    case 0: /* 2S/4S */
+      for (i=0; i<2; i++) D0[0].s[i] = S3[0].s[i] + S1[0].s[i] * S2[0].s[i];
+      if (rob->dbl)
+	for (i=0; i<2; i++) D0[1].s[i] = S3[1].s[i] + S1[1].s[i] * S2[1].s[i];
+      else
+	D0[1].x = 0x0000000000000000LL;
+      break;
+    case 1: /* 2D */
+      D0[0].d = S3[0].d + S1[0].d * S2[0].d;
+      if (rob->dbl)
+	D0[1].d = S3[1].d + S1[1].d * S2[1].d;
+      else
+d299 1
+d301 34
+a334 18
+    default:
+      return (ROB_EXECERR); /* error */
+    }
+    break;
+  case 9: /* FMLS */
+    switch (rob->sop) {
+    case 0: /* 2S/4S */
+      for (i=0; i<2; i++) D0[0].s[i] = S3[0].s[i] - S1[0].s[i] * S2[0].s[i];
+      if (rob->dbl)
+	for (i=0; i<2; i++) D0[1].s[i] = S3[1].s[i] - S1[1].s[i] * S2[1].s[i];
+      else
+	D0[1].x = 0x0000000000000000LL;
+      break;
+    case 1: /* 2D */
+      D0[0].d = S3[0].d - S1[0].d * S2[0].d;
+      if (rob->dbl)
+	D0[1].d = S3[1].d - S1[1].d * S2[1].d;
+      else
+d336 1
+d338 14
+a351 26
+    default:
+      return (ROB_EXECERR); /* error */
+    }
+    break;
+  case 10: /* MLA */
+    switch (rob->sop) {
+    case 0: /* 8B/16B */
+      for (i=0; i<8; i++) D0[0].b[i] = S3[0].b[i] + S1[0].b[i] * S2[0].b[i];
+      if (rob->dbl)
+	for (i=0; i<8; i++) D0[1].b[i] = S3[1].b[i] + S1[1].b[i] * S2[1].b[i];
+      else
+	D0[1].x = 0x0000000000000000LL;
+      break;
+    case 1: /* 4H/8H */
+      for (i=0; i<4; i++) D0[0].h[i] = S3[0].h[i] + S1[0].h[i] * S2[0].h[i];
+      if (rob->dbl)
+	for (i=0; i<4; i++) D0[1].h[i] = S3[1].h[i] + S1[1].h[i] * S2[1].h[i];
+      else
+	D0[1].x = 0x0000000000000000LL;
+      break;
+    case 2: /* 2S/4S */
+      for (i=0; i<2; i++) D0[0].w[i] = S3[0].w[i] + S1[0].w[i] * S2[0].w[i];
+      if (rob->dbl)
+	for (i=0; i<2; i++) D0[1].w[i] = S3[1].w[i] + S1[1].w[i] * S2[1].w[i];
+      else
+	D0[1].x = 0x0000000000000000LL;
+d356 8
+a363 26
+    break;
+  case 11: /* MLS */
+    switch (rob->sop) {
+    case 0: /* 8B/16B */
+      for (i=0; i<8; i++) D0[0].b[i] = S3[0].b[i] - S1[0].b[i] * S2[0].b[i];
+      if (rob->dbl)
+	for (i=0; i<8; i++) D0[1].b[i] = S3[1].b[i] - S1[1].b[i] * S2[1].b[i];
+      else
+	D0[1].x = 0x0000000000000000LL;
+      break;
+    case 1: /* 4H/8H */
+      for (i=0; i<4; i++) D0[0].h[i] = S3[0].h[i] - S1[0].h[i] * S2[0].h[i];
+      if (rob->dbl)
+	for (i=0; i<4; i++) D0[1].h[i] = S3[1].h[i] - S1[1].h[i] * S2[1].h[i];
+      else
+	D0[1].x = 0x0000000000000000LL;
+      break;
+    case 2: /* 2S/4S */
+      for (i=0; i<2; i++) D0[0].w[i] = S3[0].w[i] - S1[0].w[i] * S2[0].w[i];
+      if (rob->dbl)
+	for (i=0; i<2; i++) D0[1].w[i] = S3[1].w[i] - S1[1].w[i] * S2[1].w[i];
+      else
+	D0[1].x = 0x0000000000000000LL;
+      break;
+    default:
+      return (ROB_EXECERR); /* error */
+d365 12
+a376 20
+    break;
+  case 12: /* FADD */
+    switch (rob->sop) {
+    case 0: /* 2S/4S */
+      for (i=0; i<2; i++) D0[0].s[i] = S1[0].s[i] + S2[0].s[i];
+      if (rob->dbl)
+	for (i=0; i<2; i++) D0[1].s[i] = S1[1].s[i] + S2[1].s[i];
+      else
+	D0[1].x = 0x0000000000000000LL;
+      break;
+    case 1: /* 2D */
+      D0[0].d = S1[0].d + S2[0].d;
+      if (rob->dbl)
+	D0[1].d = S1[1].d + S2[1].d;
+      else
+	return (ROB_EXECERR); /* error */
+      break;
+    case 2: /* pair-2S/4S */
+      D0[0].s[0] = S1[0].s[0] + S1[0].s[1];
+      D0[0].s[1] = S1[1].s[0] + S1[1].s[1];
+d378 7
+a384 2
+	D0[1].s[0] = S2[0].s[0] + S2[0].s[1];
+	D0[1].s[1] = S2[1].s[0] + S2[1].s[1];
+a385 9
+      else
+	D0[1].x = 0x0000000000000000LL;
+      break;
+    case 3: /* pair-2D */
+      D0[0].d = S1[0].d * S1[1].d;
+      if (rob->dbl)
+	D0[1].d = S2[0].d * S2[1].d;
+      else
+	return (ROB_EXECERR); /* error */
+a389 4
+    break;
+  default:
+    return (ROB_EXECERR); /* error */
+  }
+d391 12
+a402 7
+  c[cid].vecpipe[0].v = 1;
+  c[cid].vecpipe[0].tid = tid;
+  c[cid].vecpipe[0].rob = rob;
+  if (rob->dr[1].t) {
+    c[cid].vecpipe[0].dr1t = 1;
+    c[cid].vecpipe[0].dr1v[0] = D0[0].x;
+    c[cid].vecpipe[0].dr1v[1] = D0[1].x;
+a403 4
+  else
+    c[cid].vecpipe[0].dr1t = 0;
+
+  return (ROB_ISSUED); /* issued */
+@
+
+
+1.12
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.11 2015/09/05 14:54:27 nakashim Exp nakashim $";
+d18 3
+a20 4
+    struct {
+      Uint l;
+      Uint h;
+    } w;
+d22 1
+a22 4
+    struct {
+      float l;
+      float h;
+    } s;
+d24 1
+d34 4
+a37 4
+    if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = S1[0].w.l;}
+    if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = S1[0].x;}
+    if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;    D0[0].w.h = 0; D0[0].w.l = S1[0].w.l;}
+    if (rob->dir==1 && rob->dbl==1) { D0[1].x = S2[1].x;               D0[0].x   = S1[0].x;}
+d42 2
+a43 2
+    if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = S1[1].x;}
+    if (rob->dir==1 && rob->dbl==1) { D0[1].x = S1[0].x;               D0[0].x   = S2[0].x;}
+d48 2
+a49 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)rintf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)rintf(S1[0].s.l);}
+d52 2
+a53 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)ceilf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)ceilf(S1[0].s.l);}
+d56 2
+a57 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)floorf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)floorf(S1[0].s.l);}
+d60 2
+a61 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)truncf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)truncf(S1[0].s.l);}
+d64 4
+a67 4
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)roundf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)roundf(S1[0].s.l);}
+      if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;    D0[0].s.h = 0; D0[0].s.l = (float)(int)S1[0].w.l;}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;    D0[0].s.h = 0; D0[0].s.l = (float)(Sll)S1[0].x;}
+d74 2
+a75 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)rint(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)rint(S1[0].d);}
+d78 2
+a79 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)ceil(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)ceil(S1[0].d);}
+d82 2
+a83 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)floor(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)floor(S1[0].d);}
+d86 2
+a87 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)trunc(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)trunc(S1[0].d);}
+d90 4
+a93 4
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (int)round(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Sll)round(S1[0].d);}
+      if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;                   D0[0].d = (double)(int)S1[0].w.l;}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;                   D0[0].d = (double)(Sll)S1[0].x;}
+d100 2
+a101 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)rintf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) rintf(S1[0].s.l);}
+d104 2
+a105 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)ceilf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) ceilf(S1[0].s.l);}
+d108 2
+a109 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)floorf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) floorf(S1[0].s.l);}
+d112 2
+a113 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)truncf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) truncf(S1[0].s.l);}
+d116 4
+a119 4
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)roundf(S1[0].s.l);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) roundf(S1[0].s.l);}
+      if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;    D0[0].s.h = 0; D0[0].s.l = (float)S1[0].w.l;}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;    D0[0].s.h = 0; D0[0].s.l = (float)S1[0].x;}
+d126 2
+a127 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)rint(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) rint(S1[0].d);}
+d130 2
+a131 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)ceil(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) ceil(S1[0].d);}
+d134 2
+a135 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)floor(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) floor(S1[0].d);}
+d138 2
+a139 2
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)trunc(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) trunc(S1[0].d);}
+d142 4
+a145 4
+      if (rob->dir==0 && rob->dbl==0) {                   D0[0].w.h = 0; D0[0].w.l = (Uint)round(S1[0].d);}
+      if (rob->dir==0 && rob->dbl==1) {                                  D0[0].x   = (Ull) round(S1[0].d);}
+      if (rob->dir==1 && rob->dbl==0) { D0[1].x = 0LL;                   D0[0].d = (double)S1[0].w.l;}
+      if (rob->dir==1 && rob->dbl==1) { D0[1].x = 0LL;                   D0[0].d = (double)S1[0].x;}
+d169 131
+@
+
+
+1.11
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.10 2015/09/01 12:45:00 nakashim Exp nakashim $";
+d27 1
+a27 1
+  } S1[2], S2[2], S3[3], D0[2];
+d152 20
+@
+
+
+1.10
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.9 2015/09/01 10:07:19 nakashim Exp $";
+d17 1
+a17 1
+    Ull ll;
+d26 1
+a26 1
+    } f;
+d29 3
+a31 3
+  if (rob->sr[0].t) ex_srr(tid, &S1[1].ll, &S1[0].ll, rob, 0);
+  if (rob->sr[1].t) ex_srr(tid, &S2[1].ll, &S2[0].ll, rob, 1);
+  if (rob->sr[2].t) ex_srr(tid, &S3[1].ll, &S3[0].ll, rob, 2);
+d34 117
+a150 3
+  case 0: /* VADD */
+    D0[0].d = S1[0].d + S2[0].d;
+    D0[1].d = S1[1].d + S2[1].d;
+a151 1
+    /* ¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú */
+d161 2
+a162 2
+    c[cid].vecpipe[0].dr1v[0] = D0[0].ll;
+    c[cid].vecpipe[0].dr1v[1] = D0[1].ll;
+@
+
+
+1.9
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.8 2015/09/01 09:42:25 nakashim Exp nakashim $";
+d9 1
+a9 1
+/* vxx.c 2005/3/22 */ 
+@
+
+
+1.8
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.7 2015/09/01 09:32:53 nakashim Exp nakashim $";
+d27 1
+a27 1
+  } S1, S2, S3, T0, D0;
+d29 3
+a31 3
+  if (rob->sr[0].t) ex_srr(tid, NULL, &S1.ll, rob, 0);
+  if (rob->sr[1].t) ex_srr(tid, NULL, &S2.ll, rob, 1);
+  if (rob->sr[2].t) ex_srr(tid, NULL, &S3.ll, rob, 2);
+d35 2
+a36 4
+    if (rob->dbl == 0) /* single */
+      D0.f.l = S1.f.l + S2.f.l;
+    else /* double */
+      D0.d = S1.d + S2.d;
+d48 2
+a49 1
+    c[cid].vecpipe[0].dr1v = D0.ll;
+@
+
+
+1.7
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.6 2015/09/01 08:04:13 nakashim Exp nakashim $";
+d13 1
+a13 1
+insn_exec_vxx(tid, exec, rob) Uint tid; int exec; struct rob *rob;
+a28 6
+  if (!exec) {
+    if (rob->sr[3].t) ex_srr(tid, NULL, &T0.ll, rob, 3);
+    if (rob->dr[1].t) ex_drw(tid, 0LL, T0.ll, rob, 1);
+    return (ROB_COMPLETE); /* complete */
+  }
+
+@
+
+
+1.6
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.5 2015/09/01 06:53:27 nakashim Exp nakashim $";
+d30 1
+a30 1
+    if (rob->sr[3].t) T0.ll = ex_srr(tid, rob, 3);
+d35 3
+a37 3
+  if (rob->sr[0].t) S1.ll = ex_srr(tid, rob, 0);
+  if (rob->sr[1].t) S2.ll = ex_srr(tid, rob, 1);
+  if (rob->sr[2].t) S3.ll = ex_srr(tid, rob, 2);
+@
+
+
+1.5
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.4 2015/09/01 06:30:56 nakashim Exp nakashim $";
+d31 1
+a31 1
+    if (rob->dr[1].t) ex_drw(tid, T0.ll, rob, 1);
+@
+
+
+1.4
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.3 2015/09/01 05:35:03 nakashim Exp nakashim $";
+a17 1
+    double d;
+d22 1
+d56 1
+a56 1
+    c[cid].vecpipe[0].dr1v = D0.w.l;
+a59 6
+  if (rob->dr[2].t) {
+    c[cid].vecpipe[0].dr2t = 1;
+    c[cid].vecpipe[0].dr2v = D0.w.h;
+  }
+  else
+    c[cid].vecpipe[0].dr2t = 0;
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.2 2015/09/01 04:51:03 nakashim Exp nakashim $";
+a31 1
+
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/vxx.c,v 1.1 2015/07/21 05:44:37 nakashim Exp nakashim $";
+d30 1
+a30 1
+    if (rob->sr[6].t) T0.ll = ex_srr(tid, rob, 6);
+d37 2
+a38 2
+  if (rob->sr[2].t) S2.ll = ex_srr(tid, rob, 2);
+  if (rob->sr[4].t) S3.ll = ex_srr(tid, rob, 4);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm32/src/bsim/RCS/vxx.c,v 1.2 2014/09/24 05:31:33 nakashim Exp nakashim $";
+d52 3
+a54 3
+  c[cid].flopipe[0].v = 1;
+  c[cid].flopipe[0].tid = tid;
+  c[cid].flopipe[0].rob = rob;
+d56 2
+a57 2
+    c[cid].flopipe[0].dr1t = 1;
+    c[cid].flopipe[0].dr1v = D0.w.l;
+d60 1
+a60 1
+    c[cid].flopipe[0].dr1t = 0;
+d62 2
+a63 2
+    c[cid].flopipe[0].dr2t = 1;
+    c[cid].flopipe[0].dr2v = D0.w.h;
+d66 1
+a66 1
+    c[cid].flopipe[0].dr2t = 0;
+@

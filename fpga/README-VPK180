@@ -1,0 +1,46 @@
+【VPK180 32st*4構成の作り方】
+
+  1. VPK180-step4000/ に*.v,*.vh,*.xciを用意(VMK180-step4000)
+  2. IPは毎回新規作成する. VPK180-step4000_IP/作って，中でVivado起動
+  3. File -> Project -> New -> Project_name=default 作成
+  4. Add Filesし，VPK180-step4000/*.v,*.vh,*.xciを選択
+   (fpga_bram64/128.xciは2021.2のblock_design/emb_mem_genで作ってxcpコピー.2022.2のは使えない)
+  5. Board選択(VPK180) -> Next -> Finish
+  6. Tools->Create and Package New IP
+  7. Next->Next-> IP location:は VPK180-step4000_IPに変更 -> OK -> Finish
+  8. 右画面のReview and Package -> Package IP -> Close
+  9. Quit Vivado
+   ( PS-PL Configuration -> Master InterfaceをHPM0とHPM1に変更 )
+   ( Tools->Settings->IP->Repository->追加 imax_IP )
+   ( +でemax6_v追加 )
+   ( +でProcessor System Resetを2つ追加 )
+   ( +でClocking Wizard追加 入力1,出力2 )
+   ( SourcesでCreate HDL Wrapper )
+   ( Genrate Output Products )
+   ( Genrate Bitstream )
+  ---
+  10.VPK180-step4000/*.xprを使ってvivado開く
+  11.Tools -> Settings -> IP -> Repository
+  12._IPがあればOK, なければ"+"押して_IPを追加
+  13.(上端のバー)Reports -> Report IP Status
+  14.(下端のバー)Upgrade Selected
+  15.左上に出るOKボタン押す
+  16.Generateウィンドウ -> Generate -> OK
+  17.OK出たら，Generate Bitstream
+  ---
+  18.binの作り方はREADME-IMAX.pdf(参考なので見なくて良い)
+     % cd proj-arm64/fpga
+     % cp VPK180-step4000/VPK180_32st.runs/impl_1/design_1_wrapper.bit VPK180-32st.bit 
+  19.VPK180-32st.binは,VPK180-32st.bitから作る.(cad105/106)
+     % ./Gen_bin.sh VPK180-32st
+  20.arch19にloginして動作確認
+  21.# cp proj-arm64/fpga/VPK180-32st.bin /lib/firmware
+  22.# echo VPK180-32st.bin > /sys/class/fpga_manager/fpga0/firmware
+     % proj-arm64/sample/mm_cnn_lf/mm-zynq.emax6+dma-16st
+  23.起動時設定
+     # vi /etc/rc.local (なければ以下追加.起動時に/lib/firmware/xxx.binをFPGAに書き込む)
+       echo VPK180-32st.bin > /sys/class/fpga_manager/fpga0/firmware
+  25.arch19をshutdown.SDCARDをarch21のUSBアダプタに挿す.
+  26.# dd bs=64k if=/dev/sdb | /usr/bin/gzip > /tmp/VPK180-step4000-20221020.img.gz
+  27.% cp /tmp/VPK180-step4000-20221020.img.gz ~/proj-arm64/fpga/VPK180-step4000-20221020.img.gz
+=====================================================================================================

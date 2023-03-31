@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2018.3.1 (64-bit)
+# SW Build 2489853 on Tue Mar 26 04:18:30 MDT 2019
+# IP Build 2486929 on Tue Mar 26 06:44:21 MDT 2019
+# Start of session at: Thu Mar 30 09:08:36 2023
+# Process ID: 18280
+# Current directory: /home/nakashim/proj-arm64/fpga/ZCU102-step4000/ZCU102_8st.runs/impl_1
+# Command line: vivado -log design_2_wrapper.vdi -applog -stack 10000 -product Vivado -messageDb vivado.pb -mode batch -source design_2_wrapper.tcl -notrace
+# Log file: /home/nakashim/proj-arm64/fpga/ZCU102-step4000/ZCU102_8st.runs/impl_1/design_2_wrapper.vdi
+# Journal file: /home/nakashim/proj-arm64/fpga/ZCU102-step4000/ZCU102_8st.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source design_2_wrapper.tcl -notrace

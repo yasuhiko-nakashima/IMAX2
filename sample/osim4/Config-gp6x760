@@ -1,0 +1,67 @@
+#/bin/csh -f
+
+# P-ON時にSDカードからFPGAに書き込む方法
+# 1. SDメモリに，fpga_top.bitを上書きする
+# 2. ロータリースイッチ#5 が１番になっていることを確認してP-ON
+
+#以下は直接書き込む方法
+
+set PORT=usb21
+foreach i ($*)
+  switch ($i)
+  case '-h':
+    echo "usage: $0 file"
+    exit
+  default:
+    break
+  endsw
+end
+
+set FILE=`pwd`/$1
+
+if ( ! -e $FILE.bit || $FILE == `pwd`/ ) then
+  echo "error: File does not exists"
+  exit
+endif
+
+set BFI21=$HOME/`hostname`-gp6xconfig.usb21
+set BFLOG=$HOME/`hostname`-gp6xconfig.log
+
+echo > $BFI21; chmod 755 $BFI21
+echo "cleancablelock"                                                         >> $BFI21
+echo "setMode -bs"                                                            >> $BFI21
+echo "setMode -bs"                                                            >> $BFI21
+echo "setCable -port usb21"                                                   >> $BFI21
+echo "setCableSpeed -speed 6000000"                                           >> $BFI21
+echo "Identify"                                                               >> $BFI21
+echo "identifyMPM"                                                            >> $BFI21
+echo "assignFile -p 1 -file $FILE.bit"                                        >> $BFI21
+echo "Program -p 1 -prog"                                                     >> $BFI21
+echo "setMode -bs"                                                            >> $BFI21
+echo "quit"                                                                   >> $BFI21
+
+#echo "Unloading GP6X760 Driver"
+#kldunload usb_gp6v760
+date
+
+echo > $BFLOG
+if (`hostname` == arch16.naist.jp) then
+ if ( $PORT == usb21 ) then
+  /opt/xilinx/ise134/ISE/bin/lin64/impact -batch < $BFI21 >>& $BFLOG
+ endif
+else if (`hostname` == arch17.naist.jp) then
+ if ( $PORT == usb21 ) then
+  /opt/xilinx/ise134/ISE/bin/lin64/impact -batch < $BFI21 >>& $BFLOG
+ endif
+else
+ echo "Configuration aborted. Available hosts are arch16/17."
+ exit
+endif
+
+egrep -e "success" -e "cable" $BFLOG
+
+#date
+#sync;sync
+#echo "Rebooting for PCI reset..."
+#kldload usb_gp6v760
+#reboot

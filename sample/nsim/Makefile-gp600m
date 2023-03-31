@@ -1,0 +1,39 @@
+
+## NNET platform                       ##
+##         Copyright (C) 2015 by NAIST ##
+##         Primary writer: Y.Nakashima ##
+##                nakashim@is.naist.jp ##
+
+OPTION	      = -DGP600M
+PROGRAM       = nsim-gp600m
+CC            = gcc
+CFLAGS        = -I. -I/usr/local/include -O2 $(OPTION)
+ASFLAGS       = 
+LDFLAGS       = 
+LIBFLAGS      = -L/usr/local/lib -lm -lX11 -lv4l2
+DESTDIR	      = $(HOME)/bin
+
+OBJS	      =	nsim.o \
+		gp600m.o
+
+SRCS	      =	nsim.c \
+		gp600m.c
+
+all:		$(PROGRAM)
+
+$(PROGRAM):     $(OBJS)
+		$(CC) $(LDFLAGS) $(OBJS) -o $(PROGRAM) $(LIBFLAGS)
+
+gp600m.o:	gp600m.c
+		$(CC) -I. $(OPTION) -c $<
+
+run:;		./$(PROGRAM) -c
+
+clean:;		rm -f $(OBJS) core *~
+
+###
+
+nsim.o:		gp600m.h
+gp600m.o:	gp600m.h
+
+###

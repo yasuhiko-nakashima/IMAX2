@@ -1,0 +1,175 @@
+
+\chapter{Q\&A}
+
+\section{Overview} 
+
+\subsection{What is CGRA} 
+Let's buy and read the book: OHM University Text Computer Architecture, ISBN:978-4-274-21253-6
+
+\subsection{Is EMAX6 different from IMAX?} 
+There is no difference. Since the number increases and it is difficult to understand, I just call it IMAX.
+
+\subsection{Is it really fast} 
+IMAX (at 150 MHz) is still much faster than that of Jetson TX2 (at GPU 1.3 GHz)
+
+\section{How to use as a programmer}
+
+\subsection{I can't compile my program at all}
+
+\begin {enumerate}
+\parskip 0pc \itemsep 0pc
+\item The mapping position can be fixed by specifying AR [row] [col] or BR [row] [col] [reg] as the destination variable of exe () or mop (). If you use any other variables, the compiler will allocate a free arithmetic unit.
+\item In the first stage, operations for multiple loop control are mapped, so all four columns cannot be used for exe ().
+\item When the compilation is completed normally, the function mapping status to the arithmetic unit can be confirmed in tgif xxx.obj.
+\item If the cause of the inability to compile is a shortage of propagation registers, consider how to save by looking at the mapping of the correct result.
+\item Up to two mop (LD) can be placed in the logical unit. Write the first LD result in BR [1] and the second LD result in BR [0].
+\item At most one mo4 (LDRQ) can be placed in a logical unit. BR [3]-[0] stores 64bit x 4 data.
+\end {enumerate}
+
+\subsection{The program I wrote does not work at all}
+
+If you don't tell me exactly where you move and where you don't, you will not hear. The following possibilities are available. Wash your face and start again.
+
+\begin {enumerate}
+\parskip 0pc \itemsep 0pc
+\item The power of ZCU102 is not turned on.
+\item ZCU102 is hung. Turn on the power again.
+\item The power supply of VU440 is not turned on.
+\item The correct bin is not written in VU440.
+\item Aurora physical layer between VU440 is not linked up. Press each reset button.
+\item The upper layer of aurora between VU440 is not reset. Press each reset button.
+\item The number of IMAX stages (EMAX \_DEPTH) expected by the compiler (conv-c2c) does not match the number of stages (8, 16, or 64) of the configuration written to the FPGA.
+\item Missing compile-time error.
+\item The loop counter (for (INIT0 = 1, LOOP0 = loop, dmy = 0; LOOP0-; INIT0 = 0)) is wrong.
+\item The hardware is hung. Refer to the next section and go to a person who understands the hardware with a souvenir to consult.
+\end {enumerate}
+
+\subsection{The execution result of the program I wrote is strange}
+
+\begin {enumerate}
+\parskip 0pc \itemsep 0pc
+\item In the case of floating-point arithmetic, an arithmetic error may occur.
+\item If the head address of LMM does not change, IMAX judges that it is reusable and does not load it from main memory. When writing values to LMM from an input device such as a camera, set force = 1 in mop(force) to load from main memory every time.
+\item The correctness of the algorithm in the IMAX description part can be confirmed in the emax6nc mode (No-CGRA mode: execute the operation with a normal C compiler, check exe() and mop() as function calls). If it runs as a normal C program, so you can use printf() or a normal debugger.
+\item If the debugging described in the previous section has been completed, problems when executing with the IMAX compiler are often caused by errors in data transfer information between main memory in mop().
+\item If the destination variable and the first source variable are the same in exe(), it is regarded as a self-loop operation such as accumulation. If the destination variable in the previous line is also the same, emax6nc mode uses the result of the previous line for the value of the first source variable, but IMAX uses its own operation result for the value of the first source variable. The results do not match.
+\end {enumerate}
+
+
+\section{How to use as hardware designer}
+
+\subsection{Hard doesn't seem to work}
+
+The following possibilities are available. Check every corner.
+
+\begin {enumerate}
+\parskip 0pc \itemsep 0pc
+\item The flush memory of VU440 is broken. Write again using PlayerPro.
+\item The interface board has come off. Let reconnect it correctly.
+\item IMAX core frequency and C2C frequency to be set to VU440 are wrong.
+Set correctly using PlayerPro.
+\item There is a bug in the logic design. Debug using Modelsim or Chipscope.
+\item A timing error has occurred. Try lowering the frequency.
+\end {enumerate}
+
+\subsection{I would like to add an arithmetic function}
+
+You can add it by the following procedure.
+
+\begin {enumerate}
+\parskip 0pc \itemsep 0pc
+\item Add a function to the compiler (conv-c2c).
+\item Add functions to simulator (csim).
+\item Create a test program and check the operation on csim.
+\item Add functions to Verilog description.
+\item Run the test program on csim and generate test bench with converter.
+\item Verify Verilog using Modelsim and test bench.
+\item Perform synthesis placement and routing in Vivado.
+\item Write to FPGA using PlayerPro.
+\item Compile the test program on the actual machine and check the operation.
+\end {enumerate}
+
+\subsection{機能追加後のcsimの調べ方}
+
+\begin{enumerate}
+\item 普通に実行する
+
+\shabox{\% ../../src/csim/csim -x test022-csim.emax6+dma}
+
+\begin{verbatim}
+  Monitor-000:00000000_00400000 00014190 IPC=0.296 ROB=0:2 0:1 0:1 0:1
+  000:PIO RD adr=00000000 data=0000000000000000_0000000000000000_0000000000000000_0000000000000000
+  000:PIO RD adr=00000000 data=0000000000000000_0000000000000000_0000000000000000_0000000000000000
+  ここで何も表示されなくなる
+\end{verbatim}
+
+\item Monitor-000:00000000\_00400000 が実行命令数を表示しているので，これを使っ
+て、ARMトレースを表示させる
+
+\shabox{\% ../../src/csim/csim -x -b400000 test022-csim.emax6+dma $|$ egrep "RT "}
+
+\begin{verbatim}
+  -b400000は、400000命令以降のARMトレースを表示するという意味。
+  "RT "は、ARMスーパスカラパイプラインのリタイア情報のみ選択
+
+  000:RT 00000000_00403d33 00014160 * [cond=e:updt=0]  fmov :V23<-00000000_00000000_00000000_3f200000
+  000:RT 00000000_00403d34 00014164 * [cond=e:updt=0]  fmov :V21<-00000000_00000000_00000000_3f400000
+  000:RT 00000000_00403d35 00014168 * [cond=e:updt=1]  sub  :R36<-00000000_00000002
+  000:RT 00000000_00403d36 0001416c * [cond=d:updt=0]  b
+  000:RT 00000000_00403d37 00014170 * [cond=e:updt=0]  mov  :R02<-00000000_00000000
+  ここで何も表示されなくなる
+\end{verbatim}
+
+\item 正確な実行命令数が 00000000\_00403d37 であることがわかったので、次は全
+情報を表示
+
+\shabox{\% ../../src/csim/csim -b403d36 -x test022-csim.emax6+dma $|$ less}
+
+\begin{verbatim}
+  c00:RB 14[t0:2] 15[t0:4] 16[t0:1] 0[t0:1] 1[t0:1] 2[t0:1] 3[t0:1] 4[t0:4] 5[t0:1] 6[t0:1] 7[t0:4] 8[t0:1] 9[t0:1] 10[t0:4] 11[t0:1] 12[t0:1]
+  000:PIO RD adr=00000000 data=0000000000000000_0000000000000000_0000000000000000_0000000000000000
+  000:AXIIF->IORQ RD opcd=10 adr=80000000 data=0000000000000000_000000000000ffff
+  c00:RB 14[t0:2] 15[t0:4] 16[t0:1] 0[t0:1] 1[t0:1] 2[t0:1] 3[t0:1] 4[t0:4] 5[t0:1] 6[t0:1] 7[t0:4] 8[t0:1] 9[t0:1] 10[t0:4] 11[t0:1] 12[t0:1]
+  c00:RB 14[t0:2] 15[t0:4] 16[t0:1] 0[t0:1] 1[t0:1] 2[t0:1] 3[t0:1] 4[t0:4] 5[t0:1] 6[t0:1] 7[t0:4] 8[t0:1] 9[t0:1] 10[t0:4] 11[t0:1] 12[t0:1]
+  以後、同じメッセージが続く。
+
+  c00:はARMのコア番号,000:はスレッド番号
+  なお、csimの構成は、起動時にわかる。
+  コア01,02,03はすることがないので停止している。
+
+  ARM+EMAX6 Simulator Version 1.67 2021/06/14 03:53:22 nakashim Exp nakashim $
+   MAXTHRD   =  16                              … 全スレッド数
+   MAXCORE   =  4                               … コア数
+   THR/CORE  =  4.000000 (should be integer)    … コアあたりのスレッド数
+   ROBSIZE   =  16 (actives are CORE_ROBSIZE-1) … リオーダバッファサイズ
+   LINESIZE  =  64B                             … キャッシュラインサイズ
+   I1SIZE    =  16384B (4way delay=16)          … I1キャッシュパラメタ
+   D1SIZE    =  16384B (4way delay=16)          … D1キャッシュパラメタ
+   L2SIZE    =  131072B (4way dirdl=50, cc=100, mm=150)
+   MAXL1BK   =  8                               … L1キャッシュバンク数
+   MAXL2BK   =  8                               … L2キャッシュバンク数
+   MAXMMBK   =  4                               … 主記憶バンク数
+   memspace  =  00000000-4fffffff
+   arm_hdr   =  00001000-
+   arm_param =  00001080-
+   aloclimit = -4dffff00
+   stack/thr =  00010000
+   stackinit = -4fffff00
+\end{verbatim}
+
+\item AXIIFに、READ/PIO adr=80000000 が出力されてこることがわかる。IMAXが存
+在しないI/O空間なので、当然ハングする(実機と同じといえば同じ．
+\end{enumerate}
+
+という具合に調べると、何がおこっているかがわかる。
+
+\section{How to use as business}
+
+\subsection{I want a set of design data and tools}
+
+\begin {enumerate}
+\parskip 0pc \itemsep 0pc
+\item If you consult with the university-industry coordination department, you may be able to pay for it.
+\item If you enter the doctoral program and belong to the IMAX group, you can access all information. However, you cannot take it home unless you write a paper and present it.
+\end {enumerate}
+

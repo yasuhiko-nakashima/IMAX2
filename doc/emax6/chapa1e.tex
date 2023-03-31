@@ -1,0 +1,2221 @@
+
+\chapter{Appendix}
+
+\section{Prototype systems}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.70\textwidth]{panel000.eps}
+\caption{Prototype systems}
+\end{figure}
+
+\section{Anatomy of IMAX}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.80\textwidth]{ANATOMY00.eps}
+\caption{Whole of IMAX2}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.80\textwidth]{ANATOMY01.eps}
+\caption{IMAX2 w/o sparse matrix}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.80\textwidth]{ANATOMY02.eps}
+\caption{IMAX2 w/o transmission registers (TR)}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.80\textwidth]{ANATOMY03.eps}
+\caption{IMAX2 w/o dual port LMM}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.80\textwidth]{ANATOMY04.eps}
+\caption{IMAX2 w/o folding}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.80\textwidth]{ANATOMY05.eps}
+\caption{IMAX2 w/o AXI-IF}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.80\textwidth]{ANATOMY06.eps}
+\caption{IMAX2 w/o multi-threading}
+\end{figure}
+
+\clearpage
+
+\section{Basic loop structure}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin search mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { //チップ方向は検索対象文書の大きさ方向
+    for (INIT0=1,LOOP0=loop,dmy=0; LOOP0--; INIT0=0) { //長さは32KB文字まで
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にdmy(下位32bitのみ使用)を初期化
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin vbgmm_logsum mapdist=0
+  for (INIT1=1,LOOP1=RMGRP,row=0-M*4; LOOP1--; INIT1=0) {                                     /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+    for (INIT0=1,LOOP0=M/W,bofs=0-W*4; LOOP0--; INIT0=0) {                                    /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD,    &bofs, INIT0?bofs:bofs, EXP_H3210, W*4, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);/* stage#0 */
+      exe(OP_ADD,    &row, row, EXP_H3210, INIT0?M*4:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#0 */
+      exe(OP_ADD,    &rofs, row, EXP_H3210, 0LL,  EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);/* stage#1 */
+----------------------------------------------------------------
+MultiChip: OFF
+Mid-loop:  Inner-loop開始時にrofs(下位32bitのみ使用)を定数加算(Inner-loop中はrofs不変)
+Inner-loop:Inner-loop開始時にbofs(下位32bitのみ使用)を初期化(ただしbofs未使用)
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin smax2 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* will be parallelized by multi-chip (M/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,rofs=(0-IC32)<<32|((0-1LL)&0xffffffff); LOOP1--; INIT1=0) {      /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=IC32/32,cofs=(0-32LL)<<32|((0)&0xffffffff); LOOP0--; INIT0=0) {      /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,    &cofs, INIT0?cofs:cofs, EXP_H3210, (32LL)<<32|(0), EXP_H3210, 0LL, EXP_H3210, OP_AND, 0xffffffffffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,    &rofs, rofs, EXP_H3210, INIT0?IC321:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);  /* stage#0 */
+        exe(OP_ADD,    &bofs, rofs, EXP_H3210, cofs, EXP_H3210, 0, EXP_H3210, OP_AND, 0xffffffffffffffffLL, OP_NOP, 0LL);     /* stage#1 */
+        exe(OP_ADD,    &oofs, rofs, EXP_H3210, cofs, EXP_H3210, 0, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);     /* stage#1 */
+----------------------------------------------------------------
+★★MultiChip: ON
+★★Mid-loop:  Inner-loop開始時にrofs(上位32bit:IC32 下位32bit:1 独立使用)を定数加算
+★★Inner-loop:Inner-loop開始時にcofs(上位32bit:-32  下位32bit:0)を初期化 cofs上位はLD.A bofs=rofs+cofsの上位はLD.B oofs=rofs+cofsの下位はLD/ST.C
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin sparse_matrix mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* will be parallelized by multi-chip (M/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,rofs=(0-LP*8)<<32|((0-4LL)&0xffffffff); LOOP1--; INIT1=0) { /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=LP,cofs=(0LL)<<32|((0LL)&0xffffffff); LOOP0--; INIT0=0) {       /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,    &rofs, rofs,            EXP_H3210, INIT0?(LP*8)<<32|(4LL):0, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,                  OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,    &bofs, rofs,            EXP_H3210, 0LL,                      EXP_H3210, 0LL, EXP_H3210, OP_AND, 0xffffffff00000000LL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD,    &oofs, rofs,            EXP_H3210, 0LL,                      EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+★★MultiChip: ON
+★★Mid-loop:  Inner-loop開始時にrofs(上位32bit:LP*8 下位32bit:4 独立使用)を定数加算
+★★Inner-loop:bofs上位はrofs上位，oofs下位はrofs下位
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//with-prefetch/post-drain
+//EMAX5A begin compression mapdist=0
+/*3*/for (CHIP=0; CHIP<NCHIP; CHIP++) {
+  /*2*/for (INIT1=1,LOOP1=RMGRP,rofs=0; LOOP1--; INIT1=0) {
+    /*1*/for (INIT0=1,LOOP0=M2,cofs=0; LOOP0--; INIT0=0) {
+           mop(OP_LDWR, 1,   &r0,     ibase0++,          0,             MSK_D0,    itop0, M2*RMGRP,    0,       0,    itop1,  M2*RMGRP);
+----------------------------------------------------------------
+★★MultiChip: ON
+★★Mid-loop:  simple mapdist=0 but pre-fetch/post-drain is activated
+★★Inner-loop:simple
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin tone_curve mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,rofs=0-AWD*4; LOOP1--; INIT1=0) {      /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=AWD,cofs=0-4; LOOP0--; INIT0=0) {          /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,  &cofs, INIT0?cofs:cofs, EXP_H3210, 4, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);
+        exe(OP_ADD,  &rofs, rofs, EXP_H3210, INIT0?AWD*4:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);
+        exe(OP_ADD,  &pofs, rofs, EXP_H3210, cofs, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);
+----------------------------------------------------------------
+MultiChip: ON
+Mid-loop:  Inner-loop開始時にrofs(下位32bitのみ使用)を定数加算
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 pofs=rofs+cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin hokan1 mapdist=7
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT0=1,LOOP0=AWD,cofs=0-4; LOOP0--; INIT0=0) {       /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD,  &cofs, INIT0?cofs:cofs, EXP_H3210, 4, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+      exe(OP_NOP,     &jw,          cofs,     EXP_H3210, 0LL, EXP_H3210, 0LL, EXP_H3210, OP_AND,~15LL, OP_SLL, 0LL);
+      exe(OP_NOP,     &kw,          cofs,     EXP_H3210, 0LL, EXP_H3210, 0LL, EXP_H3210, OP_AND, 12LL, OP_SLL, 1LL);
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin hokan2 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT0=1,LOOP0=AWD,cofs=0-4; LOOP0--; INIT0=0) {       /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD,     &cofs,  INIT0?cofs:cofs, EXP_H3210, 4,           EXP_H3210, 0LL,  EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin hokan3 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT0=1,LOOP0=AWD,cofs=0-4; LOOP0--; INIT0=0) {       /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD,     &cofs, INIT0?cofs:cofs, EXP_H3210, 4, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);
+      exe(OP_NOP,     &jw,   cofs, EXP_H3210, 0LL,  EXP_H3210, 0LL, EXP_H3210, OP_AND, ~15LL,         OP_SLL,   0LL);
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin expand4k mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT0=1,LOOP0=1024,cofs=0-AWD; LOOP0--; INIT0=0) {       /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD,       &cofs, cofs,      EXP_H3210, AWD,    EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);
+      exe(OP_NOP,       &r0,   cofs,      EXP_H3210, 0LL,   EXP_H3210, 0LL, EXP_H3210, OP_AND, ~1023LL,  OP_SRL,  8LL);
+      exe(OP_NOP,       &r4,   cofs,      EXP_H3210, 0LL,   EXP_H3210, 0LL, EXP_H3210, OP_AND,  0x3c0LL, OP_SRL,  6LL);
+      exe(OP_ADD,       &r0,   pp[CHIP],  EXP_H3210, r0,    EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin unsharp mapdist=1
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT0=1,LOOP0=AWD,cofs=0-4; LOOP0--; INIT0=0) {       /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD,       &cofs, cofs,      EXP_H3210, 4LL,  EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin blur mapdist=1
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT0=1,LOOP0=AWD,cofs=0-4; LOOP0--; INIT0=0) {       /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD,       &cofs, cofs,      EXP_H3210, 4LL,  EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin edge mapdist=1
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT0=1,LOOP0=AWD,cofs=0-4; LOOP0--; INIT0=0) {       /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD,       &cofs, cofs,        EXP_H3210, 4LL,  EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin wdifline mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT0=1,LOOP0=AWD,cofs=0-4; LOOP0--; INIT0=0) {       /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD,      &cofs,        cofs,        EXP_H3210, 4LL,  EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin grapes mapdist=1
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,roofs=0-AWD*4; LOOP1--; INIT1=0) {      /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=AWD-PAD*2,coofs=(PAD-1)*4; LOOP0--; INIT0=0) {          /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,  &coofs, INIT0?coofs:coofs,  EXP_H3210, 4, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,  &roofs, roofs,  EXP_H3210, INIT0?AWD*4:0, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD3, &aofs,  atop[CHIP],  EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD3, &bofs,  btop[CHIP],  EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD3, &cofs,  ctop[CHIP],  EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+MultiChip: ON
+Mid-loop:  Inner-loop開始時にroofs(下位32bitのみ使用)を定数加算
+Inner-loop:Inner-loop開始時にcoofs(下位32bitのみ使用)を初期化 配列毎にaofs,bofs,cofsを使用
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin jacobi mapdist=7 /* 7 PAD>0の場合,PLOADとLOAD領域が一部重複.load中のLMMにもPLOADを取り込むために渋滞が発生する */
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,roofs=0-AWD*4; LOOP1--; INIT1=0) {      /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=AWD-PAD*2,coofs=(PAD-1)*4; LOOP0--; INIT0=0) {          /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,  &coofs, INIT0?coofs:coofs,  EXP_H3210, 4, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,  &roofs, roofs,  EXP_H3210, INIT0?AWD*4:0, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD3, &bofs,  btop[CHIP],  EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD3, &cofs,  ctop[CHIP],  EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+MultiChip: ON
+Mid-loop:  Inner-loop開始時にroofs(下位32bitのみ使用)を定数加算
+Inner-loop:Inner-loop開始時にcoofs(下位32bitのみ使用)を初期化 配列毎にbofs,cofsを使用
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin fd6 mapdist=11 /* 11 */
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,roofs=0-AWD*4; LOOP1--; INIT1=0) {      /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=AWD-PAD*2,coofs=(PAD-1)*4; LOOP0--; INIT0=0) {          /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,  &coofs, INIT0?coofs:coofs, EXP_H3210, 4, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,  &roofs, roofs, EXP_H3210, INIT0?AWD*4:0, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD3, &bofs,  btop[CHIP], EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD3, &cofs,  ctop[CHIP], EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+MultiChip: ON
+Mid-loop:  Inner-loop開始時にroofs(下位32bitのみ使用)を定数加算
+Inner-loop:Inner-loop開始時にcoofs(下位32bitのみ使用)を初期化 配列毎にbofs,cofsを使用
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin resid mapdist=12 /* 12 */
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,roofs=0-AWD*4; LOOP1--; INIT1=0) {      /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=AWD-PAD*2,coofs=(PAD-1)*4; LOOP0--; INIT0=0) {          /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,  &coofs, INIT0?coofs:coofs, EXP_H3210, 4, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,  &roofs, roofs, EXP_H3210, INIT0?AWD*4:0, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD3, &bofs,  btop[CHIP], EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD3, &cofs,  ctop[CHIP], EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD3, &dofs,  dtop[CHIP], EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+MultiChip: ON
+Mid-loop:  Inner-loop開始時にroofs(下位32bitのみ使用)を定数加算
+Inner-loop:Inner-loop開始時にcoofs(下位32bitのみ使用)を初期化 配列毎にbofs,cofs,dofsを使用
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin wave2d mapdist=8 /* 8 */
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,roofs=0-AWD*4; LOOP1--; INIT1=0) {      /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=AWD-PAD*2,coofs=(PAD-1)*4; LOOP0--; INIT0=0) {          /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,  &coofs, INIT0?coofs:coofs, EXP_H3210, 4, EXP_H3210,  0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,  &roofs, roofs, EXP_H3210, INIT0?AWD*4:0, EXP_H3210,  0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD3, &z0ofs, z0top[CHIP], EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD3, &z1ofs, z1top[CHIP], EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD3, &z2ofs, z2top[CHIP], EXP_H3210, roofs, EXP_H3210,  coofs, EXP_H3210, OP_AND, 0x000000ffffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+MultiChip: ON
+Mid-loop:  Inner-loop開始時にroofs(下位32bitのみ使用)を定数加算
+Inner-loop:Inner-loop開始時にcoofs(下位32bitのみ使用)を初期化 配列毎にz0ofs,z1ofs,z2ofsを使用
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin cnn mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,rofs=0-M*4; LOOP1--; INIT1=0) {            /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=(M-2)/2,cofs=0-8; LOOP0--; INIT0=0) {          /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,    &cofs, INIT0?cofs:cofs, EXP_H3210, 8, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);/* stage#0 */
+        exe(OP_ADD,    &rofs, rofs, EXP_H3210, INIT0?M*4:0,  EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#0 */
+        exe(OP_ADD,    &oofs, rofs, EXP_H3210, cofs, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);  /* stage#1 */
+----------------------------------------------------------------
+MultiChip: ON
+Mid-loop:  Inner-loop開始時にrofs(下位32bitのみ使用)を定数加算
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 oofs=rofs+cofsはLD/ST共通
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin mm mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* will be parallelized by multi-chip (M/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,rofs=(0-L*4)<<32|((0-M2*4)&0xffffffff); LOOP1--; INIT1=0) { /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+     for (INIT0=1,LOOP0=M2/W/2,cofs=(0-W*8)<<32|((0-W*8)&0xffffffff); LOOP0--; INIT0=0) {      /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+       exe(OP_ADD,    &cofs, INIT0?cofs:cofs, EXP_H3210, (W*8)<<32|(W*8), EXP_H3210, 0LL, EXP_H3210, OP_AND, 0xffffffffffffffffLL, OP_NOP, 0LL);/* stage#0 */
+       exe(OP_ADD,    &rofs, rofs, EXP_H3210, INIT0?(L*4)<<32|(M2*4):0, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#0 */
+       exe(OP_ADD,    &oofs, rofs, EXP_H3210, cofs, EXP_H3210, 0, EXP_H3210, OP_AND, 0xffffffff, OP_NOP, 0LL);            /* stage#1 */
+----------------------------------------------------------------
+★★MultiChip: ON
+★★Mid-loop:  Inner-loop開始時にrofs(上位32bit:L*4  下位32bit:M2*4 独立使用)を定数加算
+★★Inner-loop:Inner-loop開始時にcofs(上位32bit:-W*8 下位32bit:-W*8)を初期化 cofs上位はLD.B rofs上位はLD.A oofs=rofs+cofsの下位はST.C
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin inv_x1 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) {
+    for (INIT1=1,LOOP1=RMGRP,rofs=0-M*4; LOOP1--; INIT1=0) {                             /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=M-(i+1),cofs=0; LOOP0--; INIT0=0) { /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD, &cofs, INIT0?cofs:cofs, EXP_H3210, 4LL, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD, &rofs, rofs, EXP_H3210, INIT0?M*4:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);                     /* stage#0 */
+        exe(OP_ADD, &oofs, rofs, EXP_H3210, cofs, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);           /* stage#1 */
+----------------------------------------------------------------
+MultiChip: ON
+Mid-loop:  Inner-loop開始時にrofs(下位32bitのみ使用)を定数加算
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化 配列毎にcofs,rofs,oofsを使用
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin inv_x2 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) {
+    for (INIT0=1,LOOP0=jc,cofs=0-4; LOOP0--; INIT0=0) { /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD, &cofs, cofs, EXP_H3210, 4LL, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin inv_x3 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) {
+    for (INIT0=1,LOOP0=jc,cofs=jc*4; LOOP0--; INIT0=0) { /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+      exe(OP_ADD, &cofs, cofs, EXP_H3210, -4, EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#0 */
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin gather mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) {
+    for (INIT0=1,LOOP0=CRANGE,x[CHIP]=PAD-1; LOOP0--; INIT0=0) {
+      exe(OP_ADD,  &x[CHIP], x[CHIP],  EXP_H3210,         1LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL, OP_NOP, 0LL);  /* stage#0 */
+      exe(OP_SUB,  &r1,         -1LL,  EXP_H3210,     x[CHIP], EXP_H3210, 0LL, EXP_H3210, OP_AND,  15LL, OP_NOP, 0LL);  /* stage#1 */
+      exe(OP_NOP,  &r2,      x[CHIP],  EXP_H3210,         0LL, EXP_H3210, 0LL, EXP_H3210, OP_OR,    0LL, OP_SRL, 4LL);  /* stage#1 */
+      exe(OP_MLUH, &r3,           r1,  EXP_H3210,    (Ull)ofs, EXP_H3210, 0LL, EXP_H3210, OP_OR,    0LL, OP_SRL, 4LL);  /* stage#2 */
+      exe(OP_MLUH, &r4,           r2,  EXP_H3210,        75LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL, OP_NOP, 0LL);  /* stage#2 */
+      exe(OP_ADD3, &r0,           r3,  EXP_H3210,          r4, EXP_H3210, (Ull)yin0[CHIP], EXP_H3210, OP_OR, 0LL, OP_SLL, 2LL);/* stage#3 */
+      exe(OP_ADD,  &r1,           r3,  EXP_H3210,          r4, EXP_H3210, 0LL, EXP_H3210, OP_OR,    0LL, OP_NOP, 0LL);  /* stage#3 */
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin gdepth mapdist=3
+  for (CHIP=0; CHIP<NCHIP; CHIP++) {
+    for (INIT0=1,LOOP0=CRANGE,x[CHIP]=PAD-1; LOOP0--; INIT0=0) {
+      exe(OP_ADD,  &x[CHIP], x[CHIP],  EXP_H3210,         1LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL, OP_NOP, 0LL);  /* stage#0 */
+      exe(OP_SUB,  &r1,         -1LL,  EXP_H3210,     x[CHIP], EXP_H3210, 0LL, EXP_H3210, OP_AND,  15LL, OP_NOP, 0LL);  /* stage#1 */
+      exe(OP_NOP,  &r2,      x[CHIP],  EXP_H3210,         0LL, EXP_H3210, 0LL, EXP_H3210, OP_OR,    0LL, OP_SRL, 4LL);  /* stage#1 */
+      exe(OP_MLUH, &r3,           r1,  EXP_H3210,    (Ull)ofs, EXP_H3210, 0LL, EXP_H3210, OP_OR,    0LL, OP_SRL, 4LL);  /* stage#2 */
+      exe(OP_MLUH, &r4,           r2,  EXP_H3210,        75LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL, OP_NOP, 0LL);  /* stage#2 */
+      exe(OP_ADD3, &r0,           r3,  EXP_H3210,          r4, EXP_H3210, (Ull)yin0[CHIP], EXP_H3210, OP_OR, 0LL, OP_SLL, 2LL);/* stage#3 */
+      exe(OP_ADD,  &r1,           r3,  EXP_H3210,          r4, EXP_H3210, 0LL, EXP_H3210, OP_OR,    0LL, OP_NOP, 0LL);  /* stage#3 */
+----------------------------------------------------------------
+MultiChip: ON
+Inner-loop:Inner-loop開始時にcofs(下位32bitのみ使用)を初期化
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin cnn5x5 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC4/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,rofs=(0-IM4)<<32|((0-M4)&0xffffffff); LOOP1--; INIT1=0) {                      /* mapped to FOR() on BR[63][1][0] */ /* stage#0 */
+      for (INIT0=1,LOOP0=M,cofs=(0-4LL)<<32|((0-4LL)&0xffffffff); LOOP0--; INIT0=0) {                       /* mapped to FOR() on BR[63][0][0] */ /* stage#0 */
+        exe(OP_ADD,    &rofs, rofs,            EXP_H3210, INIT0?IM4M4:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL,                  OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,    &cofs, INIT0?cofs:cofs, EXP_H3210, 4LL<<32|4LL,   EXP_H3210, 0LL, EXP_H3210, OP_AND,   0xffffffffffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,    &iofs, rofs,            EXP_H3210, cofs,          EXP_H3210, 0LL, EXP_H3210, OP_AND,   0xffffffff00000000LL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD,    &oofs, rofs,            EXP_H3210, cofs,          EXP_H3210, 0LL, EXP_H3210, OP_AND,   0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+★MultiChip: ON
+★Mid-loop:  Inner-loop開始時にrofs(上位32bit:IM4 下位32bit:M4 独立使用)を定数加算
+★Inner-loop:Inner-loop開始時にcofs(上位32bit:-4  下位32bit:-4)を初期化 iofs=rofs+cofsの上位 oofs=rofs+cofsの下位
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin cnn3x3 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC4/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,rofs=(0-IM4)<<32|((0-M4)&0xffffffff); LOOP1--; INIT1=0) {                      /* mapped to FOR() on BR[63][1][0] */ /* stage#0 */
+      for (INIT0=1,LOOP0=M,cofs=(0-4LL)<<32|((0-4LL)&0xffffffff); LOOP0--; INIT0=0) {                       /* mapped to FOR() on BR[63][0][0] */ /* stage#0 */
+        exe(OP_ADD,    &rofs, rofs,            EXP_H3210, INIT0?IM4M4:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL,                  OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,    &cofs, INIT0?cofs:cofs, EXP_H3210, 4LL<<32|4LL,   EXP_H3210, 0LL, EXP_H3210, OP_AND,   0xffffffffffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,    &iofs, rofs,            EXP_H3210, cofs,          EXP_H3210, 0LL, EXP_H3210, OP_AND,   0xffffffff00000000LL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD,    &oofs, rofs,            EXP_H3210, cofs,          EXP_H3210, 0LL, EXP_H3210, OP_AND,   0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+★MultiChip: ON
+★Mid-loop:  Inner-loop開始時にrofs(上位32bit:IM4 下位32bit:M4 独立使用)を定数加算
+★Inner-loop:Inner-loop開始時にcofs(上位32bit:-4  下位32bit:-4)を初期化 iofs=rofs+cofsの上位 oofs=rofs+cofsの下位
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin cnn2x2 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC4/#chip) */
+    for (INIT1=1,LOOP1=BATCH,img=(0-IM4)<<32|((0-M4)&0xffffffff); LOOP1--; INIT1=0) {                       /* mapped to FOR() on BR[63][1][0] */ /* stage#0 */
+      for (INIT0=1,LOOP0=M,cofs=(0-4LL)<<32|((0-4LL)&0xffffffff); LOOP0--; INIT0=0) {                       /* mapped to FOR() on BR[63][0][0] */ /* stage#0 */
+        exe(OP_ADD,    &img,  img,             EXP_H3210, INIT0?IM4M4:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL,                  OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,    &cofs, INIT0?cofs:cofs, EXP_H3210, 4LL<<32|4LL,   EXP_H3210, 0LL, EXP_H3210, OP_AND,   0xffffffffffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,    &iofs, img,             EXP_H3210, cofs,          EXP_H3210, 0LL, EXP_H3210, OP_AND,   0xffffffff00000000LL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD,    &oofs, img,             EXP_H3210, cofs,          EXP_H3210, 0LL, EXP_H3210, OP_AND,   0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+★MultiChip: ON
+★Mid-loop:  Inner-loop開始時にimg (上位32bit:IM4 下位32bit:M4 独立使用)を定数加算
+★Inner-loop:Inner-loop開始時にcofs(上位32bit:-4  下位32bit:-4)を初期化 iofs=img+cofsの上位 oofs=img+cofsの下位
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin sgemm00 mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* will be parallelized by multi-chip (M/#chip) */
+    for (INIT1=1,LOOP1=RMGRP,rofs=(0-KA4)<<32|((0-n4)&0xffffffff); LOOP1--; INIT1=0) { /* stage#0 *//* mapped to FOR() on BR[63][1][0] */
+      for (INIT0=1,LOOP0=N/W,cofs=(0-W*4)<<32|((0-W*4)&0xffffffff); LOOP0--; INIT0=0) {  /* stage#0 *//* mapped to FOR() on BR[63][0][0] */
+        exe(OP_ADD,    &cofs, INIT0?cofs:cofs, EXP_H3210, (W*4)<<32|(W*4), EXP_H3210, 0LL, EXP_H3210, OP_AND, 0xffffffffffffffffLL, OP_NOP, 0LL);/* stage#0 */
+        exe(OP_ADD,    &rofs, rofs, EXP_H3210, INIT0?KA4n4:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);       /* stage#0 */
+        exe(OP_ADD,    &oofs, rofs, EXP_H3210, cofs, EXP_H3210, 0, EXP_H3210, OP_AND, 0xffffffff, OP_NOP, 0LL);           /* stage#1 */
+----------------------------------------------------------------
+★★MultiChip: ON
+★★Mid-loop:  Inner-loop開始時にrofs(上位32bit:KA4  下位32bit:n4 独立使用)を定数加算
+★★Inner-loop:Inner-loop開始時にcofs(上位32bit:-W*4 下位32bit:-W*4)を初期化 cofs上位はLD.B rofs上位はLD.A oofs=rofs+cofsの下位はST.C
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin back_g_ker mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC4/#chip) */
+    for (INIT1=1,LOOP1=BATCH,img=(0-IMX4)<<32|((0-M4)&0xffffffff); LOOP1--; INIT1=0) {                           /* mapped to FOR() on BR[63][1][0] */ /* stage#0 */
+      for (INIT0=1,LOOP0=M,cofs=(0-4LL)<<32|((0-4LL)&0xffffffff); LOOP0--; INIT0=0) {                            /* mapped to FOR() on BR[63][0][0] */ /* stage#0 */
+        exe(OP_ADD,      &img,  img,             EXP_H3210,  INIT0?IMX4M4:0, EXP_H3210,  0LL, EXP_H3210, OP_NOP,   0LL,                  OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,      &cofs, INIT0?cofs:cofs, EXP_H3210,  4LL<<32|4LL,    EXP_H3210,  0LL, EXP_H3210, OP_AND,   0xffffffffffffffffLL, OP_NOP, 0LL); /* stage#0 */
+        exe(OP_ADD,      &iofs, img,             EXP_H3210,  cofs,           EXP_H3210,  0LL, EXP_H3210, OP_AND,   0xffffffff00000000LL, OP_NOP, 0LL); /* stage#1 */
+        exe(OP_ADD,      &oofs, img,             EXP_H3210,  cofs,           EXP_H3210,  0LL, EXP_H3210, OP_AND,   0x00000000ffffffffLL, OP_NOP, 0LL); /* stage#1 */
+----------------------------------------------------------------
+★MultiChip: ON
+★Mid-loop:  Inner-loop開始時にimg (上位32bit:IMX4 下位32bit:M4 独立使用)を定数加算
+★Inner-loop:Inner-loop開始時にcofs(上位32bit:-4   下位32bit:-4)を初期化 iofs=img+cofsの上位 oofs=img+cofsの下位
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//EMAX5A begin back_in mapdist=0
+  for (CHIP=0; CHIP<NCHIP; CHIP++) { /* output channels are parallelized by multi-chip (OC4/#chip) */
+    for (INIT1=1,LOOP1=BATCH,img=(0-M4)<<32|((0-IM4)&0xffffffff); LOOP1--; INIT1=0) {                               /* mapped to FOR() on BR[63][1][0] */ /* stage#0 */
+      for (INIT0=1,LOOP0=M,cofs=(0-4LL)<<32|((0-4LL)&0xffffffff); LOOP0--; INIT0=0) {                               /* mapped to FOR() on BR[63][0][0] */ /* stage#0 */
+        exe(OP_ADD,      &img,      img,             EXP_H3210,   INIT0?M4IM4:0, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,                  OP_NOP, 0LL);   /* stage#0 */
+        exe(OP_ADD,      &cofs,     INIT0?cofs:cofs, EXP_H3210,   4LL<<32|4LL,   EXP_H3210, 0LL, EXP_H3210, OP_AND, 0xffffffffffffffffLL, OP_NOP, 0LL);   /* stage#0 */
+        exe(OP_ADD,      &iofs,     img,             EXP_H3210,   cofs,          EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);   /* stage#1 */
+        exe(OP_ADD,      &oofs,     img,             EXP_H3210,   cofs,          EXP_H3210, 0LL, EXP_H3210, OP_AND, 0xffffffff00000000LL, OP_NOP, 0LL);   /* stage#1 */
+----------------------------------------------------------------
+★MultiChip: ON
+★Mid-loop:  Inner-loop開始時にimg (上位32bit:M4 下位32bit:IM4 独立使用)を定数加算
+★Inner-loop:Inner-loop開始時にcofs(上位32bit:-4 下位32bit:-4)を初期化 iofs=img+cofsの下位 oofs=img+cofsの上位
+\end{verbatim}
+\end{screen}
+
+\clearpage
+
+\section{Basic data flow}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//search
+  exe(OP_ADD,       &t0[CHIP],     t0[CHIP], EXP_H3210,   1LL,          EXP_H3210, 0LL, EXP_H3210, OP_AND, 0x0000ffffffffffffLL, OP_NOP, 0LL);
+  exe(OP_MCAS,      &r00,          slen0,    EXP_H3210,   1,            EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL);
+  exe(OP_MCAS,      &r01,          slen0,    EXP_H3210,   2,            EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL);
+  exe(OP_MCAS,      &r02,          slen0,    EXP_H3210,   3,            EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL);
+  exe(OP_MCAS,      &r03,          slen0,    EXP_H3210,   4,            EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL);
+  mop(OP_LDBR,  1,  &BR[1][0][1],  t0[CHIP], 0,   MSK_D0, t0t[CHIP],    dwi,  0,   0,   (Ull)NULL,  dwi);
+  mop(OP_LDBR,  1,  &BR[1][0][0],  t0[CHIP], 1,   MSK_D0, t0t[CHIP],    dwi,  0,   0,   (Ull)NULL,  dwi);
+  mop(OP_LDBR,  1,  &BR[1][1][1],  t0[CHIP], 2,   MSK_D0, t0t[CHIP],    dwi,  0,   0,   (Ull)NULL,  dwi);
+  mop(OP_LDBR,  1,  &BR[1][1][0],  t0[CHIP], 3,   MSK_D0, t0t[CHIP],    dwi,  0,   0,   (Ull)NULL,  dwi);
+  mop(OP_LDBR,  1,  &BR[1][2][1],  t0[CHIP], 4,   MSK_D0, t0t[CHIP],    dwi,  0,   0,   (Ull)NULL,  dwi);
+  mop(OP_LDBR,  1,  &BR[1][2][0],  t0[CHIP], 5,   MSK_D0, t0t[CHIP],    dwi,  0,   0,   (Ull)NULL,  dwi);
+  mop(OP_LDBR,  1,  &BR[1][3][1],  t0[CHIP], 6,   MSK_D0, t0t[CHIP],    dwi,  0,   0,   (Ull)NULL,  dwi);
+  mop(OP_LDBR,  1,  &BR[1][3][0],  t0[CHIP], 7,   MSK_D0, t0t[CHIP],    dwi,  0,   0,   (Ull)NULL,  dwi);
+  exe(OP_CMP_NE,    &r16,          c00,      EXP_H3210,   BR[1][0][1],  EXP_H3210, 0LL, EXP_H3210, OP_AND, r00,    OP_NOP,  0LL); // 1 if unmatch
+  exe(OP_CMP_NE,    &r17,          c01,      EXP_H3210,   BR[1][0][0],  EXP_H3210, 0LL, EXP_H3210, OP_AND, r01,    OP_NOP,  0LL); // 1 if unmatch
+  exe(OP_CMP_NE,    &r18,          c02,      EXP_H3210,   BR[1][1][1],  EXP_H3210, 0LL, EXP_H3210, OP_AND, r02,    OP_NOP,  0LL); // 1 if unmatch
+  exe(OP_CMP_NE,    &r19,          c03,      EXP_H3210,   BR[1][1][0],  EXP_H3210, 0LL, EXP_H3210, OP_AND, r03,    OP_NOP,  0LL); // 1 if unmatch
+  exe(OP_MCAS,      &r04,          slen0,    EXP_H3210,   5,            EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL);
+  exe(OP_MCAS,      &r05,          slen0,    EXP_H3210,   6,            EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL);
+  exe(OP_MCAS,      &r06,          slen0,    EXP_H3210,   7,            EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL);
+  exe(OP_MCAS,      &r07,          slen0,    EXP_H3210,   8,            EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL);
+  exe(OP_CMP_NE,    &r20,          c04,      EXP_H3210,   BR[1][2][1],  EXP_H3210, 0LL, EXP_H3210, OP_AND, r04,    OP_NOP,  0LL); // 1 if unmatch
+  exe(OP_CMP_NE,    &r21,          c05,      EXP_H3210,   BR[1][2][0],  EXP_H3210, 0LL, EXP_H3210, OP_AND, r05,    OP_NOP,  0LL); // 1 if unmatch
+  exe(OP_CMP_NE,    &r22,          c06,      EXP_H3210,   BR[1][3][1],  EXP_H3210, 0LL, EXP_H3210, OP_AND, r06,    OP_NOP,  0LL); // 1 if unmatch
+  exe(OP_CMP_NE,    &r23,          c07,      EXP_H3210,   BR[1][3][0],  EXP_H3210, 0LL, EXP_H3210, OP_AND, r07,    OP_NOP,  0LL); // 1 if unmatch
+  exe(OP_ADD3,      &r10,          r16,      EXP_H3210,   r17,          EXP_H3210, r18, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL); //
+  exe(OP_ADD3,      &r11,          r19,      EXP_H3210,   r20,          EXP_H3210, r21, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL); //
+  exe(OP_ADD,       &r12,          r22,      EXP_H3210,   r23,          EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL); //
+  exe(OP_ADD3,      &r00,          r10,      EXP_H3210,   r11,          EXP_H3210, r12, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL); //
+  exe(OP_MCAS,      &r31,          0LL,      EXP_H3210,   r00,          EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL,    OP_NOP,  0LL); // FF if match
+  mop(OP_STBR, 3,   &r31,          r0[CHIP]++, 0, MSK_D0, r0t[CHIP],    dwo,  0,   0,   (Ull)NULL,  dwo);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//vbgmm_logsum
+  mop(OP_LDWR,   1, &b00,  (Ull)c600, (Ull)rofs,  MSK_W0, (Ull)c60,  M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP);            /* stage#2 */
+  exe(OP_ADD,       &b00,  INIT0?b00:b00,   EXP_H3210,  PARAM,  EXP_H3210, 0LL,    EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);  /* stage#2 */
+  mop(OP_STWR,   1, &b00,  (Ull)rofs, (Ull)c600,  MSK_D0, (Ull)c60,  M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP);            /* stage#2 */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (c)連続アドレス累算計算(中間loop), (d)固定アドレス累算計算(最内loop)
+OP_ADDの動作: 通常のCコンパイラでは，INIT0?b00:b00はb00と同じ．前回STされた値が次回LDされ，ADDにより累算され再度STされる．
+              IMAXの場合は，最内loopの初回(INIT0=1の時)のみLD値が演算器に入力され，以後は演算器出力が入力される．演算結果は毎回STされる．
+              演算結果は同じであるが，IMAXは演算器出力のフォワーディングに読み替えて高速化する．つまり，INIT0?はLD値/演算出力値の切替え指示である．
+              INIT0?の記述がない場合，IMAX起動時のみLD値が参照され，以後は演算器出力が参照されるため，最内loop毎の総和ではなく，2重loop全体の総和がSTされる．
+OP_LDWRとOP_STWRのアドレス指示: IMAXは2つのEAGを備えるものの，前段UNITから値を伝搬可能なレジスタは2個に限定され，baseとofsが各々共有する．
+              上記記述は自己更新型なので同一UNITに写像されるものの，STはLDの4サイクル後に実行されるため，毎サイクル更新するoofsを同一レジスタに共有できない．
+              このため，OP_LDWRでは(Ull)c600,(Ull)rofs，OP_STWRでは(Ull)rofs, (Ull)c600と，異なるoffsに同一伝搬レジスタを共有させない必要がある．
+              誤って，順序を揃えて記述した場合，コンパイラは伝搬レジスタ競合エラーを出力する．
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+#define smax2_core1(r, s) \
+  mo4(OP_LDRQ,  1,  BR[r][2], (Ull)b0,                  (Ull)bofs,        MSK_W1,    (Ull)b,          IC32D4RMGRP, 0,      0,    (Ull)NULL,   IC32D4RMGRP);/* stage#2 */\
+  mo4(OP_LDRQ,  1,  BR[r][1], (Ull)a[s][CHIP],          (Ull)cofs,        MSK_W1,    (Ull)a[s][CHIP], IC32D4,      0,      0,    (Ull)NULL,   IC32D4);     /* stage#2 */\
+  exe(OP_NOP,      &AR[r][0], 0LL,           EXP_H3210, 0LL,              EXP_H3210, 0LL,             EXP_H3210,   OP_NOP, 0LL,  OP_NOP,      0LL);        /* stage#2 */\
+  mop(OP_LDBR,  1, &b00,      (Ull)c0[s][CHIP],         (Ull)oofs,        MSK_W0,    (Ull)c[s][CHIP], RMGRPD4,     0,      1,    (Ull)NULL,   RMGRPD4);    /* stage#2 */\
+  ex4(OP_SFMA,     &b00,      INIT0?b00:b00, EXP_H3210, BR[r][1],         EXP_H3210, BR[r][2],        EXP_H3210,   OP_NOP, 3LL,  OP_NOP,      0LL);        /* stage#2 */\
+  mop(OP_STBR,  1, &b00,      (Ull)oofs,                (Ull)c0[s][CHIP], MSK_D0,    (Ull)c[s][CHIP], RMGRPD4,     0,      1,    (Ull)NULL,   RMGRPD4)     /* stage#2 */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (a)密行列SIMD計算，(c)連続アドレス累算計算(中間loop), (d)固定アドレス累算計算(最内loop)，(e)32要素積和演算
+OP_SFMAの動作: 通常のCコンパイラでは，INIT0?b00:b00はb00と同じ．前回STされた値が次回LDされ，SFMAにより累算され再度STされる．
+               IMAXの場合は，最内loopの初回(INIT0=1の時)のみLD値が演算器に入力され，以後は演算器出力が入力される．演算結果は毎回STされる．
+               演算結果は同じであるが，IMAXは演算器出力のフォワーディングに読み替えて高速化する．つまり，INIT0?はLD値/演算出力値の切替え指示である．
+               INIT0?の記述がない場合，IMAX起動時のみLD値が参照され，以後は演算器出力が参照されるため，最内loop毎の総和ではなく，2重loop全体の総和がSTされる．
+OP_LDBRとOP_STBRのアドレス指示: IMAXは2つのEAGを備えるものの，前段UNITから値を伝搬可能なレジスタは2個に限定され，baseとofsが各々共有する．
+               上記記述は自己更新型なので同一UNITに写像されるものの，STはLDの4サイクル後に実行されるため，毎サイクル更新するoofsを同一レジスタに共有できない．
+               このため，OP_LDBRでは(Ull)c0[s][CHIP],(Ull)oofs，OP_STBRでは(Ull)oofs,(Ull)c0[s][CHIP]と，異なるoffsに同一伝搬レジスタを共有させない必要がある．
+               誤って，順序を揃えて記述した場合，コンパイラは伝搬レジスタ競合エラーを出力する．
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+define sparse_core1(r, h) \
+  mex(OP_CMPA_LE,  &b0[h], INIT0?b:b0[h], INIT0?0:8, OP_CMPA_GE, &a0[h][CHIP], INIT0?a[h][CHIP]:a0[h][CHIP], INIT0?0:8, 0LL, BR[r][2][1], BR[r][2][0]);\
+  mop(OP_LDR,   3, &BR[r][2][1], b0[h],                        bofs,        MSK_W1,      b,          2*LP*RMGRP,  0, 0,      NULL,      2*LP*RMGRP);/*LMM[2] col2*/\
+  mop(OP_LDR,   3, &BR[r][2][0], a0[h][CHIP],                  bofs,        MSK_W0,      a[h][CHIP], 2*LP,        0, 0,      NULL,      2*LP);      /*LMM[1] col2*/\
+  exe(OP_NOP,      &AR[r][0],    0LL,                          EXP_H3210,   0,           EXP_H3210,  0,           EXP_H3210, OP_NOP, 0, OP_NOP, 0);\
+  mop(OP_LDWR,  1, &c00,         c0[h][CHIP],                  oofs,        MSK_W0,      c[h][CHIP], RMGRP,       0, 1,      NULL,      RMGRP);\
+  exe(OP_CFMA,     &c00,         INIT0?c00:c00,                EXP_H3210,   BR[r][2][1], EXP_H3210,  BR[r][2][0], EXP_H3210, OP_NOP, 0, OP_NOP, 0);\
+  mop(OP_STWR,  1, &c00,         oofs,                         c0[h][CHIP], MSK_D0,      c[h][CHIP], RMGRP,       0, 1,      NULL,      RMGRP)
+----------------------------------------------------------------
+メモリ参照/演算パターン: (c)連続アドレス累算計算(中間loop), (d)固定アドレス累算計算(最内loop), (f)上位32bit位置情報,下位32bit要素値からなる疎行列
+OP_CMPAの動作: 最内ループの先頭では参照アドレス=b+0とa[h][CHIP]+0を使用し，以後，LDRの上位32bitの比較結果に応じて8を加算．
+OP_CFMAの動作: LDRの上位32bitが同じであれば，下位32bit同士の乗算を実行し，第1オペランドに加算．
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//sparse matrix compression
+//with-prefetch/post-drain
+  mop(OP_LDWR, 1,   &r0,       ibase0++,          0,             MSK_D0,    itop0, M2*RMGRP,    0,       0,    itop1,  M2*RMGRP);
+  exe(OP_ADD,       &r1,       r1,     EXP_H3210, 0x100000000LL, EXP_H3210, 0,     EXP_H3210,   OP_NOP,  0,    OP_NOP, 0LL);
+  exe(OP_NOP,       &std,      r1,     EXP_H3210, 0,             EXP_H3210, 0,     EXP_H3210,   OP_OR,   r0,   OP_NOP, 0LL);
+  exe(OP_CMP_EQ,    &cc0,      r0,     EXP_H1010, 0x00000000LL,  EXP_H1010, 0,     EXP_H3210,   OP_NOP,  0,    OP_NOP, 0LL);
+  exe(OP_CMP_EQ,    &cc1,      r0,     EXP_H1010, 0x80000000LL,  EXP_H1010, 0,     EXP_H3210,   OP_NOP,  0,    OP_NOP, 0LL);
+  exe(OP_NOP,       &cc2,      cc0,    EXP_H3210, 0,             EXP_H3210, 0,     EXP_H1010,   OP_OR,   cc1,  OP_NOP, 0LL);
+  exe(OP_CMOV,      &oofs,     cc2,    EXP_H3210, 0,             EXP_H3210, 8,     EXP_H3210,   OP_NOP,  0,    OP_NOP, 0LL);
+  exe(OP_ADD,       &obase0,   obase0, EXP_H3210, oofs,          EXP_H3210, 0,     EXP_H3210,   OP_NOP,  0,    OP_NOP, 0LL);
+  mop(OP_STR,  3,   &obase0,   Bas1P,             0,             MSK_D0,    Bas1P, 2,           0,       0,    NULL,   2);
+  exe(OP_NOP,       &AR[5][0], 0,   EXP_H3210,    0,             EXP_H3210, 0,     EXP_H1010,   OP_NOP,  0,    OP_NOP, 0LL);
+  cex(OP_CEXE,      &ex0,      0, 0, 0, cc2, 0x0001);
+  mop(OP_STR,  ex0, &std,      obase0,            0,             MSK_D0,    otop0, LP*2*RMGRP,  0,       0,    otop1,  LP*2*RMGRP);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//tone_curve
+  mop(OP_LDWR,  1, &BR[2][1][1], (Ull)rtop0[CHIP], pofs,  MSK_D0, (Ull)rtop0[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#2 */
+  mop(OP_LDBR,  1, &BR[3][1][1], (Ull)t1,    BR[2][1][1], MSK_B3, (Ull)t1, 256/4,  0,  0, (Ull)NULL, 256/4);               /* stage#3 */
+  mop(OP_LDBR,  1, &BR[3][2][1], (Ull)t2,    BR[2][1][1], MSK_B2, (Ull)t2, 256/4,  0,  0, (Ull)NULL, 256/4);               /* stage#3 */
+  mop(OP_LDBR,  1, &BR[3][3][1], (Ull)t3,    BR[2][1][1], MSK_B1, (Ull)t3, 256/4,  0,  0, (Ull)NULL, 256/4);               /* stage#3 */
+  exe(OP_MMRG, &r1, BR[3][1][1], EXP_H3210,  BR[3][2][1], EXP_H3210, BR[3][3][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);    /* stage#3 */
+  mop(OP_STWR,  3, &r1,          (Ull)dtop0[CHIP], pofs,  MSK_D0, (Ull)dtop0[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#3 */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//hokan1
+  exe(OP_ADD,     &r12,         c0[CHIP], EXP_H3210, jw,  EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_ADD3,    &r13,         p0[CHIP], EXP_H3210, jw,  EXP_H3210, kw,  EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  mop(OP_LDWR, 1, &r0,          r12,    0LL,  MSK_D0,  (Ull)c0[CHIP], AWD, 0, 0, (Ull)NULL, AWD);
+  mop(OP_LDWR, 1, &r1,          r12,    4LL,  MSK_D0,  (Ull)c0[CHIP], AWD, 0, 0, (Ull)NULL, AWD);
+  mop(OP_LDWR, 1, &r2,          r12,    8LL,  MSK_D0,  (Ull)c0[CHIP], AWD, 0, 0, (Ull)NULL, AWD);
+  mop(OP_LDWR, 1, &r3,          r12,   12LL,  MSK_D0,  (Ull)c0[CHIP], AWD, 0, 0, (Ull)NULL, AWD);
+  mop(OP_LDWR, 1, &BR[4][0][1], r13,  -16LL,  MSK_D0,  (Ull)p0[CHIP], AWD, 0, 0, (Ull)NULL, AWD);
+  mop(OP_LDWR, 1, &r25,         r13,  -12LL,  MSK_D0,  (Ull)p0[CHIP], AWD, 0, 0, (Ull)NULL, AWD);
+  mop(OP_LDWR, 1, &r26,         r13,   -8LL,  MSK_D0,  (Ull)p0[CHIP], AWD, 0, 0, (Ull)NULL, AWD);
+  mop(OP_LDWR, 1, &r27,         r13,   -4LL,  MSK_D0,  (Ull)p0[CHIP], AWD, 0, 0, (Ull)NULL, AWD);
+  mop(OP_LDWR, 1, &r28,         r13,    0LL,  MSK_D0,  (Ull)p0[CHIP], AWD, 0, 0, (Ull)NULL, AWD);
+  exe(OP_MSSAD,   &r11,         0LL,    EXP_H3210, r0,  EXP_H3210, r25, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MSSAD,   &r13,         0LL,    EXP_H3210, r1,  EXP_H3210, r26, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MSSAD,   &r15,         0LL,    EXP_H3210, r2,  EXP_H3210, r27, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MSSAD,   &r17,         0LL,    EXP_H3210, r3,  EXP_H3210, r28, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MSSAD,   &r10,         0LL,    EXP_H3210, r0,  EXP_H3210, BR[4][0][1], EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MSSAD,   &r12,         0LL,    EXP_H3210, r1,  EXP_H3210, r25, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MSSAD,   &r14,         0LL,    EXP_H3210, r2,  EXP_H3210, r26, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MSSAD,   &r16,         0LL,    EXP_H3210, r3,  EXP_H3210, r27, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MAUH,    &r20,         r10,    EXP_H3210, r12, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MAUH,    &r21,         r11,    EXP_H3210, r13, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MAUH,    &r24,         r14,    EXP_H3210, r16, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MAUH,    &r25,         r15,    EXP_H3210, r17, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MAUH,    &r10,         r20,    EXP_H3210, r24, EXP_H3210, 0LL, EXP_H3210, OP_SUMHL,0LL, OP_NOP, 0LL);
+  exe(OP_MAUH,    &r11,         r21,    EXP_H3210, r25, EXP_H3210, 0LL, EXP_H3210, OP_SUMHH,0LL, OP_NOP, 0LL);
+  mop(OP_LDWR, 1, &BR[9][0][1], t0[CHIP],  cofs, MSK_D0, (Ull)t0[CHIP], AWD, 0, 1, (Ull)NULL, AWD);
+  exe(OP_MAUH3,   &AR[9][0],    BR[9][0][1],     EXP_H3210, r10, EXP_H3210, r11, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);
+  mop(OP_STWR, 3, &AR[9][0],    cofs,  t0[CHIP], MSK_D0, (Ull)t0[CHIP], AWD, 0, 1, (Ull)NULL, AWD);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//hokan2
+  mop(OP_LDWR, 1, &r10,         t00[CHIP], cofs,      MSK_D0,      t00[CHIP], AWD,   0, 0, (Ull)NULL, AWD);
+  exe(OP_NOP,     &r28,        (-2LL<<24), EXP_H3210, 0,           EXP_H3210, 0LL,  EXP_H3210, OP_OR,   ix0, OP_NOP, 0LL);
+  mop(OP_LDWR, 1, &r12,         t01[CHIP], cofs,      MSK_D0,      t00[CHIP], AWD,   0, 0, (Ull)NULL, AWD);
+  exe(OP_NOP,     &r29,        (-1LL<<24), EXP_H3210, 0,           EXP_H3210, 0LL,  EXP_H3210, OP_OR,   ix0, OP_NOP, 0LL);
+  mop(OP_LDWR, 1, &r14,         t02[CHIP], cofs,      MSK_D0,      t00[CHIP], AWD,   0, 0, (Ull)NULL, AWD);
+  exe(OP_NOP,     &r31,        ( 1LL<<24), EXP_H3210, 0,           EXP_H3210, 0LL,  EXP_H3210, OP_OR,   ix0, OP_NOP, 0LL);
+  mop(OP_LDWR, 1, &r16,         t03[CHIP], cofs,      MSK_D0,      t00[CHIP], AWD,   0, 0, (Ull)NULL, AWD);
+  exe(OP_MINL3,   &r10,         r29,       EXP_H3210, r28,         EXP_H3210, r10,  EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MINL3,   &r12,         ix0,       EXP_H3210, r29,         EXP_H3210, r12,  EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MINL3,   &r14,         ix0,       EXP_H3210, ix0,         EXP_H3210, r14,  EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MINL3,   &r16,         r31,       EXP_H3210, r31,         EXP_H3210, r16,  EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MINL,    &r20,         r10,       EXP_H3210, r12,         EXP_H3210, 0LL,  EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MINL,    &r24,         r14,       EXP_H3210, r16,         EXP_H3210, 0LL,  EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  exe(OP_MINL,    &r0,          r20,       EXP_H3210, r24,         EXP_H3210, 0LL,  EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  mop(OP_LDWR, 1, &BR[33][0][1],xy[CHIP],  cofs,      MSK_D0,      xy[CHIP],  AWD,   0, 1, (Ull)NULL, AWD);
+  exe(OP_MINL,    &AR[33][0],   r0,        EXP_H3210, BR[33][0][1],EXP_H3210, 0LL,  EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);
+  mop(OP_STWR, 3, &AR[33][0],   cofs,      xy[CHIP],  MSK_D0,      xy[CHIP],  AWD,   0, 1, (Ull)NULL, AWD);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//hokan3
+  mop(OP_LDWR, 1, &r10,  xy[CHIP],    jw, MSK_D0,   xy[CHIP],   AWD,        0, 0, (Ull)NULL,       AWD);
+  exe(OP_NOP,     &r2,   r10,  EXP_H3210, 0LL,  EXP_H3210, 0LL, EXP_H3210, OP_AND,  0xff000000LL, OP_SRAA, 22LL); /*x*/
+  exe(OP_NOP,     &r3,   r10,  EXP_H3210, 0LL,  EXP_H3210, 0LL, EXP_H3210, OP_AND,  0x00ff0000LL, OP_SRAB, 16LL); /*y*/
+  exe(OP_ADD,     &r4,   r2,   EXP_H3210, cofs, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,          OP_NOP,   0LL);
+
+  mop(OP_LDWR, 1, &r10,  rp0[CHIP],  r4,  MSK_D0,    rp0[CHIP], AWD,        0, 0, (Ull)NULL,       AWD);          /*rp0[cofs+x]*/
+  exe(OP_CMP_EQ,  &r5,   r3,   EXP_H3210, -2,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,          OP_NOP,   0LL); /*y==-2?*/
+  exe(OP_CMOV,    &r0,   r5,   EXP_H3210, r10,  EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,          OP_NOP,   0LL);
+
+  mop(OP_LDWR, 1, &r10,  rp1[CHIP],  r4,  MSK_D0,    rp1[CHIP], AWD,        0, 0, (Ull)NULL,       AWD);          /*rp1[cofs+x]*/
+  exe(OP_CMP_EQ,  &r5,   r3,   EXP_H3210, -1,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,          OP_NOP,   0LL); /*y==-1?*/
+  exe(OP_CMOV,    &r0,   r5,   EXP_H3210, r10,  EXP_H3210,  r0, EXP_H3210, OP_NOP,  0LL,          OP_NOP,   0LL);
+
+  mop(OP_LDWR, 1, &r10,  rp2[CHIP],  r4,  MSK_D0,    rp2[CHIP], AWD,        0, 0, (Ull)NULL,       AWD);          /*rp2[cofs+x]*/
+  exe(OP_CMP_EQ,  &r5,   r3,   EXP_H3210,  0,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,          OP_NOP,   0LL); /*y== 0?*/
+  exe(OP_CMOV,    &r0,   r5,   EXP_H3210, r10,  EXP_H3210,  r0, EXP_H3210, OP_NOP,  0LL,          OP_NOP,   0LL);
+
+  mop(OP_LDWR, 1, &r10,  rp3[CHIP],  r4,  MSK_D0,    rp3[CHIP], AWD,        0, 0, (Ull)NULL,       AWD);          /*rp3[cofs+x]*/
+  exe(OP_CMP_EQ,  &r5,   r3,   EXP_H3210,  1,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,          OP_NOP,   0LL); /*y== 1?*/
+  exe(OP_CMOV,    &r0,   r5,   EXP_H3210, r10,  EXP_H3210,  r0, EXP_H3210, OP_NOP,  0LL,          OP_NOP,   0LL);
+  mop(OP_STWR, 3, &r0,   dp[CHIP],  cofs, MSK_D0,     dp[CHIP], AWD,        0, 1, (Ull)NULL,       AWD);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//expand4k
+  exe(OP_MAUH3,     &r19,  r13,       EXP_H3210, r14,   EXP_H3210, r15, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  exe(OP_MLUH,      &r21,  sk1[CHIP], EXP_H3210, r1,    EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r10,  r0,  1284, MSK_D0,    (Ull)p2[CHIP],    AWD,    0, 0, (Ull)NULL,       AWD);
+  exe(OP_MLUH,      &r22,  sk1[CHIP], EXP_H3210, r2,    EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r11,  r0,  1276, MSK_D0,    (Ull)p2[CHIP],    AWD,    0, 0, (Ull)NULL,       AWD);
+  exe(OP_MLUH,      &r23,  sk1[CHIP], EXP_H3210, r3,    EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r12,  r0,  1280, MSK_D0,    (Ull)p2[CHIP],    AWD,    0, 0, (Ull)NULL,       AWD);
+
+  exe(OP_MLUH,      &r13,  r10,       EXP_B5410, r21,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  exe(OP_MLUH,      &r14,  r11,       EXP_B5410, r22,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  exe(OP_MLUH,      &r15,  r12,       EXP_B5410, r23,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+
+  exe(OP_MAUH3,     &r20,  r13,       EXP_H3210, r14,   EXP_H3210, r15, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  exe(OP_MLUH,      &r13,  r10,       EXP_B7632, r21,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  exe(OP_MLUH,      &r14,  r11,       EXP_B7632, r22,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  exe(OP_MLUH,      &r15,  r12,       EXP_B7632, r23,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+
+  exe(OP_MAUH3,     &r21,  r13,       EXP_H3210, r14,   EXP_H3210, r15, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+
+  exe(OP_MAUH3,     &r21,  r17,       EXP_H3210, r19,   EXP_H3210, r21, EXP_H3210, OP_OR,   0LL,     OP_SRLM, 8LL);
+  exe(OP_MAUH3,     &r20,  r16,       EXP_H3210, r18,   EXP_H3210, r20, EXP_H3210, OP_OR,   0LL,     OP_SRLM, 8LL);
+
+  exe(OP_MH2BW,     &r31,  r21,       EXP_H3210, r20,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,     OP_NOP,  0LL);
+  mop(OP_STWR, 3,   &r31,  (Ull)(rp[CHIP]++),    0LL,   MSK_D0, (Ull)rp[CHIP],  1024, 0, 0, (Ull)NULL, 1024);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//unsharp
+  exe(OP_ADD,       &pofs, pc0[CHIP], EXP_H3210, cofs, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r1,   pofs,     -1276, MSK_D0,    (Ull)pp0[CHIP], AWD,      0, 0, (Ull)NULL,   AWD);
+  mop(OP_LDWR, 1,   &r2,   pofs,     -1284, MSK_D0,    (Ull)pp0[CHIP], AWD,      0, 0, (Ull)NULL,   AWD);
+  mop(OP_LDWR, 1,   &r5,   pofs,     -1280, MSK_D0,    (Ull)pp0[CHIP], AWD,      0, 0, (Ull)NULL,   AWD);
+  exe(OP_MAUH,      &r11,  r1,        EXP_B5410, r2,   EXP_B5410, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r6,   pofs,      4,    MSK_D0,    (Ull)pc0[CHIP], AWD,      0, 0, (Ull)NULL,   AWD);
+  mop(OP_LDWR, 1,   &r7,   pofs,     -4,    MSK_D0,    (Ull)pc0[CHIP], AWD,      0, 0, (Ull)NULL,   AWD);
+  exe(OP_MAUH,      &r12,  r1,        EXP_B7632, r2,   EXP_B7632, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r0,   pofs,      0,    MSK_D0,    (Ull)pc0[CHIP], AWD,      0, 0, (Ull)NULL,   AWD);
+  exe(OP_MLUH,      &r20,  r0,        EXP_B5410, 239,  EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r3,   pofs,      1284, MSK_D0,    (Ull)pn0[CHIP], AWD,      0, 0, (Ull)NULL,   AWD);
+  mop(OP_LDWR, 1,   &r4,   pofs,      1276, MSK_D0,    (Ull)pn0[CHIP], AWD,      0, 0, (Ull)NULL,   AWD);
+  exe(OP_MLUH,      &r21,  r0,        EXP_B7632, 239,  EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r8,   pofs,      1280, MSK_D0,    (Ull)pn0[CHIP], AWD,      0, 0, (Ull)NULL,   AWD);
+  exe(OP_MAUH,      &r15,  r5,        EXP_B5410, r6,   EXP_B5410, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MAUH,      &r16,  r5,        EXP_B7632, r6,   EXP_B7632, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MAUH3,     &r11,  r3,        EXP_B5410, r4,   EXP_B5410, r11, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MAUH3,     &r12,  r3,        EXP_B7632, r4,   EXP_B7632, r12, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MLUH,      &r13,  r11,       EXP_H3210, 13,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MLUH,      &r14,  r12,       EXP_H3210, 13,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MAUH3,     &r15,  r7,        EXP_B5410, r8,   EXP_B5410, r15, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MAUH3,     &r16,  r7,        EXP_B7632, r8,   EXP_B7632, r16, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_NOP,       &r7,   r15,       EXP_H3210, 0LL,  EXP_H3210, 0LL, EXP_H3210, OP_OR,   0LL,    OP_SRLM, 2LL);
+  exe(OP_MLUH,      &r17,  r15,       EXP_H3210, 15,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_NOP,       &r8,   r16,       EXP_H3210, 0LL,  EXP_H3210, 0LL, EXP_H3210, OP_OR,   0LL,    OP_SRLM, 2LL);
+  exe(OP_MLUH,      &r18,  r16,       EXP_H3210, 15,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MSUH3,     &r10,  r20,       EXP_H3210, r7,   EXP_H3210, r17, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MSUH3,     &r11,  r21,       EXP_H3210, r8,   EXP_H3210, r18, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MSUH,      &r20,  r10,       EXP_H3210, r13,  EXP_H3210, 0LL, EXP_H3210, OP_OR,   0LL,    OP_SRLM, 7LL);
+  exe(OP_MSUH,      &r21,  r11,       EXP_H3210, r14,  EXP_H3210, 0LL, EXP_H3210, OP_OR,   0LL,    OP_SRLM, 7LL);
+  exe(OP_MH2BW,     &r31,  r21,       EXP_H3210, r20,  EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_STWR, 3,   &r31,  rc0[CHIP], cofs, MSK_D0,    rc0[CHIP],      AWD,      0, 0, (Ull)NULL,   AWD);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//blur
+  exe(OP_ADD,       &pofs, pc0[CHIP], EXP_H3210, cofs, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r7,   pofs,     -1276, MSK_D0,    pp0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,   &r1,   pofs,     -1280, MSK_D0,    pp0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,   &r5,   pofs,     -1284, MSK_D0,    pp0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+  exe(OP_MMIN3,     &r17,  r7,        EXP_H3210, r1,   EXP_H3210, r5,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r4,   pofs,         4, MSK_D0,    pc0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,   &r0,   pofs,         0, MSK_D0,    pc0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+  exe(OP_MMID3,     &r11,  r7,        EXP_H3210, r1,   EXP_H3210, r5,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r3,   pofs,        -4, MSK_D0,    pc0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+  exe(OP_MMAX3,     &r15,  r7,        EXP_H3210, r1,   EXP_H3210, r5,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN3,     &r14,  r4,        EXP_H3210, r0,   EXP_H3210, r3,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r8,   pofs,      1284, MSK_D0,    pn0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,   &r2,   pofs,      1280, MSK_D0,    pn0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+  exe(OP_MMID3,     &r10,  r4,        EXP_H3210, r0,   EXP_H3210, r3,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r6,   pofs,      1276, MSK_D0,    pn0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+  exe(OP_MMAX3,     &r13,  r4,        EXP_H3210, r0,   EXP_H3210, r3,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN3,     &r18,  r8,        EXP_H3210, r2,   EXP_H3210, r6,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMID3,     &r12,  r8,        EXP_H3210, r2,   EXP_H3210, r6,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMAX3,     &r16,  r8,        EXP_H3210, r2,   EXP_H3210, r6,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+ /*step-2*/
+  exe(OP_MMAX3,     &r2,   r11,       EXP_H3210, r10,  EXP_H3210, r12, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMID3,     &r0,   r11,       EXP_H3210, r10,  EXP_H3210, r12, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN3,     &r1,   r11,       EXP_H3210, r10,  EXP_H3210, r12, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMAX3,     &r8,   r17,       EXP_H3210, r14,  EXP_H3210, r18, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMID3,     &r4,   r17,       EXP_H3210, r14,  EXP_H3210, r18, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMID3,     &r3,   r15,       EXP_H3210, r13,  EXP_H3210, r16, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN3,     &r5,   r15,       EXP_H3210, r13,  EXP_H3210, r16, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+ /*step-3*/
+  exe(OP_MMIN3,     &r14,  r3,        EXP_H3210, r0,   EXP_H3210, r4,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMID3,     &r10,  r3,        EXP_H3210, r0,   EXP_H3210, r4,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMAX3,     &r13,  r3,        EXP_H3210, r0,   EXP_H3210, r4,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN,      &r18,  r2,        EXP_H3210, r8,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMAX,      &r12,  r2,        EXP_H3210, r8,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN,      &r11,  r5,        EXP_H3210, r1,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMAX,      &r15,  r5,        EXP_H3210, r1,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+ /*step-4*/
+  exe(OP_MMID3,     &r4,   r11,       EXP_H3210, r14,  EXP_H3210, r18, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN3,     &r5,   r15,       EXP_H3210, r13,  EXP_H3210, r12, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+ /*step-5*/
+  exe(OP_MMAX3,     &r8,   r11,       EXP_H3210, r14,  EXP_H3210, r18, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMID3,     &r3,   r15,       EXP_H3210, r13,  EXP_H3210, r12, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN,      &r14,  r5,        EXP_H3210, r4,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMAX,      &r15,  r5,        EXP_H3210, r4,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN3,     &r18,  r3,        EXP_H3210, r10,  EXP_H3210, r8,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMID3,     &r10,  r3,        EXP_H3210, r10,  EXP_H3210, r8,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMAX3,     &r13,  r3,        EXP_H3210, r10,  EXP_H3210, r8,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+ /*step-6*/
+  exe(OP_MMAX,      &r8,   r14,       EXP_H3210, r18,  EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMIN,      &r5,   r15,       EXP_H3210, r13,  EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  exe(OP_MMID3,     &r31,  r5,        EXP_H3210, r10,  EXP_H3210, r8,  EXP_H3210, OP_NOP,  0LL,    OP_NOP,  0LL);
+  mop(OP_STWR, 3,   &r31,  rc0[CHIP], cofs, MSK_D0,    rc0[CHIP],      AWD,   0, 0, (Ull)NULL,    AWD);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//edge
+  exe(OP_ADD,       &pofs, pc0[CHIP],   EXP_H3210, cofs, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r5,   pofs,       -1276, MSK_D0,    (Ull)pp0[CHIP],       AWD,     0,   0,   (Ull)NULL,  AWD);
+  mop(OP_LDWR, 1,   &r3,   pofs,       -1280, MSK_D0,    (Ull)pp0[CHIP],       AWD,     0,   0,   (Ull)NULL,  AWD);
+  mop(OP_LDWR, 1,   &r1,   pofs,       -1284, MSK_D0,    (Ull)pp0[CHIP],       AWD,     0,   0,   (Ull)NULL,  AWD);
+  exe(OP_NOP,    &AR[3][0],0LL,         EXP_H3210, 0LL,  EXP_H3210, 0LL, EXP_H3210, OP_OR,    0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r8,   pofs,           4, MSK_D0,    (Ull)pc0[CHIP],       AWD,     0,   0,   (Ull)NULL,  AWD);
+  mop(OP_LDWR, 1,   &r7,   pofs,          -4, MSK_D0,    (Ull)pc0[CHIP],       AWD,     0,   0,   (Ull)NULL,  AWD);
+  exe(OP_NOP,    &AR[4][0],0LL,         EXP_H3210, 0LL,  EXP_H3210, 0LL, EXP_H3210, OP_OR,    0LL,    OP_NOP,  0LL);
+  mop(OP_LDWR, 1,   &r2,   pofs,        1284, MSK_D0,    (Ull)pn0[CHIP],       AWD,     0,   0,   (Ull)NULL,  AWD);
+  mop(OP_LDWR, 1,   &r4,   pofs,        1280, MSK_D0,    (Ull)pn0[CHIP],       AWD,     0,   0,   (Ull)NULL,  AWD);
+  mop(OP_LDWR, 1,   &r6,   pofs,        1276, MSK_D0,    (Ull)pn0[CHIP],       AWD,     0,   0,   (Ull)NULL,  AWD);
+  exe(OP_MSSAD,     &r7,   0LL,         EXP_H3210, r7,   EXP_H3210, r8,  EXP_H3210, OP_NOP,   0LL,    OP_NOP,  0LL);
+  exe(OP_MSSAD,     &r1,   0LL,         EXP_H3210, r1,   EXP_H3210, r2,  EXP_H3210, OP_NOP,   0LL,    OP_NOP,  0LL);
+  exe(OP_MSSAD,     &r3,   0LL,         EXP_H3210, r3,   EXP_H3210, r4,  EXP_H3210, OP_NOP,   0LL,    OP_NOP,  0LL);
+  exe(OP_MSSAD,     &r5,   0LL,         EXP_H3210, r5,   EXP_H3210, r6,  EXP_H3210, OP_NOP,   0LL,    OP_NOP,  0LL);
+  exe(OP_MAUH,      &r1,   r3,          EXP_H3210, r1,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL,    OP_NOP,  0LL);
+  exe(OP_MAUH,      &r5,   r7,          EXP_H3210, r5,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL,    OP_NOP,  0LL);
+  exe(OP_MAUH,      &r1,   r5,          EXP_H3210, r1,   EXP_H3210, 0LL, EXP_H3210, OP_SUMHL, 0LL,    OP_NOP,  0LL);
+  exe(OP_MCAS,      &r31,  r1,          EXP_H3210, 64,   EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL,    OP_NOP,  0LL);
+  mop(OP_STBR, 3,   &r31,  rc0[CHIP]++,    0, MSK_D0,    (Ull)rc0[CHIP],     AWD/4,     0,   0,   (Ull)NULL, AWD/4);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//wdifline
+  exe(OP_ADD,      &rofs1,       lp[CHIP],   EXP_H3210, cofs, EXP_H3210,    0, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  exe(OP_ADD,      &rofs2,       rp[CHIP],   EXP_H3210, cofs, EXP_H3210,    0, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &r2,          rofs1,   0,  MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r3,          rofs1,   4,  MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r4,          rofs1,   8,  MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r5,          rofs1,   12, MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r6,          rofs2,   0,  MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r7,          rofs2,   4,  MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r8,          rofs2,   8,  MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r9,          rofs2,   12, MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  exe(OP_MSAD,     &r22,         r2,          EXP_H3210, r6,   EXP_H3210,    0, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &r12,         rofs1,   16, MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r13,         rofs1,   20, MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  exe(OP_MSAD,     &r23,         r3,          EXP_H3210, r7,   EXP_H3210,    0, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &r14,         rofs1,   24, MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r15,         rofs1,   28, MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  exe(OP_MSAD,     &r24,         r4,          EXP_H3210, r8,   EXP_H3210,    0, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &r16,         rofs2,   16, MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r17,         rofs2,   20, MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  exe(OP_MSAD,     &r25,         r5,          EXP_H3210, r9,   EXP_H3210,    0, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &r18,         rofs2,   24, MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r19,         rofs2,   28, MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  exe(OP_MSSAD,    &r12,         r22,         EXP_H3210, r12,  EXP_H3210,  r16, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &r2,          rofs1,   32, MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r3,          rofs1,   36, MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  exe(OP_MSSAD,    &r13,         r23,         EXP_H3210, r13,  EXP_H3210,  r17, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &r4,          rofs1,   40, MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r5,          rofs1,   44, MSK_D0,    lp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  exe(OP_MSSAD,    &r14,         r24,         EXP_H3210, r14,  EXP_H3210,  r18, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &r6,          rofs2,   32, MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r7,          rofs2,   36, MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  exe(OP_MSSAD,    &r15,         r25,         EXP_H3210, r15,  EXP_H3210,  r19, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &r8,          rofs2,   40, MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  mop(OP_LDWR, 1,  &r9,          rofs2,   44, MSK_D0,    rp[CHIP],       AWD, 0, 0, (Ull)NULL,    AWD);
+  exe(OP_MSSAD,    &r22,         r12,         EXP_H3210, r2,   EXP_H3210,  r6, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  exe(OP_MSSAD,    &r23,         r13,         EXP_H3210, r3,   EXP_H3210,  r7, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  exe(OP_MSSAD,    &r24,         r14,         EXP_H3210, r4,   EXP_H3210,  r8, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  exe(OP_MSSAD,    &r25,         r15,         EXP_H3210, r5,   EXP_H3210,  r9, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  exe(OP_MAUH3,    &r31,         r22,         EXP_H3210, r23,  EXP_H3210, r24, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  exe(OP_MAUH3,    &r1,          r31,         EXP_H3210, r25,  EXP_H3210,   0, EXP_H3210, OP_SUMHL,0LL,  OP_NOP,  0LL);
+  mop(OP_LDWR, 1,  &BR[8][0][1], dp0[CHIP], cofs, MSK_D0, (Ull)dp0[CHIP], AWD, 0, 1, (Ull)NULL,    AWD);
+  exe(OP_ADD,      &AR[8][0],    BR[8][0][1], EXP_H3210, r1,   EXP_H3210,    0, EXP_H3210, OP_NOP,  0LL,  OP_NOP,  0LL);
+  mop(OP_STWR, 3,  &AR[8][0],    cofs, dp0[CHIP], MSK_D0, (Ull)dp0[CHIP], AWD, 0, 1, (Ull)NULL,    AWD);
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//grapes
+  mop(OP_LDWR, 1, &BR[2][0][1], bofs, (0               -WDHT-AWD  )*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#2 */
+  mop(OP_LDWR, 1, &BR[2][2][1], aofs, (0+WDHTDP*(MID-6)-WDHT-AWD  )*4, MSK_D0, arow00[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#2 */
+  exe(OP_FML, &r0, BR[2][0][1], EXP_H3210,  BR[2][2][1], EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][0][1], bofs, (0               -WDHT   -1)*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][0][0], bofs, (0               -WDHT   +1)*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][1][1], bofs, (0               -WDHT     )*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][2][1], aofs, (0+WDHTDP*(MID-5)-WDHT   -1)*4, MSK_D0, arow01[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP); /* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][2][0], aofs, (0+WDHTDP*(MID-5)-WDHT   +1)*4, MSK_D0, arow01[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP); /* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][3][1], aofs, (0+WDHTDP*(MID-4)-WDHT     )*4, MSK_D0, arow02[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP); /* stage#3 */
+  exe(OP_FMA, &r1, r0,          EXP_H3210,  BR[3][0][1], EXP_H3210, BR[3][2][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#4 */
+  exe(OP_FML, &r2, BR[3][0][0], EXP_H3210,  BR[3][2][0], EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#4 */
+  exe(OP_FML, &r3, BR[3][1][1], EXP_H3210,  BR[3][3][1], EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][0][1], bofs, (0               -WDHT+AWD  )*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][2][1], aofs, (0+WDHTDP*(MID-3)-WDHT+AWD  )*4, MSK_D0, arow03[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#4 */
+  exe(OP_FMA, &r4, r1,          EXP_H3210,  BR[4][0][1], EXP_H3210, BR[4][2][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#5 */
+  exe(OP_FAD, &r5, r2,          EXP_H3210,  r3,          EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#5 */
+
+  mop(OP_LDWR, 1, &BR[6][0][1], bofs, (0                    -AWD-1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][0][0], bofs, (0                    -AWD+1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][1][1], bofs, (0                    -AWD  )*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][2][1], aofs, (0+WDHTDP*(MID-2)     -AWD-1)*4, MSK_D0, arow04[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][2][0], aofs, (0+WDHTDP*(MID-2)     -AWD+1)*4, MSK_D0, arow04[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][3][1], aofs, (0+WDHTDP*(MID-1)     -AWD  )*4, MSK_D0, arow05[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#6 */
+  exe(OP_FMA, &r0, r4,          EXP_H3210,  BR[6][0][1], EXP_H3210, BR[6][2][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#7 */
+  exe(OP_FMA, &r1, r5,          EXP_H3210,  BR[6][0][0], EXP_H3210, BR[6][2][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#7 */
+  exe(OP_FML, &r2, BR[6][1][1], EXP_H3210,  BR[6][3][1], EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][0][1], bofs, (0                       -1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][0][0], bofs, (0                       +1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][1][1], bofs, (0                         )*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][2][1], aofs, (0+WDHTDP*(MID  )        -1)*4, MSK_D0, arow06[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP); /* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][2][0], aofs, (0+WDHTDP*(MID  )        +1)*4, MSK_D0, arow06[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP); /* stage#7 */
+  exe(OP_FMA, &r3, r0,          EXP_H3210,  BR[7][0][1], EXP_H3210, BR[7][2][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#8 */
+  exe(OP_FMA, &r4, r1,          EXP_H3210,  BR[7][0][0], EXP_H3210, BR[7][2][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#8 */
+  exe(OP_FAD, &r5, r2,          EXP_H3210,  BR[7][1][1], EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#8 */
+  mop(OP_LDWR, 1, &BR[8][0][1], bofs, (0                    +AWD-1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#8 */
+  mop(OP_LDWR, 1, &BR[8][0][0], bofs, (0                    +AWD+1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#8 */
+  mop(OP_LDWR, 1, &BR[8][1][1], bofs, (0                    +AWD  )*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#8 */
+  mop(OP_LDWR, 1, &BR[8][2][1], aofs, (0+WDHTDP*(MID+2)     +AWD-1)*4, MSK_D0, arow08[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#8 */
+  mop(OP_LDWR, 1, &BR[8][2][0], aofs, (0+WDHTDP*(MID+2)     +AWD+1)*4, MSK_D0, arow08[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#8 */
+  mop(OP_LDWR, 1, &BR[8][3][1], aofs, (0+WDHTDP*(MID+1)     +AWD  )*4, MSK_D0, arow07[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#8 */
+  exe(OP_FMA, &r6, r3,          EXP_H3210,  BR[8][0][1], EXP_H3210, BR[8][2][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#9 */
+  exe(OP_FMA, &r7, r4,          EXP_H3210,  BR[8][0][0], EXP_H3210, BR[8][2][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#9 */
+  exe(OP_FMA, &r8, r5,          EXP_H3210,  BR[8][1][1], EXP_H3210, BR[8][3][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#9 */
+
+  mop(OP_LDWR, 1, &BR[10][0][1],bofs, (0               +WDHT-AWD  )*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#10*/
+  mop(OP_LDWR, 1, &BR[10][2][1],aofs, (0+WDHTDP*(MID+3)+WDHT-AWD  )*4, MSK_D0, arow09[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#10*/
+  exe(OP_FMA, &r0, r6,          EXP_H3210,  BR[10][0][1],EXP_H3210, BR[10][2][1],EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#11*/
+  exe(OP_FAD, &r1, r7,          EXP_H3210,  r8,          EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#11*/
+  mop(OP_LDWR, 1, &BR[11][0][1],bofs, (0               +WDHT   -1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#11*/
+  mop(OP_LDWR, 1, &BR[11][0][0],bofs, (0               +WDHT   +1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#11*/
+  mop(OP_LDWR, 1, &BR[11][1][1],bofs, (0               +WDHT     )*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#11*/
+  mop(OP_LDWR, 1, &BR[11][2][1],aofs, (0+WDHTDP*(MID+5)+WDHT   -1)*4, MSK_D0, arow0b[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP); /* stage#11*/
+  mop(OP_LDWR, 1, &BR[11][2][0],aofs, (0+WDHTDP*(MID+5)+WDHT   +1)*4, MSK_D0, arow0b[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP); /* stage#11*/
+  mop(OP_LDWR, 1, &BR[11][3][1],aofs, (0+WDHTDP*(MID+4)+WDHT     )*4, MSK_D0, arow0a[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP); /* stage#11*/
+  exe(OP_FMA, &r2, r0,          EXP_H3210,  BR[11][0][1],EXP_H3210, BR[11][2][1],EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#12*/
+  exe(OP_FMA, &r3, r1,          EXP_H3210,  BR[11][0][0],EXP_H3210, BR[11][2][0],EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#12*/
+  exe(OP_FML, &r4, BR[11][1][1],EXP_H3210,  BR[11][3][1],EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#12*/
+  mop(OP_LDWR, 1, &BR[12][0][1],bofs, (0               +WDHT+AWD  )*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, (Ull)NULL, AWD*(RMGRP+PAD*2));/* stage#12*/
+  mop(OP_LDWR, 1, &BR[12][2][1],aofs, (0+WDHTDP*(MID+6)+WDHT+AWD  )*4, MSK_D0, arow0c[CHIP], AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP);/* stage#12*/
+  exe(OP_FMA, &r5, r2,          EXP_H3210,  BR[12][0][1],EXP_H3210, BR[12][2][1],EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#13*/
+  exe(OP_FAD, &r6, r3,          EXP_H3210,  r4,          EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#13*/
+  exe(OP_FAD, &r7, r5,          EXP_H3210,  r6,          EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);              /* stage#14*/
+  mop(OP_STWR, 3, &r7,          cofs, (0                         )*4, MSK_D0, crow0[CHIP],  AWD*RMGRP, 0, 0, (Ull)NULL, AWD*RMGRP); /* stage#14*/
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//jacobi
+  mop(OP_LDWR, 1, &BR[2][0][1], bofs, (0        -WDHT      )*4, MSK_D0, brow00[CHIP], AWD*RMGRP, 0, 0, browp0[CHIP], AWD*RMGRP);/* stage#2 */
+  mop(OP_LDWR, 1, &BR[2][2][1], bofs, (0        +WDHT      )*4, MSK_D0, brow01[CHIP], AWD*RMGRP, 0, 0, browp1[CHIP], AWD*RMGRP);/* stage#2 */
+  exe(OP_FAD, &r0, BR[2][0][1],EXP_H3210,  BR[2][2][1],EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);            /* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][0][1], bofs, (0             -AWD  )*4, MSK_D0, brow02[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp2[CHIP], AWD*(RMGRP+PAD*2)); /* stage#3 */
+  exe(OP_FAD, &r1, r0,         EXP_H3210,  BR[3][0][1],EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);            /* stage#3 */
+  mop(OP_LDWR, 1, &BR[4][0][1], bofs, (0                 -1)*4, MSK_D0, brow02[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp2[CHIP], AWD*(RMGRP+PAD*2)); /* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][1][1], bofs, (0                   )*4, MSK_D0, brow02[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp2[CHIP], AWD*(RMGRP+PAD*2)); /* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][2][1], bofs, (0                 +1)*4, MSK_D0, brow02[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp2[CHIP], AWD*(RMGRP+PAD*2)); /* stage#4 */
+  exe(OP_FAD, &r2, r1,         EXP_H3210,  BR[4][0][1],EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);            /* stage#5 */
+  exe(OP_FML, &r3, I1,         EXP_H3210,  BR[4][1][1],EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);            /* stage#5 */
+  mop(OP_LDWR, 1, &BR[5][0][1], bofs, (0             +AWD  )*4, MSK_D0, brow02[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp2[CHIP], AWD*(RMGRP+PAD*2)); /* stage#5 */
+  exe(OP_FAD, &r4, r2,         EXP_H3210,  BR[5][0][1],EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);            /* stage#6 */
+  exe(OP_FAD, &r5, r4,         EXP_H3210,  BR[4][2][1],EXP_H3210, 0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);            /* stage#7 */
+  exe(OP_FMA, &r6, r3,         EXP_H3210,  r5,         EXP_H3210, I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);            /* stage#8 */
+  mop(OP_STWR, 3, &r6,          cofs, (0                   )*4, MSK_D0, crow0[CHIP],  AWD*RMGRP, 0, 0, crowp[CHIP], AWD*RMGRP); /* stage#8 */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//fd6
+  mop(OP_LDWR, 1, &BR[2][0][1], bofs, (0        -WDHT*3   )*4, MSK_D0, brow00[CHIP], AWD*RMGRP, 0, 0, browp0[CHIP], AWD*RMGRP);/* stage#2 */
+  mop(OP_LDWR, 1, &BR[2][2][1], bofs, (0        +WDHT*3   )*4, MSK_D0, brow05[CHIP], AWD*RMGRP, 0, 0, browp5[CHIP], AWD*RMGRP);/* stage#2 */
+  exe(OP_FAD, &r3, BR[2][0][1],EXP_H3210,  BR[2][2][1], EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][0][1], bofs, (0        -WDHT*2   )*4, MSK_D0, brow01[CHIP], AWD*RMGRP, 0, 0, browp1[CHIP], AWD*RMGRP);/* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][2][1], bofs, (0        +WDHT*2   )*4, MSK_D0, brow04[CHIP], AWD*RMGRP, 0, 0, browp4[CHIP], AWD*RMGRP);/* stage#3 */
+  exe(OP_FAD, &r2, BR[3][0][1],EXP_H3210,  BR[3][2][1], EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][0][1], bofs, (0        -WDHT*1   )*4, MSK_D0, brow02[CHIP], AWD*RMGRP, 0, 0, browp2[CHIP], AWD*RMGRP);/* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][2][1], bofs, (0        +WDHT*1   )*4, MSK_D0, brow03[CHIP], AWD*RMGRP, 0, 0, browp3[CHIP], AWD*RMGRP);/* stage#4 */
+  exe(OP_FAD, &r1, BR[4][0][1],EXP_H3210,  BR[4][2][1], EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#5 */
+  mop(OP_LDWR, 1, &BR[5][0][1], bofs, (0            -AWD*3)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#5 */
+  mop(OP_LDWR, 1, &BR[5][0][0], bofs, (0            +AWD*3)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#5 */
+  mop(OP_LDWR, 1, &BR[5][1][1], bofs, (0                -3)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#5 */
+  mop(OP_LDWR, 1, &BR[5][1][0], bofs, (0                +3)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#5 */
+  exe(OP_FAD, &r13,BR[5][0][1],EXP_H3210,  BR[5][0][0], EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#6 */
+  exe(OP_FAD, &r23,BR[5][1][1],EXP_H3210,  BR[5][1][0], EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][0][1], bofs, (0            +AWD*2)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][0][0], bofs, (0            -AWD*2)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][1][1], bofs, (0                -2)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][1][0], bofs, (0                +2)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#6 */
+  exe(OP_FAD, &r12,BR[6][0][1],EXP_H3210,  BR[6][0][0], EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#7 */
+  exe(OP_FAD, &r22,BR[6][1][1],EXP_H3210,  BR[6][1][0], EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#7 */
+  exe(OP_FAD, &r23,r13,        EXP_H3210,  r23,         EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][0][1], bofs, (0            +AWD*1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][0][0], bofs, (0            -AWD*1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][1][1], bofs, (0                -1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][1][0], bofs, (0                +1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#7 */
+  exe(OP_FAD, &r11,BR[7][0][1],EXP_H3210,  BR[7][0][0], EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#8 */
+  exe(OP_FAD, &r21,BR[7][1][1],EXP_H3210,  BR[7][1][0], EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#8 */
+  exe(OP_FAD, &r22,r12,        EXP_H3210,  r22,         EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#8 */
+  exe(OP_FAD, &r3, r23,        EXP_H3210,  r3,          EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#8 */
+  mop(OP_LDWR, 1, &BR[8][0][1], bofs, (0                  )*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2)); /* stage#8 */
+  exe(OP_FML, &r10,BR[8][0][1],EXP_H3210,  I1,          EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#9  */
+  exe(OP_FAD, &r21,r11,        EXP_H3210,  r21,         EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#9 */
+  exe(OP_FAD, &r2, r22,        EXP_H3210,  r2,          EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#9 */
+  exe(OP_FMA, &r13,r10,        EXP_H3210,  r3,          EXP_H3210, I4,         EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#10 */
+  exe(OP_FAD, &r1, r21,        EXP_H3210,  r1,          EXP_H3210, 0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#10 */
+  exe(OP_FMA, &r12,r13,        EXP_H3210,  r2,          EXP_H3210, I3,         EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#11 */
+  exe(OP_FMA, &r11,r12,        EXP_H3210,  r1,          EXP_H3210, I2,         EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#12 */
+  mop(OP_STWR, 3, &r11,        cofs, (0                   )*4, MSK_D0, crow0[CHIP],  AWD*RMGRP, 0, 0, crowp[CHIP], AWD*RMGRP); /* stage#12 */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//resid
+  mop(OP_LDWR, 1, &BR[2][0][1], bofs, (0       -WDHT-AWD-1)*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp0[CHIP], AWD*(RMGRP+PAD*2));/* stage#2 */
+  mop(OP_LDWR, 1, &BR[2][0][0], bofs, (0       -WDHT-AWD  )*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp0[CHIP], AWD*(RMGRP+PAD*2));/* stage#2 */
+  mop(OP_LDWR, 1, &BR[2][1][1], bofs, (0       -WDHT-AWD+1)*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp0[CHIP], AWD*(RMGRP+PAD*2));/* stage#2 */
+  exe(OP_FML, &r0, BR[2][0][1], EXP_H3210,  I3,          EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#3 */
+  exe(OP_FML, &r1, BR[2][0][0], EXP_H3210,  I2,          EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#3 */
+  exe(OP_FML, &r2, BR[2][1][1], EXP_H3210,  I3,          EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][0][1], bofs, (0       -WDHT   -1)*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp0[CHIP], AWD*(RMGRP+PAD*2));/* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][0][0], bofs, (0       -WDHT     )*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp0[CHIP], AWD*(RMGRP+PAD*2));/* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][1][1], bofs, (0       -WDHT   +1)*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp0[CHIP], AWD*(RMGRP+PAD*2));/* stage#3 */
+  exe(OP_FMA, &r3, r0,          EXP_H3210,  BR[3][0][1], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#4 */
+  exe(OP_FMA, &r4, r1,          EXP_H3210,  BR[3][0][0], EXP_H3210,  I1,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#4 */
+  exe(OP_FMA, &r5, r2,          EXP_H3210,  BR[3][1][1], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][0][1], bofs, (0      -WDHT+AWD-1)*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp0[CHIP], AWD*(RMGRP+PAD*2));/* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][0][0], bofs, (0      -WDHT+AWD  )*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp0[CHIP], AWD*(RMGRP+PAD*2));/* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][1][1], bofs, (0      -WDHT+AWD+1)*4, MSK_D0, brow00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp0[CHIP], AWD*(RMGRP+PAD*2));/* stage#4 */
+  exe(OP_FMA, &r6, r3,          EXP_H3210,  BR[4][0][1], EXP_H3210,  I3,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#5 */
+  exe(OP_FMA, &r7, r4,          EXP_H3210,  BR[4][0][0], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#5 */
+  exe(OP_FMA, &r8, r5,          EXP_H3210,  BR[4][1][1], EXP_H3210,  I3,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#5 */
+
+  mop(OP_LDWR, 1, &BR[5][0][1], bofs, (0           -AWD-1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp3[CHIP], AWD*(RMGRP+PAD*2));/* stage#5 */
+  mop(OP_LDWR, 1, &BR[5][0][0], bofs, (0           -AWD  )*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp3[CHIP], AWD*(RMGRP+PAD*2));/* stage#5 */
+  mop(OP_LDWR, 1, &BR[5][1][1], bofs, (0           -AWD+1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp3[CHIP], AWD*(RMGRP+PAD*2));/* stage#5 */
+  exe(OP_FMA, &r0, r6,          EXP_H3210,  BR[5][0][1], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#6 */
+  exe(OP_FMA, &r1, r7,          EXP_H3210,  BR[5][0][0], EXP_H3210,  I1,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#6 */
+  exe(OP_FMA, &r2, r8,          EXP_H3210,  BR[5][1][1], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][0][1], bofs, (0               -1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp3[CHIP], AWD*(RMGRP+PAD*2));/* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][0][0], bofs, (0                 )*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp3[CHIP], AWD*(RMGRP+PAD*2));/* stage#6 */
+  mop(OP_LDWR, 1, &BR[6][1][1], bofs, (0               +1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp3[CHIP], AWD*(RMGRP+PAD*2));/* stage#6 */
+  exe(OP_FMA, &r3, r0,          EXP_H3210,  BR[6][0][1], EXP_H3210,  I1,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#7 */
+  exe(OP_FMA, &r4, r1,          EXP_H3210,  BR[6][0][0], EXP_H3210,  I0,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#7 */
+  exe(OP_FMA, &r5, r2,          EXP_H3210,  BR[6][1][1], EXP_H3210,  I1,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][0][1], bofs, (0           +AWD-1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp3[CHIP], AWD*(RMGRP+PAD*2));/* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][0][0], bofs, (0           +AWD  )*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp3[CHIP], AWD*(RMGRP+PAD*2));/* stage#7 */
+  mop(OP_LDWR, 1, &BR[7][1][1], bofs, (0           +AWD+1)*4, MSK_D0, brow03[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp3[CHIP], AWD*(RMGRP+PAD*2));/* stage#7 */
+  exe(OP_FMA, &r6, r3,          EXP_H3210,  BR[7][0][1], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#8 */
+  exe(OP_FMA, &r7, r4,          EXP_H3210,  BR[7][0][0], EXP_H3210,  I1,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#8 */
+  exe(OP_FMA, &r8, r5,          EXP_H3210,  BR[7][1][1], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#8 */
+
+  mop(OP_LDWR, 1, &BR[8][0][1], bofs, (0      +WDHT-AWD-1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2));/* stage#8 */
+  mop(OP_LDWR, 1, &BR[8][0][0], bofs, (0      +WDHT-AWD  )*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2));/* stage#8 */
+  mop(OP_LDWR, 1, &BR[8][1][1], bofs, (0      +WDHT-AWD+1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2));/* stage#8 */
+  exe(OP_FMA, &r0, r6,          EXP_H3210,  BR[8][0][1], EXP_H3210,  I3,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#9 */
+  exe(OP_FMA, &r1, r7,          EXP_H3210,  BR[8][0][0], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#9 */
+  exe(OP_FMA, &r2, r8,          EXP_H3210,  BR[8][1][1], EXP_H3210,  I3,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#9 */
+  mop(OP_LDWR, 1, &BR[9][0][1], bofs, (0       +WDHT   -1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2));/* stage#9 */
+  mop(OP_LDWR, 1, &BR[9][0][0], bofs, (0       +WDHT     )*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2));/* stage#9 */
+  mop(OP_LDWR, 1, &BR[9][1][1], bofs, (0       +WDHT   +1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2));/* stage#9 */
+  exe(OP_FMA, &r3, r0,          EXP_H3210,  BR[9][0][1], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#10*/
+  exe(OP_FMA, &r4, r1,          EXP_H3210,  BR[9][0][0], EXP_H3210,  I1,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#10*/
+  exe(OP_FMA, &r5, r2,          EXP_H3210,  BR[9][1][1], EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#10*/
+  mop(OP_LDWR, 1, &BR[10][0][1],bofs, (0      +WDHT+AWD-1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2));/* stage#10*/
+  mop(OP_LDWR, 1, &BR[10][0][0],bofs, (0      +WDHT+AWD  )*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2));/* stage#10*/
+  mop(OP_LDWR, 1, &BR[10][1][1],bofs, (0      +WDHT+AWD+1)*4, MSK_D0, brow06[CHIP], AWD*(RMGRP+PAD*2), 0, 0, browp6[CHIP], AWD*(RMGRP+PAD*2));/* stage#10*/
+  exe(OP_FMA, &r6, r3,          EXP_H3210,  BR[10][0][1],EXP_H3210,  I3,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#11*/
+  exe(OP_FMA, &r7, r4,          EXP_H3210,  BR[10][0][0],EXP_H3210,  I2,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#11*/
+  exe(OP_FMA, &r8, r5,          EXP_H3210,  BR[10][1][1],EXP_H3210,  I3,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#11*/
+  mop(OP_LDWR, 1, &BR[11][0][1],cofs, (0                 )*4, MSK_D0, crow0[CHIP],  AWD*RMGRP, 0, 0, crowp[CHIP], AWD*RMGRP);/* stage#11*/
+  exe(OP_FAD, &r1, r6,          EXP_H3210,  BR[11][0][1],EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#12*/
+  exe(OP_FAD, &r2, r7,          EXP_H3210,  r8,          EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#12*/
+  exe(OP_FAD, &r0, r1,          EXP_H3210,  r2,          EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);      /* stage#13*/
+  mop(OP_STWR, 3, &r0,          dofs, (0                 )*4, MSK_D0, drow0[CHIP],  AWD*RMGRP, 0, 0, drowp[CHIP], AWD*RMGRP);/* stage#13*/
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//wave2d
+  mop(OP_LDWR, 1, &BR[2][0][1], z0ofs, (0                  )*4, MSK_D0, z0row0[CHIP],  AWD*RMGRP, 0, 0, z0rowp[CHIP], AWD*RMGRP); /* stage#2 */
+  exe(OP_FML, &r0, BR[2][0][1], EXP_H3210,  I2,          EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#3 */
+  mop(OP_LDWR, 1, &BR[3][0][1], z1ofs, (0            -AWD  )*4, MSK_D0, z1row00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, z1rowp0[CHIP], AWD*(RMGRP+PAD*2)); /* stage#3 */
+  mop(OP_LDWR, 1, &BR[4][0][1], z1ofs, (0                -1)*4, MSK_D0, z1row00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, z1rowp0[CHIP], AWD*(RMGRP+PAD*2)); /* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][0][0], z1ofs, (0                  )*4, MSK_D0, z1row00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, z1rowp0[CHIP], AWD*(RMGRP+PAD*2)); /* stage#4 */
+  mop(OP_LDWR, 1, &BR[4][1][1], z1ofs, (0                +1)*4, MSK_D0, z1row00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, z1rowp0[CHIP], AWD*(RMGRP+PAD*2)); /* stage#4 */
+  exe(OP_FAD, &r1, BR[3][0][1], EXP_H3210,  BR[4][0][1], EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#5 */
+  mop(OP_LDWR, 1, &BR[5][0][1], z1ofs, (0            +AWD  )*4, MSK_D0, z1row00[CHIP], AWD*(RMGRP+PAD*2), 0, 0, z1rowp0[CHIP], AWD*(RMGRP+PAD*2)); /* stage#5 */
+  exe(OP_FMA, &r2, r1,          EXP_H3210,  BR[4][0][0], EXP_H3210,  I4,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#6 */
+  exe(OP_FAD, &r3, BR[4][1][1], EXP_H3210,  BR[5][0][1], EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#6 */
+  exe(OP_FAD, &r4, r2,          EXP_H3210,  r3,          EXP_H3210,  0,           EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#7 */
+  exe(OP_FMA, &r5, r0,          EXP_H3210,  r4,          EXP_H3210,  I3,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#8 */
+  exe(OP_FMA, &r6, r5,          EXP_H3210,  BR[4][0][0], EXP_H3210,  I1,          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);           /* stage#9 */
+  mop(OP_STWR, 3, &r6,          z2ofs, (0                  )*4, MSK_D0, z2row0[CHIP],  AWD*RMGRP, 0, 0, z2rowp[CHIP], AWD*RMGRP); /* stage#9 */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+#define cnn_core1(r, i, ofs, k, rp1) \
+  mop(OP_LDWR,   1, &BR[r][0][1],  (Ull)kp0[i][CHIP], ofs, MSK_D0, (Ull)ker, IC*OC*K*K, 0, 0, (Ull)NULL, IC*OC*K*K);\
+  mop(OP_LDWR,   1, &BR[r][0][0],  (Ull)kp1[i][CHIP], ofs, MSK_D0, (Ull)ker, IC*OC*K*K, 0, 0, (Ull)NULL, IC*OC*K*K);\
+  mop(OP_LDWR,   1, &BR[r][1][1],  (Ull)kp2[i][CHIP], ofs, MSK_D0, (Ull)ker, IC*OC*K*K, 0, 0, (Ull)NULL, IC*OC*K*K);\
+  mop(OP_LDWR,   1, &BR[r][1][0],  (Ull)kp3[i][CHIP], ofs, MSK_D0, (Ull)ker, IC*OC*K*K, 0, 0, (Ull)NULL, IC*OC*K*K);\
+  mop(OP_LDR,    1, &BR[r][2][1],  (Ull)ip1[i][k], oofs, MSK_W0, (Ull)it[i], M*(RMGRP+2), 0, 0, (Ull)NULL, M*(RMGRP+2));\
+  mop(OP_LDR,    1, &BR[r][2][0],  (Ull)ip0[i][k], oofs, MSK_W0, (Ull)it[i], M*(RMGRP+2), 0, 0, (Ull)NULL, M*(RMGRP+2));\
+  exe(OP_FMA, &AR[rp1][0], AR[r][0], EXP_H3210, BR[r][2][0], EXP_H3210, BR[r][0][1], EXP_H1010, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[rp1][1], AR[r][1], EXP_H3210, BR[r][2][0], EXP_H3210, BR[r][0][0], EXP_H1010, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[rp1][2], AR[r][2], EXP_H3210, BR[r][2][0], EXP_H3210, BR[r][1][1], EXP_H1010, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[rp1][3], AR[r][3], EXP_H3210, BR[r][2][0], EXP_H3210, BR[r][1][0], EXP_H1010, OP_NOP, 0LL, OP_NOP, 0LL)
+
+#define cnn_final(r, rp1) \
+  mop(OP_LDR,  1, &BR[rp1][0][1],  (Ull)op0[CHIP], oofs, MSK_W0, (Ull)ot0[CHIP], M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP);\
+  mop(OP_LDR,  1, &BR[rp1][1][1],  (Ull)op1[CHIP], oofs, MSK_W0, (Ull)ot1[CHIP], M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP);\
+  mop(OP_LDR,  1, &BR[rp1][2][1],  (Ull)op2[CHIP], oofs, MSK_W0, (Ull)ot2[CHIP], M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP);\
+  mop(OP_LDR,  1, &BR[rp1][3][1],  (Ull)op3[CHIP], oofs, MSK_W0, (Ull)ot3[CHIP], M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP);\
+  exe(OP_FAD, &AR[rp1][0], AR[r][0], EXP_H3210, BR[rp1][0][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[rp1][1], AR[r][1], EXP_H3210, BR[rp1][1][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[rp1][2], AR[r][2], EXP_H3210, BR[rp1][2][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[rp1][3], AR[r][3], EXP_H3210, BR[rp1][3][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  mop(OP_STR,  3, &AR[rp1][0], oofs, (Ull)op0[CHIP], MSK_D0, (Ull)ot0[CHIP], M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP);\
+  mop(OP_STR,  3, &AR[rp1][1], oofs, (Ull)op1[CHIP], MSK_D0, (Ull)ot1[CHIP], M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP);\
+  mop(OP_STR,  3, &AR[rp1][2], oofs, (Ull)op2[CHIP], MSK_D0, (Ull)ot2[CHIP], M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP);\
+  mop(OP_STR,  3, &AR[rp1][3], oofs, (Ull)op3[CHIP], MSK_D0, (Ull)ot3[CHIP], M*RMGRP, 0, 1, (Ull)NULL, M*RMGRP)
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+#define mm_core1(r, rm1, rp1) \
+  mop(OP_LDR,  3, &BR[r][0][1],  (Ull)b0[rm1], (Ull)cofs, MSK_W1, (Ull)b[rm1], M2, 0, 0, (Ull)NULL, M2);\
+  mop(OP_LDR,  3, &BR[r][0][0],  (Ull)b1[rm1], (Ull)cofs, MSK_W1, (Ull)b[rm1], M2, 0, 0, (Ull)NULL, M2);\
+  mop(OP_LDR,  3, &BR[r][1][1],  (Ull)b2[rm1], (Ull)cofs, MSK_W1, (Ull)b[rm1], M2, 0, 0, (Ull)NULL, M2);\
+  mop(OP_LDR,  3, &BR[r][1][0],  (Ull)b3[rm1], (Ull)cofs, MSK_W1, (Ull)b[rm1], M2, 0, 0, (Ull)NULL, M2);\
+  mop(OP_LDWR, 1, &BR[r][2][1],  (Ull)a[rm1][CHIP],  (Ull)rofs, MSK_W1, (Ull)a0[CHIP], L*RMGRP, 0, 0, (Ull)NULL, L*RMGRP);\
+  exe(OP_FMA, &AR[rp1][0], AR[r][0], EXP_H3210,  BR[r][2][1], EXP_H1010, BR[r][0][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[rp1][1], AR[r][1], EXP_H3210,  BR[r][2][1], EXP_H1010, BR[r][0][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[rp1][2], AR[r][2], EXP_H3210,  BR[r][2][1], EXP_H1010, BR[r][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[rp1][3], AR[r][3], EXP_H3210,  BR[r][2][1], EXP_H1010, BR[r][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL)
+
+#define mm_final(r, rp1) \
+  mop(OP_LDR,  3, &BR[rp1][0][1],  (Ull)c00[CHIP], (Ull)oofs, MSK_W0, (Ull)c0[CHIP], M2*RMGRP, 0, 1, (Ull)NULL, M2*RMGRP);\
+  mop(OP_LDR,  3, &BR[rp1][1][1],  (Ull)c01[CHIP], (Ull)oofs, MSK_W0, (Ull)c0[CHIP], M2*RMGRP, 0, 1, (Ull)NULL, M2*RMGRP);\
+  mop(OP_LDR,  3, &BR[rp1][2][1],  (Ull)c02[CHIP], (Ull)oofs, MSK_W0, (Ull)c0[CHIP], M2*RMGRP, 0, 1, (Ull)NULL, M2*RMGRP);\
+  mop(OP_LDR,  3, &BR[rp1][3][1],  (Ull)c03[CHIP], (Ull)oofs, MSK_W0, (Ull)c0[CHIP], M2*RMGRP, 0, 1, (Ull)NULL, M2*RMGRP);\
+  exe(OP_FAD, &AR[rp1][0], AR[r][0], EXP_H3210,  BR[rp1][0][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[rp1][1], AR[r][1], EXP_H3210,  BR[rp1][1][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[rp1][2], AR[r][2], EXP_H3210,  BR[rp1][2][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[rp1][3], AR[r][3], EXP_H3210,  BR[rp1][3][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  mop(OP_STR,  3, &AR[rp1][0],     (Ull)oofs, (Ull)c00[CHIP], MSK_D0, (Ull)c0[CHIP], M2*RMGRP, 0, 1, (Ull)NULL, M2*RMGRP);\
+  mop(OP_STR,  3, &AR[rp1][1],     (Ull)oofs, (Ull)c01[CHIP], MSK_D0, (Ull)c0[CHIP], M2*RMGRP, 0, 1, (Ull)NULL, M2*RMGRP);\
+  mop(OP_STR,  3, &AR[rp1][2],     (Ull)oofs, (Ull)c02[CHIP], MSK_D0, (Ull)c0[CHIP], M2*RMGRP, 0, 1, (Ull)NULL, M2*RMGRP);\
+  mop(OP_STR,  3, &AR[rp1][3],     (Ull)oofs, (Ull)c03[CHIP], MSK_D0, (Ull)c0[CHIP], M2*RMGRP, 0, 1, (Ull)NULL, M2*RMGRP)
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//inv_x1
+  exe(OP_CMP_LT,   &cc0,         l00[CHIP],   EXP_H3210, M,         EXP_H3210, 0LL,         EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#1              LD     */
+  mop(OP_LDWR,  1, &BR[2][2][1], top,         cofs, MSK_W0, topw,       len, 0, 0, NULL, len);  /* A[p[i]*M+k]                       stage#2              |      */
+  mop(OP_LDWR,  1, &BR[2][0][1], d00[CHIP],   oofs, MSK_W0, d00w[CHIP], len2,0, 1, NULL, len2); /* A[p[j+h*NCHIP+CHIP]*M+k]          stage#2  +->         |      */
+  mop(OP_LDWR,  1, &BR[2][1][1], d00[CHIP],   rofs, MSK_W0, d00w[CHIP], len2,0, 1, NULL, len2); /* A[p[j+h*NCHIP+CHIP]*M+k]          stage#2  +->         |      */
+  exe(OP_FMS,      &AR[2][0],    BR[2][0][1], EXP_H3210, BR[2][1][1], EXP_H3210, BR[2][2][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0); /* stage#2  |   ■■■  | 1.0  */
+  cex(OP_CEXE,     &ex0,   0, 0, 0, cc0, 0xaaaa);                                                                                 /* stage#2  |  AR[1]    |      */
+  mop(OP_STWR,ex0, &AR[2][0],    oofs,   d00[CHIP], MSK_D0, d00w[CHIP], len2, 0, 1, NULL, len2);                                  /* stage#2  |    + ST   v      */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//inv_x2
+  mop(OP_LDWR,  1, &Ajk,         top,        cofs, MSK_W0, topw,        len, 0, 0, NULL, len);  /* A[p[j]*M+k]                  *//* stage#1.0                     */
+  mop(OP_LDWR,  1, &BR[1][3][1], t000[CHIP], cofs, MSK_W0, t000w[CHIP], len, 0, 1, NULL, len);  /* b[(i+CHIP*W*H+h*W+0)*M+k]    *//* stage#1.3  +->xxx      LD     */
+  mop(OP_LDWR,  1, &b000,        d000[CHIP], 0,    MSK_W0, d000w[CHIP], 1,   0, 1, NULL, 1);    /* b[(i+CHIP*W*H+h*W+0)*M+j]    *//* stage#2.0  |   ■■■  |      */
+  exe(OP_FMS,      &b000,        b000,       EXP_H3210, Ajk,    EXP_H3210, BR[1][3][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);     /* stage#2.0  +- xxx+ST   v      */
+  mop(OP_STWR,  1, &b000,        0,    d000[CHIP], MSK_D0, d000w[CHIP], 1,   0, 1, NULL, 1);                                      /* stage#2.0  +--------- xxx     */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (d)固定アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//inv_x3
+  mop(OP_LDWR,  1, &Ajk,         top,        cofs, MSK_W0, topw,        len, 0, 0, NULL, len);  /* A[p[j]*M+k]                  *//* stage#1.0                     */
+  mop(OP_LDWR,  1, &BR[1][3][1], t000[CHIP], cofs, MSK_W0, t000w[CHIP], len, 0, 1, NULL, len);  /* b[(i+CHIP*W*H+h*W+0)*M+k]    *//* stage#1.3  +->xxx      LD     */
+  mop(OP_LDWR,  1, &b000,        d000[CHIP], 0,    MSK_W0, d000w[CHIP], 1,   0, 1, NULL, 1);    /* b[(i+CHIP*W*H+h*W+0)*M+j]    *//* stage#2.0  |   ■■■  |      */
+  exe(OP_FMS,      &b000,        b000,       EXP_H3210, Ajk, EXP_H3210, BR[1][3][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);        /* stage#2.0  +- xxx+ST   v      */
+  mop(OP_STWR,  1, &b000,        0,    d000[CHIP], MSK_D0, d000w[CHIP], 1,   0, 1, NULL, 1);                                      /* stage#2.0  +--------- xxx     */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (d)固定アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//gather
+  mop(OP_LDWR,    1, &BR[4][0][1],  r0, (Ull)ym_xm, MSK_D0, (Ull)acci_ym0[CHIP], IM, 0, 0, (Ull)NULL, IM);             /* stage#4 */
+  mop(OP_LDWR,    1, &BR[4][1][1],  r0, (Ull)ym_xz, MSK_D0, (Ull)acci_ym0[CHIP], IM, 0, 0, (Ull)NULL, IM);             /* stage#4 */
+  mop(OP_LDWR,    1, &BR[4][2][1],  r0, (Ull)ym_xp, MSK_D0, (Ull)acci_ym0[CHIP], IM, 0, 0, (Ull)NULL, IM);             /* stage#4 */
+  exe(OP_MLUH,  &r10,     BR[4][0][1],  EXP_B5410,        16LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#5 */
+  exe(OP_MLUH,  &r11,     BR[4][1][1],  EXP_B5410,        32LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#5 */
+  exe(OP_MLUH,  &r12,     BR[4][2][1],  EXP_B5410,        16LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#5 */
+  exe(OP_MLUH,  &r13,     BR[4][0][1],  EXP_B7632,        16LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#6 */
+  exe(OP_MLUH,  &r14,     BR[4][1][1],  EXP_B7632,        32LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#6 */
+  exe(OP_MLUH,  &r15,     BR[4][2][1],  EXP_B7632,        16LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#6 */
+  exe(OP_MAUH3, &r20,  r10, EXP_H3210,  r11, EXP_H3210,  r12, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);                    /* stage#6 */
+  mop(OP_LDWR,    1, &BR[6][0][1], r0, (Ull)yz_xm, MSK_D0, (Ull)acci_yz0[CHIP], IM, 0, 0, (Ull)NULL, IM);              /* stage#6 */
+  mop(OP_LDWR,    1, &BR[6][1][1], r0, (Ull)yz_xz, MSK_D0, (Ull)acci_yz0[CHIP], IM, 0, 0, (Ull)NULL, IM);              /* stage#6 */
+  mop(OP_LDWR,    1, &BR[6][2][1], r0, (Ull)yz_xp, MSK_D0, (Ull)acci_yz0[CHIP], IM, 0, 0, (Ull)NULL, IM);              /* stage#6 */
+  exe(OP_MAUH3, &r21,  r13, EXP_H3210,  r14, EXP_H3210,  r15, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);                    /* stage#7 */
+  exe(OP_MLUH,  &r10,     BR[6][0][1],  EXP_B5410,        32LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#7 */
+  exe(OP_MLUH,  &r11,     BR[6][1][1],  EXP_B5410,        64LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#7 */
+  exe(OP_MLUH,  &r12,     BR[6][2][1],  EXP_B5410,        32LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#7 */
+  exe(OP_MLUH,  &r13,     BR[6][0][1],  EXP_B7632,        32LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#8 */
+  exe(OP_MLUH,  &r14,     BR[6][1][1],  EXP_B7632,        64LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#8 */
+  exe(OP_MLUH,  &r15,     BR[6][2][1],  EXP_B7632,        32LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#8 */
+  exe(OP_MAUH3, &r22,  r10, EXP_H3210,  r11, EXP_H3210,  r12, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);                    /* stage#8 */
+  mop(OP_LDWR,    1, &BR[8][0][1], r0, (Ull)yp_xm, MSK_D0, (Ull)acci_yp0[CHIP], IM, 0, 0, (Ull)NULL, IM);              /* stage#8 */
+  mop(OP_LDWR,    1, &BR[8][1][1], r0, (Ull)yp_xz, MSK_D0, (Ull)acci_yp0[CHIP], IM, 0, 0, (Ull)NULL, IM);              /* stage#8 */
+  mop(OP_LDWR,    1, &BR[8][2][1], r0, (Ull)yp_xp, MSK_D0, (Ull)acci_yp0[CHIP], IM, 0, 0, (Ull)NULL, IM);              /* stage#8 */
+  exe(OP_MAUH3, &r23,  r13, EXP_H3210,  r14, EXP_H3210,  r15, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);                    /* stage#9 */
+  exe(OP_MLUH,  &r10,     BR[8][0][1],  EXP_B5410,        16LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#9 */
+  exe(OP_MLUH,  &r11,     BR[8][1][1],  EXP_B5410,        32LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#9 */
+  exe(OP_MLUH,  &r12,     BR[8][2][1],  EXP_B5410,        16LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#9 */
+  exe(OP_MLUH,  &r13,     BR[8][0][1],  EXP_B7632,        16LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#10 */
+  exe(OP_MLUH,  &r14,     BR[8][1][1],  EXP_B7632,        32LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#10 */
+  exe(OP_MLUH,  &r15,     BR[8][2][1],  EXP_B7632,        16LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL); /* stage#10 */
+  exe(OP_MAUH3, &r24,  r10, EXP_H3210,  r11, EXP_H3210,  r12, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);                    /* stage#10 */
+  exe(OP_MAUH3, &r25,  r13, EXP_H3210,  r14, EXP_H3210,  r15, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);                    /* stage#11 */
+  exe(OP_MAUH3, &r30,  r20, EXP_H3210,  r22, EXP_H3210,  r24, EXP_H3210, OP_AND, -1LL, OP_SRLM, 8LL); /* stage#12 */
+  exe(OP_MAUH3, &r31,  r21, EXP_H3210,  r23, EXP_H3210,  r25, EXP_H3210, OP_AND, -1LL, OP_SRLM, 8LL); /* stage#12 */
+  exe(OP_MH2BW, &r29,  r31, EXP_H3210,  r30, EXP_H3210,  0LL, EXP_H3210, OP_NOP,  0LL, OP_NOP, 0LL);  /* stage#13 */
+  mop(OP_STWR,    3, &r29, (Ull)(acco0[CHIP]++), 0LL, MSK_D0, (Ull)acco_base0[CHIP], CRANGE, 0, 0, (Ull)NULL, CRANGE); /* stage#13 */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+//gdepth
+  mop(OP_LDWR,   1, &BR[4][0][1], r0, (Ull)yzm_xm_m4, MSK_D0, (Ull)acci_yzm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#4 */
+  mop(OP_LDWR,   1, &BR[4][0][0], r0, (Ull)yzm_xm_p4, MSK_D0, (Ull)acci_yzm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#4 */
+  mop(OP_LDWR,   1, &BR[4][1][1], r0, (Ull)yzm_xz_m4, MSK_D0, (Ull)acci_yzm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#4 */
+  mop(OP_LDWR,   1, &BR[4][1][0], r0, (Ull)yzm_xz_p4, MSK_D0, (Ull)acci_yzm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#4 */
+  mop(OP_LDWR,   1, &BR[4][2][1], r0, (Ull)yzm_xp_m4, MSK_D0, (Ull)acci_yzm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#4 */
+  mop(OP_LDWR,   1, &BR[4][2][0], r0, (Ull)yzm_xp_p4, MSK_D0, (Ull)acci_yzm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#4 */
+  exe(OP_MSSAD,&r14,   0LL, EXP_H3210, BR[4][0][0], EXP_H3210, BR[4][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#5 */
+  exe(OP_MSSAD,&r15,   0LL, EXP_H3210, BR[4][0][1], EXP_H3210, BR[4][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#5 */
+  exe(OP_MSSAD,&r16,   0LL, EXP_H3210, BR[4][2][0], EXP_H3210, BR[4][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#5 */
+  exe(OP_MSSAD,&r17,   0LL, EXP_H3210, BR[4][2][1], EXP_H3210, BR[4][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#5 */
+  mop(OP_LDWR,   1, &BR[5][0][1], r0, (Ull)ymm_xm_m4, MSK_D0, (Ull)acci_ymm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#5 */
+  mop(OP_LDWR,   1, &BR[5][0][0], r0, (Ull)ymm_xm_p4, MSK_D0, (Ull)acci_ymm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#5 */
+  mop(OP_LDWR,   1, &BR[5][2][1], r0, (Ull)ymm_xp_m4, MSK_D0, (Ull)acci_ymm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#5 */
+  mop(OP_LDWR,   1, &BR[5][2][0], r0, (Ull)ymm_xp_p4, MSK_D0, (Ull)acci_ymm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#5 */
+  exe(OP_MSSAD,&r24,   r14, EXP_H3210, BR[5][0][0], EXP_H3210, BR[4][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#6 */
+  exe(OP_MSSAD,&r25,   r15, EXP_H3210, BR[5][0][1], EXP_H3210, BR[4][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#6 */
+  exe(OP_MSSAD,&r26,   r16, EXP_H3210, BR[5][2][0], EXP_H3210, BR[4][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#6 */
+  exe(OP_MSSAD,&r27,   r17, EXP_H3210, BR[5][2][1], EXP_H3210, BR[4][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#6 */
+  mop(OP_LDWR,   1, &BR[6][0][1], r0, (Ull)ypm_xm_m4, MSK_D0, (Ull)acci_ypm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#6 */
+  mop(OP_LDWR,   1, &BR[6][0][0], r0, (Ull)ypm_xm_p4, MSK_D0, (Ull)acci_ypm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#6 */
+  mop(OP_LDWR,   1, &BR[6][2][1], r0, (Ull)ypm_xp_m4, MSK_D0, (Ull)acci_ypm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#6 */
+  mop(OP_LDWR,   1, &BR[6][2][0], r0, (Ull)ypm_xp_p4, MSK_D0, (Ull)acci_ypm0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#6 */
+  exe(OP_MSSAD,&r14,   r24, EXP_H3210, BR[6][0][0], EXP_H3210, BR[4][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#7 */
+  exe(OP_MSSAD,&r15,   r25, EXP_H3210, BR[6][0][1], EXP_H3210, BR[4][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#7 */
+  exe(OP_MSSAD,&r16,   r26, EXP_H3210, BR[6][2][0], EXP_H3210, BR[4][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#7 */
+  exe(OP_MSSAD,&r17,   r27, EXP_H3210, BR[6][2][1], EXP_H3210, BR[4][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#7 */
+  mop(OP_LDWR,   1, &BR[7][0][1], r0, (Ull)yzz_xm_m4, MSK_D0, (Ull)acci_yzz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#7 */
+  mop(OP_LDWR,   1, &BR[7][0][0], r0, (Ull)yzz_xm_p4, MSK_D0, (Ull)acci_yzz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#7 */
+  mop(OP_LDWR,   1, &BR[7][1][1], r0, (Ull)yzz_xz_m4, MSK_D0, (Ull)acci_yzz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#7 */
+  mop(OP_LDWR,   1, &BR[7][1][0], r0, (Ull)yzz_xz_p4, MSK_D0, (Ull)acci_yzz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#7 */
+  mop(OP_LDWR,   1, &BR[7][2][1], r0, (Ull)yzz_xp_m4, MSK_D0, (Ull)acci_yzz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#7 */
+  mop(OP_LDWR,   1, &BR[7][2][0], r0, (Ull)yzz_xp_p4, MSK_D0, (Ull)acci_yzz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#7 */
+  exe(OP_MSSAD,&r24,   r14, EXP_H3210, BR[7][0][0], EXP_H3210, BR[7][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#8 */
+  exe(OP_MSSAD,&r25,   r15, EXP_H3210, BR[7][0][1], EXP_H3210, BR[7][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#8 */
+  exe(OP_MSSAD,&r26,   r16, EXP_H3210, BR[7][2][0], EXP_H3210, BR[7][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#8 */
+  exe(OP_MSSAD,&r27,   r17, EXP_H3210, BR[7][2][1], EXP_H3210, BR[7][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#8 */
+  mop(OP_LDWR,   1, &BR[8][0][1], r0, (Ull)ymz_xm_m4, MSK_D0, (Ull)acci_ymz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#8 */
+  mop(OP_LDWR,   1, &BR[8][0][0], r0, (Ull)ymz_xm_p4, MSK_D0, (Ull)acci_ymz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#8 */
+  mop(OP_LDWR,   1, &BR[8][2][1], r0, (Ull)ymz_xp_m4, MSK_D0, (Ull)acci_ymz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#8 */
+  mop(OP_LDWR,   1, &BR[8][2][0], r0, (Ull)ymz_xp_p4, MSK_D0, (Ull)acci_ymz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#8 */
+  exe(OP_MSSAD,&r14,   r24, EXP_H3210, BR[8][0][0], EXP_H3210, BR[7][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#9 */
+  exe(OP_MSSAD,&r15,   r25, EXP_H3210, BR[8][0][1], EXP_H3210, BR[7][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#9 */
+  exe(OP_MSSAD,&r16,   r26, EXP_H3210, BR[8][2][0], EXP_H3210, BR[7][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#9 */
+  exe(OP_MSSAD,&r17,   r27, EXP_H3210, BR[8][2][1], EXP_H3210, BR[7][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#9 */
+  mop(OP_LDWR,   1, &BR[9][0][1], r0, (Ull)ypz_xm_m4, MSK_D0, (Ull)acci_ypz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#9 */
+  mop(OP_LDWR,   1, &BR[9][0][0], r0, (Ull)ypz_xm_p4, MSK_D0, (Ull)acci_ypz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#9 */
+  mop(OP_LDWR,   1, &BR[9][2][1], r0, (Ull)ypz_xp_m4, MSK_D0, (Ull)acci_ypz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#9 */
+  mop(OP_LDWR,   1, &BR[9][2][0], r0, (Ull)ypz_xp_p4, MSK_D0, (Ull)acci_ypz0[CHIP], IM, 0, 0, (Ull)NULL, IM);       /* stage#9 */
+  exe(OP_MSSAD,&r24,   r14, EXP_H3210, BR[9][0][0], EXP_H3210, BR[7][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#10 */
+  exe(OP_MSSAD,&r25,   r15, EXP_H3210, BR[9][0][1], EXP_H3210, BR[7][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#10 */
+  exe(OP_MSSAD,&r26,   r16, EXP_H3210, BR[9][2][0], EXP_H3210, BR[7][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#10 */
+  exe(OP_MSSAD,&r27,   r17, EXP_H3210, BR[9][2][1], EXP_H3210, BR[7][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);   /* stage#10 */
+  mop(OP_LDWR,   1, &BR[10][0][1], r0, (Ull)yzp_xm_m4, MSK_D0, (Ull)acci_yzp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#10 */
+  mop(OP_LDWR,   1, &BR[10][0][0], r0, (Ull)yzp_xm_p4, MSK_D0, (Ull)acci_yzp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#10 */
+  mop(OP_LDWR,   1, &BR[10][1][1], r0, (Ull)yzp_xz_m4, MSK_D0, (Ull)acci_yzp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#10 */
+  mop(OP_LDWR,   1, &BR[10][1][0], r0, (Ull)yzp_xz_p4, MSK_D0, (Ull)acci_yzp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#10 */
+  mop(OP_LDWR,   1, &BR[10][2][1], r0, (Ull)yzp_xp_m4, MSK_D0, (Ull)acci_yzp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#10 */
+  mop(OP_LDWR,   1, &BR[10][2][0], r0, (Ull)yzp_xp_p4, MSK_D0, (Ull)acci_yzp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#10 */
+  exe(OP_MSSAD,&r14,   r24, EXP_H3210, BR[10][0][0], EXP_H3210, BR[10][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#11 */
+  exe(OP_MSSAD,&r15,   r25, EXP_H3210, BR[10][0][1], EXP_H3210, BR[10][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#11 */
+  exe(OP_MSSAD,&r16,   r26, EXP_H3210, BR[10][2][0], EXP_H3210, BR[10][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#11 */
+  exe(OP_MSSAD,&r17,   r27, EXP_H3210, BR[10][2][1], EXP_H3210, BR[10][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#11 */
+  mop(OP_LDWR,   1, &BR[11][0][1], r0, (Ull)ymp_xm_m4, MSK_D0, (Ull)acci_ymp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#11 */
+  mop(OP_LDWR,   1, &BR[11][0][0], r0, (Ull)ymp_xm_p4, MSK_D0, (Ull)acci_ymp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#11 */
+  mop(OP_LDWR,   1, &BR[11][2][1], r0, (Ull)ymp_xp_m4, MSK_D0, (Ull)acci_ymp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#11 */
+  mop(OP_LDWR,   1, &BR[11][2][0], r0, (Ull)ymp_xp_p4, MSK_D0, (Ull)acci_ymp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#11 */
+  exe(OP_MSSAD,&r24,   r14, EXP_H3210, BR[11][0][0], EXP_H3210, BR[10][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#12 */
+  exe(OP_MSSAD,&r25,   r15, EXP_H3210, BR[11][0][1], EXP_H3210, BR[10][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#12 */
+  exe(OP_MSSAD,&r26,   r16, EXP_H3210, BR[11][2][0], EXP_H3210, BR[10][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#12 */
+  exe(OP_MSSAD,&r27,   r17, EXP_H3210, BR[11][2][1], EXP_H3210, BR[10][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#12 */
+  mop(OP_LDWR,   1, &BR[12][0][1], r0, (Ull)ypp_xm_m4, MSK_D0, (Ull)acci_ypp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#12 */
+  mop(OP_LDWR,   1, &BR[12][0][0], r0, (Ull)ypp_xm_p4, MSK_D0, (Ull)acci_ypp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#12 */
+  mop(OP_LDWR,   1, &BR[12][2][1], r0, (Ull)ypp_xp_m4, MSK_D0, (Ull)acci_ypp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#12 */
+  mop(OP_LDWR,   1, &BR[12][2][0], r0, (Ull)ypp_xp_p4, MSK_D0, (Ull)acci_ypp0[CHIP], IM, 0, 0, (Ull)NULL, IM);      /* stage#12 */
+  exe(OP_MSSAD,&r14,   r24, EXP_H3210, BR[12][0][0], EXP_H3210, BR[10][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#13 */
+  exe(OP_MSSAD,&r15,   r25, EXP_H3210, BR[12][0][1], EXP_H3210, BR[10][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#13 */
+  exe(OP_MSSAD,&r16,   r26, EXP_H3210, BR[12][2][0], EXP_H3210, BR[10][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#13 */
+  exe(OP_MSSAD,&r17,   r27, EXP_H3210, BR[12][2][1], EXP_H3210, BR[10][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL); /* stage#13 */
+  exe(OP_MAUH, &r24,   r14, EXP_H3210,  r15, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL, OP_NOP, 0LL);                /* stage#14 */
+  exe(OP_MAUH, &r26,   r16, EXP_H3210,  r17, EXP_H3210, 0LL, EXP_H3210, OP_NOP,   0LL, OP_NOP, 0LL);                /* stage#14 */
+  exe(OP_MAUH, &r30,   r24, EXP_H3210,  r26, EXP_H3210, 0LL, EXP_H3210, OP_SUMHL, 0LL, OP_NOP, 0LL);                /* stage#15 */
+  mop(OP_LDWR,   1, &BR[15][1][1], (Ull)(sadi0[CHIP]++), 0LL, MSK_D0, (Ull)sadx_base0[CHIP], CRANGE, 0, 1, (Ull)NULL, CRANGE); /* stage#15 */
+  exe(OP_CMP_LT, &c0, r30,           EXP_H3210, BR[15][1][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP,        0LL, OP_NOP, 0LL); /* stage#16 */
+  exe(OP_CMP_GT, &c1, BR[15][1][1],  EXP_H3210,        137LL, EXP_H3210, 0LL, EXP_H3210, OP_NOP,        0LL, OP_NOP, 0LL); /* stage#16 */
+  exe(OP_NOP,    &r31, 0LL,          EXP_H3210,          0LL, EXP_H3210, 0LL, EXP_H3210, OP_OR,    (Ull)ofs, OP_NOP, 0LL); /* stage#16 */
+  cex(OP_CEXE,   &ex1,   0, 0, c1, c0, 0x8888);                                                                            /* stage#17 */
+  mop(OP_STWR, ex1, &r31, (Ull)(acco0[CHIP]++), 0LL, MSK_D0, (Ull)acco_base0[CHIP], CRANGE, 0, 1, (Ull)NULL, CRANGE);      /* stage#17 */
+  cex(OP_CEXE,   &ex0,   0, 0, c1, c0, 0x8888);                                                                            /* stage#17 */
+  mop(OP_STWR, ex0, &r30, (Ull)(sado0[CHIP]++), 0LL, MSK_D0, (Ull)sadx_base0[CHIP], CRANGE, 0, 1, (Ull)NULL, CRANGE);      /* stage#17 */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+#define cnn5x5_core1(b, o, bp1, n) \
+  mop(OP_LDWR,   1, &BR[b][0][1],  (Ull)kp00[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][0][0],  (Ull)kp01[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][1][1],  (Ull)kp02[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][1][0],  (Ull)kp03[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][2][1],  (Ull)ip00[n], iofs, MSK_W1, (Ull)it00, IMlen, 0, 0, (Ull)NULL, IMlen);\
+  exe(OP_FMA, &AR[bp1][0], AR[b][0], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][0][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[bp1][1], AR[b][1], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][0][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[bp1][2], AR[b][2], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[bp1][3], AR[b][3], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL)
+
+#define cnn5x5_final(b, bp1) \
+  mop(OP_LDWR,   1, &BR[bp1][0][1],  (Ull)op0[CHIP], oofs, MSK_W0, (Ull)ot0[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_LDWR,   1, &BR[bp1][1][1],  (Ull)op1[CHIP], oofs, MSK_W0, (Ull)ot1[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_LDWR,   1, &BR[bp1][2][1],  (Ull)op2[CHIP], oofs, MSK_W0, (Ull)ot2[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_LDWR,   1, &BR[bp1][3][1],  (Ull)op3[CHIP], oofs, MSK_W0, (Ull)ot3[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  exe(OP_FAD, &AR[bp1][0], AR[b][0], EXP_H3210, BR[bp1][0][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[bp1][1], AR[b][1], EXP_H3210, BR[bp1][1][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[bp1][2], AR[b][2], EXP_H3210, BR[bp1][2][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[bp1][3], AR[b][3], EXP_H3210, BR[bp1][3][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  mop(OP_STWR,   1, &AR[bp1][0], oofs, (Ull)op0[CHIP], MSK_D0, (Ull)ot0[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_STWR,   1, &AR[bp1][1], oofs, (Ull)op1[CHIP], MSK_D0, (Ull)ot1[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_STWR,   1, &AR[bp1][2], oofs, (Ull)op2[CHIP], MSK_D0, (Ull)ot2[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_STWR,   1, &AR[bp1][3], oofs, (Ull)op3[CHIP], MSK_D0, (Ull)ot3[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen)
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+#define cnn3x3_core1(b, o, bp1, n) \
+  mop(OP_LDWR,   1, &BR[b][0][1],  (Ull)kp00[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][0][0],  (Ull)kp01[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][1][1],  (Ull)kp02[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][1][0],  (Ull)kp03[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][2][1],  (Ull)ip00[n], iofs, MSK_W1, (Ull)it00, IMlen, 0, 0, (Ull)NULL, IMlen);\
+  exe(OP_FMA, &AR[bp1][0], AR[b][0], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][0][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[bp1][1], AR[b][1], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][0][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[bp1][2], AR[b][2], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[bp1][3], AR[b][3], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL)
+
+#define cnn3x3_final(b, bp1) \
+  mop(OP_LDWR,   1, &BR[bp1][0][1],  (Ull)op0[CHIP], oofs, MSK_W0, (Ull)ot0[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_LDWR,   1, &BR[bp1][1][1],  (Ull)op1[CHIP], oofs, MSK_W0, (Ull)ot1[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_LDWR,   1, &BR[bp1][2][1],  (Ull)op2[CHIP], oofs, MSK_W0, (Ull)ot2[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_LDWR,   1, &BR[bp1][3][1],  (Ull)op3[CHIP], oofs, MSK_W0, (Ull)ot3[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  exe(OP_FAD, &AR[bp1][0], AR[b][0], EXP_H3210, BR[bp1][0][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[bp1][1], AR[b][1], EXP_H3210, BR[bp1][1][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[bp1][2], AR[b][2], EXP_H3210, BR[bp1][2][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[bp1][3], AR[b][3], EXP_H3210, BR[bp1][3][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  mop(OP_STWR,   1, &AR[bp1][0], oofs, (Ull)op0[CHIP], MSK_D0, (Ull)ot0[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_STWR,   1, &AR[bp1][1], oofs, (Ull)op1[CHIP], MSK_D0, (Ull)ot1[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_STWR,   1, &AR[bp1][2], oofs, (Ull)op2[CHIP], MSK_D0, (Ull)ot2[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_STWR,   1, &AR[bp1][3], oofs, (Ull)op3[CHIP], MSK_D0, (Ull)ot3[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen)
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+#define cnn2x2_core1(b, o, bp1, n) \
+  mop(OP_LDWR,   1, &BR[b][0][1],  (Ull)kp00[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][0][0],  (Ull)kp01[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][1][1],  (Ull)kp02[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][1][0],  (Ull)kp03[CHIP], o, MSK_D0, (Ull)i_ker, Klen, 0, Force, (Ull)NULL, Klen);\
+  mop(OP_LDWR,   1, &BR[b][2][1],  (Ull)ip00[n], iofs, MSK_W1, (Ull)it00, IMlen, 0, 0, (Ull)NULL, IMlen);\
+  exe(OP_FMA, &AR[bp1][0], AR[b][0], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][0][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[bp1][1], AR[b][1], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][0][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[bp1][2], AR[b][2], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[bp1][3], AR[b][3], EXP_H3210, BR[b][2][1], EXP_H3210, BR[b][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL)
+
+#define cnn2x2_final(b, bp1) \
+  mop(OP_LDWR,   1, &BR[bp1][0][1],  (Ull)op0[CHIP], oofs, MSK_W0, (Ull)ot0[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_LDWR,   1, &BR[bp1][1][1],  (Ull)op1[CHIP], oofs, MSK_W0, (Ull)ot1[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_LDWR,   1, &BR[bp1][2][1],  (Ull)op2[CHIP], oofs, MSK_W0, (Ull)ot2[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_LDWR,   1, &BR[bp1][3][1],  (Ull)op3[CHIP], oofs, MSK_W0, (Ull)ot3[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  exe(OP_FAD, &AR[bp1][0], AR[b][0], EXP_H3210, BR[bp1][0][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[bp1][1], AR[b][1], EXP_H3210, BR[bp1][1][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[bp1][2], AR[b][2], EXP_H3210, BR[bp1][2][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[bp1][3], AR[b][3], EXP_H3210, BR[bp1][3][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  mop(OP_STWR,   1, &AR[bp1][0], oofs, (Ull)op0[CHIP], MSK_D0, (Ull)ot0[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_STWR,   1, &AR[bp1][1], oofs, (Ull)op1[CHIP], MSK_D0, (Ull)ot1[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_STWR,   1, &AR[bp1][2], oofs, (Ull)op2[CHIP], MSK_D0, (Ull)ot2[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen);\
+  mop(OP_STWR,   1, &AR[bp1][3], oofs, (Ull)op3[CHIP], MSK_D0, (Ull)ot3[CHIP], Mlen, 0, 1, (Ull)NULL, Mlen)
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+#define sgemm00_core1(r, rm1, rp1) \
+  mop(OP_LDWR,   1, &BR[r][0][1],  (Ull)b0[rm1], (Ull)cofs, MSK_W1, (Ull)b[rm1], Blen, 0, 0, (Ull)NULL, Blen);\
+  mop(OP_LDWR,   1, &BR[r][0][0],  (Ull)b1[rm1], (Ull)cofs, MSK_W1, (Ull)b[rm1], Blen, 0, 0, (Ull)NULL, Blen);\
+  mop(OP_LDWR,   1, &BR[r][1][1],  (Ull)b2[rm1], (Ull)cofs, MSK_W1, (Ull)b[rm1], Blen, 0, 0, (Ull)NULL, Blen);\
+  mop(OP_LDWR,   1, &BR[r][1][0],  (Ull)b3[rm1], (Ull)cofs, MSK_W1, (Ull)b[rm1], Blen, 0, 0, (Ull)NULL, Blen);\
+  mop(OP_LDWR,   1, &BR[r][2][1],  (Ull)a[rm1][CHIP],  (Ull)rofs, MSK_W1, (Ull)a0[CHIP], Alen, 0, 0, (Ull)NULL, Alen);\
+  exe(OP_FMA, &AR[rp1][0], AR[r][0], EXP_H3210,  BR[r][2][1], EXP_H3210, BR[r][0][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[rp1][1], AR[r][1], EXP_H3210,  BR[r][2][1], EXP_H3210, BR[r][0][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[rp1][2], AR[r][2], EXP_H3210,  BR[r][2][1], EXP_H3210, BR[r][1][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FMA, &AR[rp1][3], AR[r][3], EXP_H3210,  BR[r][2][1], EXP_H3210, BR[r][1][0], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL)
+
+#define sgemm00_final(r, rp1) \
+  exe(OP_CMP_LT,   &cc1, cofs, EXP_H3210, cofslimit1, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_CMP_LT,   &cc2, cofs, EXP_H3210, cofslimit2, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_CMP_LT,   &cc3, cofs, EXP_H3210, cofslimit3, EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  mop(OP_LDWR,   1, &BR[rp1][0][1],  (Ull)c00[CHIP], (Ull)oofs, MSK_W0, (Ull)c0[CHIP], Clen, 0, 1, (Ull)NULL, Clen);\
+  mop(OP_LDWR,   1, &BR[rp1][1][1],  (Ull)c01[CHIP], (Ull)oofs, MSK_W0, (Ull)c0[CHIP], Clen, 0, 1, (Ull)NULL, Clen);\
+  mop(OP_LDWR,   1, &BR[rp1][2][1],  (Ull)c02[CHIP], (Ull)oofs, MSK_W0, (Ull)c0[CHIP], Clen, 0, 1, (Ull)NULL, Clen);\
+  mop(OP_LDWR,   1, &BR[rp1][3][1],  (Ull)c03[CHIP], (Ull)oofs, MSK_W0, (Ull)c0[CHIP], Clen, 0, 1, (Ull)NULL, Clen);\
+  exe(OP_FAD, &AR[rp1][0], AR[r][0], EXP_H3210,  BR[rp1][0][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[rp1][1], AR[r][1], EXP_H3210,  BR[rp1][1][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[rp1][2], AR[r][2], EXP_H3210,  BR[rp1][2][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  exe(OP_FAD, &AR[rp1][3], AR[r][3], EXP_H3210,  BR[rp1][3][1], EXP_H3210, 0LL, EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);\
+  mop(OP_STWR,   1, &AR[rp1][0],     (Ull)oofs, (Ull)c00[CHIP], MSK_D0, (Ull)c0[CHIP], Clen, 0, 1, (Ull)NULL, Clen);\
+  cex(OP_CEXE,      &ex1,   0, 0, 0, cc1, 0xaaaa);\
+  mop(OP_STWR, ex1, &AR[rp1][1],     (Ull)oofs, (Ull)c01[CHIP], MSK_D0, (Ull)c0[CHIP], Clen, 0, 1, (Ull)NULL, Clen);\
+  cex(OP_CEXE,      &ex2,   0, 0, 0, cc2, 0xaaaa);\
+  mop(OP_STWR, ex2, &AR[rp1][2],     (Ull)oofs, (Ull)c02[CHIP], MSK_D0, (Ull)c0[CHIP], Clen, 0, 1, (Ull)NULL, Clen);\
+  cex(OP_CEXE,      &ex3,   0, 0, 0, cc3, 0xaaaa);\
+  mop(OP_STWR, ex3, &AR[rp1][3],     (Ull)oofs, (Ull)c03[CHIP], MSK_D0, (Ull)c0[CHIP], Clen, 0, 1, (Ull)NULL, Clen)
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+#define back_g_ker_core1(b, o, i) \
+  exe(OP_CMP_LT,   &cc0[o][i],onum[o],       EXP_H3210,            OC,          EXP_H3210, 0LL,                  EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);    /* stage#1 */\
+  exe(OP_CMP_LT,   &cc1[o][i],inum[i][CHIP], EXP_H3210,            IC,          EXP_H3210, 0LL,                  EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);    /* stage#1 */\
+  mop(OP_LDWR,  1, &BR[b][1][1],             (Ull)op0[o],          oofs,        MSK_W0,    (Ull)ot0[o],          Mlen,      0,      0,   NULL,   Mlen);   /* stage#2 */\
+  mop(OP_LDWR,  1, &BR[b][2][1],             (Ull)ip0[i][CHIP],    iofs,        MSK_W1,    (Ull)it0[i][CHIP],    IMXlen,    0,      0,   NULL,   IMXlen); /* stage#2 */\
+  exe(OP_NOP,      &AR[b][0], 0LL,           EXP_H3210,            0LL,         EXP_H3210, 0LL,                  EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);    /* stage#2 */\
+  mop(OP_LDWR,  1, &b00,                     (Ull)kp0[o][i][CHIP], 0LL,         MSK_W0,    (Ull)kp0[o][i][CHIP], 1LL,       0,      1,   NULL,   1LL);    /* stage#2 */\
+  exe(OP_FMA,      &b00,      b00,           EXP_H3210,            BR[b][2][1], EXP_H3210, BR[b][1][1],          EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL);    /* stage#2 */\
+  cex(OP_CEXE,     &ex0, 0, 0, cc1[o][i], cc0[o][i], 0x8888);                                                                                             /* stage#2 */\
+  mop(OP_STWR,ex0, &b00,                     (Ull)kp0[o][i][CHIP], 0LL,         MSK_D0,    (Ull)kp0[o][i][CHIP], 1LL,       0,      1,   NULL,   1LL)     /* stage#2 */
+----------------------------------------------------------------
+メモリ参照/演算パターン: (d)固定アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\begin{screen}
+\tiny
+\begin{verbatim}
+  mop(OP_LDWR,  1, &BR[2][0][1],                   (Ull)op0[0], oofs,          MSK_W1,    (Ull)ot0[0], Mlen,      0,      0,              NULL,   Mlen);  /* stage#2 */
+  exe(OP_FML,      &AR[3][0],    kp0[0][0][CHIP],  EXP_H3210,   BR[2][0][1],   EXP_H3210, 0LL,         EXP_H3210, OP_NOP, 0LL,            OP_NOP, 0LL);   /* stage#3 */
+
+#define back_in_core1(b, bp1, o, i) \
+  mop(OP_LDWR,  1, &BR[b][0][1],          (Ull)op0[o], oofs,            MSK_W1,    (Ull)ot0[o], Mlen,      0,      0,   NULL,   Mlen); /* stage#2 */\
+  exe(OP_FMA,      &AR[bp1][0], AR[b][0], EXP_H3210,   kp0[o][i][CHIP], EXP_H3210, BR[b][0][1], EXP_H3210, OP_NOP, 0LL, OP_NOP, 0LL)   /* stage#3 */
+
+#define back_in_final(b, bp2, i) \
+  exe(OP_ADD,      &r10,      cofs,       EXP_H3210,         x4,                EXP_H3210, 0LL,               EXP_H3210, OP_AND, 0x00000000ffffffffLL, OP_NOP, 0LL);  \
+  exe(OP_CMP_LT,   &cc0,      r10,        EXP_H3210,         IM4,               EXP_H3210, 0LL,               EXP_H3210, OP_NOP, 0LL,                  OP_NOP, 0LL);  \
+  mop(OP_LDWR,  1, &BR[bp2][0][1],        (Ull)ip0[i][CHIP], iofs,              MSK_W0,    (Ull)it0[i][CHIP], IMlen,     0,      1,                    NULL,   IMlen);\
+  exe(OP_FAD,      &AR[bp2][0], AR[b][0], EXP_H3210,         BR[bp2][0][1],     EXP_H3210, 0LL,               EXP_H3210, OP_NOP, 0LL,                  OP_NOP, 0LL);  \
+  cex(OP_CEXE,     &ex0, 0, 0, 0, cc0, 0xaaaa);                                                                                                                       \
+  mop(OP_STWR,ex0, &AR[bp2][0],           iofs,              (Ull)ip0[i][CHIP], MSK_D0,    (Ull)it0[i][CHIP], IMlen,     0,      1,                    NULL,   IMlen)
+----------------------------------------------------------------
+メモリ参照/演算パターン: (b)離散ランダム参照計算，(c)連続アドレス累算計算
+\end{verbatim}
+\end{screen}
+
+\clearpage
+
+\section{Compilation of IMAX}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{pbl1-1.eps}
+\caption{Compilation step1}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{pbl1-2.eps}
+\caption{Compilation step2}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{pbl1-3.eps}
+\caption{Compilation step3}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{pbl1-4.eps}
+\caption{Compilation step4}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{pbl1-5.eps}
+\caption{Compilation step5}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{pbl1-6.eps}
+\caption{Compilation step6}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{pbl1-7.eps}
+\caption{Compilation step7}
+\end{figure}
+
+\clearpage
+
+\section{References}
+
+This chapter lists related specifications, standards, references, related source programs, and tool chains.
+
+\begin{itemize}
+\parskip 0pc \itemsep 0pc
+\item EMAX5 Basic patent                                           \dotfill proj-arm64/doc/pat35.tgz
+\item IMAX Basic patent                                            \dotfill proj-arm64/doc/pat36.tgz
+\parskip 0pc \itemsep 0pc
+\item ARMv8 Architecture specification                             \dotfill proj-arm64/doc/arm/DDI0487A\_f\_armv8\_arm.pdf
+\item ARM Cortex-A53 MPCore Processor Technical Reference Manual\\ \dotfill proj-arm64/doc/arm/ARM-CORTEX-A53\_R0P4.pdf
+\item ZYNQ Ultrascale+ SoC Technical Reference Manual\\            \dotfill proj-board/zcu102/doc/ug1085-zynq-ultrascale-trm.pdf
+\item AMBA AXI4 and ACE Protocol Specification                     \dotfill proj-arm64/doc/arm/AXI4\_specification.pdf
+\item FMC cable diagram                                            \dotfill proj-arm64/doc/sansei/FMCケーブル基板回路図.pdf
+\item FMC cable connection                                         \dotfill proj-arm64/doc/sansei/FMCケーブル接続.xlsx
+\item IMAX Handbook                                                \dotfill proj-arm64/doc/emax6/emax6.pdf
+\item IMAX Preprocessor                                            \dotfill proj-arm64/src/conv-c2c/conv-c2c
+\item IMAX SImulator                                               \dotfill proj-arm64/src/csim/csim
+\item Example(FFT)                                                 \dotfill proj-arm64/sample/fft/fourierf.c
+\item Example(SORT)                                                \dotfill proj-arm64/sample/sort/sort-merge.c
+\item Example(String search)                                       \dotfill proj-arm64/sample/stringsearch/pbmsrch+rmm.c
+\item Example(16x16 convolution)                                   \dotfill proj-arm64/sample/conv16/conv16.c
+\item Example(VBGMM)                                               \dotfill proj-arm64/sample/test/test016.c
+\item Example(Stochastic matrix multiplication)                    \dotfill proj-arm64/sample/test/test021.c
+\item Example(Sparse matrix multiplication)                        \dotfill proj-arm64/sample/test/test022.c
+\item Example(Sparse matrix compression)                           \dotfill proj-arm64/sample/test/test024.c
+\item Example(Image filters)                                       \dotfill proj-arm64/sample/filter/filter+rmm.c
+\item Example(Floating point stencil)                              \dotfill proj-arm64/sample/stencil/stencil+rmm.c
+\item Example(3x3 cnn)                                             \dotfill proj-arm64/sample/mm\_cnn\_if/cnn+rmm.c
+\item Example(MM)                                                  \dotfill proj-arm64/sample/mm\_cnn\_if/mm+rmm.c
+\item Example(Inverse matrix）                                     \dotfill proj-arm64/sample/mm\_cnn\_if/inv+rmm.c
+\item Example(Lightfield rendering)                                \dotfill proj-arm64/sample/mm\_cnn\_if/gather+rmm.c
+\item Example(Lightfield depth map)                                \dotfill proj-arm64/sample/mm\_cnn\_if/gdepth+rmm.c
+\item Example(Graph processing on EMAX5)                           \dotfill proj-arm64/sample/tricount8/tricount.c
+\item Example(Graph processing on IMAX2)                           \dotfill proj-arm64/sample/tricount9/tricount.c
+\item Example(Image recognition)                                   \dotfill proj-arm64/sample/rsim/imax.c
+\item Example(Image recognition+stochastic ALU)                    \dotfill proj-arm64/sample/ssim/smax.c
+\item Example(SHA256)                                              \dotfill proj-arm64/sample/crypto/sha256.c
+\end{itemize}
+
+\clearpage
+
+\section{Publications}
+
+\begin{enumerate}
+\parskip 0pc \itemsep 0pc
+\item◆稲益秀成, 船井遼太郎, 中島康彦:
+  "リニアアレイ型CGRAの高速コンパイルを利用したJIT実行環境の開発",
+  電子情報通信学会論文誌D, Vol.J105-D, No.12, Dec. (2022)
+\item◇中島康彦:
+  "CGRAのJITコンパイル化と高機能化の魔法教えます",
+  回路とシステムワークショップ招待講演, Aug. (2022)
+\item・赤部知也,中島康彦:
+  "主記憶帯域使用率向上のためのCGRAタンデム化",
+  信学技報, vol.122, no.133, CPSY2022-16, pp.89-92, Jul. (2022)
+\item◆Tomoya Akabe, Hidenari Inamasu, Renyuan Zhang and Yasuhiko Nakashima:
+  "Fusion of Multiple Core and Just-in-Time Compilable CGRA",
+  IEEE Symposium on Low-Power and High-Speed Chips 2022 (poster), Apr. (2022)
+\item◆Ryotaro Funai, Hidenari Inamasu, Renyuan Zhang and Yasuhiko Nakashima:
+  "Evaluation of IMAX2 with Sparse Matrix-matrix Multiplication Units",
+  IEEE Symposium on Low-Power and High-Speed Chips 2022 (poster), Apr. (2022)
+\item・船井遼太朗, 張任遠, 中島康彦:
+  "IMAX2を用いた高効率な疎行列-疎行列積の実装",
+  信学技報, vol.121, no.343, CPSY2021-25, pp.38-42, Jan. (2022)
+\item◇中島康彦:
+  "非ノイマン型の世界 -CGRAを含む最近の研究紹介-",
+  JEITAデバイス技術分科会招待講演, Nov. (2021)
+\item◆Tomoya Akabe, Renyuan Zhang, and Y. Nakashima:
+  "Speeding Up of CGRAs by Reshaping and Stochastic FMA",
+  CANDAR'21, SUSCW (Sustainable Computing Systems) workshop, Nov. (2021)
+\item◆【Best Student Paper Award】Tran Thi Diem and Yasuhiko Nakashima:
+  "Exploring Versatility of Primary Visual Cortex Inspired Feature Extraction Hardware Model through Various Network Architectures",
+  4th International Conference on Computing, Electronics \& Communications Engineering, iCCECE '21, Aug. (2021)
+\item・赤部知也,中島康彦:
+  "シストリックアレイ向け確率的コンピューティングの予備評価",
+  信学技報, vol.121, no.116, CPSY2021-9, pp.49-52, Jul. (2021)
+\item◇Yasuhiko Nakashima:
+  "IMAX2: A CGRA with FPU+Multithreading+Chiplet",
+  Panel: Coarse-Grained Reconfigurable Arrays and their Opportunities as
+  Application Accelerators, ASAP2021, invited panel, Jul. (2021)
+\item◇Tomoya Akabe and Hidenari Inamasu:
+  "IMAX2: A CGRA with FPU+Multithreading+Chiplet",
+  ASAP2021 poster, Jul. (2021)
+\item◆Tran Thi Diem and Yasuhiko Nakashima:
+  "SLIT: An Energy-Efficient Reconfigurable Hardware Architecture for Deep Convolutional Neural Networks",
+  IEICE Trans., Vol.E104-C, No.7, pp.319-329, Jul. (2021)
+\item◆【Featured Poster Award】Tomoya Akabe, Mutsumi Kimura, Yasuhiko Nakashima:
+  "Evaluation of Narrow Bit-Width Variation for Training Neural Networks",
+  IEEE Symposium on Low-Power and High-Speed Chips 2021 (poster), Apr. (2021)
+\item・中島康彦:
+  "IMAX2: GTHの8レーン化を契機とするIMAXの倍速化",
+  信学技報, vol.120, no.338, CPSY2020-27, pp.31-34, Jan. (2021)
+\item・稲益秀成,中島康彦:
+  "シストリックリングアレイ(IMAX2)を用いた高効率誤差逆伝搬の実装",
+  信学技報, vol.120, no.338, CPSY2020-28, pp.35-39, Jan. (2021)
+\item◆Taku Honda, Hiroki Nishimoto, Yasuhiko Nakashima:
+  "Speeding Up VBGMM By Using Logsumexp With the Approximate Exp-function",
+  CANDAR'20, poster, Nov. (2020)
+\item◆【Best Paper Award】Tran Thi Diem, Mutsumi Kimura and Yasuhiko Nakashima:
+  "Primary Visual Cortex Inspired Feature Extraction Hardware Model",
+  SigTelCom2020, Aug. (2020)
+\item◇中島康彦:
+  "好きなことを靭やかに頑固に素早く",
+  情報・システムソサイエティ誌 フェローからのメッセージ, Vol.25, No.2, pp.19-20, Aug. (2020)
+\item◆Jun Iwamoto, Yuma Kikutani, Renyuan Zhang and Yasuhiko Nakashima:
+  "Daisy-chained Systolic Array and Reconfigurable Memory Space for Narrow Memory Bandwidth",
+  IEICE Trans., Vol.E103-D, No.03, pp.578-589, Mar. (2020)
+\item・中島康彦:
+  "動画認識フロントエンドを想定した特徴抽出専用ハードウェアの構想",
+  信学技報, vol.119, no.372, CPSY2019-75, pp.147-150, Jan. (2020)
+\item◆Jun Iwamoto, Renyuan Zhang and Yasuhiko Nakashima:
+  "Evaluation of a Chained Systolic Array with High-Speed Links",
+  Proc. 7'th Int'l Workshop on Computer Systems and Architectures(CSA19), Nov. (2019)
+\item・本田卓, 岩本淳, 中島康彦:
+  "リニアアレイによる逆行列計算の高速化手法と評価",
+  情報処理学会研究報告, Vol.2019-ARC-237, No.15, Jul. (2019)
+\item◆Takahiro ICHIKURA, Yuma KIKUTANI, and Yasuhiko NAKASHIMA:
+  "DSA並みの効率を達成するCNNs拡張機能付きCGRAの提案と評価",
+  "A Proposal and Evaluation of a CGRA with CNNs Extension for Near Efficiency to DSA",
+  IEICE Trans., Vol.J102-D, No.07, pp.477-490, Jul. (2019)
+\item・中島康彦:
+  "CGLAにおける高速コンパイルとチューニングのためのアーキテクチャ支援",
+  信学技報, vol.119, no.76, CPSY2019-9, pp.71-76, Jun. (2019)
+\item◆【Outstanding Originality Award】Jun IWAMOTO, Yuma KIKUTANI, Renyuan ZHANG, and Yasuhiko NAKASHIMA:
+  "CGRA Cascading for Narrow Memory Bandwidth and Low Cost",
+  xSIG 2019: The 3rd. cross-disciplinary Workshop on Computing Systems, Infrastructures, and Programming, May. (2019)
+\item◇Yasuhiko Nakashima:
+  "Systolic Arrays as The Last Frontiers",
+  Invited talk in IPB Seminar and UI seminar @ Indonesia, Jan. (2019)
+\item◇中島康彦:
+  "AI専用ハードを横目に見ながらやるべきこと",
+  信学技報, vol.118, no.339, CPSY2018-37, pp.3-8, Dec. (2018)
+\item・岩本淳, 菊谷雄真, 中島康彦:
+  "ユニット内フィードバックによるリニアアレイの多重ループ対応手法",
+  信学技報, vol.118, no.339, CPSY2018-40, pp.33-38, Dec. (2018)
+\item◇中島康彦:
+  "ソザイエティ人図鑑N0.22 中島康彦さん (CPSY研究会)",
+  情報・システムソサイエティ誌, Vol.23, No.2, pp.4-7, Oct. (2018)
+\item◇Yasuhiko Nakashima:
+  "The End of Normal Computing Era -The Opportunity of Next Generation Computing-",
+  Invited speech in YNU-NAIST Summer Workshop @ Yunnan Univ., Jul. (2018)
+\item◆Takahiro Ichikura, Ryusuke Yamano, Yuma Kikutani, Renyuan Zhang, and Yasuhiko Nakashima:
+  "EMAXVR: A Programmable Accelerator Employing Near ALU Utilization to DSA",
+  IEEE Symposium on Low-Power and High-Speed Chips 2018, Apr. (2018)
+\item◇Yasuhiko Nakashima:
+  "The End of Normal-computing Era. The Opportunity of Next Computations",
+  International Workshop on Frontiers in Computing Systems and Wireless Communications (FOSCOM 2018), Mar. (2018)
+\item・【電子情報通信学会関西支部学生会研究発表講演会奨励賞】菊谷雄真, 山野龍佑, 一倉孝宏, 中島康彦:
+  "エッジコンピューティング向けアクセラレータの実装と評価",
+  電子情報通信学会関西支部第23回研究発表講演会, Mar. (2018)
+\item・菊谷雄真, 山野龍佑, 一倉孝宏, 中島康彦:
+  "時分割多重実行型シストリックリングの実装と評価",
+  信学技報, vol.117, no.378, CPSY2017-111, pp.31-36, Jan. (2018)
+\item◇中島康彦:
+  "Approximate Computingとシストリックアレイ",
+  ジスクソフト技術講演会, Dec. (2017)
+\item◇中島康彦:
+  "Deep Learningに向けたApproximate Computingとシストリックアレイアーキテクチャ",
+  革新的コンピューティングの研究開発戦略検討会, JST, Jul. (2017)
+\item◇中島康彦:
+  "GoogleのTPUにも使われたシストリックアレイアーキテクチャとDeep Learningについて",
+  富士通研究所技術講演会, Jul. (2017)
+\item・福岡久和, 山野龍佑, 中島康彦:
+  "各種FPGAによる畳み込み演算向けシストリックリングの実装と評価",
+  CPSY研究会, 2017-05-23, May. (2017)
+\item・山野龍佑, 中島康彦:
+  "時分割多重実行によるシストリックリングの面積効率向上手法",
+  信学技報, vol.117, no.44, CPSY2017-6, pp.27-32, May. (2017)
+\item◇中島康彦:
+  "99%メモリなアクセラレータIMAX(In Memory Accelerator eXtension)",
+  CAE計算環境研究会@関西シスラボ 第8回シンポジウム, Mar. (2017)
+\item・一倉孝宏, 山野龍佑, 福岡久和, 中島康彦:
+  "DCNNに最適なCGRAの探索と予備評価",
+  信学技報, vol.116, no.416, CPSY2016-114, pp.49-54, Jan. (2017)
+\item◆Yuttakon YUTTAKONKIT, Shinya TAKAMAEDA-YAMAZAKI and Yasuhiko NAKASHIMA:
+  "Performance Comparison of CGRA and Mobile GPU for Light-field Image Processing",
+  CANDAR'16, REGULAR PAPER, pp.174-180, Nov. (2016)
+\item・中島康彦:
+  "EMAXVにおける複数バースト転送と複数ベクトル演算のオーバラップ手法",
+  信学技報, CPSY2016-15, pp.71-76, Aug. (2016)
+\item・中島康彦:
+  "アルゴリズム記述とCGRA実装を統合するC言語フレームワーク",
+  信学技報, vol.115, no.342, CPSY2015-65, pp.21-26, Dec. (2015)
+\item・竹内昌平, TRAN Thi Hong, 高前田伸也, 中島康彦:
+  "低消費電力CGRA EMAXのZynqを用いた実機評価",
+  信学技報, vol.115, no.243, CPSY2015-51, pp.39-41, Oct. (2015)
+\item◆Shohei Takeuchi, Yuttakon Yuttakonkit, Shinya Takamaeda, Yasuhiko Nakashima:
+  "A Distributed Memory Based Embedded CGRA for Accelerating Stencil Computations",
+  Proc. 3rd Int'l Workshop on Computer Systems and Architectures(CSA15), pp.378-384, Dec. (2015)
+\item・Yuttakon Yuttakonkit, Tran Thi Hong, Shinya Takamaeda-Yamazaki, Yasuhiko Nakashima:
+  "Design Space Exploration of Computational Photography Accelerator",
+  信学技報CPSY2015-17 SwoPP論文集, pp.7-12, Aug. (2015)
+\item・竹内昌平, Tran Thi Hong, 高前田伸也, 中島康彦:
+  "Zynqを用いたARM-EMAX密結合アクセラレータの評価",
+  信学技報CPSY2015-19 SwoPP論文集, pp.47-52, Aug. (2015)
+\item◆Yoshikazu Inagaki, Shinya Takamaeda-Yamazaki, Jun Yao, Yasuhiko Nakashima:
+  "Performance Evaluation of a 3D-Stencil Library for Distributed Memory Array Accelerators",
+  IEICE Trans., Vol.E98-D, No.12, pp.2141-2149, Dec. (2015)
+\item◆Masakazu Tanomoto, Shinya Takamaeda-Yamazaki, Jun Yao, Yasuhiko Nakashima:
+  "A CGRA-based Approach for Accelerating Convolutional Neural Networks",
+   9th IEEE International Symposium on Embedded Multicore/Many-core Systems-on-Chip (MCSoC-15) Turin, Italy, Sep.23-25, (2015)
+\item・竹内昌平, TRAN Thi Hong, 高前田伸也, 中島康彦:
+  "グラフ処理向けCGRA in Cacheの提案",
+  信学技報CPSY2015-7, pp.37-41, Apr. (2015)
+\item◆【IEEE Symposium on Low-Power and High-Speed Chips 2015 Featured Poster Award】Shohei Takeuchi, Thi Hong Tran, Shinya Takamaeda, Yasuhiko Nakashima:
+  "A Parameterized Many Core Simulator for Design Space Exploration",
+  IEEE Symposium on Low-Power and High-Speed Chips 2015 (poster), Apr. (2015)
+\item◆Jun Yao, Yasuhiko Nakashima, Kazutoshi Kobayashi, Makoto Ikeda, Wei Xue, Tomohiro Fujiwara, Ryo Shimizu, Masakazu Tanomoto, Yangtong Xu, Xinliang Wang, Weimin Zheng:
+  "XStenciler: a 7.1GFLOPS/W 16-Core Coprocessor with a Ring Structure for Stencil Applications",
+  IEEE Symposium on Low-Power and High-Speed Chips 2015 (poster), Apr. (2015)
+\item・竹内昌平, 高前田(山崎)伸也, 姚駿, 中島康彦:
+  "次世代アプリケーションのための包括的なアーキテクチャ探索環境の検討",
+  信学技報CPSY2014-89, pp.25-27, Dec. (2014)
+\item・紅林修斗, 高前田伸也, 姚駿, 中島康彦:
+  "最短経路探索の並列化と各種プラットホームによる性能比較",
+  信学技報CPSY2014-74, pp.13-18, Nov. (2014)
+\item・清水怜, 田ノ元正和, 高前田(山崎)伸也, 姚駿, 中島康彦:
+  "メモリネットワークベースアクセラレータの試作と評価",
+  信学技報CPSY2014-81, pp.51-56, Nov. (2014)
+\item・田ノ元正和, 高前田(山崎)伸也, 姚駿, 中島康彦:
+  "メモリネットワークベースアクセラレータを用いた畳み込みニューラルネットワーク処理",
+  信学技報CPSY2014-82, pp.57-62, Nov. (2014)
+\item◆Jun Yao, Mitsutoshi Saito, Shogo Okada, Kazutoshi Kobayashi, and Yasuhiko Nakashima:
+  "EReLA: a Low-Power Reliable Coarse-Grained Reconfigurable Architecture Processor and Its Irradiation Tests",
+  IEEE Transactions on Nuclear Science, Vol.61, No.6, pp.3250-3257, DOI=10.1109/TNS.2014.2367541, Dec. (2014)
+\item◆Jun Yao, Yasuhiko Nakashima, Mitsutoshi Saito, Yohei Hazama, Ryosuke Yamanaka:
+  "A Flexible, Self-Tuning, Fault-Tolerant Functional Unit Array Processor",
+  IEEE Micro, pp.54-63, Issue 6, Dec. (2014)
+\item◆Yoshikazu Inagaki, Shinya Takamaeda-Yamazaki, Jun Yao, Yasuhiko Nakashima:
+  "Performance Evaluation of a 3D-Stencil Library for Distributed Memory Array Accelerators",
+  Proc. 2nd Int'l Workshop on Computer Systems and Architectures (CSA'14), held in conjunction with CANDAR'14, Shizuoka, Japan, pp.388-393, Dec. (2014)
+\item・清水怜，高前田(山崎)伸也，姚駿，中島康彦:
+  "メモリインテンシブアレイアクセラレータを用いた高性能グラフ処理",
+  信学技報CPSY2014-11, pp.7-12, Jul. (2014)
+\item◆Jun YAO, Yasuhiko NAKASHIMA, Naveen DEVISETTI, Kazuhiro YOSHIMURA, Takashi NAKADA:
+  "A Tightly Coupled General Purpose Reconfigurable Accelerator LAPP and Its Power States for HotSpot-Based Energy Reduction",
+  IEICE Trans., Vol.E97-D, No.12, pp.3092-3100, Dec. (2014)
+\item◆Yukihiro SASAGAWA, Jun YAO, Yasuhiko NAKASHIMA:
+  "Understanding Variations for Better Adjusting Parallel Supplemental Redundant Executions to Tolerate Timing Faults",
+  IEICE Trans., Vol.J97-D, No.12, pp.3083-3091, Dec. (2014)
+\item◆Tanvir Ahmed, Jun Yao, and Yasuhiko Nakashima:
+  "A Two-Order Increase in Robustness of Partial Redundancy Under a Radiation Stress Test by Using SDC Prediction",
+  IEEE Transactions on Nuclear Science, Vol.61, Issue.4, pp.1567-1574, DOI=10.1109/TNS.2014.2314691, Aug. (2014)
+\item◆Jun Yao, Mitsutoshi Saito, Shogo Okada, Kazutoshi Kobayashi, and Yasuhiko Nakashima:
+  "EReLA: a Low-Power Reliable Coarse-Grained Reconfigurable Architecture Processor and Its Irradiation Tests",
+  IEEE Nuclear and Space Radiation Effects Conference 2014 (poster), Jul. (2014)
+\item◆Shuto Kurebayashi, Jun Yao, Yasuhiko Nakashima:
+  "A Pipelined Newton-Raphson Method for Floating Point Division and Square Root on Distribted Memory CGRAs",
+  IEEE Symposium on Low-Power and High-Speed Chips 2014 (poster), Apr. (2014)
+\item◆Jun Yao, Yasuhiko Nakashima, Mitsutoshi Saito, Yohei Hazama, Ryosuke Yamanaka:
+  "A Flexibly Fault-Tolerant FU Array Processor and its Self-Tuning Scheme to Locate Permanently Defective Unit",
+  IEEE Symposium on Low-Power and High-Speed Chips 2014, Apr. (2014)
+\item・林大地, 藤原知広, 姚駿, 中島康彦:
+  "演算器アレイ型アクセラレータへのメモリインテンシブなアプリケーションの写像と性能評価",
+  情報処理学会研究報告, 計算機アーキテクチャ研究会報告, 2014-ARC-208(17), 1-5, Jan. (2014)
+\item・楠田浩平, 姚駿, 中島康彦:
+  "メモリ分散型アレイアクセラレータのための命令生成手法の開発と評価",
+  情報処理学会研究報告, 計算機アーキテクチャ研究会報告, 2014-ARC-208(16), 1-7, Jan. (2014)
+\item◆Tanvir AHMED, Jun YAO, and Yasuhiko NAKASHIMA:
+  "A Two-Order Increase in Robustness of Partial Redundancy Under Radiation Stress Test by Using SDC Prediction",
+  In 2013 IEEE Conference on Radiation Effects on Components and Systems (RADECS), C-7, pp.1-7, Sep. (2013)
+\item・稲垣慶和, 原祐子, 姚駿,中島康彦:
+  "リング型アレイアクセレータ向け演算ライブラリの実装と性能評価",
+  研究報告計算機アーキテクチャ（ARC）, 2013-ARC-206, No.1, pp.1-6, Jul. (2013)
+\item・林大地, 関賀, 原祐子, 姚駿,中島康彦:
+  "メモリ分散型アレイアクセラレータの浮動小数点演算に関する性能考察",
+  研究報告計算機アーキテクチャ（ARC）, 2013-ARC-206, No.8, pp.1-6, Jul. (2013)
+\item・藤原知広, 姚駿, 原祐子, 中島康彦:
+  "リング型アレイアクセラレータのマクロパイプライン化による性能見積もり",
+  研究報告計算機アーキテクチャ（ARC）, 2013-ARC-206, No.14, pp1-6, Jul. (2013)
+\item◆Tanvir AHMED, Jun YAO, Yuko HARA-AZUMI, Shigeru YAMASHITA, and Yasuhiko NAKASHIMA:
+  "Selective Check of Data-Path for Effective Fault Tolerance",
+  IEICE Trans., Vol.J96-D, No.8, pp.1592-1601, Aug. (2013)
+\item◆Wei Wang, Jun Yao, Youhui Zhang, Wei Xue, Yasuhiko Nakashima, and Weimin Zheng:
+  "HW/SW Approaches to Accelerate GRAPES in an FU Array",
+  IEEE Symposium on Low-Power and High-Speed Chips 2013, Apr. (2013)
+\item◆大上俊, 姚駿, 中島康彦:
+  "演算器アレイにおける高信頼化命令写像手法",
+  IEICE Trans., Vol.J96-D, No.3, pp.472-483, Mar. (2013)
+\item◇中島康彦:
+  "LSI化に繋がるシミュレータ開発手法と設計事例",
+  計算機アーキテクチャ研究会, Mar. (2013)
+\item・王昊，姚駿，中島康彦:
+  "GCCのvectorizerを利用した演算器アレイ向け命令変換手法",
+  研究報告計算機アーキテクチャ(ARC), 2013-ARC-203 No.9, Feb. (2013)
+\item・関賀，姚駿，中島康彦:
+  "リング接続を利用しデータ移動を最小限にするアクセラレータの提案",
+  研究報告システムLSI設計技術（SLDM）SIG Technical Reports, 2013-SLDM-159, Vol.17, pp.1-6, Jan. (2013)
+\item・山中良祐, 姚駿, 中島康彦:
+  "セレクタ部に着目した演算器アレイ型アクセラレータの高信頼化手法",
+  信学技報CPSY2012-13 SwoPP論文集, pp.25-30, Aug. (2012)
+\item・Tanvir Ahmed, Jun Yao, Yasuhiko Nakashima:
+  "Achieving Near-Optimal Dependability with Minimal Hardware Costs in an FU Array Pro-cessor by Soft Error Rate Monitoring",
+  研究報告計算機アーキテクチャ（ARC）,2012-ARC-201(4),1-6, Aug. (2012)
+\item・大谷友哉, Tanvir Ahmed, 姚駿, 中島康彦:
+  "演算器アレイにおける冗長化オーバヘッドの少ない高信頼化手法の提案",
+  研究報告計算機アーキテクチャ（ARC）,2012-ARC-201(19),1-6, Aug. (2012)
+\item◆Yukihiro SASAGAWA, Jun YAO, Takashi NAKADA, Yasuhiko NAKASHIMA:
+  "RazorProtector: Maintaining Razor DVS Efficiency in Large IR-drop Zones by an Adaptive Redundant Data-Path",
+  IEICE Trans. on VLSI Design and CAD Algorithms, Vol.E95-A, No.12, pp.2319-2329, Dec. (2012)
+\item◆Tanvir Ahmed, Jun Yao, Yasuhiko Nakashima:
+  "Introducing OVP Awareness to Achieve an Efficient Permanent Defect Locating",
+  NANOARCH 2012, pp.43-49, Netherlands, Jul. (2012)
+\item・YAO Jun，NAKASHIMA Yasuhiko:
+  "Deep DVS in FU array by Covering Process Variations with Data-Path Auto-fix",
+  研究報告計算機アーキテクチャ（ARC）, Vol.2012-ARC-200, No.18, pp.1-9, May. (2012)
+\item◆齊藤光俊, 下岡俊介, Devisetti Venkatarama Naveen, 大上俊, 吉村和浩, 姚駿, 中田尚, 中島康彦:
+  "線形演算器アレイ型アクセラレータを備えた高電力効率プロセッサの開発",
+  電子情報通信学会論文誌D, Vol.J95-D, No.9, pp.1729-1737, Sep. (2012)
+\item◆岩上拓矢, 吉村和浩, 中田尚, 中島康彦:
+  "時分割実行機構による演算器アレイ型アクセラレータの効率化",
+  情報処理学会論文誌コンピューティングシステム, ACS39, Vol.5, No.4, pp.13-23, Aug. (2012)
+\item◆吉村和浩, 中田尚, 中島康彦, 北村俊明:
+  "異種命令セットアーキテクチャを持つ高電力効率SMT プロセッサの開発",
+  電子情報通信学会論文誌D, Vol.J95-D, No.6, pp.1334-1346, Jun. (2012)
+\item◆中田尚, 吉村和浩, 下岡俊介, 大上俊, Devisetti Venkatarama Naveen, 中島康彦:
+  "画像処理向け線形アレイアクセラレータの性能評価",
+  情報処理学会論文誌コンピューティングシステム, ACS38, Vol.5, No.3, pp.74-85, May. (2012)
+\item・王昊, 姚駿, 中島康彦:
+  "多様なアクセスパターンに適応するアクセラレータ向けメモリアクセス機構",
+  IPSJ SIG Notes 2012-ARC-199(15), pp.1-4, 2012-03-20, 長崎, Mar. (2012)
+\item・Tanvir Ahmed, Jun Yao and Yasuhiko Nakashima:
+  "Achieving Effective Fault Tolerance in FU array by Adding AVF Awareness",
+  IPSJ SIG Notes 2012-ARC-199(5), pp.1-4, 2012-03-20, 長崎, Mar. (2012)
+\item◆Yukihiro SASAGAWA, Jun YAO, Takashi NAKADA, Yasuhiko NAKASHIMA:
+  "Improving DVS Efficiency by Tolerating IR-drops with an Adaptive Redundant Data-Path",
+  WRA 2011 : 2nd Workshop on Resilient Architectures (in conjuction with MICRO-2011), Dec. (2011)
+\item・森高晃大, 下岡俊介, 吉村和浩, 姚駿, 中田尚, 中島康彦:
+  "大規模演算器アクセラレータのための複数FPGA連結手法",
+  IEICE technical report. Computer systems 111(328), 9-14, 2011-11-22, デザインガイア2011, Nov. (2011)
+\item・齊藤光俊, 下岡俊介, 吉村和浩, 姚駿, 中田尚, 中島康彦:
+  "演算器アレイ型アクセラレータの実装とその分析",
+  IEICE technical report. Computer systems 111(328), 9-14, 2011-11-22, デザインガイア2011, Nov. (2011)
+\item◇中島康彦:
+  "高性能・低電力・高信頼を全部満たす次世代コンピュータはこんな姿？",
+  けいはんな情報通信研究フェア2011, Nov. (2011)
+\item◇中島康彦:
+  "汎用プロセッサと相性の良い演算器アレイ型アクセラレータの構想",
+  ICD第3回アクセラレーション技術発表討論会, テーマ：アクセラレータ技術の展開を目指して, Sep. (2011)
+\item・笹川幸宏, 姚駿, 中田尚, 中島康彦:
+  "演算器の適応的冗長化による高効率DVS 方式の提案",
+  信学技報, vol.111, no.164, DC2011-15, pp.1-6, Jul. (2011)
+\item・下岡俊介, 吉村和浩, 中田尚, 中島康彦:
+  "演算器アレイ型アクセラレータにおけるローカルバッファの最適化",
+  研究報告計算機アーキテクチャ（ARC）,2011-ARC-196(18), pp.1-6, Jul. (2011)
+\item・大上俊, 吉村和浩, 姚駿, 中田尚, 中島康彦:
+  "演算器アレイにおける高信頼化命令写像手法",
+  研究報告計算機アーキテクチャ（ARC）,2011-ARC-196(19), pp.1-7, Jul. (2011)
+\item◆Naveen Devisetti, Takuya Iwakami, Kazuhiro Yoshimura, Takashi Nakada, Jun Yao, Yasuhiko Nakashima:
+  "LAPP: A Low Power Array Accelerator with Binary Compatibility",
+  HPPAC2011, pp.849-857, May. (2011)
+\item◆岩上拓矢, 吉村和浩, 中田尚, 中島康彦:
+  "仮想化機構による演算器アレイ型アクセラレータの効率化",
+  先進的計算基盤システムシンポジウムSACSIS2011論文集, pp.136-143, May. (2011)
+\item◆森浩大，大上俊，下岡俊介，吉村和浩，中田尚，中島康彦:
+  "演算器アレイ型アクセラレータのための命令変換手法",
+  先進的計算基盤システムシンポジウムSACSIS2011論文集(ポスター), 11-608, pp.207-208, May. (2011)
+\item・YAO Jun, Yasuhiko NAKASHIMA:
+  "EReLA: Exploiting Efficiency of Redundant Executions on an FU array",
+  情報処理学会研究報告, Vol.2011-ARC-194(9), pp.1-5, Mar. (2011)
+\item◆Kazuhiro YOSHIMURA, Takuya IWAKAMI, Takashi NAKADA, Jun YAO, Hajime SHIMADA and Yasuhiko NAKASHIMA:
+  "An Instruction Mapping Scheme for FU Array Accelerator",
+  IEICE Trans. on Information and Systems, Vol.E94-D, No.2, pp.286-297, Feb. (2011)
+\item◇中島康彦:
+  "プログラムモデルを維持しつつ大幅な高性能・低電力化を可能とするプロセッサアーキテクチャ",
+  第18回＜けいはんな＞新産業創出交流センターシーズフォーラム, Jan. (2011)
+\item・【電子情報通信学会集積回路研究会優秀若手研究ポスター賞】大上俊, 岩上拓矢, 吉村和浩, 中田尚, 中島康彦:
+  "アレイ型アクセラレータにおける演算器間ネットワークの設計",
+  集積回路研究会(ICD), Dec. (2010)
+\item・下岡俊介, 岩上拓矢, 吉村和浩, 中田尚, 中島康彦:
+  "演算器アレイ型アクセラレータにおけるメモリアクセス機構の設計",
+  集積回路研究会(ICD), Dec. (2010)
+\item・岩上拓矢, 吉村和浩, 森浩大, 中田尚, 中島康彦:
+  "演算器アレイを拡張する細粒度時分割機構",
+  集積回路研究会(ICD), Dec. (2010)
+\item・森浩大, 岩上拓矢, 吉村和浩, 中田尚, 中島康彦:
+  "演算器アレイ型アクセラレータのための命令変換手法の検討",
+  SWoPP2010(Vol.2010-ARC-190 No.26 2010/8/4), pp.1-6, Aug. (2010)
+\item◆岩上拓矢, 吉村和浩, 上利宗久, 中田尚, 中島康彦:
+  "プログラマビリティを備える低電力アクセラレータの提案と評価",
+  先進的計算基盤システムシンポジウムSACSIS2010論文集(poster), May. (2010)
+\item◆Takuya Iwakami, Munehisa Agari, Kazuhiro Yoshimura, Takashi Nakada, Yasuhiko Nakashima:
+ "Area Optimization of FU Array in Low-Power Accelerators",
+  IEEE Symposium on Low-Power and High-Speed Chips 2010 (poster), Apr. (2010)
+\item・吉村和浩, 上利宗久, 中田尚, 中島康彦:
+  "演算器アレイ型プロセッサのための命令スケジューラの設計と評価",
+  信学技報, Vol.109, No.474, pp.511-516, Mar. (2010)
+\item◆Kazuhiro Yoshimura, Takashi Nakada, Yasuhiko Nakashima, Toshiaki Kitamura:
+  "An Energy Efficient SMT Processor with Heterogeneous Instruction Set Architectures",
+  IASTED Int'l Conf. on Parallel and Distributed Computing and Networks (PDCN2010), pp.201-209, Feb. (2010)
+\item・中田尚, 中島康彦:
+  "線形アレイVLIWプロセッサにおける適応性検討",
+  情報処理学会研究報告, Vol.2009-ARC-186, No.10, HOKKE-17, pp.1-9, Nov. (2009)
+\item・【情報処理学会関西支部大会学生奨励賞】上利宗久, 中田尚, 中島康彦:
+  "線形アレイ型VLIWプロセッサの面積効率評価",
+  平成21年度情報処理学会関西支部大会講演論文集, A-03, Sep. (2009)
+\item◇中島康彦:
+  "グリーンコンピューターへの道〜計算の低消費電力化〜",
+  関西学研都市６大学市民講座, Oct. (2009)
+\item◆中田尚, 片岡晶人, 中島康彦:
+  "VLIW型命令キューを持つスーパースカラプロセッサの命令スケジューリング機構",
+  情報処理学会論文誌コンピューティングシステム, ACS26, Vol.2, No.2, pp.48-62, Jul. (2009)
+\item◆中田尚, 上利宗久, 中島康彦:
+  "画像処理向け線形アレイVLIWプロセッサ",
+  先進的計算基盤システムシンポジウムSACSIS2009論文集, pp.293-300, May. (2009)
+\item◆Munehisa Agari, Takashi Nakada, Yasuhiko Nakashima:
+  "A Linear Array VLIW Processor for Image Processing",
+  IEEE Symposium on Low-Power and High-Speed Chips 2009 (poster), p.153, Apr. (2009)
+\item◆Kazuhiro Yoshimura, Takashi Nakada and Yasuhiko Nakashima:
+  "An Instruction Decomposition Method for Reconfigurable Decoders",
+  IEEE International Workshop on Innovative Architecture for Future Generation High-Performance Processors and Systems (IWIA2009 post proceeding), Mar. (2009)
+\item◇中島康彦:
+  "脱マルチコアの試み −ヘテロSMT型VLIWとリニアアレイ型VLIW−",
+  情報処理学会ものづくり基盤コンピューティングシステム研究会招待講演, Mar. (2009)
+\item◇中島康彦:
+  "３−ｗａｙから９Ｎ−ｗａｙに至る最近のＶＬＩＷ研究紹介",
+  電子情報通信学会コンピュータシステム研究会招待講演, CPSY, Vol.2008 No.43-52, pp.31-36, Dec. (2008)
+\item・上利宗久, 中田尚, 中島康彦:
+  "Ｎ倍速を目指すＶＬＩＷプロセッサの構想",
+  IPSJ SIG Technical Report, 2008-ARC-180, pp21-24, Oct. (2008)
+\end{enumerate}
+
+\begin{enumerate}
+\parskip 0pc \itemsep 0pc
+\item・中島康彦, 船井遼太朗:
+  "CGRAによる演算ユニット",
+  特願2021-209979 (2021.12.23)
+\item・中島康彦:
+  "データ処理装置",
+  PCT/JP2020/025123 特願2021-527755 (2021.11.9)
+\item・中島康彦, 高前田伸也:
+  "データ処理装置（メモリ内蔵アクセラレータの構成方法）",
+  中国ZL201680019602 (2020.12.11)
+\item・中島康彦:
+  "データ処理装置（高効率アクセラレータ構成方法）",
+  PCT/JP2020/025123 (2020.6.26)
+\item・中島康彦:
+  "データ処理装置（高効率アクセラレータ構成方法）",
+  特願2019-517698 (2019.9.19)
+\item・Yasuhiko Nakashima, Shinya Takamaeda:
+  "Data processing Device",
+  United States Patent 10,275,392 (2019.4.30)
+\item・中島康彦:
+  "データ処理装置（NCHIP制御方法）",
+  特願2019-121853 (2019.6.28)
+\item・Yasuhiko Nakashima, Takashi Nakada:
+  "Data processing Device for Performing a Plurality of Calculation Processes in Parallel",
+  European Patent Application No.09820420.9 (H31.1.18)
+\item・中島康彦:
+  "データ処理装置（高効率アクセラレータ構成方法）",
+  PCT/JP2018/018169 (H30.5.10)
+\item・中島康彦:
+  "データ処理装置（高効率アクセラレータ構成方法）",
+  特願2017-96061 (H29.5.12)
+\item・Jun Yao, Yasuhiko Nakashima, Tao Wang, Wei Zhang, Zuqi Liu, Shuzhan Bi:
+  "METHOD FOR ACCESSING MEMORY OF MULTI-CORE SYSTEM, RELATED APPARATUS, SYSTEM, AND STORAGE MEDIUM",
+  PCT/CN2017/083523 (2017.5.8)
+\item・中島康彦, 高前田伸也:
+  "データ処理装置（メモリ内蔵アクセラレータの構成方法）",
+  PCT/JP2016/061302 (H28.4.6)
+\item・中島康彦, 高前田伸也:
+  "データ処理装置（メモリ内蔵アクセラレータの構成方法）",
+  特願2015-079552 (H27.4.8)
+\item・中島康彦, 姚駿:
+  "データ供給装置及びデータ処理装置",
+  PCT/JP2013/057503 (H25.3.15)
+\item・中島康彦, 姚駿:
+  "データ供給装置及びデータ処理装置",
+  特願2012-061110 (H24.3.16)
+\item・中島康彦, 中田尚:
+  "データ処理装置",
+  PCT/JP2009/005306 (H21.10.13)
+\item・中田尚, 中島康彦:
+  "データ処理装置",
+  特願2009-150788 (H21.6.25)
+\item・中島康彦, 中田尚:
+  "データ処理装置",
+  特願2008-265312 (H20.10.14)
+\end{enumerate}

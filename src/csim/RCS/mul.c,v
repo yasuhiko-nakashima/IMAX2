@@ -1,0 +1,646 @@
+head	1.15;
+access;
+symbols;
+locks
+	nakashim:1.15; strict;
+comment	@ * @;
+
+
+1.15
+date	2017.04.21.03.28.45;	author nakashim;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.09.15.14.39.41;	author nakashim;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.09.13.14.29.07;	author nakashim;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.09.13.05.15.48;	author nakashim;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.09.01.12.44.31;	author nakashim;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.09.01.09.42.33;	author nakashim;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.09.01.09.32.36;	author nakashim;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.09.01.08.04.13;	author nakashim;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.09.01.06.53.11;	author nakashim;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.09.01.06.31.00;	author nakashim;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.09.01.05.35.12;	author nakashim;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.08.31.13.41.16;	author nakashim;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.08.24.05.01.35;	author nakashim;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.08.22.04.49.36;	author nakashim;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.07.21.05.44.37;	author nakashim;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.15
+log
+@*** empty log message ***
+@
+text
+@
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/mul.c,v 1.14 2015/09/15 14:39:41 nakashim Exp nakashim $";
+
+/* ARM Instruction Simulator           */
+/*        Copyright (C) 2007 by NAIST. */
+/*         Primary writer: Y.Nakashima */
+/*                nakashim@@is.naist.jp */
+
+/* mul.c 2005/3/22 */ 
+
+#include "csim.h"
+
+insn_exec_mul(tid, rob) Uint tid; struct rob *rob;
+{
+  Uint cid = tid2cid(tid);
+  Ull  s1, s2, s3; /* source, through, middle(sft,shifter-carry), destination(alu) */
+  union {
+    Ull  ll;
+    Uint l[2];
+  } S1, S2, T[4], D[4]; /* for 128bit-multiply */
+  Ull D0;
+
+  if (rob->sr[0].t) ex_srr(tid, NULL, &s1, rob, 0);
+  if (rob->sr[1].t) ex_srr(tid, NULL, &s2, rob, 1);
+  if (rob->sr[2].t) ex_srr(tid, NULL, &s3, rob, 2);
+
+  if (rob->opcd <= 7) { /* MUL */
+    switch (rob->opcd) {
+    case 0: /* UMADDL */
+      s2 &= 0x00000000ffffffffLL;
+      s3 &= 0x00000000ffffffffLL;
+      D0 = s3 + s1 * s2;
+      break;
+    case 1: /* UMSUBL */
+      s2 &= 0x00000000ffffffffLL;
+      s3 &= 0x00000000ffffffffLL;
+      D0 = s3 - s1 * s2;
+      break;
+    case 2: /* SMADDL */
+      s2 = (Sll)(s2<<32)>>32;
+      s3 = (Sll)(s3<<32)>>32;
+      D0 = (Sll)s3 + (Sll)s1 * (Sll)s2;
+      break;
+    case 3: /* SMSUBL */
+      s2 = (Sll)(s2<<32)>>32;
+      s3 = (Sll)(s3<<32)>>32;
+      D0 = (Sll)s3 - (Sll)s1 * (Sll)s2;
+      break;
+    case 4: /* MADD */
+      D0 = s3 + s1 * s2;
+      if (!rob->dbl)
+	D0 &= 0x00000000ffffffffLL;
+      break;
+    case 5: /* MSUB */
+      D0 = s3 - s1 * s2;
+      if (!rob->dbl)
+	D0 &= 0x00000000ffffffffLL;
+      break;
+    case 6: /* SMULH */
+      /*                     T[0].l[1] T[0].l[0] */
+      /*           T[1].l[1] T[1].l[0]           */
+      /*           T[2].l[1] T[2].l[0]           */
+      /* T[3].l[1] T[3].l[0]                     */
+      /* --------------------------------------- */
+      /* D[3].l[0] D[2].l[0] D[1].l[0] D[0].l[0] */
+      /* <-------D0-------->                     */
+      S1.ll = ((Sll)s1>=0LL)? (Sll)s1 : -(Sll)s1;
+      S2.ll = ((Sll)s2>=0LL)? (Sll)s2 : -(Sll)s2;
+      T[0].ll = (Ull)S1.l[0] * (Ull)S2.l[0];
+      T[1].ll = (Ull)S1.l[1] * (Ull)S2.l[0];
+      T[2].ll = (Ull)S1.l[0] * (Ull)S2.l[1];
+      T[3].ll = (Ull)S1.l[1] * (Ull)S2.l[1];
+      D[0].ll =                                                                    (Ull)T[0].l[0];
+      D[1].ll =                  (Ull)T[2].l[0] + (Ull)T[1].l[0] + (Ull)T[0].l[1];
+      D[2].ll = (Ull)T[3].l[0] + (Ull)T[2].l[1] + (Ull)T[1].l[1] + (Ull)D[1].l[1];
+      D[3].ll = (Ull)T[3].l[1] + (Ull)D[2].l[1];
+      if (((Sll)s1>=0LL)^((Sll)s2>=0LL)) { /* invert */
+	T[0].l[0] = ~D[0].l[0];
+	T[1].l[0] = ~D[1].l[0];
+	T[2].l[0] = ~D[2].l[0];
+	T[3].l[0] = ~D[3].l[0];
+	D[0].ll = (Ull)T[0].l[0] + 1;
+	D[1].ll = (Ull)T[1].l[0] + (Ull)D[0].l[1];
+	D[2].ll = (Ull)T[2].l[0] + (Ull)D[1].l[1];
+	D[3].ll = (Ull)T[3].l[0] + (Ull)D[2].l[1];
+      }
+      D0 = ((Ull)D[3].l[0]<<32)|(Ull)D[2].l[0];
+      break;
+    case 7: /* UMULH */
+      S1.ll = (Sll)s1;
+      S2.ll = (Sll)s2;
+      T[0].ll = (Ull)S1.l[0] * (Ull)S2.l[0];
+      T[1].ll = (Ull)S1.l[1] * (Ull)S2.l[0];
+      T[2].ll = (Ull)S1.l[0] * (Ull)S2.l[1];
+      T[3].ll = (Ull)S1.l[1] * (Ull)S2.l[1];
+      D[0].ll =                                                                    (Ull)T[0].l[0];
+      D[1].ll =                  (Ull)T[2].l[0] + (Ull)T[1].l[0] + (Ull)T[0].l[1];
+      D[2].ll = (Ull)T[3].l[0] + (Ull)T[2].l[1] + (Ull)T[1].l[1] + (Ull)D[1].l[1];
+      D[3].ll = (Ull)T[3].l[1] + (Ull)D[2].l[1];
+      D0 = ((Ull)D[3].l[0]<<32)|(Ull)D[2].l[0];
+      break;
+    }
+
+    c[cid].imlpipe[0].v = 1;
+    c[cid].imlpipe[0].tid = tid;
+    c[cid].imlpipe[0].rob = rob;
+    if (rob->dr[1].t) {
+      c[cid].imlpipe[0].dr1t = 1;
+      c[cid].imlpipe[0].dr1v = D0;
+    }
+    else
+      c[cid].imlpipe[0].dr1t = 0;
+
+    return (ROB_ISSUED); /* issued */
+  }
+
+  else { /* DIV */
+    if (c[cid].divque.v)
+      return (ROB_MAPPED); /* no change */
+
+    switch (rob->opcd) {
+    case 8: /* UDIV */
+      if (!rob->dbl) {
+	s1 &= 0x00000000ffffffffLL;
+	s2 &= 0x00000000ffffffffLL;
+      }
+      if (s2)
+	D0 = s1 / s2;
+      else
+	D0 == 0LL;
+      break;
+    case 9: /* SDIV */
+      if (!rob->dbl) {
+	s2 = (Sll)(s2<<32)>>32;
+	s3 = (Sll)(s3<<32)>>32;
+      }
+      if (s2)
+	D0 = (Sll)s1 / (Sll)s2;
+      else
+	D0 == 0LL;
+      break;
+    }
+
+    c[cid].divque.v = 1;
+    c[cid].divque.t = CORE_DIVDELAY;
+    c[cid].divque.tid = tid;
+    c[cid].divque.rob = rob;
+    if (rob->dr[1].t) {
+      c[cid].divque.dr1t = 1;
+      c[cid].divque.dr1v = D0;
+    }
+    else
+      c[cid].divque.dr1t = 0;
+
+    return (ROB_ISSUED); /* issued */
+  }
+}
+@
+
+
+1.14
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.13 2015/09/13 14:29:07 nakashim Exp nakashim $";
+d11 1
+a11 1
+#include "bsim.h"
+@
+
+
+1.13
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.12 2015/09/13 05:15:48 nakashim Exp nakashim $";
+d17 5
+a21 1
+  Ull  D0;
+d27 1
+a27 1
+  if (rob->opcd <= 5) { /* MUL */
+d55 1
+a55 1
+      D0 = s3 - s1 * s1;
+d59 43
+d122 1
+a122 1
+    case 6: /* UDIV */
+d132 1
+a132 1
+    case 7: /* SDIV */
+@
+
+
+1.12
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.11 2015/09/01 12:44:31 nakashim Exp nakashim $";
+d23 45
+a67 31
+  switch (rob->opcd) {
+  case 0: /* UMADDL */
+    s2 &= 0x00000000ffffffffLL;
+    s3 &= 0x00000000ffffffffLL;
+    D0 = s3 + s1 * s2;
+    break;
+  case 1: /* UMSUBL */
+    s2 &= 0x00000000ffffffffLL;
+    s3 &= 0x00000000ffffffffLL;
+    D0 = s3 - s1 * s2;
+    break;
+  case 2: /* SMADDL */
+    s2 = (Sll)(s2<<32)>>32;
+    s3 = (Sll)(s3<<32)>>32;
+    D0 = (Sll)s3 + (Sll)s1 * (Sll)s2;
+    break;
+  case 3: /* SMSUBL */
+    s2 = (Sll)(s2<<32)>>32;
+    s3 = (Sll)(s3<<32)>>32;
+    D0 = (Sll)s3 - (Sll)s1 * (Sll)s2;
+    break;
+  case 4: /* MADD */
+    D0 = s3 + s1 * s2;
+    if (!rob->dbl)
+      D0 &= 0x00000000ffffffffLL;
+    break;
+  case 5: /* MSUB */
+    D0 = s3 - s1 * s1;
+    if (!rob->dbl)
+      D0 &= 0x00000000ffffffffLL;
+    break;
+d70 39
+a108 6
+  c[cid].imlpipe[0].v = 1;
+  c[cid].imlpipe[0].tid = tid;
+  c[cid].imlpipe[0].rob = rob;
+  if (rob->dr[1].t) {
+    c[cid].imlpipe[0].dr1t = 1;
+    c[cid].imlpipe[0].dr1v = D0;
+a109 4
+  else
+    c[cid].imlpipe[0].dr1t = 0;
+
+  return (ROB_ISSUED); /* issued */
+@
+
+
+1.11
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.10 2015/09/01 09:42:33 nakashim Exp nakashim $";
+d27 1
+a27 1
+    D0 = s1 + s2 * s3;
+d32 1
+a32 1
+    D0 = s1 - s2 * s3;
+d37 1
+a37 1
+    D0 = (Sll)s1 + (Sll)s2 * (Sll)s3;
+d42 1
+a42 1
+    D0 = (Sll)s1 - (Sll)s2 * (Sll)s3;
+d45 1
+a45 1
+    D0 = s1 + s2 * s3;
+d50 1
+a50 1
+    D0 = s1 - s2 * s3;
+@
+
+
+1.10
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.9 2015/09/01 09:32:36 nakashim Exp nakashim $";
+d16 2
+a17 3
+  Ull  s1, s2, s3, s4, sc; /* source, through, middle(sft,shifter-carry), destination(alu) */
+  Ull  T0, D0;
+  Uchar ccn, ccz, ccc, ccv;
+d20 2
+a21 2
+  if (rob->sr[1].t) ex_srr(tid, NULL, &s3, rob, 1);
+  if (rob->sr[2].t) ex_srr(tid, NULL, &s4, rob, 2);
+d25 1
+d27 1
+a27 2
+    s4 &= 0x00000000ffffffffLL;
+    D0 = s1 + s3 * s4;
+d30 1
+d32 1
+a32 2
+    s4 &= 0x00000000ffffffffLL;
+    D0 = s1 - s3 * s4;
+d35 1
+d37 1
+a37 2
+    s4 = (Sll)(s4<<32)>>32;
+    D0 = (Sll)s1 + (Sll)s3 * (Sll)s4;
+d40 1
+d42 1
+a42 2
+    s4 = (Sll)(s4<<32)>>32;
+    D0 = (Sll)s1 - (Sll)s3 * (Sll)s4;
+d45 1
+a45 1
+    D0 = s1 + s3 * s4;
+d50 1
+a50 1
+    D0 = s1 - s3 * s4;
+@
+
+
+1.9
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.8 2015/09/01 08:04:13 nakashim Exp nakashim $";
+d13 1
+a13 1
+insn_exec_mul(tid, exec, rob) Uint tid; int exec; struct rob *rob;
+a19 8
+  if (!exec) {
+    if (rob->sr[3].t) ex_srr(tid, NULL, &T0, rob, 3);
+    if (rob->sr[5].t) ex_srr(tid, NULL, &sc, rob, 5);
+    if (rob->dr[1].t) ex_drw(tid, 0LL, T0, rob, 1);
+    if (rob->dr[3].t) ex_drw(tid, 0LL, sc, rob, 3);
+    return (ROB_COMPLETE); /* compelte */
+  }
+
+@
+
+
+1.8
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.7 2015/09/01 06:53:11 nakashim Exp nakashim $";
+d21 2
+a22 2
+    if (rob->sr[3].t) T0 = ex_srr(tid, rob, 3);
+    if (rob->sr[5].t) sc = ex_srr(tid, rob, 5)>>60;
+d24 1
+a24 1
+    if (rob->dr[3].t) ex_drw(tid, 0LL, sc<<60, rob, 3);
+d28 3
+a30 3
+  if (rob->sr[0].t) s1 = ex_srr(tid, rob, 0);
+  if (rob->sr[1].t) s3 = ex_srr(tid, rob, 1);
+  if (rob->sr[2].t) s4 = ex_srr(tid, rob, 2);
+@
+
+
+1.7
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.6 2015/09/01 06:31:00 nakashim Exp nakashim $";
+d23 2
+a24 2
+    if (rob->dr[1].t) ex_drw(tid, T0, rob, 1);
+    if (rob->dr[3].t) ex_drw(tid, sc<<60, rob, 3);
+@
+
+
+1.6
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.5 2015/09/01 05:35:12 nakashim Exp nakashim $";
+d17 1
+a17 7
+  union {
+    Ull   ll;
+    struct {
+      Uint l;
+      Uint h;
+    } w;
+  } T0, D0;
+d21 1
+a21 1
+    if (rob->sr[3].t) T0.ll = ex_srr(tid, rob, 3);
+d23 1
+a23 1
+    if (rob->dr[1].t) ex_drw(tid, T0.ll, rob, 1);
+d36 1
+a36 1
+    D0.ll = s1 + s3 * s4;
+d41 1
+a41 1
+    D0.ll = s1 - s3 * s4;
+d46 1
+a46 1
+    D0.ll = (Sll)s1 + (Sll)s3 * (Sll)s4;
+d51 1
+a51 1
+    D0.ll = (Sll)s1 - (Sll)s3 * (Sll)s4;
+d54 1
+a54 1
+    D0.ll = s1 + s3 * s4;
+d56 1
+a56 1
+      D0.ll &= 0x00000000ffffffffLL;
+d59 1
+a59 1
+    D0.ll = s1 - s3 * s4;
+d61 1
+a61 1
+      D0.ll &= 0x00000000ffffffffLL;
+d70 1
+a70 1
+    c[cid].imlpipe[0].dr1v = D0.ll;
+@
+
+
+1.5
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.4 2015/08/31 13:41:16 nakashim Exp nakashim $";
+a30 1
+
+@
+
+
+1.4
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.3 2015/08/24 05:01:35 nakashim Exp nakashim $";
+d27 2
+a28 2
+    if (rob->sr[6].t) T0.ll = ex_srr(tid, rob, 6);
+    if (rob->sr[8].t) sc = ex_srr(tid, rob, 8)>>60;
+d36 2
+a37 2
+  if (rob->sr[2].t) s3 = ex_srr(tid, rob, 2);
+  if (rob->sr[4].t) s4 = ex_srr(tid, rob, 4);
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.2 2015/08/22 04:49:36 nakashim Exp nakashim $";
+d40 29
+a68 7
+    /* ¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú */
+  case 0: /* MUL */
+    D0.ll = (Ull)s3 * (Ull)s4;
+    ccn  = D0.w.l>>31;
+    ccz  = D0.w.l==0;
+    ccc  = 0;
+    ccv  = 0;
+d77 1
+a77 1
+    c[cid].imlpipe[0].dr1v = D0.w.l;
+a80 12
+  if (rob->dr[2].t) {
+    c[cid].imlpipe[0].dr2t = 1;
+    c[cid].imlpipe[0].dr2v = D0.w.h;
+  }
+  else
+    c[cid].imlpipe[0].dr2t = 0;
+  if (rob->dr[3].t) {
+    c[cid].imlpipe[0].dr3t = 1;
+    c[cid].imlpipe[0].dr3v = (Ull)((ccn<<3)|(ccz<<2)|(ccc<<1)|ccv)<<60;
+  }
+  else
+    c[cid].imlpipe[0].dr3t = 0;
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/mul.c,v 1.1 2015/07/21 05:44:37 nakashim Exp nakashim $";
+d24 1
+a24 1
+  Uchar ccn, ccz, ccv, ccc;
+d45 1
+a46 1
+    ccc  = 0;
+d67 1
+a67 1
+    c[cid].imlpipe[0].dr3v = (Ull)((ccn<<3)|(ccz<<2)|(ccv<<1)|ccc)<<60;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm32/src/bsim/RCS/mul.c,v 1.3 2014/09/24 05:31:38 nakashim Exp nakashim $";
+d28 1
+a28 1
+    if (rob->sr[8].t) sc = ex_srr(tid, rob, 8)>>28;
+d30 1
+a30 1
+    if (rob->dr[3].t) ex_drw(tid, sc<<28, rob, 3);
+d67 1
+a67 1
+    c[cid].imlpipe[0].dr3v = ((ccn<<3)|(ccz<<2)|(ccv<<1)|ccc)<<28;
+@

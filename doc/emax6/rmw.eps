@@ -1,0 +1,2664 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 15 1168 56 1220
+%%Title: rmw
+%%CreationDate: Sun Dec 26 10:29:43 2021
+%%Creator: Tgif-4.1.45-QPL written by William Chia-Wei Cheng (bill.cheng@acm.org)
+%%ProducedBy: (unknown)
+%%Pages: 1
+%%DocumentFonts: (atend)
+%%EndComments
+%%BeginProlog
+
+/tgifdict 55 dict def
+tgifdict begin
+
+/tgifellipsedict 6 dict def
+tgifellipsedict /mtrx matrix put
+
+/TGEL % tgifellipse
+ { tgifellipsedict begin
+      /yrad exch def
+      /xrad exch def
+      /y exch def
+      /x exch def
+      /savematrix mtrx currentmatrix def
+      x y translate
+      xrad yrad scale
+      0 0 1 0 360 arc
+      savematrix setmatrix
+   end
+ } def
+
+/tgifarrowtipdict 8 dict def
+tgifarrowtipdict /mtrx matrix put
+
+/TGAT % tgifarrowtip
+ { tgifarrowtipdict begin
+      /dy exch def
+      /dx exch def
+      /h exch def
+      /w exch def
+      /y exch def
+      /x exch def
+      /savematrix mtrx currentmatrix def
+      x y translate
+      dy dx atan rotate
+      0 0 moveto
+      w neg h lineto
+      w neg h neg lineto
+      savematrix setmatrix
+   end
+ } def
+
+/TGMAX
+ { exch dup 3 1 roll exch dup 3 1 roll gt { pop } { exch pop } ifelse
+ } def
+/TGMIN
+ { exch dup 3 1 roll exch dup 3 1 roll lt { pop } { exch pop } ifelse
+ } def
+/TGSW { stringwidth pop } def
+
+/bd { bind def } bind def
+
+/GS { gsave } bd
+/GR { grestore } bd
+/NP { newpath } bd
+/CP { closepath } bd
+/CHP { charpath } bd
+/CT { curveto } bd
+/L { lineto } bd
+/RL { rlineto } bd
+/M { moveto } bd
+/RM { rmoveto } bd
+/S { stroke } bd
+/F { fill } bd
+/TR { translate } bd
+/RO { rotate } bd
+/SC { scale } bd
+/MU { mul } bd
+/DI { div } bd
+/DU { dup } bd
+/NE { neg } bd
+/AD { add } bd
+/SU { sub } bd
+/PO { pop } bd
+/EX { exch } bd
+/CO { concat } bd
+/CL { clip } bd
+/EC { eoclip } bd
+/EF { eofill } bd
+/IM { image } bd
+/IMM { imagemask } bd
+/ARY { array } bd
+/SG { setgray } bd
+/RG { setrgbcolor } bd
+/SD { setdash } bd
+/W { setlinewidth } bd
+/SM { setmiterlimit } bd
+/SLC { setlinecap } bd
+/SLJ { setlinejoin } bd
+/SH { show } bd
+/FF { findfont } bd
+/MS { makefont setfont } bd
+/AR { arcto 4 {pop} repeat } bd
+/CURP { currentpoint } bd
+/FLAT { flattenpath strokepath clip newpath } bd
+/TGSM { tgiforigctm setmatrix } def
+/TGRM { savematrix setmatrix } def
+
+end
+
+%%EndProlog
+%%Page: 1 1
+
+%%PageBoundingBox: 15 1168 56 1220
+tgifdict begin
+/tgifsavedpage save def
+
+1 SM
+1 W
+
+0 SG
+
+72 0 MU 72 17 MU TR
+72 128 DI 20.000 MU 100 DI DU NE SC
+
+GS
+
+/tgiforigctm matrix currentmatrix def
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      220 464 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (sum3) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      220 454 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (sum2) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      220 444 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (sum1) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      220 434 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (sum0) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      220 129 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (sum1) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      220 119 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (sum0) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      177 51 M
+      GS
+            0 SG
+            /Helvetica FF [12 0 0 -12 0 0] MS
+            (1. load  \(&o0, op0, offset\); ... load  \(&o3, op3, offset\);) SH
+      GR
+      0 15 RM
+      GS
+            0 SG
+            /Helvetica FF [12 0 0 -12 0 0] MS
+            (2. add  \(&s0, o0, sum0\);    ... add  \(&s3, o3, sum3\);) SH
+      GR
+      0 15 RM
+      GS
+            0 SG
+            /Helvetica FF [12 0 0 -12 0 0] MS
+            (3. store \(&s0, op0, offset\);  ... store \(&s3, op3, offset\);) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      190 480 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [12 0 0 -12 0 0] MS
+            (\(b\) Feedback for read-modify-write operation) SH
+      GR
+   GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      420 465 M
+      430 460 L
+      430 430 L
+      420 425 L
+   TGSM
+   1 W
+   S
+GR
+
+% TEXT
+NP
+0 SG
+NP 409 326 M 437 326 L 437 342 L 409 342 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      410 339 M
+      GS
+            0 SG
+            /Helvetica-Oblique FF [12 0 0 -12 0 0] MS
+            (addr) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+NP 319 326 M 347 326 L 347 342 L 319 342 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      320 339 M
+      GS
+            0 SG
+            /Helvetica-Oblique FF [12 0 0 -12 0 0] MS
+            (addr) SH
+      GR
+   GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      210 360 M
+      0 220 atan DU cos 8.000 MU exch sin 8.000 MU RM
+      0 220 atan DU cos 8.000 MU 430 exch SU
+      exch sin 8.000 MU 360 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      210 360 8.000 3.000 -220 0 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      210 360 8.000 3.000 -220 0 TGAT
+   CP F
+GR
+GS
+   TGSM
+   NP
+      430 360 8.000 3.000 220 0 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      430 360 8.000 3.000 220 0 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      210 350 M
+      0 220 atan DU cos 8.000 MU exch sin 8.000 MU RM
+      0 220 atan DU cos 8.000 MU 430 exch SU
+      exch sin 8.000 MU 350 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      210 350 8.000 3.000 -220 0 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      210 350 8.000 3.000 -220 0 TGAT
+   CP F
+GR
+GS
+   TGSM
+   NP
+      430 350 8.000 3.000 220 0 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      430 350 8.000 3.000 220 0 TGAT
+   CP F
+GR
+
+% OVAL
+0 SG
+NP 320 350 2 2 TGEL F
+GS
+   GS
+      NP 320 350 2 2 TGEL
+      S
+   GR
+GR
+
+% TEXT
+NP
+0 SG
+NP 214 224 M 246 224 L 246 242 L 214 242 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      215 239 M
+      GS
+            0 SG
+            /Helvetica-Oblique FF [13 0 0 -13 0 0] MS
+            (FAD) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+NP 394 224 M 427 224 L 427 242 L 394 242 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      395 239 M
+      GS
+            0 SG
+            /Helvetica-Oblique FF [13 0 0 -13 0 0] MS
+            (store) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+NP 304 224 M 334 224 L 334 242 L 304 242 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      305 239 M
+      GS
+            0 SG
+            /Helvetica-Oblique FF [13 0 0 -13 0 0] MS
+            (load) SH
+      GR
+   GR
+
+% BOX
+GS
+   75 305 TR
+   [1.100 0.000 0.000 0.833 80 35] CO
+   75 NE 305 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 75 305 M 375 305 L 375 365 L 75 365 L CP
+      TGSM
+      [2 2] 0 SD
+      S
+   GR
+GR
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      355 425 M
+      10 0 atan DU cos 12.000 MU 355 exch SU
+      exch sin 12.000 MU 435 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      355 435 12.000 5.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      355 435 12.000 5.000 0 10 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      275 330 M
+      105 0 atan DU cos 12.000 MU 275 exch SU
+      exch sin 12.000 MU 435 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      275 435 12.000 5.000 0 105 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      275 435 12.000 5.000 0 105 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      320 250 M
+      25 0 atan DU cos 8.000 MU 320 exch SU
+      exch sin 8.000 MU 275 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      320 275 8.000 3.000 0 25 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      320 275 8.000 3.000 0 25 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      410 250 M
+      25 0 atan DU cos 8.000 MU 410 exch SU
+      exch sin 8.000 MU 275 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      410 275 8.000 3.000 0 25 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      410 275 8.000 3.000 0 25 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      230 305 M
+      230 310 L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      320 330 M
+      320 425 L
+      0 15 atan DU cos 8.000 MU 335 exch SU
+      exch sin 8.000 MU 425 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      335 425 8.000 3.000 15 0 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      335 425 8.000 3.000 15 0 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      245 310 M
+      190 310 L
+      35 0 atan DU cos 12.000 MU 190 exch SU
+      exch sin 12.000 MU 345 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      190 345 12.000 5.000 0 35 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      190 345 12.000 5.000 0 35 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      230 310 M
+      260 310 L
+      35 0 atan DU cos 12.000 MU 260 exch SU
+      exch sin 12.000 MU 345 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      260 345 12.000 5.000 0 35 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      260 345 12.000 5.000 0 35 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      250 310 M
+      350 310 L
+      35 0 atan DU cos 12.000 MU 350 exch SU
+      exch sin 12.000 MU 345 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      350 345 12.000 5.000 0 35 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      350 345 12.000 5.000 0 35 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      350 310 M
+      445 310 L
+      35 0 atan DU cos 12.000 MU 445 exch SU
+      exch sin 12.000 MU 345 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      445 345 12.000 5.000 0 35 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      445 345 12.000 5.000 0 35 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      230 280 M
+      230 285 L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      425 140 M
+      425 160 L
+   TGSM
+   1 W
+   S
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      425 160 M
+      425 170 L
+      30 0 atan DU cos 8.000 MU 425 exch SU
+      exch sin 8.000 MU 200 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      425 200 8.000 3.000 0 30 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      425 200 8.000 3.000 0 30 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   145 190 TR
+   [2.000 0.000 0.000 2.000 170 0] CO
+   145 NE 190 NE TR
+GS
+   NP
+      145 190 M
+      145 192 L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      315 200 8.000 3.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      315 200 8.000 3.000 0 10 TGAT
+   CP F
+GR
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      305 215 M
+      10 0 atan DU cos 8.000 MU 305 exch SU
+      exch sin 8.000 MU 225 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      305 225 8.000 3.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      305 225 8.000 3.000 0 10 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      335 215 M
+      10 0 atan DU cos 8.000 MU 335 exch SU
+      exch sin 8.000 MU 225 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      335 225 8.000 3.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      335 225 8.000 3.000 0 10 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      395 215 M
+      10 0 atan DU cos 8.000 MU 395 exch SU
+      exch sin 8.000 MU 225 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      395 225 8.000 3.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      395 225 8.000 3.000 0 10 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      425 215 M
+      10 0 atan DU cos 8.000 MU 425 exch SU
+      exch sin 8.000 MU 225 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      425 225 8.000 3.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      425 225 8.000 3.000 0 10 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      245 215 M
+      10 0 atan DU cos 12.000 MU 245 exch SU
+      exch sin 12.000 MU 225 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      245 225 12.000 5.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      245 225 12.000 5.000 0 10 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      215 215 M
+      10 0 atan DU cos 12.000 MU 215 exch SU
+      exch sin 12.000 MU 225 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      215 225 12.000 5.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      215 225 12.000 5.000 0 10 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   205 200 TR
+   [2.000 0.000 0.000 2.000 50 0] CO
+   205 NE 200 NE TR
+GS
+   NP
+      227 200 M
+      238 200 L
+   TGSM
+   1 W
+   S
+GR
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   295 200 TR
+   [2.000 0.000 0.000 2.000 50 0] CO
+   295 NE 200 NE TR
+GS
+   NP
+      317 200 M
+      328 200 L
+   TGSM
+   1 W
+   S
+GR
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   325 200 TR
+   [2.000 0.000 0.000 2.000 50 0] CO
+   325 NE 200 NE TR
+GS
+   NP
+      347 200 M
+      358 200 L
+   TGSM
+   1 W
+   S
+GR
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      335 425 M
+      360 425 L
+   TGSM
+   1 W
+   S
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      205 200 M
+      215 200 L
+   TGSM
+   1 W
+   S
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      245 200 M
+      255 200 L
+   TGSM
+   1 W
+   S
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      290 225 M
+      315 225 L
+      320 230 L
+      325 225 L
+      350 225 L
+      330 245 L
+      310 245 L
+      290 225 L
+   TGSM
+   1 W
+   S
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      200 255 M
+      225 255 L
+      230 260 L
+      235 255 L
+      260 255 L
+      240 275 L
+      220 275 L
+      200 255 L
+   TGSM
+   1 W
+   S
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      380 225 M
+      405 225 L
+      410 230 L
+      415 225 L
+      440 225 L
+      420 245 L
+      400 245 L
+      380 225 L
+   TGSM
+   1 W
+   S
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   235 190 TR
+   [2.000 0.000 0.000 2.000 170 0] CO
+   235 NE 190 NE TR
+GS
+   NP
+      235 190 M
+      235 192 L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      405 200 8.000 3.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      405 200 8.000 3.000 0 10 TGAT
+   CP F
+GR
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   235 200 TR
+   [2.000 0.000 0.000 2.000 50 0] CO
+   235 NE 200 NE TR
+GS
+   NP
+      257 200 M
+      268 200 L
+   TGSM
+   1 W
+   S
+GR
+GR
+
+% POLYGON/CLOSED-SPLINE
+0 SG
+NP
+   205 285 M
+   235 285 L
+   255 305 L
+   225 305 L
+CP
+GS
+GR
+GS
+   S
+GR
+
+% POLYGON/CLOSED-SPLINE
+0 SG
+NP
+   205 305 M
+   225 285 L
+   255 285 L
+   235 305 L
+CP
+GS
+GR
+GS
+   S
+GR
+
+% POLYGON/CLOSED-SPLINE
+0 SG
+NP
+   225 225 M
+   235 225 L
+   240 230 L
+   245 225 L
+   265 225 L
+   245 245 L
+   215 245 L
+   195 225 L
+   215 225 L
+   220 230 L
+CP
+GS
+GR
+GS
+   S
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 205 210 M 220 210 L 220 215 L 205 215 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 240 210 M 255 210 L 255 215 L 240 215 L CP
+      S
+   GR
+GR
+
+% BOX
+GS
+   185 210 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   185 NE 210 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 185 210 M 205 210 L 205 215 L 185 215 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 295 210 M 315 210 L 315 215 L 295 215 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 325 210 M 345 210 L 345 215 L 325 215 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 385 210 M 405 210 L 405 215 L 385 215 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 415 210 M 435 210 L 435 215 L 415 215 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 265 325 M 285 325 L 285 330 L 265 330 L CP
+      S
+   GR
+GR
+
+% BOX
+GS
+   230 325 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   230 NE 325 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 230 325 M 250 325 L 250 330 L 230 330 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   320 325 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   320 NE 325 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 320 325 M 340 325 L 340 330 L 320 330 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   140 245 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   140 NE 245 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 140 245 M 160 245 L 160 250 L 140 250 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   185 245 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   185 NE 245 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 185 245 M 205 245 L 205 250 L 185 250 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   230 245 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   230 NE 245 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 230 245 M 250 245 L 250 250 L 230 250 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   320 245 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   320 NE 245 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 320 245 M 340 245 L 340 250 L 320 250 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   140 275 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   140 NE 275 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 140 275 M 160 275 L 160 280 L 140 280 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   185 275 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   185 NE 275 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 185 275 M 205 275 L 205 280 L 185 280 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   230 275 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   230 NE 275 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 230 275 M 250 275 L 250 280 L 230 280 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   320 275 TR
+   [1.500 0.000 0.000 1.000 75 0] CO
+   320 NE 275 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 320 275 M 340 275 L 340 280 L 320 280 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   35 180 TR
+   [0.400 0.000 0.000 1.000 275 5] CO
+   35 NE 180 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 35 180 M 85 180 L 85 185 L 35 185 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   35 170 TR
+   [0.400 0.000 0.000 1.000 275 10] CO
+   35 NE 170 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 35 170 M 85 170 L 85 175 L 35 175 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   35 160 TR
+   [0.400 0.000 0.000 1.000 275 15] CO
+   35 NE 160 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 35 160 M 85 160 L 85 165 L 35 165 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   35 150 TR
+   [0.400 0.000 0.000 1.000 275 20] CO
+   35 NE 150 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 35 150 M 85 150 L 85 155 L 35 155 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   125 180 TR
+   [0.400 0.000 0.000 1.000 275 5] CO
+   125 NE 180 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 125 180 M 175 180 L 175 185 L 125 185 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   125 170 TR
+   [0.400 0.000 0.000 1.000 275 10] CO
+   125 NE 170 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 125 170 M 175 170 L 175 175 L 125 175 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   125 160 TR
+   [0.400 0.000 0.000 1.000 275 15] CO
+   125 NE 160 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 125 160 M 175 160 L 175 165 L 125 165 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+GS
+   125 150 TR
+   [0.400 0.000 0.000 1.000 275 20] CO
+   125 NE 150 NE TR
+0 SG
+GS
+   10 SM
+   GS
+      NP 125 150 M 175 150 L 175 155 L 125 155 L CP
+      TGSM
+      S
+   GR
+GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 120 M 300 120 L 300 125 L 250 125 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 125 M 300 125 L 300 130 L 250 130 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 130 M 300 130 L 300 135 L 250 135 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 135 M 300 135 L 300 140 L 250 140 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 400 120 M 450 120 L 450 125 L 400 125 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 400 125 M 450 125 L 450 130 L 400 130 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 400 130 M 450 130 L 450 135 L 400 135 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 400 135 M 450 135 L 450 140 L 400 140 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 430 345 M 480 345 L 480 350 L 430 350 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 430 350 M 480 350 L 480 355 L 430 355 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 430 355 M 480 355 L 480 360 L 430 360 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 430 360 M 480 360 L 480 365 L 430 365 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 430 365 M 480 365 L 480 370 L 430 370 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 430 370 M 480 370 L 480 375 L 430 375 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 430 375 M 480 375 L 480 380 L 430 380 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 430 380 M 480 380 L 480 385 L 430 385 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 345 M 390 345 L 390 350 L 340 350 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 350 M 390 350 L 390 355 L 340 355 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 355 M 390 355 L 390 360 L 340 360 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 360 M 390 360 L 390 365 L 340 365 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 365 M 390 365 L 390 370 L 340 370 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 370 M 390 370 L 390 375 L 340 375 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 375 M 390 375 L 390 380 L 340 380 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 380 M 390 380 L 390 385 L 340 385 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 160 345 M 210 345 L 210 350 L 160 350 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 160 350 M 210 350 L 210 355 L 160 355 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 160 355 M 210 355 L 210 360 L 160 360 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 160 360 M 210 360 L 210 365 L 160 365 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 160 365 M 210 365 L 210 370 L 160 370 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 160 370 M 210 370 L 210 375 L 160 375 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 160 375 M 210 375 L 210 380 L 160 380 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 160 380 M 210 380 L 210 385 L 160 385 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 435 M 300 435 L 300 440 L 250 440 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 440 M 300 440 L 300 445 L 250 445 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 445 M 300 445 L 300 450 L 250 450 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 450 M 300 450 L 300 455 L 250 455 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 435 M 390 435 L 390 440 L 340 440 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 440 M 390 440 L 390 445 L 340 445 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 445 M 390 445 L 390 450 L 340 450 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 340 450 M 390 450 L 390 455 L 340 455 L CP
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+NP 230 310 2 2 TGEL F
+GS
+   GS
+      NP 230 310 2 2 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+NP 350 310 2 2 TGEL F
+GS
+   GS
+      NP 350 310 2 2 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+NP 260 310 2 2 TGEL F
+GS
+   GS
+      NP 260 310 2 2 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+NP 425 155 2 2 TGEL F
+GS
+   GS
+      NP 425 155 2 2 TGEL
+      S
+   GR
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      220 250 M
+      220 255 L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      240 250 M
+      240 255 L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+
+% TEXT
+NP
+0 SG
+NP 299 354 M 337 354 L 337 372 L 299 372 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      300 369 M
+      GS
+            0 SG
+            /Helvetica-Oblique FF [14 0 0 -14 0 0] MS
+            (LMM) SH
+      GR
+   GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 345 M 300 345 L 300 350 L 250 350 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 350 M 300 350 L 300 355 L 250 355 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 355 M 300 355 L 300 360 L 250 360 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 360 M 300 360 L 300 365 L 250 365 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 365 M 300 365 L 300 370 L 250 370 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 370 M 300 370 L 300 375 L 250 375 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 375 M 300 375 L 300 380 L 250 380 L CP
+      S
+   GR
+GR
+
+% BOX
+0 SG
+GS
+   10 SM
+   GS
+      NP 250 380 M 300 380 L 300 385 L 250 385 L CP
+      S
+   GR
+GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      280 194 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (1.op3) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      280 184 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (1.op2) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      280 174 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (1.op1) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      280 164 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (1.op0) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      370 194 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (3.op3) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      370 184 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (3.op2) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      370 174 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (3.op1) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      370 164 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (3.op0) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+NP 454 127 M 485 127 L 485 141 L 454 141 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      455 139 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (offset) SH
+      GR
+   GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      410 330 M
+      410 360 L
+   TGSM
+   1 W
+   S
+GR
+
+% OVAL
+0 SG
+NP 410 360 2 2 TGEL F
+GS
+   GS
+      NP 410 360 2 2 TGEL
+      S
+   GR
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      195 385 M
+      195 415 L
+      340 415 L
+      10 0 atan DU cos 12.000 MU 340 exch SU
+      exch sin 12.000 MU 425 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      340 425 12.000 5.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      340 425 12.000 5.000 0 10 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      285 385 M
+      285 410 L
+      345 410 L
+      15 0 atan DU cos 12.000 MU 345 exch SU
+      exch sin 12.000 MU 425 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      345 425 12.000 5.000 0 15 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      345 425 12.000 5.000 0 15 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      375 385 M
+      375 410 L
+      350 410 L
+      15 0 atan DU cos 12.000 MU 350 exch SU
+      exch sin 12.000 MU 425 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      350 425 12.000 5.000 0 15 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      350 425 12.000 5.000 0 15 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      465 385 M
+      465 415 L
+      355 415 L
+      10 0 atan DU cos 12.000 MU 355 exch SU
+      exch sin 12.000 MU 425 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      355 425 12.000 5.000 0 10 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      355 425 12.000 5.000 0 10 TGAT
+   CP F
+GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      395 464 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (1.o3) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      395 454 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (1.o2) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      395 444 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (1.o1) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      395 434 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (1.o0) SH
+      GR
+   GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      275 140 M
+      70 0 atan DU cos 12.000 MU 275 exch SU
+      exch sin 12.000 MU 210 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      275 210 12.000 5.000 0 70 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      275 210 12.000 5.000 0 70 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      430 445 M
+      490 445 L
+      490 150 L
+      250 150 L
+      50 0 atan DU cos 12.000 MU 250 exch SU
+      exch sin 12.000 MU 200 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      250 200 12.000 5.000 0 50 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      250 200 12.000 5.000 0 50 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      215 465 M
+      205 460 L
+      205 430 L
+      215 425 L
+   TGSM
+   1 W
+   S
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      205 445 M
+      150 445 L
+      150 150 L
+      210 150 L
+      50 0 atan DU cos 12.000 MU 210 exch SU
+      exch sin 12.000 MU 200 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      210 200 12.000 5.000 0 50 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      210 200 12.000 5.000 0 50 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      425 155 M
+      335 155 L
+      45 0 atan DU cos 8.000 MU 335 exch SU
+      exch sin 8.000 MU 200 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      335 200 8.000 3.000 0 45 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      335 200 8.000 3.000 0 45 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      275 250 M
+      25 0 atan DU cos 12.000 MU 275 exch SU
+      exch sin 12.000 MU 275 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      275 275 12.000 5.000 0 25 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      275 275 12.000 5.000 0 25 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      275 215 M
+      30 0 atan DU cos 12.000 MU 275 exch SU
+      exch sin 12.000 MU 245 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      275 245 12.000 5.000 0 30 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      275 245 12.000 5.000 0 30 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      275 280 M
+      45 0 atan DU cos 12.000 MU 275 exch SU
+      exch sin 12.000 MU 325 exch SU L
+   TGSM
+   3 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      275 325 12.000 5.000 0 45 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      275 325 12.000 5.000 0 45 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      410 280 M
+      45 0 atan DU cos 8.000 MU 410 exch SU
+      exch sin 8.000 MU 325 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      410 325 8.000 3.000 0 45 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      410 325 8.000 3.000 0 45 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      320 280 M
+      45 0 atan DU cos 8.000 MU 320 exch SU
+      exch sin 8.000 MU 325 exch SU L
+   TGSM
+   1 W
+   S
+GR
+GS
+   TGSM
+   NP
+      320 325 8.000 3.000 0 45 TGAT
+   1 SG CP F
+   0 SG
+   NP
+      320 325 8.000 3.000 0 45 TGAT
+   CP F
+GR
+
+% TEXT
+NP
+0 SG
+NP 429 394 M 459 394 L 459 412 L 429 412 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      430 409 M
+      GS
+            0 SG
+            /Helvetica-Oblique FF [13 0 0 -13 0 0] MS
+            (load) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+NP 429 289 M 462 289 L 462 307 L 429 307 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      430 304 M
+      GS
+            0 SG
+            /Helvetica-Oblique FF [13 0 0 -13 0 0] MS
+            (store) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      170 100 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [12 0 0 -12 0 0] MS
+            (\(a\) *\(op+offset\) += sum for proposed CGRA) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      220 139 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (sum2) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+   GS
+      1 W
+      220 149 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (sum3) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+NP 364 317 M 386 317 L 386 331 L 364 331 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      365 329 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (3.s3) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+NP 364 307 M 386 307 L 386 321 L 364 321 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      365 319 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (3.s2) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+NP 364 297 M 386 297 L 386 311 L 364 311 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      365 309 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (3.s1) SH
+      GR
+   GR
+
+% TEXT
+NP
+0 SG
+NP 364 287 M 386 287 L 386 301 L 364 301 L CP 1 SG F
+0 SG
+   GS
+      1 W
+      365 299 M
+      GS
+            0 SG
+            /Helvetica-Bold FF [11 0 0 -11 0 0] MS
+            (3.s0) SH
+      GR
+   GR
+
+GR
+tgifsavedpage restore
+end
+showpage
+
+%%Trailer
+%MatchingCreationDate: Sun Dec 26 10:29:43 2021
+%%DocumentFonts: Helvetica-Oblique
+%%+ Helvetica
+%%+ Helvetica-Bold
+%%EOF

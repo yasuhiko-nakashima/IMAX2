@@ -1,0 +1,807 @@
+head	1.26;
+access;
+symbols;
+locks
+	nakashim:1.26; strict;
+comment	@ * @;
+
+
+1.26
+date	2017.08.23.15.27.49;	author nakashim;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2017.04.21.03.28.45;	author nakashim;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2015.09.19.09.14.03;	author nakashim;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2015.09.18.04.32.06;	author nakashim;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2015.09.18.04.05.35;	author nakashim;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2015.09.08.09.32.50;	author nakashim;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2015.09.03.14.01.21;	author nakashim;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2015.09.01.12.59.45;	author nakashim;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2015.09.01.09.42.25;	author nakashim;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2015.09.01.09.32.28;	author nakashim;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2015.09.01.08.04.13;	author nakashim;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2015.09.01.06.36.18;	author nakashim;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.09.01.06.30.56;	author nakashim;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.09.01.06.13.33;	author nakashim;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.09.01.06.05.16;	author nakashim;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.09.01.05.35.03;	author nakashim;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.09.01.04.09.27;	author nakashim;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.08.31.13.41.20;	author nakashim;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.08.31.04.16.21;	author nakashim;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.08.26.15.16.10;	author nakashim;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.08.26.08.33.20;	author nakashim;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.08.26.00.19.51;	author nakashim;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.08.25.09.58.40;	author nakashim;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.08.22.04.49.27;	author nakashim;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.08.20.09.29.03;	author nakashim;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.07.21.05.44.37;	author nakashim;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.26
+log
+@*** empty log message ***
+@
+text
+@
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/ld.c,v 1.25 2017/04/21 03:28:45 nakashim Exp nakashim $";
+
+/* ARM Instruction Simulator           */
+/*        Copyright (C) 2007 by NAIST. */
+/*         Primary writer: Y.Nakashima */
+/*                nakashim@@is.naist.jp */
+
+/* ld.c 2005/3/22 */ 
+
+#include "csim.h"
+
+insn_exec_ld(tid, rob) Uint tid; struct rob *rob;
+{
+  Ull  s1, s2, s3, m0; /* source, through, middle(sft,shifter-carry), destination(alu) */
+  Ull  D0[2];
+  Uint addr, wb, wbaddr, rot;
+  Ull  mask[2];
+
+  if (rob->sr[0].t) ex_srr(tid, NULL, &s1, rob, 0);
+  if (rob->sr[1].t) ex_srr(tid, NULL, &s2, rob, 1);
+  if (rob->sr[2].t) ex_srr(tid, NULL, &s3, rob, 2);
+  if (rob->sr[3].t) ex_srr(tid, &rob->dr[0].val[1], &rob->dr[0].val[0], rob, 3);
+  if (rob->ptw) { /* save old_val for future partial_reg_write in dr[0] */
+    switch (rob->opcd) {
+    case 8:  /* VLDRB(8) */
+    case 9:  /* VlDRH(16) */
+    case 10: /* VLDRS(32) */
+    case 11: /* VLDRD(64) */
+      break;
+    }
+  }
+
+  /* Shifter */
+  switch (rob->sop) {
+  case 0: /* nop */
+    m0 = s2;
+    break;
+  case 8: /* 0:uxtb */
+    m0 = (Ull)(s2<<56)>>(56-s3);
+    break;
+  case 9: /* 1:uxth */
+    m0 = (Ull)(s2<<48)>>(48-s3);
+    break;
+  case 10: /* 2:uxtw */
+    m0 = (Ull)(s2<<32)>>(32-s3);
+    break;
+  case 11: /* 3:uxtx */
+    m0 = (Ull)(s2<<s3);
+    break;
+  case 12: /* 4:sxtb */
+    m0 = (Sll)(s2<<56)>>(56-s3);
+    break;
+  case 13: /* 5:sxth */
+    m0 = (Sll)(s2<<48)>>(48-s3);
+    break;
+  case 14: /* 6:sxtw */
+    m0 = (Sll)(s2<<32)>>(32-s3);
+    break;
+  case 15: /* 7:sxtx */
+    m0 = (Sll)(s2<<s3);
+    break;
+  }
+
+  if (!rob->plus) m0 = -(int)m0;
+  addr   = s1 + ((rob->pre)?m0:0);
+  wbaddr = s1 + m0;
+  wb     = rob->wb;
+  rot    = 0;
+
+  /* LOAD */
+  switch (rob->opcd) {
+  case 0: /* LDRB */
+  case 4: /* LDRSB */
+  case 8: /* VLDRB */
+    mask[0] = 0x00000000000000ffLL;
+    mask[1] = 0x0000000000000000LL;
+    break;
+  case 1: /* LDRH */
+  case 5: /* LDRSH */
+  case 9: /* VLDRH */
+    mask[0] = 0x000000000000ffffLL;
+    mask[1] = 0x0000000000000000LL;
+    break;
+  case 2: /* LDRW */
+  case 6: /* LDRSW */
+  case 7: /* LDREX */
+  case 10: /* VLDRS */
+    mask[0] = 0x00000000ffffffffLL;
+    mask[1] = 0x0000000000000000LL;
+    break;
+  case 3: /* LDR */
+  case 11: /* VLDRD */
+    mask[0] = 0xffffffffffffffffLL;
+    mask[1] = 0x0000000000000000LL;
+    break;
+  case 12: /* VLDRQ */
+    mask[0] = 0xffffffffffffffffLL;
+    mask[1] = 0xffffffffffffffffLL;
+    break;
+  default:
+    return (ROB_EXECERR); /* error */
+  }
+
+  /* read cache */
+  switch (o_ldst(tid, rob->type, rob->opcd, addr, mask, rot, D0, rob)) {
+  case 0: /* i1hit normal end */
+    if (flag & TRACE_ARM) {
+      printf(":%08.8x->[%08.8x_%08.8x_%08.8x_%08.8x]", addr, (Uint)(D0[1]>>32), (Uint)D0[1], (Uint)(D0[0]>>32), (Uint)D0[0]);
+    }
+    t[tid].pa_d1hit++;
+    switch (rob->opcd) {
+    case 4: /* LDRSB */
+      D0[0] = (Sll)(D0[0]<<56)>>56;
+      break;
+    case 5: /* LDRSH */
+      D0[0] = (Sll)(D0[0]<<48)>>48;
+      break;
+    case 6: /* LDRSW */
+      D0[0] = (Sll)(D0[0]<<32)>>32;
+      break;
+    }
+    if (      rob->dr[1].t) ex_drw(tid, D0[1], D0[0], rob, 1);
+    if (wb && rob->dr[2].t) ex_drw(tid, 0LL, (Ull)wbaddr, rob, 2); /* update base */
+    return (ROB_COMPLETE); /* done */
+  case 1: /* d1mis l1rq busy */
+    if (flag & TRACE_ARM) {
+      printf(":%08.8x iorq/l1rq busy", addr);
+    }
+    t[tid].pa_d1waitcycle++;
+    return (ROB_MAPPED); /* no change */
+  case 2: /* d1mis l1rq enqueued */
+    if (flag & TRACE_ARM) {
+      printf(":%08.8x iorq/l1rq enqueued", addr);
+    }
+    if (wb && rob->dr[2].t) rob->dr[2].val[0] = wbaddr; /* should be rewritten ex_drw() by if not ROB_COMPLETE */
+    t[tid].pa_d1mis++;
+    return (ROB_ISSUED); /* error */
+  case 3: /* error (ouf of range) */
+    if (flag & TRACE_ARM) {
+      printf(":%08.8x address out of range", addr);
+    }
+    return (ROB_EXECERR); /* error */
+  }
+}
+@
+
+
+1.25
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/csim/RCS/ld.c,v 1.24 2015/09/19 09:14:03 nakashim Exp nakashim $";
+d128 1
+a128 1
+      printf(":%08.8x l1rq busy", addr);
+d134 1
+a134 1
+      printf(":%08.8x l1rq enqueued", addr);
+@
+
+
+1.24
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.23 2015/09/18 04:32:06 nakashim Exp nakashim $";
+d11 1
+a11 1
+#include "bsim.h"
+@
+
+
+1.23
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.22 2015/09/18 04:05:35 nakashim Exp nakashim $";
+d23 10
+a32 1
+  if (rob->sr[3].t) ex_srr(tid, &D0[1], &D0[0], rob, 3); /* reserved for LD1/LD2/LD3/LD4 */
+@
+
+
+1.22
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.21 2015/09/08 09:32:50 nakashim Exp nakashim $";
+d15 1
+a15 1
+  Ull  s1, s2, s3, s4, m0; /* source, through, middle(sft,shifter-carry), destination(alu) */
+d23 1
+a23 1
+  if (rob->sr[3].t) ex_srr(tid, NULL, &s4, rob, 3); /* reserved for LD1/LD2/LD3/LD4 */
+@
+
+
+1.21
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.20 2015/09/03 14:01:21 nakashim Exp nakashim $";
+d15 1
+a15 1
+  Ull  s1, s2, s3, m0; /* source, through, middle(sft,shifter-carry), destination(alu) */
+d23 1
+@
+
+
+1.20
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.19 2015/09/01 12:59:45 nakashim Exp nakashim $";
+d15 1
+a15 1
+  Ull  s1, s2; /* source, through, middle(sft,shifter-carry), destination(alu) */
+d22 1
+d24 34
+a57 3
+  if (!rob->plus) s2 = -(int)s2;
+  addr   = s1 + ((rob->pre)?s2:0);
+  wbaddr = s1 + s2;
+@
+
+
+1.19
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.18 2015/09/01 09:42:25 nakashim Exp nakashim $";
+d26 2
+d33 1
+a33 2
+    wb   = rob->wb;
+    rot  = 0;
+d39 1
+a39 2
+    wb   = rob->wb;
+    rot  = 0;
+d45 2
+a46 2
+    wb   = rob->wb;
+    rot  = 0;
+d51 1
+a51 2
+    wb   = rob->wb;
+    rot  = 0;
+d55 3
+a57 5
+  case 7: /* LDREX */
+    wb  = 0;
+    rot = 0;
+    mask[0] = 0x00000000ffffffffLL;
+    mask[1] = 0x0000000000000000LL;
+@
+
+
+1.18
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.17 2015/09/01 09:32:28 nakashim Exp nakashim $";
+d15 2
+a16 2
+  Ull  s1, s2, s3, sc, m0; /* source, through, middle(sft,shifter-carry), destination(alu) */
+  Ull T0, D0[2];
+a21 2
+  if (rob->sr[2].t) ex_srr(tid, NULL, &s3, rob, 2);
+  if (rob->sr[5].t) ex_srr(tid, NULL, &sc, rob, 5);
+d23 3
+a25 4
+  m0 = s2;
+  if (!rob->plus) m0 = -(int)m0;
+  addr   = s1 + ((rob->pre)?m0:0);
+  wbaddr = s1 + m0;
+d34 1
+d41 1
+d48 1
+d54 1
+d60 1
+a61 3
+  case 8: /* MRS */
+    ex_drw(tid, 0LL, sc, rob, 1);
+    return (ROB_COMPLETE); /* complete */
+d70 1
+a70 1
+      printf(":%08.8x->[%08.8x_%08.8x]", addr, (Uint)(D0[0]>>32), (Uint)D0[0]);
+d84 2
+a85 2
+    if (            rob->dr[1].t) ex_drw(tid, 0LL, D0[0], rob, 1);
+    if (wb       && rob->dr[2].t) ex_drw(tid, 0LL, (Ull)wbaddr, rob, 2); /* update base */
+@
+
+
+1.17
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.16 2015/09/01 08:04:13 nakashim Exp nakashim $";
+d13 1
+a13 1
+insn_exec_ld(tid, exec, rob) Uint tid; int exec; struct rob *rob;
+a19 6
+  if (!exec) {
+    if (rob->sr[3].t) ex_srr(tid, NULL, &T0, rob, 3); /* single(cld-dst,all-st-src) double(cld-dst0,all-st-src0) */
+    if (rob->dr[1].t) ex_drw(tid, 0LL, T0, rob, 1);  /* single(all-ld-dst)         double(all-ld-dst0) */
+    return (ROB_COMPLETE); /* complete */
+  }
+
+@
+
+
+1.16
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.15 2015/09/01 06:36:18 nakashim Exp nakashim $";
+d21 1
+a21 1
+    if (rob->sr[3].t) T0 = ex_srr(tid, rob, 3); /* single(cld-dst,all-st-src) double(cld-dst0,all-st-src0) */
+d26 4
+a29 4
+  if (rob->sr[0].t) s1 = ex_srr(tid, rob, 0);
+  if (rob->sr[1].t) s2 = ex_srr(tid, rob, 1);
+  if (rob->sr[2].t) s3 = ex_srr(tid, rob, 2);
+  if (rob->sr[5].t) sc = ex_srr(tid, rob, 5)>>60;
+d67 1
+a67 1
+    ex_drw(tid, 0LL, sc<<60, rob, 1);
+@
+
+
+1.15
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.14 2015/09/01 06:30:56 nakashim Exp nakashim $";
+d22 1
+a22 1
+    if (rob->dr[1].t) ex_drw(tid, T0, rob, 1);  /* single(all-ld-dst)         double(all-ld-dst0) */
+d67 1
+a67 1
+    ex_drw(tid, sc<<60, rob, 1);
+d91 2
+a92 2
+    if (            rob->dr[1].t) ex_drw(tid, D0[0], rob, 1);
+    if (wb       && rob->dr[2].t) ex_drw(tid, (Ull)wbaddr, rob, 2); /* update base */
+@
+
+
+1.14
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.13 2015/09/01 06:13:33 nakashim Exp nakashim $";
+d104 1
+a104 1
+    if (wb && rob->dr[2].t) rob->dr[2].val = wbaddr; /* should be rewritten ex_drw() by if not ROB_COMPLETE */
+@
+
+
+1.13
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.12 2015/09/01 06:05:16 nakashim Exp nakashim $";
+a22 1
+
+@
+
+
+1.12
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.11 2015/09/01 05:35:03 nakashim Exp nakashim $";
+d105 1
+a105 1
+    if (wb && rob->dr[2].t) rob->dr[2].d = wbaddr; /* should be rewritten ex_drw() by if not ROB_COMPLETE */
+@
+
+
+1.11
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.10 2015/09/01 04:09:27 nakashim Exp nakashim $";
+d105 1
+a105 1
+    if (wb && rob->dr[2].t) rob->dr[2].v = wbaddr; /* should be rewritten ex_drw() by if not ROB_COMPLETE */
+@
+
+
+1.10
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.9 2015/08/31 13:41:20 nakashim Exp nakashim $";
+d21 1
+a21 1
+    if (rob->sr[6].t) T0 = ex_srr(tid, rob, 6); /* single(cld-dst,all-st-src) double(cld-dst0,all-st-src0) */
+d28 3
+a30 3
+  if (rob->sr[2].t) s2 = ex_srr(tid, rob, 2);
+  if (rob->sr[4].t) s3 = ex_srr(tid, rob, 4);
+  if (rob->sr[8].t) sc = ex_srr(tid, rob, 8)>>60;
+@
+
+
+1.9
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.8 2015/08/31 04:16:21 nakashim Exp nakashim $";
+d16 1
+a16 7
+  union {
+    Ull   ll;
+    struct {
+      Uint l;
+      Uint h;
+    } w;
+  } T0, D0;
+d18 1
+a18 1
+  Ull  mask;
+d21 2
+a22 2
+    if (rob->sr[6].t) T0.ll = ex_srr(tid, rob, 6); /* single(cld-dst,all-st-src) double(cld-dst0,all-st-src0) */
+    if (rob->dr[1].t) ex_drw(tid, T0.ll, rob, 1);  /* single(all-ld-dst)         double(all-ld-dst0) */
+d43 1
+a43 1
+    mask = 0x00000000000000ffLL;
+d49 1
+a49 1
+    mask = 0x000000000000ffffLL;
+d55 1
+a55 1
+    mask = 0x00000000ffffffffLL;
+d60 1
+a60 1
+    mask = 0xffffffffffffffffLL;
+d65 1
+a65 1
+    mask = 0x00000000ffffffffLL;
+d75 1
+a75 1
+  switch (o_ldst(tid, rob->type, rob->opcd, addr, mask, rot, &D0, rob)) {
+d78 1
+a78 1
+      printf(":%08.8x->[%08.8x_%08.8x]", addr, D0.w.h, D0.w.l);
+d83 1
+a83 1
+      D0.ll = (Sll)(D0.ll<<56)>>56;
+d86 1
+a86 1
+      D0.ll = (Sll)(D0.ll<<48)>>48;
+d89 1
+a89 1
+      D0.ll = (Sll)(D0.ll<<32)>>32;
+d92 1
+a92 1
+    if (            rob->dr[1].t) ex_drw(tid, D0.ll, rob, 1);
+@
+
+
+1.8
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.7 2015/08/26 15:16:10 nakashim Exp nakashim $";
+a97 2
+    if (rob->dbl==0) /* single */
+      D0.ll &= 0x00000000ffffffffLL;
+@
+
+
+1.7
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.6 2015/08/26 08:33:20 nakashim Exp nakashim $";
+a67 1
+    /* ¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú¡ú */
+@
+
+
+1.6
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.5 2015/08/26 00:19:51 nakashim Exp nakashim $";
+d45 12
+d58 1
+d88 13
+@
+
+
+1.5
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.4 2015/08/25 09:58:40 nakashim Exp nakashim $";
+d45 9
+a53 11
+  case 4: /* LDR */
+    if (rob->dbl==0) { /* single */
+      wb   = rob->wb;
+      rot  = 0;
+      mask = 0x00000000ffffffffLL;
+    }
+    else { /* double */
+      wb   = rob->wb;
+      rot  = 0;
+      mask = 0xffffffffffffffffLL;
+    }
+d56 1
+a56 1
+  case 6: /* LDREX */
+@
+
+
+1.4
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.3 2015/08/22 04:49:27 nakashim Exp nakashim $";
+d45 1
+a45 13
+  case 0: /* LDR(literal) */
+    if (rob->dbl==0) { /* single */
+      wb   = rob->wb;
+      rot  = 0;
+      mask = 0x00000000ffffffffLL;
+    }
+    else { /* double */
+      wb   = rob->wb;
+      rot  = 0;
+      mask = 0xffffffffffffffffLL;
+    }
+    break;
+  case 1: /* LDP */
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.2 2015/08/20 09:29:03 nakashim Exp nakashim $";
+d90 1
+a90 1
+    if (wb       && rob->dr[2].t) ex_drw(tid, wbaddr, rob, 2); /* update base */
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm64/src/bsim/RCS/ld.c,v 1.1 2015/07/21 05:44:37 nakashim Exp nakashim $";
+d36 1
+a36 1
+  if (rob->sr[8].t) sc = ex_srr(tid, rob, 8)>>28;
+d76 1
+a76 1
+    ex_drw(tid, sc<<28, rob, 1);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+static char RcsHeader[] = "$Header: /usr/home/nakashim/proj-arm32/src/bsim/RCS/ld.c,v 1.12 2014/10/19 14:08:46 nakashim Exp nakashim $";
+d47 1
+a47 1
+      wb   = 0;
+d52 13
+a64 1
+      wb   = 0;
+@

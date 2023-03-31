@@ -1,0 +1,26 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.735652",
+   "Default View_TopLeft":"0,-68",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0r4  2019-12-20 bk=1.5203 VDI=41 GEI=36 GUI=JA:10.0 TLS
+#  -string -flagsOSRD
+preplace inst versal_cips_0 -pg 1 -lvl 1 -x 300 -y 100 -defaultsOSRD
+preplace inst proc_sys_reset_0 -pg 1 -lvl 2 -x 790 -y 270 -defaultsOSRD
+preplace inst proc_sys_reset_1 -pg 1 -lvl 1 -x 300 -y 430 -defaultsOSRD
+preplace inst clk_wizard_0 -pg 1 -lvl 1 -x 300 -y 260 -defaultsOSRD
+preplace inst smartconnect_0 -pg 1 -lvl 2 -x 790 -y 100 -defaultsOSRD
+preplace inst emax6_0 -pg 1 -lvl 3 -x 1060 -y 120 -defaultsOSRD
+preplace netloc clk_wizard_0_clk_out1 1 0 2 20 10 580
+preplace netloc clk_wizard_0_clk_out2 1 1 2 600 10 970J
+preplace netloc proc_sys_reset_0_peripheral_aresetn 1 2 1 970 140n
+preplace netloc proc_sys_reset_1_interconnect_aresetn 1 1 1 610 130n
+preplace netloc versal_cips_0_pl0_ref_clk 1 0 2 20 190 570
+preplace netloc versal_cips_0_pl0_resetn 1 0 2 30 330 590
+preplace netloc smartconnect_0_M00_AXI 1 2 1 N 100
+preplace netloc versal_cips_0_M_AXI_FPD 1 1 1 N 70
+levelinfo -pg 1 0 300 790 1060 1150
+pagesize -pg 1 -db -bbox -sgen 0 0 1150 530
+"
+}
+0

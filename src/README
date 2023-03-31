@@ -1,0 +1,510 @@
+【csim … EMAX6マルチコアシミュレータ】                              2017/4/10
+
+★csim-20221020 … sort-merge対応. sparseのMEXとfftのダブルバッファを利用
+★csim-20221010 … fft対応. mop(top=xxx,len=0)の場合に,DMA起動しない
+★csim-20221001 … sha256.c向けに,OP_MAJ,OP_SH,OP_ROTS追加(HDLはまだ)
+                   emax6lib.cのp=1,mapdist=0の場合のdmatop計算修正
+★csim-20220720 … FTパッチ削除(dmrp_statをLMRING_BUSYに追加)emax6lib.c変更.test024正常化
+                   kick_dma:2wordまでPIO
+★csim-20220301 … reg_ctrlからEMAX_DEPTHを取得
+★csim-20220220 … 疎行列倍密化test022に合わせて,lmm_mode参照方法を変更
+★csim-20220120 … conv-c2cに合わせて再コンパイル(concat_adr追加.複数LMMに分散かつ連続addrのlmxを動的にまとめて,DMA回数を削減)
+★csim-20211210 … exp=H3232,H1010追加
+★csim-20210920 … 疎行列機能MEX追加
+★csim-20210801 … emax6lib.cのLMX(drain/load)にアドレス比較を追加し,MM高速化
+★csim-20210701 … emax6lib.cのsoftu64()をcomparator型に変更
+★csim-20210620 … emax6lib.cにurand()追加
+★csim-20210615 … OP_SFMA追加とOP_STBRのマルチサイクル対応 test021.c:OK
+★csim-20210604 … spu.cをemax6lib.cに取り込み
+★csim-20210601 … void inline mmp() -> void /*inline*/ mmp()
+★csim-20210305 … emax6lib.c:mmp(adr/top/len)の検査追加
+★csim-20210302 … test016.cのforstat+foldに対応(本田君のVBGMMに対応)
+★csim-20210301 … AXI<->LMM単位を64bitから32bitに変更 mop(len=4Bの倍数)
+★csim-20201203 … mop(top=0)の場合にDMA省略
+★csim-20201120 … DPを利用したunaligned-load 初版
+★csim-20201102 … 使ってない OP_LDHR,OP_LDUHR,OP_STHR,OP_SRAC,OP_SRAD,OP_CCAT,OP_WSWAPを削除
+★csim-20201101 … mm+rmm.cをSIMD化するため，LDWR,UWR,HR,UHR,BR,UBRが上位32bitにも同じ値をセットするよう仕様変更.
+                   MCASの出力位置をRTLに合わせて修正
+★csim-20200601 … mop(..., force,...)に変数を使用可能.rsimのように最外ループにてkernel内容が更新されるケースに対応
+★csim-20200505 … for (;CHIP<NCHIP;)に対し,NCHIP以降のIMAXに対してdata転送/exec起動を抑止する機能(mcid)を追加
+                   step3000-ZCU102-20200505に対応
+★csim-20200420 … step3000-ZCU102-20200420:OP_CMP*の出力結果が[1:0]ではなく[32,0]であるのに合わせOP_CEX,OP_CMOVを変更
+                   fsm.v簡略化のために，Uint reg_ctrl.cmdの上位16bitにchipを埋め込み
+                   Ull u[2]では，aarch64の128bitストアが出ないので以下に修正
+                   #if __AARCH64EL__ == 1 typedef long double Dll;
+                   #else	          typedef struct {Ull u[2];} Dll;
+★csim-20200418 … proj-brain/src/rsim.emax6のIM!=M畳み込み用に，OP_WSWAPに&r4を追加
+★csim-20200415 … typedef struct {Ull u[2];} Dll;に変更
+★csim-20191011 … stringsearchのためにfstat()に.sb.sizeを追加,CCMPのバグ修正
+★csim-20191010 … stringsearchのためにC7.3.32 DUP(general)追加
+★csim-20190828 … filter画像がおかしいので,0801の修正を元に戻す.
+                   なお,全stage5と全stage4を交互にsimlすると,毎サイクルlmringが2stage進むことになる
+                   しかし.lmring_axiは1stageしか処理しないので,性能見積り上の弊害はない 20190828
+★csim-20190802 … tb_top.datのDMA WR出力がwready=0の場合に二重出力されるのを修正
+★csim-20190801 … TR->BR->TRが1サイクルで移動していたのを修正
+                   PAD>0のアプリにPLOADを適用すると,LOAD対象LMMとも領域が被るため,PLOADが途中で渋滞し,AXIがハングすることがある(未修正)
+		※IMAX直後にprintf()を入れた場合，IMAX起動後，csimの投機実行によりキャッシュプリフェッチされ、
+		  IMAXの実行結果(FPDDMAによるMEM書き込み)とキャッシュ内容が不一致になることがある．実機とは無関係。
+★csim-20190224 … malloc先頭がLINESIZEにアラインされていない場合,HDRADDRの内容
+                   を含むキャッシュラインの先頭アドレスがl2tag-flush範囲より前になり,
+                   EMAXが偶然HDRADDRのアドレスを更新した場合にL2がflushされず，
+                   CPUが古い値を読み出す問題を解決.HDRADDRをCACHELINEにアラインする.
+★csim-20190223 … inv_x2のためにfoldingとself_loopの同時設定に対応
+                   one_shot_foldを追加してfolding時のone_shotを正常化
+●csim-20190217 … inv+rmm.cのためにOPcodeずらしてFMS追加(emax6lib.c)
+●csim-20190207 … sample/mm_cnn_lf/inv+rmm.cのためにadd(vector)追加
+★csim-20181219 … MC対応(test017/mm_cnn_lf/filter/4dimage正常)
+●csim-20181205 … MC化準備中(iorq/axi/lmringの整理)
+★csim-20181204 … 性能測定用nanosec()追加
+●csim-20181202 … AXIのNCHIP=4対応準備(axiifr()とaxiifw()を分解・組み替え)
+★csim-20181121 … CMD上位のchip番号とREGアドレス上位の比較機能を追加し,NCHIP=4に対応.
+●csim-20181118 … lmring.tyのセット方法をMC用に変更(REG_AREA_MASK追加,LMM_MAP_TOP->LMM_BASE2_PHYS)
+                   CMDの上位32bitにchip番号フィールドを追加
+●csim-20181117 … stage5のbr->av=(..ty<4)をstage4に移動.NCHIP化の準備.
+                    tr->av   = br->av || exring[cid].unit[i].lmranger_ok || exring[cid].unit[i].lmrangew_ok
+                                      || (exring[cid].unit[i].l_row == row && br->ty<4);
+●csim-20181116 … modelsim(tb_top.v)用にREG先頭を50010000→50100000に変更
+●csim-20181115 … modelsim(tb_top.v)用にPIOログ出力を変更
+●csim-20181101 … 1列のみfoldingの場合,exring=busyのままになる問題を修正
+●csim-20181018 … for(NCHIP)for(LOOP1)for(LOOP0)対応.ただしNCHIP=1のみOK
+★csim-20180914 … for()for(), INIT0?expr:expr, folding対応
+●csim-20180913 … for,INIT0,folding対応IMAXの準備(ex2dbrk,ex3dbrkを廃止しarbrkをstaeg2へ)
+★csim-20180727 … LMRING_MUX=8を導入.axring⇔lmringインタフェースを並列化
+★csim-20180217 … loop=1の場合に2ループ分動作してしまう誤動作(arbrk修正)
+●csim-20180216 … axiifr/wがdmalen=0の時に誤動作
+●csim-20180213 … test012.cにてmapdist=0,lmdの組合せの際にdrainされない問題を修正
+●csim-20180211 … ARM:2.4GHz EMAX6:1.2GHzに変更
+●csim-20171224 … emax6lib.cの変更(STRQ対応)とemax6.cのSTRQ対応
+●csim-20171201 … LMMが32B非アライン時の直接R/W機能の修正
+●csim-20171128 … lmmがAXI-DMAを取り込む際のアドレス比較を修正
+●csim-20171102 … arm-L2-flush対象アドレス比較時の計算ミスを修正
+●csim-20170901 … 動作周波数の仮定を変更 ARM=IMAX=1.0GHz. bsimと主記憶スループットを揃えた.
+    980Ti(GDDR5): 384bit * 1753MHz * DDR(2) * up+dn / 8 = 336GB/s 
+    スケール:      64bit * 1753MHz * DDR(2) * up+dn / 8 =  56GB/s 
+  ★仮定           64bit * 1000MHz * DDR(2) * up+dn / 8 =  32GB/s
+    DDR4-2133-chip:64bit memclk=133MHz bus=1.0GHz*2 / 8 =  16GB/s
+  ★仮定 DDR4-4266:64bit memclk=266MHz bus=2.0GHz*2 / 8 =  32GB/s
+              CMD --- --- R/W
+    FSB=2GHz___/~\_/~\_/~\_/~\___     D0  D4  D8  DC
+                                      D1  D5  D9  DD
+                                      D2  D6  DA  DE
+                                      D3  D7  DB  DF ...16bit*32=512bit=8dword($line)
+                      4τ    CL=18τ--◇◇◇◇◇◇◇◇
+                                           8τ       ...Total:30τ=15ns
+    bsim/ARM2.4GHzでは18τ，EMAX240MHzでは2τ    bsimではL2DIRDL+MMDELAY=200τ → 20τ
+                240MHz*8B*4*4=30GB/sでDDR4-4266-64bitと釣り合う
+		#define I1DELAY  16
+		#define D1DELAY  16
+		#define L2DIRDL  50
+		#define CCDELAY 100
+		#define MMDELAY 150 … 昔の遅いDDRを仮定していたのでこのまま
+    csim/ARM1.0GHzでは7.5τ，EMAX1.0GHzでは7.5τ bsimではL2DIRDL+MMDELAY=80τ  → 8τ
+                1.0GHz*8B*4=32GB/sで  DDR4-4266-64bitと釣り合う
+		#define I1DELAY  16
+		#define D1DELAY  16
+		#define L2DIRDL  20 … 周波数比で 50/2.4.
+		#define CCDELAY  40 … 周波数比で100/2.4.
+		#define MMDELAY  60 … 周波数比で150/2.4. → 高速DDR4前提で,30τ
+●csim-20170826 … 動作周波数の仮定を変更 ARM=IMAX=1.0GHz. bsimと主記憶スループットを揃えた.
+                   DDR4-4266-chip:64bit mem-clk=266MHz bus-clk=2.1GHz 34.1GB/s
+                   FSB=1GHzの場合,16bit*32=512bit=8dword,30τに30ns
+                                  ARM2.4GHz:72τ，EMAX240MHz:7τ
+                                  ARM1.0GHz:30τ，EMAX1.0GHz:30τ
+                   bsim:240MHz*8B*4*4 = 30GB/s
+                   csim:1.0GHz*8B*4   = 32GB/s
+●csim-20170824 … AXIIF-DMA完成.test/test007-csim.emax6+dma正常
+                   IOREGからのloadは先行storeを待つように変更
+●csim-20170823 … AXIIF-DMA-READがmem[]書き込み直前までOK
+●csim-20170822 … AXIIF-DMA-READ準備中.DMA-REGに体してはradr_sent=1不要
+●csim-20170821 … AXIIF-DMA-WRITE完了.PIOの異常動作を修正.adr_sentをR/Wに分離
+●csim-20170820 … AXIIF-DMA-WRITE完了.READはこれから
+●csim-20170819 … AXIIF-PIO完了.printf()の整理.
+●csim-20170818 … AXIIF-PIO完了.test007の実行結果は正常.
+●csim-20170817 … AXIIF-PIOへの移行完了.test007の実行結果は異常.
+●csim-20170816 … emax6_reg()からAXIIFへの移行準備. filter正常,test007正常.
+●csim-20170815 … emax6_reg非同期参照のためにiorqを追加. filter正常,test007正常.
+●csim-20170814 … emax6_kick_dma()において4B境界のケース(filter.wdifline)があることに対応
+●csim-20170813 … lmwの場合もrow-mapdist位置のbitmapを1にsetする必要がある.これでmapdist!=0のfilterも正常動作
+●csim-20170812 … AXIR/WをLMMが受け取る判断のために,conf.lmm_axiw,conf.lmm_axirを導入.複数LMMの同時受け取りも可能
+                   filter.hokan2が少しまともになったが,まだ四角形状が検出できていない
+●csim-20170811 … filter.tone_curveが正常動作.MSK_BX適用のためにea0oとea1oは64bit保持が必要
+●csim-20170810 … confの初期化にもvldrq/vstrqを使用
+●csim-20170809 … DDR<->LMMにVLDRQ/VSTRQを使用
+●csim-20170808 … siml_emax6()の高速化.exringに,cmd_busyとunit_busyを追加
+●csim-20170807 … 最終drainも正常.test007-csim-emax6正常動作
+●csim-20170806 … exring.unit1_execは4cycle毎のcheckなので,HOSTのbusy検査が空振りする.exring.busyを追加
+                   test007の実行結果はall-0で,まだおかしい
+●csim-20170805 … 有効rowのみconf.v=1とし,unit1_execをONにすることで，EMAX集結判定を高速化
+●csim-20170804 … SCON正常
+●csim-20170803 … 最初のarray実行はLMM格納結果まで正常.次のSCONがbusy=1でハング
+●csim-20170802 … LMMの初期化(PIOによるストア)まで正常.
+●csim-20170801 … CMD_RESET,conf[][]書き込み動作正常.
+                   ../../src/csim/csim -bae436 -p test007-csim.emax6 | & jl
+●csim-20170730 … siml_axiif()はダミー. emax6_ctrl()にてemax6_kick_dma()に対応.コンパイルのみOK
+●csim-20170711（暫定） … EMAX6制御レジスタ空間はinclusive検査不要.d1r()とd1w()にinclusive検査を移動.
+●csim-20170710 … IMAX初版. コンパイル正常終了(動作未確認)
+●csim-20170401 … EMAX6初版. bsim-20170303からファイル名を変更し,
+                   "-DIGNORE_LMMI_BLKGATHER -DIGNORE_LDDMQ_HANDSHAKE"を追加
+----
+
+【conv-c2c … EMAX6コンパイラ】                                  2017/4/10
+
+★conv-c2c-20221030 … sha256がZU19EGでハング.EXEC=3LLの後にPLOAD用のRANGE更新があるとダメな模様.
+                       EXEC=3LL;の前で更新するよう順序入れ替え.mm+rmmの性能変化は誤差の範囲.
+★conv-c2c-20221020 … sort-merge対応. sparseのMEXとfftのダブルバッファを利用
+★conv-c2c-20221010 … fft対応. mop(top=xxx,len=0)の場合に,DMA起動しない
+★conv-c2c-20221001 … sha256.c向けに,OP_MAJ,OP_SH,OP_ROTS追加(HDLはまだ)
+                       emax6lib.cのp=1,mapdist=0の場合のdmatop計算修正
+★conv-c2c-20220720 … FTパッチ削除(dmrp_statをLMRING_BUSYに追加)emax6lib.c変更
+★conv-c2c-20220301 … reg_ctrlからEMAX_DEPTHを取得
+★conv-c2c-20220224 … REGVの高速化 (128bitストアを使用)
+★conv-c2c-20220220 … 疎行列倍密化test022に合わせて,lmm_mode参照方法を変更
+★conv-c2c-20220120 … concat_adr追加.複数LMMに分散かつ連続addrのlmxを動的にまとめて,DMA回数を削減
+★conv-c2c-20211210 … exp=H3232,H1010追加
+                       make -f Makefile-bsd.emax6sc test022-bsd.emax6sc
+                       CGRAメニコア実装.変数をBRに読み替えコア間ifを$ラインに閉じ込め
+★conv-c2c-20210920 … 疎行列機能MEX追加
+★conv-c2c-20210801 … emax6lib.cのLMX(drain/load)にアドレス比較を追加し,MM高速化
+★conv-c2c-20210701 … emax6lib.cのsoftu64()をcomparator型に変更
+★conv-c2c-20210620 … emax6lib.cにurand()追加
+★conv-c2c-20210607 … OP_SFMAをパイプライン化
+★conv-c2c-20210606 … OP_SFMAとOP_SFMAMAGを追加
+★conv-c2c-20210604 … spu.cをemax6lib.cに取り込み
+★conv-c2c-20210601 … void inline mmp() -> void /*inline*/ mmp()
+★conv-c2c-20210305 … emax6lib.c:mmp(adr/top/len)の検査追加
+★conv-c2c-20210302 … lmm_addr_bot|topの64bit合成時に,下位のtopを32bitに切らないと,実機の64bitアドレスが上のbotに混ざる
+★conv-c2c-20210301 … AXI<->LMM単位を64bitから32bitに変更 mop(len=4Bの倍数)
+★conv-c2c-20201203 … mop(top=0)の場合にDMA省略.tgif出力の線幅を5⇒3
+★conv-c2c-20201120 … DPを利用したunaligned-load 初版
+★conv-c2c-20201102 … 使ってない OP_LDHR,OP_LDUHR,OP_STHR,OP_SRAC,OP_SRAD,OP_CCAT,OP_WSWAPを削除
+                       MACRO記述能力向上のため，記述可能配列に2次元と3次元を追加.ただし配列名に大文字は使用不可.
+                       S2IMMの0xffffffffffffffffが0x7fffffffffffffffに化けていたので，strtoll() -> strtoull
+★conv-c2c-20201101 … emax6lib.c:mm+rmm.cをSIMD化するため，LDWR,UWR,HR,UHR,BR,UBRが上位32bitにも同じ値をセットするよう仕様変更.
+                       MCASの出力位置をRTLに合わせて修正
+★conv-c2c-20201001 … emax6_kick_dma() 先頭奇数番地/長さ2word時のsegmentation fault問題修正
+★conv-c2c-20200831 … malfunction時にexit(1)
+★conv-c2c-20200716 … Check addr-range duplication among OP_ST
+                       in x1: OP_ST with same addr-range in row[6] and row[7] will produce unpredictable result
+★conv-c2c-20200701 … proj-brain/src/rsim/imax.cのsgemm00()条件付OP_STのため,folding時にBR[2]の使用を許可
+                       ST,CEXE,ST,CEXE,ST,CEXE,STの場合,先頭CEXEがunit[0]に写像されるバグを修正
+★conv-c2c-20200605 … read-modify-write(test019)に対し,lmm_mode=3だったのを.rwを無視してlmm_mode=2になるよう変更
+★conv-c2c-20200601 … mop(..., force,...)に変数を使用可能.rsimのように最外ループにてkernel内容が更新されるケースに対応
+★conv-c2c-20200507 … 記述ミスを発見.emax6.c: 誤: max6.lmmd[%d][%d] = ~0>>%d;
+                                               正: max6.lmmd[%d][%d] = 0xff>>%d;
+★conv-c2c-20200506 … conv-c2c.l T_VARIABLEに配列要素追加 [A-Za-z_][A-Za-z0-9_]*\[[0-9][0-9]*\]
+            	       //EMAX5A imax_core1( 4, 3, 2) が複数exe()/mop()に展開されるため conv-c2c.yにて複数関数callに対応
+★conv-c2c-20200505 … for (;CHIP<NCHIP;)に対し,NCHIP以降のIMAXに対してdata転送/exec起動を抑止する機能(mcid)を追加
+                       step3000-ZCU102-20200505に対応
+★conv-c2c-20200420 … step3000-ZCU102:OP_CMP*の出力結果が[1:0]ではなく[32,0]であるのに合わせOP_CEX,OP_CMOVを変更
+                       fsm.v簡略化のために，Uint reg_ctrl.cmdの上位16bitにchipを埋め込み
+                       Ull u[2]では，aarch64の128bitストアが出ないので以下に修正
+                       #if __SIZEOF_LONG_DOUBLE__ == 16  typedef long double Dll;
+                       #else	                         typedef struct {Ull u[2];} Dll;
+★conv-c2c-20200418 … proj-brain/src/rsim.emax6のIM!=M畳み込み用に，OP_WSWAPに&r4を追加
+★conv-c2c-20200415 … typedef struct {Ull u[2];} Dll;に変更
+★conv-c2c-20191011 … stringsearchのために"LOOP0=loop,t0[CHIP]=t0t[CHIP]-1"に対応
+★conv-c2c-20190815 … マルチチップIMAXのDMAREAD高速化のため,reg_ctrl.dmrpにdmatopとdmalenを追加
+★conv-c2c-20190730 … emax6lib.c:cselをemax6.csel_saveに保存し,前回と同じ場合は設定を省略
+★conv-c2c-20190720 … FPDDMA使用時でもdmalen=0の場合はPIOを使用(invz+rmm.c向け)
+★conv-c2c-20190501 … "(0+WDHT+WD)*4"が()出力不足のため"0+WDHT+WD*4"になっていた点を修正
+★conv-c2c-20190223 … inv_x2のためにfoldingとself_loopの同時設定に対応
+                       64段でも8段でもREGMAPアドレスが変わらないように，emax6lib.cにAMAP_DEPTH追加
+★conv-c2c-20190221 … inv+rmm.cのinv_x2()のために新confではlmmi[old].v=0にする修正
+                       EXE0;EXE1;ST0;ST1も正しくrow.colが対応付けられるよう修正
+★conv-c2c-20190217 … inv+rmm.cのためにOPcodeずらしてFMS追加(emax6lib.c)
+★conv-c2c-20181219 … MC対応(test017/mm_cnn_lf/filter/4dimage正常)
+★conv-c2c-20181218 … lmf+lmxが同一アドレスの場合にLOADを削減.DYNAMIC_SCON機能追加
+●conv-c2c-20181204 … 性能測定用nanosec()追加
+●conv-c2c-20181202 … NCHIP>1の生成コードを最適化(CHIP=0のブロードキャストを利用し削減)
+                       [emax6.lmmic]をlmmiの最内ループに移動
+●conv-c2c-20181201 … NCHIP>1の生成コードを最適化
+●conv-c2c-20181130 … NCHIP>1のためのlmmi/lmmdマルチ化
+●conv-c2c-20181118 … lmring.tyのセット方法をMC用に変更(REG_AREA_MASK追加,LMM_MAP_TOP->LMM_BASE2_PHYS)
+                       CMDの上位23bitにchip番号フィールドを追加
+●conv-c2c-20181116 … modelsim(tb_top.v)用にREG先頭を50010000→50100000に変更
+●conv-c2c-20181114 … NCHIP=4に対応(csimはまだ)
+●conv-c2c-20181018 … for(NCHIP)for(LOOP1)for(LOOP0)対応.ただしNCHIP=1のみOK
+★conv-c2c-20180914 … for()for(), INIT0?expr:expr, folding対応
+★conv-c2c-20180514 … emax6lib.c:kick_dma()内の宣言間違い Uint->Ull (実機PIOが正常動作になった)
+●conv-c2c-20180221 … emax6lib.c:emax6_open()内のemax6.dma_ctrlが未設定だった
+●conv-c2c-20180220 … lmmi設定/DMA起動等の無駄削除の改善
+●conv-c2c-20180219 … 縦方向ブロードキャストも考慮してlmmi設定/DMA起動等の無駄を削除
+●conv-c2c-20180217 … OP_STの後段にREGを伝搬するプログラムでは,TRが競合する場合があるのを修正
+●conv-c2c-20180216 … ZYNQ実機ではconf_top/endに.globalが必要
+●conv-c2c-20180214 … test012.cにて最終ラインがdrainされない問題を修正
+●conv-c2c-20180213 … test012.cにてmapdist=0,lmdの組合せの際にdrainされない問題を修正
+●conv-c2c-20180209 … OP_STに関してもLMMマージ
+●conv-c2c-20171224 … emax6lib.cの変更(STRQ対応)とemax6.cのSTRQ対応
+●conv-c2c-20171205 … 三精システムの実機Sampleに合わせてDMAを修正
+●conv-c2c-20170901 … MSK_D0:common.vhに合わせて,15->14に変更
+●conv-c2c-20170825 … PIO生成命令列の最適化
+●conv-c2c-20170824 … ADDR/DMA-REGへの書き込みを64bit化
+●conv-c2c-20170819 … csimでもFPDDMAを実行できるよう，emax6lib.cのFPDDMAのZYNQ限定を削除
+●conv-c2c-20170815 … emax6_reg非同期参照のためにiorqを追加. filter正常,test007正常.
+●conv-c2c-20170814 … emax6_kick_dma()において4B境界のケース(filter.wdifline)があることに対応
+●conv-c2c-20170813 … lmwの場合もrow-mapdist位置のbitmapを1にsetする必要がある.これでmapdist!=0のfilterも正常動作
+●conv-c2c-20170812 … AXIR/WをLMMが受け取る判断のために,conf.lmm_axiw,conf.lmm_axirを導入.複数LMMの同時受け取りも可能
+                       filter.hokan2が少しまともになったが,まだ四角形状が検出できていない
+●conv-c2c-20170810 … confの初期化にもvldrq/vstrqを使用
+●conv-c2c-20170809 … DDR<->LMMにVLDRQ/VSTRQを使用
+●conv-c2c-20170807 … 最終drainも正常.test007-csim-emax6正常動作
+●conv-c2c-20170805 … 有効rowのみconf.v=1とし,unit1_execをONにすることで，EMAX集結判定を高速化
+●conv-c2c-20170804 … SCON正常
+●conv-c2c-20170803 … bsimと異なり,soft管理となるlmmi[lmmio][i][j]の参照時にはmapdist分のシフトが必要
+●conv-c2c-20170802 … reg_ctrl.addr.top/botを調整
+●conv-c2c-20170801 … conf[i][j]の生成順を修正.CMD_RESET,conf[][]書き込み動作正常.
+●conv-c2c-20170730 … siml_axiif()はダミー. emax6_ctrl()にてemax6_kick_dma()に対応.コンパイルのみOK
+●conv-c2c-20170711 … emax6_pre_with_keep_cache()はmode==0限定,未試験部分の修正.
+●conv-c2c-20170710 … ZYNQ実機対応
+●conv-c2c-20170604 … dma_ctrlの定義を移動し,DMA起動手順を見直し
+●conv-c2c-20170603 … draw_lmx()にてmwsa論理が逆になったことへ対応
+●conv-c2c-20170602 … csimのdma_ctrl,reg_ctrl空間をcache-off空間に移動するため，dma_ctrl,reg_ctrl構造体に集約
+●conv-c2c-20170601 … DMA起動手順初版完成.(tricount-emax6ncが以下でコンパイルできない問題を解決.emax6lib.c修正)
+		       /usr/bin/ld: tricount.emax6nc: Not enough room for program headers (allocated 6, need 7)
+●conv-c2c-20170401 … EMAX6初版. conv-c2b-20170303からファイル名を変更しただけ
+----
+
+【bsim … EMAX5マルチコアシミュレータ】                              2014/12/10
+
+★bsim-20190501 … ARM:2.4GHz EMAX6:300MHzに変更
+●bsim-20171224 … emax5lib.cの変更(STRQ対応)に伴い再コンパイル
+●bsim-20171102 … arm-L2-flush対象アドレス比較時の計算ミスを修正
+●bsim-20170305 … if (c[cid].l2tag[i][j][k].la*L2TAGMASK > *(Ull*)&mem[0][HDRADDR] && c[cid].l2tag[i][j][k].la*L2TAGMASK <= ALOCLIMIT を以下に変更
+                   if (c[cid].l2tag[i][j][k].la*L2TAGMASK >= *(Ull*)&mem[0][HDRADDR] && c[cid].l2tag[i][j][k].la*L2TAGMASK < ALOCLIMIT
+●bsim-20170303 … EMAX6移行のために "-DIGNORE_LMMI_BLKGATHER -DIGNORE_LDDMQ_HANDSHAKE"が正常コンパイルできるよう調整
+●bsim-20170302 … BK=4ではarm.pthがハング.BK=8に変更してOK
+●bsim-20170301 … tricount run(twitter.edges)がBK=4の時にハング
+                   th#4がth#8命令区間を投機実行し,stbf格納結果をth#8が使うことでnfrontier_edgesが余分にincrement
+                   ldがstbfを参照する際はtidも比較が必要
+●bsim-20170209 … MAXL1BK,MAXL2BK,MAXMMBKを16に縮小,cacheも16K/128Kに縮小(IoT向けを想定)
+                                        (BK=4,8は,tricount8/Makefile-arm.emax5 runがハングする)
+                   if (c[cid].d1tag[l1bank][index][w].dirty && (keep_or_drain || !c[cid].d1tag[l1bank][index][w].drain)) {
+                                          filterのmismatch異常  ^^^^^^^^追加必要
+●bsim-20170208 … lmmwbおよびl1/l2tag.drainを導入.cache-flush対象を削減
+●bsim-20170207 … ACP_BASE_PHYSを導入.cache-flush対象を削減
+●bsim-20170206 … TCUREG_LASTは,unit2_execも監視が必要.tricount run.small,runが完走.結果も正常.
+●bsim-20170204 … THREAD町合わせのためのtcureg_termを追加.かなり走行するがハング
+●bsim-20170203 … blklmmtopの初期化忘れ,IM_BUFRDのlmrd汚染を修正.EMAX_STARTの3週目開始.ただし2週目の最初のTRパラメタが異常
+●bsim-20170202 … fsm.lmmd=1の有無によりEMAX完了後のL2$flushの有無を切替え.inclusive関係のviolationは解決
+●bsim-20170201 … kernel0第一ループのLDDMQ/TR0/TR1が完了.ただし,EMAX動作中にthread#4,#8がL1に載せるため,
+                   これまでのようにEMAX_TERM時にL2_flushすると,inclusive関係にviolationが発生.
+●bsim-20170128 … fsm[cid].fsm_busyを導入(LDDMQ/TRにおいてea1dがea0dに途中で追い付いても全体が終了しないよう対応)
+●bsim-20170127 … tricount-kernel0の最初のarray実行が完了し,2週目開始(tcuregの値は0で不正)
+●bsim-20170126 … tricount-kernel0の2箇所のOP_TRからtcuregに正常値が連続的に格納されていることを確認
+●bsim-20170125 … tricount-kernel0の[3][2]のOP_TRからtcuregに正常値が連続的に格納されていることを確認
+●bsim-20170124 … tricount-kernel0の[3][2]のOP_TRからtcuregに正常値が最初の２つだけ格納されていることを確認
+●bsim-20170123 … LDDMQの基本動作完成.TR-ARMインタフェース実装前
+★bsim-20161230 … step1000-ZCU102-20161230対応.blksizeのコメント修正とbit幅調整
+●bsim-20161221 … step1000-ZCU102-20161220に合わせて修正(row_select更新タイミング等も一致)
+●bsim-20161220 … step1000-ZCU102-20161220に合わせて修正(LDRQ.blk!=0対応,LDDMQ/TR実装開始前)
+●bsim-20161212 … axra/axwa削除.lmmc_statにOP_LDDMQ(top==0)とOP_TRを追加
+		   OP_LDDMQ/OP_TR用にea1opにもea0opをコピー
+●bsim-20161211 … LDRQのGATHER機能完了.LDDMQ/TR対応.OP_TRをdrain対象から除外
+●bsim-20161208 … EX4->TR4->BR4用に,trs3-0を追加
+●bsim-20161120 … ARMv8のC7.3.169 LDUR(SIMD&FP), C7.3.287 STUR(SIMD&FP)を追加．stencil-arm用
+●bsim-20161119 … ARMv8のLDAXR/STLXRを追加．tricount-arm.pthが動作
+●bsim-20161116 … MWとTRのパスを最適化(confは変更なし)
+●bsim-20161115 … MWとTRを分離し,IM_PREFとレジスタ伝搬を同時実行可能に変更
+●bsim-20161110 … mapdist=0かつptop!=0の場合に,lmmi.ofsを使ってEXEC同時IM_PREF
+●bsim-20161102 … lmmd更新タイミングをverilogに合わせてSTATUS_TERM時に変更
+●bsim-20161101 … LDDMQ用にexd→mw0パスを追加
+●bsim-20161022 … ARMZYNQ実機用に調整
+●bsim-20160822 … vsim用にload.dat生成を追加
+●bsim-20160815 … ACPは物理，HPPは仮想のため，EMAXSMIN,EMAXSMAXは廃止し，m_arvirtに置き換え
+●bsim-20160804 … ZYNQ用に，EMAXSMIN,EMAXSMAXを追加
+●bsim-20160728 … DUMP_DDRオプション（-d）を追加．FPGA/tb_top.vのconf/lmmi/regv.dat生成用
+●bsim-20160630 … L2DELAY/CCDELAY ⇒ L2DIRDL/CCDELAY/MMDELAYに分解（L2ミス時遅延を350から200に修正）
+●bsim-20160611 … bcas_colの更新方法を変更
+●bsim-20160610 … lmmi[].copyを追加.bcasの場合にlmmi.v=0にすると,bsimで再利用できなくなる.DEPTH=64に変更.
+●bsim-20160607 … CVTSSとCVTSDのvxx.cマージミスを修正.(printf("%f\n", 1.0);異常の修正).
+	           bsimにおけるFAD,FML,FMAの結果異常はintel-compilerの型変換の問題(union使用に変更).
+●bsim-20160606 … FAD/FML/FMAを64bit*1から，32bit*2に変更
+●bsim-20160605 … 伝搬レジスタ削減用にOP_MSADとOP_MSSADの２つに分離
+●bsim-20160602 … gatherの64bit版用にOP_WSWAPを追加(emax5lib.cのみの変更)
+●bsim-20160531 … filter-tone_curve異常.eagoのMSK_XXが二重に適用されoffsetが0になっていた.
+●bsim-20160523 … SBFM命令修正(extend(src<S>)の解釈間違い).SHIFT,UMOV,XTN,INS,MAXMIN命令追加.
+	000:RT 00000000_100f5fb0 00013108 rob[2].stat=DECERR 6f3006d8 ushr    v24.4s, v22.4s, #16
+	000:RT 00000000_100ff81d 000131bc rob[2].stat=DECERR 4e083f08 mov     x8, v24.d[0]
+	000:RT 00000000_100ff880 00013348 rob[1].stat=DECERR 0e612bac xtn     v12.4h, v29.4s
+						             4e6129ac xtn2    v12.8h, v13.4s
+	000:RT 00000000_100ff8a3 000133d4 rob[1].stat=DECERR 4e081f74 mov     v20.d[0], x27
+        000:RT 00000000_100ffaa3 00013bd4 rob[1].stat=DECERR 6e346583 umax    v3.16b, v12.16b, v20.16b
+        000:RT 00000000_100ffb32 00013e10 rob[1].stat=DECERR 2f08a520 uxtl    v0.8h, v9.8b
+                                                             6f08a520 uxtl2   v0.8h, v9.16b
+        000:RT 00000000_100ffc84 00014358 rob[1].stat=DECERR 4f305741 shl     v1.4s, v26.4s, #16
+        000:RT 00000000_100ffd8a 00014770 rob[1].stat=DECERR 4ea41c21 orr     v1.16b, v1.16b, v4.16b
+        000:RT 00000000_10100e5e 00018ac0 rob[1].stat=DECERR 6e3e3606 cmhi    v6.16b, v16.16b, v30.16b
+        000:RT 00000000_10100e66 00018ae0 rob[1].stat=DECERR 6e6c1d46 bsl     v6.16b, v10.16b, v12.16b
+●bsim-20160522 … mode=2(drain)の場合は,last_row0を更新しない
+●bsim-20160521 … EMAX起動時オーバヘッド見直し.空間別にL2に残すかどうかを制御
+●bsim-20160520 … EMAX起動時オーバヘッド見直し.ACP接続モデルでは,stack領域のL2をflushする必要無し
+●bsim-20160519 … L[12]fluchcycleを追加．EMAX使用時のflushもオーバヘッドに算入
+●bsim-20160518 … ARM_EMAX5_RATIOパラメタ追加（ARM=2.4GHz EMAX5=240MHz 10cycle毎にEMAXが動作）
+●bsim-20160517 … printf("%f");printf("%f")連続時の表示異常（STP decode時のopcd設定間違い）
+●bsim-20160516 … e2immを12bit->64bitに拡張 test008-arm.emax5,gather-arm.emax5,gdepth-arm.emax5正常動作
+●bsim-20160515 … lmmi[][].bcasを追加
+●bsim-20160514 … lmmi水平方向broadcast機能の修正
+●bsim-20160509 … ARMv8のprintf("%f")対応．FCMP,FCMPE,FMOV(reg)命令を追加
+●bsim-20160508 … VSTRQバグ修正. bsim自体のFreeBSD(64bit)およびCentOS(64bit)対応
+●bsim-20160507 … DRAIN/LOADの候補までを粗くskipする機構を追加
+●bsim-20160506 … CONFシフト機能（STATUS_SCON）を追加．bsimは，#define FEATURE_SHIFT_CONF で有効化
+●bsim-20160501 … test007動作（EXECとlmd/lmp同時動作）
+●bsim-20160414 … AXIバス再構成.siml_axiif()に8byte部分ストア機能追加. test006(mapdist=1)正常
+●bsim-20160413 … AXIバス動作をマージ
+●bsim-20160412 … emax5_drain_dirty_lmm機能追加
+●bsim-20160411 … test005動作
+●bsim-20160410 … ea0bs.ea1bsを2bitに変更.CEXOPを廃止(tab=ffffで代用)
+●bsim-20160409 … op_while用にexe()にretval追加
+●bsim-20160408 … EMAX_stat=7で無限ループ
+●bsim-20160407 … 初版mk1完了
+●bsim-20160401 … STATUS_EXEC以外のsiml_emax5()初版完成
+●bsim-20151020 … gather-arm用にADD(scalar)追加
+●bsim-20150921 … pthread完了時命令をefffffffからd41fffe1に変更
+●bsim-20150920 … stanford完走
+●bsim-20150919 … FFT対応中（dup未）
+●bsim-20150918 … FFT対応中（str未）
+●bsim-20150917 … FFT対応中（fadd未）
+●bsim-20150916 … FFT対応中（fmsub未）
+●bsim-20150915 … Intmm/Mm完走
+●bsim-20150914 … Mm途中(LDR(literal,simd追加)
+●bsim-20150913 … Puzzle完走(LD1R repeat_reg_write追加)
+●bsim-20150912 … Puzzle完走(LD1R partial_reg_write追加)
+●bsim-20150911 … Puzzle完走(LD1修正)
+●bsim-20150910 … Puzzle完走
+●bsim-20150908 … gdepth-arm試験開始 SMULH UMULH追加（MRS/MSR以外のC6実装完）
+●bsim-20150820 … 初版（test000がstrlen入口まで走行）
+----
+
+【conv-c2b … EMAX5コンパイラ】                                  2015/10/20
+
+★conv-c2b-20190501 … graph用に使用するMSK=15によりwarningが出ないよう,emax5lib.cを修正
+★conv-c2b-20180217 … OP_STの後段にREGを伝搬するプログラムでは,TRが競合する場合があるのを修正
+●conv-c2b-20171224 … emax5lib.cの変更(STRQ対応)
+●conv-c2b-20170305 … MSK_D0:common.vhに合わせて,15->14に変更
+●conv-c2b-20170304 … EMAX6移行のために ACP_BASE2_PHYS を追加
+●conv-c2b-20170303 … EMAX6移行のために".obj"を"-emax5.obj"に変更
+●conv-c2b-20170208 … lmmwbおよびl1/l2tag.drainを導入.cache-flush対象を削減
+●conv-c2b-20170207 … ACP_BASE_PHYSを導入.cache-flush対象を削減
+●conv-c2b-20170206 … tricount run(twitter.edges)には，LMM=128KBが必要
+●conv-c2b-20161230 … LDDMQ/TRのLMM読み出しアドレス計算をEA1に実行させるよう修正（lmm内未処理データの有無チェック用）
+●conv-c2b-20161212 … OP_TRをcol=3以外にも配置可能に変更
+	               OP_LDDMQ/OP_TR用にlmmi初期化(f=1,p=1)追加
+		       OP_LDDMQ/OP_TR用にea1opにもea0opをコピー
+		       LMM_bufferingのea1br/or初期化抜け
+●conv-c2b-20161211 … OP_LDDMQをstoreグループに移動
+●conv-c2b-20161208 … LDRQ,STRQ,LDDMQのアラインを32Bに変更
+                       EX4->TR4->BR4用に,trs3-0を追加
+●conv-c2b-20161203 … tgif用の命令マップ自動生成を追加
+●conv-c2b-20161202 … tricount0用:LDDMQの遅延バッファ挿入暫定完了
+●conv-c2b-20161201 … tricount0用:LDDMQ,TR用に修正.tricount.cがコンパイル正常.
+                       ただし，LDDMQの遅延バッファ挿入は未
+●conv-c2b-20161130 … tricount0用:LDDMQ,TR用に修正.tricount.cがコンパイル通過.
+                       OP_CMOVの依存検査が2opになっていたのを3opに修正
+●conv-c2b-20161127 … tricount0用:mmp(OP_LDRQ)にblk=1,2,3機能を追加
+●conv-c2b-20161121 … tricount0用:mop(),mo4()にplen指定とVARIABLE指定を追加
+●conv-c2b-20161120 … Makefile.CFLAGS:FreeBSD/CentOSは"-m32", aarch64は無し
+●conv-c2b-20161115 … MWとTRを分離し,IM_PREFとレジスタ伝搬を同時実行可能に変更
+●conv-c2b-20161110 … mapdist=0かつptop!=0の場合に,lmmi.ofsを使ってEXEC同時IM_PREF
+●conv-c2b-20161101 … LDDMQ用にexd→mw0パスを追加
+●conv-c2b-20161022 … ARMZYNQ実機用に調整
+●conv-c2b-20161016 … bcas_colとbcas_co2を使って，2つのLMM-broadcast用fsmを各々ローテート
+●conv-c2b-20161010 … 同一行に２つまでのLMM-broadcastを使用可能にする
+●conv-c2b-20160920 … conf/lmmi/regvをacp_mmapに変更
+●conv-c2b-20160901 … ACPは物理，HPPも物理に変更．m_arvirtはm_acphppに名称変更．
+●conv-c2b-20160815 … ACPは物理，HPPは仮想のため，EMAXSMIN,EMAXSMAXは廃止し，m_arvirtに置き換え
+                       物理アドレスが連続するように，lmmi/regvを16KBにアライン
+●conv-c2b-20160804 … ZYNQ用に，EMAXSMIN,EMAXSMAXを追加
+●conv-c2b-20160630 … CentOSでploadエラー. Makefileに-m32を付けて回避．
+●conv-c2b-20160611 … bcas_colの更新方法を変更
+●conv-c2b-20160610 … lmmi[].copyを追加.bcasの場合にlmmi.v=0にすると,bsimで再利用できなくなる.DEPTH=64に変更.
+●conv-c2b-20160607 … LDの格納先はBR[][][1]→BR[][][0]の順.チェック機能を追加.
+	               bsimにおけるFAD,FML,FMAの結果異常はintel-compilerの型変換の問題(union使用に変更).
+●conv-c2b-20160606 … FAD/FML/FMAを64bit*1から，32bit*2に変更
+●conv-c2b-20160605 … 伝搬レジスタ節約のために旧MSADを3in-MSSADに変更し,改めて2in-MSAD追加.EXE出力も伝搬レジスタとして使用.
+●conv-c2b-20160604 … EMAX5A内のNULL行もOKにする.bcas対象外のwayはxtrs=2に設定.
+●conv-c2b-20160603 … get_valid_row()にて，EXE->STORE(addr)とEXE->STORE(data)を区別.
+●conv-c2b-20160602 … gatherの64bit版用にOP_WSWAPを追加. hash_clear()追加.
+●conv-c2b-20160601 … cex(),exe(),ex4()のdstを最初に移動
+●conv-c2b-20160516 … e2immを12bit->64bitに拡張 test008-arm.emax5,gather-arm.emax5,gdepth-arm.emax5正常動作
+●conv-c2b-20160515 … lmmi[][].bcasを追加
+●conv-c2b-20160514 … lmmi水平方向broadcast機能の修正
+●conv-c2b-20160513 … mapping異常の修正
+●conv-c2b-20160510 … 未使用ea1brとea0brがeabにてconflictする問題を解決
+●conv-c2b-20160501 … OP_EXEがAR[r][c]をバラ使いする場合のBR[][][2]競合問題を解決
+●conv-c2b-20160414 … len -> len-1 (AXI仕様に会わせる)
+●conv-c2b-20160412 … emax5_drain_dirty_lmm機能追加
+●conv-c2b-20160411 … test005動作
+●conv-c2b-20160410 … ea0bs.ea1bsを2bitに変更.CEXOPを廃止(tab=ffffで代用)
+●conv-c2b-20160409 … op_while用にexe()にretval追加
+●conv-c2b-20160408 … conf,lmmiのword-orderが逆
+●conv-c2b-20160407 … lmmiとregvを入れ換え
+●conv-c2b-20160406 … EXE.src1からEXRを削除（CMP結果のみ直接使用可能）
+●conv-c2b-20160405 … STBFにもcex条件を適用
+●conv-c2b-20160404 … mm4()をmmp()にマージ
+●conv-c2b-20160403 … addr_INCRの場合のoffset自動生成追加
+●conv-c2b-20160402 … OP_ADDQ/OP_SUBQをOP_ADD/OP_SUBにマージ
+●conv-c2b-20160401 … lmwd-broadcastingを静的コンパイルに変更
+●conv-c2b-20160331 … bus[][].lmri/lmliを設定.ただしbroadcast設定は無
+●conv-c2b-20160326 … exprに*/%を追加, dist削除
+●conv-c2b-20160312 … bus名変更,map_distをfsm[]に追加,mopにblk追加
+●conv-c2b-20160204 … bsim用にregv,lmmi構造体定義追加
+●conv-c2b-20160203 … CC_VとCC_Cを入れ換え(bsim.hに合わせる)
+●conv-c2b-20160202 … Step 2-3まで完. Step 3まで疎通
+●conv-c2b-20160201 … bload,bstore,dload,trans対応完
+●conv-c2b-20160130 … Step 2-2まで完
+●conv-c2b-20160129 … lmmi(lmp,lmd)対応完
+●conv-c2b-20160128 … lmmi(top,dist,len,pref)対応完
+●conv-c2b-20160127 … step-3 emit-all完了（次はstep-2 setup conf[][]）
+●conv-c2b-20160124 … set_reg_path追加中
+●conv-c2b-20160112 … OP_CCAT追加
+●conv-c2b-20151212 … reg初期値代入をCで実行
+●conv-c2b-20151204 … ALUパターンdexu追加
+●conv-c2b-20151127 … get_valig_row()修正
+●conv-c2b-20151126 … gather.cのEMAX5初期配置が完了
+●conv-c2b-20151122 … emit_emax5a作業中
+●conv-c2b-20151111 … 初版
+----
+
+【CGRA/C 通常システム用コンパイル手順】
+1. そのままgcc
+
+CGRA/C EMAX5システム用コンパイル手順
+1. "//EMAX5"を一旦，非コメント行に変換
+   "//EMAX5" -> "/-EMAX5-/"
+2. cppに入力し，コメント削除＋#define解決
+3. conv-c2bに入力し，/-EMAX5-/を頼りにステート切替え
+4. mop(),exe()が参照する変数に対してARMv8がストアする命令を
+   emax5起動前コードとしてasm()自動生成
+5. ストア先はコア毎の空間でlabel=に基づきCに生成させる．
+   //EMAX5A start x1 map_dist=3
+     -> x1[sizeof(conf)+sizeof(regv)+sizeof(lmmi)]
+6. /-EMAX5-/の関数部分は，asm(".word 0xxxxxxxxx")を生成し，*-emax5.cを作成
+   {
+   Ull emax5_regv x1[UNIT_DEPTH*1*UNIT_WIDTH]; ... stack上ならコア毎に動的に割り当て可能
+   Ull emax5_lmmi_x1[UNIT_DEPTH*1*UNIT_WIDTH];
+   asm("mov emax5_conf_x1, x0"); ... conf先頭アドレス
+   asm("mov emax5_regv_x1, x1"); ... regv先頭アドレス
+   asm("mov emax5_lmmi_x1, x2"); ... lmmi先頭アドレス
+   asm("svc 0xf1");              ... emax5起動
+   ...
+   return;
+   asm("emax5_conf_x1:");                      ... テキスト領域はコンパイル済で共通
+   }
+7. 改めて*-emax5.cをARMコンパイラでコンパイル
+----
+
+【arm64-gccツールチェイン】
+  binutils-2.23.2.tgz
+  gmp-5.1.3.tgz
+  mpfr-3.1.2.tgz
+  mpc-1.0.1.tgz
+  gcc-4.8.2.tgz
+  newlib-2.1.0.tgz
+        ※ ./gcc-4.8.2/libstdc++-v3/include/bits/random.tccでエラーが出るので修正
+                旧：const size_t __log2r = std::log(__r) / std::log(2.0L);
+                新：const long double __x = 2.0L;
+                    const size_t __log2r = std::log(__r) / std::log(__x);
+        ※ libgfortranのconfigに失敗して止まるので，./gcc-4.8.2/Makefileからlibgfortran行を全部削除
+        ※ libjavaのconfigに失敗して止まるので，./gcc-4.8.2/Makefileからlibjava行を全部削除
+        ※ 再度TOPでmake;make install
+----

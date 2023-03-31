@@ -1,0 +1,54 @@
+{
+	"version": "1.0",
+	"modules": {
+		"bd_70da": {
+			"proto_instances": {
+				"/pspmc_0/M_AXI_FPD": {
+					"interface": "xilinx.com:interface:aximm:1.0",
+					"ports": {
+						"ACLK": { "actual": "m_axi_fpd_aclk"},
+						"ARADDR": { "actual": "m_axi_fpd_araddr"},
+						"ARBURST": { "actual": "m_axi_fpd_arburst"},
+						"ARCACHE": { "actual": "m_axi_fpd_arcache"},
+						"ARID": { "actual": "m_axi_fpd_arid"},
+						"ARLEN": { "actual": "m_axi_fpd_arlen"},
+						"ARLOCK": { "actual": "m_axi_fpd_arlock"},
+						"ARPROT": { "actual": "m_axi_fpd_arprot"},
+						"ARQOS": { "actual": "m_axi_fpd_arqos"},
+						"ARREADY": { "actual": "m_axi_fpd_arready"},
+						"ARSIZE": { "actual": "m_axi_fpd_arsize"},
+						"ARUSER": { "actual": "m_axi_fpd_aruser"},
+						"ARVALID": { "actual": "m_axi_fpd_arvalid"},
+						"AWADDR": { "actual": "m_axi_fpd_awaddr"},
+						"AWBURST": { "actual": "m_axi_fpd_awburst"},
+						"AWCACHE": { "actual": "m_axi_fpd_awcache"},
+						"AWID": { "actual": "m_axi_fpd_awid"},
+						"AWLEN": { "actual": "m_axi_fpd_awlen"},
+						"AWLOCK": { "actual": "m_axi_fpd_awlock"},
+						"AWPROT": { "actual": "m_axi_fpd_awprot"},
+						"AWQOS": { "actual": "m_axi_fpd_awqos"},
+						"AWREADY": { "actual": "m_axi_fpd_awready"},
+						"AWSIZE": { "actual": "m_axi_fpd_awsize"},
+						"AWUSER": { "actual": "m_axi_fpd_awuser"},
+						"AWVALID": { "actual": "m_axi_fpd_awvalid"},
+						"BID": { "actual": "m_axi_fpd_bid"},
+						"BREADY": { "actual": "m_axi_fpd_bready"},
+						"BRESP": { "actual": "m_axi_fpd_bresp"},
+						"BVALID": { "actual": "m_axi_fpd_bvalid"},
+						"RDATA": { "actual": "m_axi_fpd_rdata"},
+						"RID": { "actual": "m_axi_fpd_rid"},
+						"RLAST": { "actual": "m_axi_fpd_rlast"},
+						"RREADY": { "actual": "m_axi_fpd_rready"},
+						"RRESP": { "actual": "m_axi_fpd_rresp"},
+						"RVALID": { "actual": "m_axi_fpd_rvalid"},
+						"WDATA": { "actual": "m_axi_fpd_wdata"},
+						"WLAST": { "actual": "m_axi_fpd_wlast"},
+						"WREADY": { "actual": "m_axi_fpd_wready"},
+						"WSTRB": { "actual": "m_axi_fpd_wstrb"},
+						"WVALID": { "actual": "m_axi_fpd_wvalid"}
+					}
+				}
+			}
+		}
+	}
+}

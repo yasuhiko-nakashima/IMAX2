@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="EUC-JP"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=EUC-JP">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <link rel="apple-touch-icon" href="/Pictures/etc/appcubola2.gif">
+    <link rel="stylesheet" type="text/css" href="/room1.css">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="ROBOTS" content="ALL">
+    <meta name="description" content="Computing Architecture Lab. - Home -">
+    <meta name="keywords" content="NAIST Computing Architecture Lab.">
+    <meta name="copyright" content="(C)Computing Architecture Lab.">
+    <title>IMAX2 installation manual</title>
+  </head>
+  <body>
+    <div id="all">
+      <div id="header">
+        <div class="separate_left" style="width:1000px">
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <h4 style="background:#000000"></h4>
+        </div>
+        <br class="clear">
+      </div>
+      <div id="content">
+        <div class="table_equip">
+
+<!------------------------------------------- ----------------------------------->
+
+<a href="/Lectures/PBL1/img/img001.png">     <img width="10%" src="/Lectures/PBL1/img/img001.png"></a>
+<a href="/Lectures/PBL1/img/img002.png">     <img width="10%" src="/Lectures/PBL1/img/img002.png"></a>
+<a href="/Lectures/PBL1/img/img003.png">     <img width="10%" src="/Lectures/PBL1/img/img003.png"></a>
+<a href="/Lectures/PBL1/img/img004.png">     <img width="10%" src="/Lectures/PBL1/img/img004.png"></a>
+<a href="/Lectures/PBL1/img/img005.png">     <img width="10%" src="/Lectures/PBL1/img/img005.png"></a>
+<a href="/Lectures/PBL1/img/img006.png">     <img width="10%" src="/Lectures/PBL1/img/img006.png"></a>
+<a href="/Lectures/PBL1/img/img007.png">     <img width="10%" src="/Lectures/PBL1/img/img007.png"></a>
+<a href="/Lectures/PBL1/img/img008.png">     <img width="10%" src="/Lectures/PBL1/img/img008.png"></a>
+
+          <h1>Download IMAX2</h1>
+          <ol>
+          <li><a class="external_link" href="http://archlab.naist.jp/proj-arm64/doc/emax6/emax6j.pdf"><font style="color:#000000">IMAX2 document(jpn)</font></a>
+          <li><a class="external_link" href="http://archlab.naist.jp/proj-arm64/doc/emax6/emax6e.pdf"><font style="color:#000000">IMAX2 document(eng)</font></a>
+          <li><a class="external_link" href="http://archlab.naist.jp/proj-arm64.tgz">                 <font style="color:#000000">IMAX2 all-in-one kit including document, compiler, simulator, examples, FPGA bin-files, and Vivado-projects (10GB in total)</font></a>
+          <li><a class="external_link" href="http://archlab.naist.jp/proj-arm64-cent.tgz">            <font style="color:#000000">IMAX2 suppremental kit for CentOS (300MB)</a>
+	  </ol>
+
+          <h1>Introduction to IMAX3: Amazing Dataflow-Centric CGRA</h1>
+          <ol>
+          <li><a class="external_link" href=https://www.youtube.com/channel/UC7rDo22e2SsucCY4FtpUWcg/videos/><font style="color:#000000"><font style="color:#000000">Youtube Channel</font></a>
+	  </ol>
+
+          <h1>Introductive slides with synthesizable notes</h1>
+          <ol>
+          <li><a class="external_link" href=/Lectures/ELEM/ELEM000j.pptm><font style="color:#000000">0.非常識に理解するコンピュータ(0.予告編)</font></a>
+	  <li><a class="external_link" href=/Lectures/ELEM/ELEM001j.pptm><font style="color:#000000">1.非常識に理解するコンピュータ(1.集めたデータはどこに置くのがいいの？)</font></a>
+          <li><a class="external_link" href=/Lectures/ELEM/ELEM002j.pptm><font style="color:#000000">2.非常識に理解するコンピュータ(2.データに置き方ってあるの？)</font></a>
+          <li><a class="external_link" href=/Lectures/ELEM/ELEM003j.pptm><font style="color:#000000">3.非常識に理解するコンピュータ(3.計算って何のこと？)</font></a>
+          <li><a class="external_link" href=/Lectures/ELEM/ELEM004j.pptm><font style="color:#000000">4.非常識に理解するコンピュータ(4.押しかけるのがいいの？待つのがいいの？)</font></a>
+          <li><a class="external_link" href=/Lectures/ELEM/ELEM005j.pptm><font style="color:#000000">5.非常識に理解するコンピュータ(5.何を勉強すれば給料もらえるの？)</font></a>
+          <li><a class="external_link" href=/Lectures/ELEM/ELEM000e.pptm><font style="color:#000000">0.IMAX3 begins(0.Trailer)</font></a>
+	  <li><a class="external_link" href=/Lectures/ELEM/ELEM001e.pptm><font style="color:#000000">1.IMAX3 begins(1.Where is the best location to save data?)</font></a>
+          <li><a class="external_link" href=/Lectures/ELEM/ELEM002e.pptm><font style="color:#000000">2.IMAX3 begins(2.Is there a manner to put data?)</font></a>
+          <li><a class="external_link" href=/Lectures/ELEM/ELEM003e.pptm><font style="color:#000000">3.IMAX3 begins(3.What do you mean by calculation?)</font></a>
+          <li><a class="external_link" href=/Lectures/ELEM/ELEM004e.pptm><font style="color:#000000">4.IMAX3 begins(4.Should I push? Should I wait?)</font></a>
+	  </ol>
+
+          <h1>Expertized slides with synthesizable notes</h1>
+          <ol>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v0-200j.pptm><font style="color:#000000">0.Let's start CGRA</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-001j.pptm><font style="color:#000000">1.Introduction</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-002j.pptm><font style="color:#000000">2.Image filters basic</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-003j.pptm><font style="color:#000000">3.Image filters advanced</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-004j.pptm><font style="color:#000000">4.Image filters professional</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-005j.pptm><font style="color:#000000">5.Machine Learning</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-006j.pptm><font style="color:#000000">6.High-degree stencil computation</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-007j.pptm><font style="color:#000000">7.Inverse matrix</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-008j.pptm><font style="color:#000000">8.Sparse matrix and Sorting</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-009j.pptm><font style="color:#000000">9.Hash, FFT and String search</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-010j.pptm><font style="color:#000000">10.High-speed compiler</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-011j.pptm><font style="color:#000000">11.Three level sophisticated loop</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-012j.pptm><font style="color:#000000">12.拡張性編</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-012e.pptm><font style="color:#000000">12.Scalability</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-013j.pptm><font style="color:#000000">13.HW/SW協調設計編</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-013e.pptm><font style="color:#000000">13.HW/SW codesign</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-014j.pptm><font style="color:#000000">14.CPU/Vectorとの違い編</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-014e.pptm><font style="color:#000000">14.Difference from CPU/Vector</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-015j.pptm><font style="color:#000000">15.ソフト制御キャッシュの仕組み</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-015e.pptm><font style="color:#000000">15.Software-controlled cache memory</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-016j.pptm><font style="color:#000000">16.チップレットとの相性</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-100j.pptm><font style="color:#000000">17.短い総集編</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-100e.pptm><font style="color:#000000">17.Short summary</font></a>
+          <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-200j.pptm><font style="color:#000000">18.長い総集編</font></a>
+	  <li><a class="external_link" href=/Lectures/PBL1/PBL1-v1-200e.pptm><font style="color:#000000">18.Long summary</font></a>
+	  </ol>
+
+          <h1>IMAX2 installation manual</h1>
+
+          <h2 id=0001>ZCU102 (8 units) ... Vivado project is included.</h2>
+          <ol>
+	  <a href=ZCU102.png><img align=right height=100 src="ZCU102.png"></a>
+	  <li>linux# zcat ZCU102-step4000-20221020.img.gz | dd bs=64k of=/dev/mmcblk0 (16GB SDcard)
+          <li>linux# mount /dev/mmcblk0p2 /mnt
+          <li>linux# replace root-password in /mnt/etc/shadow
+          <li>linux# umount /mnt
+          <li>zcu102# insert SDcard
+          <li>zcu102# boot from SDcard
+          <li>zcu102# create users
+          <li>zcu102% extract proj-arm64.tgz (NFS is recommendation)
+          <li>zcu102% proj-arm64/sample/mm_cnn_lf/mm-zynq.emax6+dma-8st (matrix multiplication)
+	  </ol>
+
+          <h2 id=0002>ZCU111 (16 units)</h2>
+          <ol>
+	  <a href=ZCU111.png><img align=right height=100 src="ZCU111.png"></a>
+	  <li>linux# zcat ZCU111-step4000-20220301.img.gz | dd bs=64k of=/dev/mmcblk0 (16GB SDcard)
+          <li>linux# mount /dev/mmcblk0p2 /mnt
+          <li>linux# replace root-password in /mnt/etc/shadow
+          <li>linux# umount /mnt
+          <li>zcu102# insert SDcard
+          <li>zcu102# boot from SDcard
+          <li>zcu102# create users
+          <li>zcu102% extract proj-arm64.tgz (NFS is recommendation)
+          <li>zcu102% proj-arm64/sample/mm_cnn_lf/mm-zynq.emax6+dma-16st (matrix multiplication)
+	  </ol>
+
+          <h2 id=0003>ZU19EG (16 units) ... Vivado project is included.</h2>
+          <ol>
+	  <a href=ZU19EG.png><img align=right height=100 src="ZU19EG.png"></a>
+	  <li>linux# zcat ZU19EG-step4000-20221020.img.gz | dd bs=64k of=/dev/mmcblk0 (16GB SDcard)
+          <li>linux# mount /dev/mmcblk0p2 /mnt
+          <li>linux# replace root-password in /mnt/etc/shadow
+          <li>linux# umount /mnt
+          <li>zcu102# insert SDcard
+          <li>zcu102# boot from SDcard
+          <li>zcu102# create users
+          <li>zcu102% extract proj-arm64.tgz
+          <li>zcu102% proj-arm64/sample/mm_cnn_lf/mm-zynq.emax6+dma-16st (matrix multiplication)
+	  </ol>
+
+          <h2 id=0004>ZCU102+VU440 (64/128/192/256 units) ... Vivado project is included.</h2>
+          <ol>
+	  <a href=ZCU102+VU4402.png><img align=right height=100 src="ZCU102+VU4402.png"></a>
+	  <a href=ZCU102+VU4404.png><img align=right height=100 src="ZCU102+VU4404.png"></a>
+	  <a href=VU440.jpg><img align=right height=100 src="VU440.jpg"></a>
+          <li>vu440# connect with zcu102 (see figure)
+          <li>vu440# write VU440-step4000-20221020-V18.3-78.125+78.125+48+280+120+48.bin to SDcard
+          <li>vu440# insert SDcard
+	  <li>linux# zcat ZCU102-step4000-20221020.img.gz | dd bs=64k of=/dev/mmcblk0 (16GB SDcard)
+          <li>linux# mount /dev/mmcblk0p2 /mnt
+          <li>linux# replace root-password in /mnt/etc/shadow
+          <li>linux# vi /etc/rc.local; change "echo ZCU102-8st.bin" to "echo ZCU102.bin"
+          <li>linux# umount /mnt
+          <li>zcu102# insert SDcard
+          <li>zcu102# boot from SDcard
+          <li>zcu102# create users
+          <li>zcu102% extract proj-arm64.tgz (NFS is recommendation)
+          <li>zcu102% proj-arm64/sample/mm_cnn_lf/mm-zynq.emax6+dma (matrix multiplication)
+	  </ol>
+
+          <h2 id=0005>VMK180 (32 units)</h2>
+          <ol>
+	  <a href=VMK180.png><img align=right height=100 src="VMK180.png"></a>
+          <li>T.B.A.
+	  </ol>
+
+          <h2 id=0007>VPK180 (128 units)</h2>
+          <ol>
+	  <a href=VPK180.png><img align=right height=100 src="VPK180.png"></a>
+          <li>T.B.A.
+	  </ol>
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

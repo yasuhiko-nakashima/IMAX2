@@ -1,0 +1,28 @@
+
+## ERELA Instruction Simulator         ##
+##         Copyright (C) 2005 by NAIST ##
+##         Primary writer: Y.Nakashima ##
+##                nakashim@is.naist.jp ##
+
+OPTION	      = -DINTEL -DPENUM=1
+PROGRAM       = gp6x760-test
+CC            = gcc
+CFLAGS        = -I. -O1 -m32 -I/usr/local/include -I/usr/X11R6/include $(OPTION)
+ASFLAGS       = --32
+LDFLAGS       = -m32
+LIBFLAGS      = -L/usr/local/lib -L/usr/X11R6/lib -lm -lX11
+
+SRCS	      =	gp6x760-test.c gp6x760.c
+
+OBJS	      =	gp6x760-test.o gp6x760.o
+
+all:		$(PROGRAM)
+
+$(PROGRAM):	$(OBJS)
+		$(CC) $(LDFLAGS) $(OBJS) -o $(PROGRAM) $(LIBFLAGS)
+
+run:;		./$(PROGRAM)
+
+clean:;		rm -f $(OBJS) core *~
+
+###

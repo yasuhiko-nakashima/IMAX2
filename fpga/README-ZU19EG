@@ -1,0 +1,47 @@
+【ZU19EG 8st構成の作り方】
+
+  1. ZU19EG-step4000/ に*.v,*.vh,*.xciを用意(VU440-step4000)
+  2. IPは毎回新規作成する. ZU19EG-step4000_IP/作って，中でVivado起動
+  3. File -> Project -> New -> Project_name=default 作成
+  4. Add Filesし，ZU19EG-step4000/*.v,*.vh,*.xciを選択
+  5. Board選択(TySOM-3A-ZU19EG) -> Next -> Finish
+  6. Tools->Create and Package New IP
+  7. Next->Next-> IP location:は ZU19EG-step4000_IPに変更 -> OK -> Finish
+  8. 右画面のReview and Package -> Package IP -> Close
+  9. Quit Vivado
+   ( PS-PL Configuration -> Master InterfaceをHPM0とHPM1に変更 )
+   ( Tools->Settings->IP->Repository->追加 imax_IP )
+   ( +でemax6_v追加 )
+   ( +でProcessor System Resetを2つ追加 )
+   ( +でClocking Wizard追加 入力1,出力2 )
+   ( SourcesでCreate HDL Wrapper )
+   ( Genrate Output Products )
+   ( Genrate Bitstream )
+   (※新しいfpga_bram64/128は,同一projのblock_design/emb_mem_generatorで作り,*.xciをcopy)
+   (※fpga_bram64/128を使って,改めて_IPを作ってやり直す)
+  ---
+  10.ZU19EG-step4000/*.xprを使ってvivado開く
+  11.Tools -> Settings -> IP -> Repository
+  12._IPがあればOK, なければ"+"押して_IPを追加
+  13.(上端のバー)Reports -> Report IP Status
+  14.(下端のバー)Upgrade Selected
+  15.左上に出るOKボタン押す
+  16.Generateウィンドウ -> Generate -> OK
+  17.OK出たら，Generate Bitstream
+  ---
+  18.binの作り方はREADME-IMAX.pdf(参考なので見なくて良い)
+     % cd proj-arm64/fpga
+     % cp ZU19EG-step4000/ZU19EG_16st.runs/impl_1/design_1_wrapper.bit ZU19EG-16st.bit 
+  19.ZU19EG-16st.binは,ZU19EG-16st.bitから作る.(cad105/106)
+     % ./Gen_bin.sh ZU19EG-16st
+  20.arch19にloginして動作確認
+  21.# cp proj-arm64/fpga/ZU19EG-16st.bin /lib/firmware
+  22.# echo ZU19EG-16st.bin > /sys/class/fpga_manager/fpga0/firmware
+     % proj-arm64/sample/mm_cnn_lf/mm-zynq.emax6+dma-16st
+  23.起動時設定
+     # vi /etc/rc.local (なければ以下追加.起動時に/lib/firmware/xxx.binをFPGAに書き込む)
+       echo ZU19EG-16st.bin > /sys/class/fpga_manager/fpga0/firmware
+  25.arch19をshutdown.SDCARDをarch21のUSBアダプタに挿す.
+  26.# dd bs=64k if=/dev/sdb | /usr/bin/gzip > /tmp/ZU19EG-step4000-20221020.img.gz
+  27.% cp /tmp/ZU19EG-step4000-20221020.img.gz ~/proj-arm64/fpga/ZU19EG-step4000-20221020.img.gz
+=====================================================================================================

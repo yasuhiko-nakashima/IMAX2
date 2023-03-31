@@ -1,0 +1,593 @@
+【IMAX3 (Integration of near Memory Approxymate and eXact systolic array) MC版改版履歴】
+  ※csimはAXI_LEN>0xffを出してしまうので，そのままvsimに使うと動かない
+  ※ZCU102とZU19EGは,sha256-zynq.emax6+dma-16stがハング
+    conv-c2c-20221030で,EXEC=3LL直後のPIOと入れ替えて解決.
+  ※20220301-16stのmm-16stの結果がずれるのは,LMMの必要量128KBの半分(64KB)しかないから(問題無し)
+
+★VU440-step4000-20221020      … SORT-MERGE(new MEX + conv-c2c)対応SORT-MERGE(new MEX + conv-c2c)対応
+                                  ENABLE_CRYPTO,ENABLE_SPUをON にすると WNS=-3.238 120MHz
+                                  ENABLE_CRYPTO,ENABLE_SPUをOFFにすると WNS=-2.425 135MHz
+                                  TSMC28では,64unit構成で
+					Number of ports:                      2097433
+					Number of nets:                       5838902
+					Number of cells:                      4000696
+					Number of combinational cells:        3464902
+					Number of sequential cells:            526549
+					Number of macros/black boxes:            1040
+					Number of buf/inv:                     738425
+					Number of references:                      82
+
+		iwamoto:1705263		Combinational area:            2035098.189383
+		iwamoto: 278722		Buf/Inv area:                   205691.346993
+		iwamoto: 826694		Noncombinational area:         1205229.508038
+		iwamoto:5593536(32KB)	Macro/Black Box area:         11361868.984375
+					Net Interconnect area: undefined (Wire load has zero net area)
+		iwamoto:8404215(32KB)	Total cell area:              14602196.681796
+
+  VU440-step4000-20221020-16st … SORT-MERGE(new MEX + conv-c2c)対応
+
+★VU440-step4000-20221010      … SHA256(OP_MAJ,OP_CH,OP_ROTS),FFT(conv-c2c)対応
+  VU440-step4000-20221010-16st … SHA256(OP_MAJ,OP_CH,OP_ROTS),FFT(conv-c2c)対応
+
+★VU440-step4000-20220720      … FTパッチ削除(dmrp_statをLMRING_BUSYに追加)
+  VU440-step4002-20220720-16st … FTパッチ削除(dmrp_statをLMRING_BUSYに追加)
+
+★VU440-step4000-20220301      … reg_ctrlからEMAX_DEPTHを取得
+  VU440-step4000-20220301-16st … reg_ctrlからEMAX_DEPTHを取得
+
+★VU440-step4000-20220220      … 疎行列*疎行列 dual flow追加
+  VU440-step4000-20220220-16st … 疎行列*疎行列 dual flow追加
+
+★VU440-step4000-20211210      … 疎行列*疎行列のためのmex追加,exp=H3232,H1010追加
+  VU440-step4000-20211210-16st … 疎行列*疎行列のためのmex追加,exp=H3232,H1010追加
+
+★VU440-step4000-20210701      … SFMAのLD初期値がone_shotで演算器に入らない問題を解決
+  VU440-step4000-20210701-16st … SFMAのLD初期値がone_shotで演算器に入らない問題を解決
+
+●VU440-step4000-20210620      … OP_SFMA設計環境追加.nbot_ndepth:RST->RSTNにてWNS改善(//`define ENABLE_SPU)
+  VU440-step4000-20210620-16st … OP_SFMA設計環境追加.nbot_ndepth:RST->RSTNにてWNS改善(//`define ENABLE_SPU)
+
+●VU440-step4000-20210303      … unit.vにDEBUG_FPGA追加
+  VU440-step4000-20210303-16st … unit.vにDEBUG_FPGA追加
+
+●VU440-step4000-20210302      … test016.cのforstat+foldに対応(本田君のVBGMMに対応)
+  VU440-step4000-20210302-16st … test016.cのforstat+foldに対応(本田君のVBGMMに対応)
+                                   FTのILAを削除し，system_ilaに戻した
+
+●VU440-step4000-20210301      … AXI<->LMM単位を64bitから32bitに変更 mop(len=4Bの倍数)
+  VU440-step4000-20210301-16st … AXI<->LMM単位を64bitから32bitに変更 mop(len=4Bの倍数)
+                                   FTのILAが入っている
+----
+
+【EMAX6(IMAX/IMAX2) MC版 HDL改版履歴】
+
+★VU440-step4000-20201120      … DPを利用したunaligned-load 初版 arch28/arch29にてcnn*rmm.c正常動作
+  VU440-step4000-20201120-16st … stage5.vを64stと同じにするとP&Rに失敗するので意図的に違えてある.今後の更新時に64stに合わせる.
+●VU440-step4000-20201103 … CCAT,WSWAPを廃止. exe1/2/3の構造を簡略化. 上位32bitに対するex5(シフト量)の位置を下位5bitに統一
+                WNS=-1.936    conv-c2c-20201102とWSWAPを抜いたrsim-20201103で，MNISTは140MHzにて正常動作.CIFAR10も140MHzにて正常動作.
+●VU440-step4000-20201102 … mm+rmm.cをSIMD化するため，LDWR,UWR,BR,UBRが上位32bitにも同じ値をセットするよう仕様変更.
+                WNS=-2.629    軽量化のため，未使用のLDHR,LDUHR,STHR,SRAC,SRADを廃止.
+                              conv-c2c-20201102とWSWAPを抜いたrsim-20201103で，MNISTは140MHzにて正常動作.CIFAR10は130MHzにて正常動作.
+ MM 480x480 float arch=compute_50
+  nanosec: ARM:289596 DRAIN: 24862715 CONF:127221 REGV: 12837249 RANGE: 7691954 LOAD: 42720220 EXEC: 4314404 total:  92843359(32KB)3lane
+  nanosec: ARM:278421 DRAIN: 18119041 CONF: 77850 REGV:  6712728 RANGE: 4293302 LOAD: 17062671 EXEC: 4327055 total:  50871068(32KB)8lane
+  nanosec: ARM:176516 DRAIN: 17876968 CONF: 72747 REGV:  3598397 RANGE: 2274620 LOAD: 11836480 EXEC: 3726116 total:  39561844(64KB)RMGRP=15
+  nanosec: ARM:111647 DRAIN: 17880651 CONF :78109 REGV:  3586149 RANGE: 2276555 LOAD: 11847075 EXEC: 2081531 total:  37861717(64KB)SIMD化
+ CNN 242x242 ich=18 och=16 float arch=compute_50
+  nanosec: ARM:90492 DRAIN:  40420726 CONF:131101 REGV: 22039840 RANGE: 2377883 LOAD: 22158552 EXEC: 5843497 total:  93062091(32KB)3lane
+  nanosec: ARM:87640 DRAIN:  28588179 CONF: 74781 REGV: 12004221 RANGE: 1263932 LOAD: 11375125 EXEC: 5966066 total:  59359944(32KB)8lane
+  nanosec: ARM:55236 DRAIN:  26761438 CONF: 70677 REGV:  5994517 RANGE:  636646 LOAD: 10432545 EXEC: 5201983 total:  49153042(64KB)RMGRP=16
+
+●VU440-step4000-20201020 … LMM_SIZE_IS_64K
+ MM 480x480 float arch=compute_50
+  nanosec: ARM:289596 DRAIN: 24862715 CONF:127221 REGV: 12837249 RANGE: 7691954 LOAD: 42720220 EXEC: 4314404 total:  92843359(32KB)3lane
+  nanosec: ARM:278421 DRAIN: 18119041 CONF: 77850 REGV:  6712728 RANGE: 4293302 LOAD: 17062671 EXEC: 4327055 total:  50871068(32KB)8lane
+  nanosec: ARM:176516 DRAIN: 17876968 CONF: 72747 REGV:  3598397 RANGE: 2274620 LOAD: 11836480 EXEC: 3726116 total:  39561844(64KB)RMGRP=15
+ CNN 242x242 ich=18 och=16 float arch=compute_50
+  nanosec: ARM:90492 DRAIN:  40420726 CONF:131101 REGV: 22039840 RANGE: 2377883 LOAD: 22158552 EXEC: 5843497 total:  93062091(32KB)3lane
+  nanosec: ARM:87640 DRAIN:  28588179 CONF: 74781 REGV: 12004221 RANGE: 1263932 LOAD: 11375125 EXEC: 5966066 total:  59359944(32KB)8lane
+  nanosec: ARM:55236 DRAIN:  26761438 CONF: 70677 REGV:  5994517 RANGE:  636646 LOAD: 10432545 EXEC: 5201983 total:  49153042(64KB)RMGRP=16
+
+★VU440-step4000-20201010 … 三精システム8lane高速版
+  [元回路 mm-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:289596 DRAIN: 24862715 CONF:127221 REGV: 12837249 RANGE: 7691954 LOAD: 42720220 EXEC: 4314404 total:  92843359
+  nanosec: ARM:288802 DRAIN: 24851719 CONF:127381 REGV: 12810038 RANGE: 7783577 LOAD: 42631749 EXEC: 4315493 total:  92808759
+  nanosec: ARM:301001 DRAIN: 24863980 CONF:135841 REGV: 12834016 RANGE: 7697449 LOAD: 42718850 EXEC: 4313782 total:  92864919
+  [新回路  mm-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:278421 DRAIN: 18119041 CONF: 77850 REGV:  6712728 RANGE: 4293302 LOAD: 17062671 EXEC: 4327055 total:  50871068
+  nanosec: ARM:284423 DRAIN: 18112488 CONF: 78271 REGV:  6708790 RANGE: 4292109 LOAD: 17090563 EXEC: 4339905 total:  50906549
+  nanosec: ARM:282164 DRAIN: 18111271 CONF: 78171 REGV:  6713006 RANGE: 4302952 LOAD: 17081040 EXEC: 4320955 total:  50889559
+  
+  [元回路 cnn-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:93910 DRAIN:  40417072 CONF:124561 REGV: 22044512 RANGE: 2460354 LOAD: 22066764 EXEC: 5843807 total:  93050980
+  nanosec: ARM:93011 DRAIN:  40433191 CONF:130282 REGV: 22051794 RANGE: 2472394 LOAD: 22050970 EXEC: 5844149 total:  93075791
+  nanosec: ARM:90492 DRAIN:  40420726 CONF:131101 REGV: 22039840 RANGE: 2377883 LOAD: 22158552 EXEC: 5843497 total:  93062091
+  [新回路  cnn-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:98351 DRAIN:  28586256 CONF: 78681 REGV: 11958151 RANGE: 1303011 LOAD: 11355846 EXEC: 5967738 total:  59348034
+  nanosec: ARM:94191 DRAIN:  28583955 CONF: 77121 REGV: 11959129 RANGE: 1298463 LOAD: 11365113 EXEC: 5969851 total:  59347823
+  nanosec: ARM:87640 DRAIN:  28588179 CONF: 74781 REGV: 12004221 RANGE: 1263932 LOAD: 11375125 EXEC: 5966066 total:  59359944
+  
+  [元回路 inv-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:172001075 DRAIN:272934399 CONF:951760 REGV:83055902 RANGE:38645661 LOAD:698072230 EXEC:57599317 total:1323260344
+  nanosec: ARM:172042122 DRAIN:273116886 CONF:948404 REGV:83060540 RANGE:38876795 LOAD:697808332 EXEC:57613757 total:1323466836
+  nanosec: ARM:172035013 DRAIN:273068144 CONF:949900 REGV:83071955 RANGE:38618333 LOAD:698087429 EXEC:57587392 total:1323418166
+  [新回路 inv-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:171909941 DRAIN:238610636 CONF:815073 REGV:28346356 RANGE:21901503 LOAD:203462546 EXEC:56261680 total: 721307735
+  nanosec: ARM:171938034 DRAIN:238741863 CONF:801195 REGV:28361690 RANGE:21885360 LOAD:203190799 EXEC:56244072 total: 721163013
+  nanosec: ARM:171889407 DRAIN:238621215 CONF:799173 REGV:28340406 RANGE:21877824 LOAD:203319111 EXEC:56246906 total: 721094042
+  
+  [元回路 gather-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:110262 DRAIN:38867217 CONF:131081 REGV:2400378 RANGE:1307582 LOAD:125582895 EXEC:3494864 total:171894279
+  nanosec: ARM:104571 DRAIN:38852057 CONF:121511 REGV:2396815 RANGE:1314673 LOAD:125754297 EXEC:3492666 total:172036590
+  nanosec: ARM:106060 DRAIN:38827876 CONF:121081 REGV:2394435 RANGE:1306353 LOAD:125568746 EXEC:3491437 total:171815988
+  [新回路 gather-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:112622 DRAIN:28005140 CONF: 77140 REGV:1097843 RANGE: 752027 LOAD: 76722336 EXEC:3461855 total:110228963
+  nanosec: ARM:102892 DRAIN:28009226 CONF: 71890 REGV:1107191 RANGE: 729270 LOAD: 76943777 EXEC:3457678 total:110421924
+  nanosec: ARM:108632 DRAIN:28008325 CONF: 72111 REGV:1109308 RANGE: 729786 LOAD: 76737929 EXEC:3458781 total:110224872
+  
+  [元回路 gdepth-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:1392325 DRAIN:389451801 CONF:1336174 REGV:26857403 RANGE:20355129 LOAD:726291868 EXEC:25441563 total:1191126263
+  nanosec: ARM:1463318 DRAIN:389502146 CONF:1333661 REGV:26441987 RANGE:20788998 LOAD:726386206 EXEC:25465499 total:1191381815
+  nanosec: ARM:1385818 DRAIN:389440150 CONF:1346805 REGV:26762714 RANGE:20380894 LOAD:726386342 EXEC:25449911 total:1191152634
+  [新回路 gdepth-zynq.emax6+dma 64st VU440-4枚]
+  nanosec: ARM:1367405 DRAIN:280396762 CONF:1185272 REGV:12960542 RANGE:11642545 LOAD:426103841 EXEC:25958730 total: 759615097
+  nanosec: ARM:1381772 DRAIN:280398832 CONF:1195922 REGV:13265326 RANGE:11268320 LOAD:426024876 EXEC:25949138 total: 759484186
+  nanosec: ARM:1430038 DRAIN:280385757 CONF:1183554 REGV:13243282 RANGE:11387150 LOAD:426108229 EXEC:25953808 total: 759691818
+
+↓3lane最終版========
+★VU440-step3000-20200505 … for (;CHIP<NCHIP;)に対し,NCHIP以降のIMAXに対してdata転送/exec起動を抑止する機能(mcid)を追加
+★ZCU102-step3000-20190520    conv-c2c-20200505,csim-20200505に対応.260MHz/130MHzで動く
+                              AWADDR=0400000030 & WREADY=0 & WVALID=up で検出可能なハングに対応.
+                              原因:s_awvalid+s_awreadyでもaxiif_sbusyが1にならない
+                              対策:dmrp_stat=4のリセットとaxiif_sbusy=1の同時実行を可能にした
+
+●VU440-step3000-20200501 … OP_CMP*の出力結果が[1:0]ではなく[32,0]であるのに合わせてOP_CEXを変更(csim-20200420)
+                              REG_CTRL_CHIPの位置を変更[163:160]->[147:144]し，ncidの伝搬を簡略化
+			      その他シフト記述の最適化．ZCU102-step3000-20190520は，WNS改善のためLMM=128KBからLMM=64KBに変更
+
+●VU440-step3000-20200418 … OP_WSWAPにr4によるANDマスク機能を追加(proj-brain/src/rsim/rsim.emax6用)
+                              - ultrascale  IMAX-64stages LMM=32KB * 64 150MHz arch28は280+140MHz，arch29は280+140MHz
+
+●VU440-step3000-20200320 … LMM_SIZE_IS_32K (fpga_bram.xci), LMM_SIZE_IS_64K (fpga_bram64.xci) を選択可能.
+                              - ultrascale+ IMAX-08stages LMM=128KB * 8 200MHz ZCU102
+                              - ultrascale  IMAX-64stages LMM=32KB * 64 150MHz arch28は300+145MHz，arch29は290+145MHz
+                              - ultrascale  IMAX-64stages LMM=64KB * 64 130MHz
+
+●VU440-step3000-20200210 … FPUの精度改善.中間結果のバグ修正および中間結果PEXT-bit追加
+                              arch28は300+145MHz，arch29は290+145MHz
+
+●VU440-step3000-20190824 … LMRING_MUXの前後の待ち合わせを最適化.特にmxring_bを追加してクリティカルパス対応
+                              DMAREAD-BUF機能追加．AXI3の最大8beatをAXI4の128beat化
+	grapes	nanosec: ARM:296057 DRAIN:81416022 CONF:1505502 REGV:3427143 RANGE:7412343 LOAD:459486313 EXEC:42130498 total:595673878
+	jacobi	nanosec: ARM:94961 DRAIN:508131 CONF:951176 REGV:466787 RANGE:2395238 LOAD:31924927 EXEC:188302106 total:224643326
+	fd6	nanosec: ARM:143687 DRAIN:506765 CONF:892487 REGV:1130051 RANGE:4083256 LOAD:70813507 EXEC:299479452 total:377049205
+	resid	nanosec: ARM:122095 DRAIN:506965 CONF:937532 REGV:2473206 RANGE:4342741 LOAD:43326667 EXEC:222246256 total:273955462
+	wave2d	nanosec: ARM:3211 DRAIN:395131 CONF:117872 REGV:6520 RANGE:26503 LOAD:271199 EXEC:1582637 total:2403073
+
+●VU440-step3000-20190810 … LMRING_MUXの前後の待ち合わせができていなかったのを修正
+                              nbit_ndepth_queue.vも見直して書き直し
+                              PLOADがLMRING内で待ち合わせても正常に同期し，今までハングしていたwave2d+PLOADも正常(確認済)
+	grapes	nanosec: ARM:347161 DRAIN:204247077 CONF:5710901 REGV:11108899 RANGE:7967323 LOAD:487969777 EXEC:192857750 total:910208888
+	jacobi	nanosec: ARM:123037 DRAIN:406634 CONF:2928300 REGV:176009 RANGE:2373103 LOAD:8937645 EXEC:284841625 total:299786353
+	fd6	nanosec: ARM:196073 DRAIN:434455 CONF:2797720 REGV:2816844 RANGE:3424261 LOAD:19253756 EXEC:374612166 total:403535275
+	resid	nanosec: ARM:136737 DRAIN:409564 CONF:2925384 REGV:6942831 RANGE:3594776 LOAD:11722639 EXEC:310936207 total:336668138
+	wave2d	nanosec: ARM:3200 DRAIN:256507 CONF:191700 REGV:2750 RANGE:40655 LOAD:73657 EXEC:3146811 total:3715280
+
+・VU440-step3000-20190730とVU440-step3000-20190723共通仕様(100MHzはREFCLK1に引越し)
+  VU440-step3000はVU440-step3000-20190730と同じ
+
+  GT100ID00+GT100ID00★両手のREFCLKを0から1に変更...旧ADP接続ではS2Cボードから,
+  GT100ID17+GT100ID00★右手のREFCLKを0から1に変更...新ADP接続ではADPから100MHzが供給される
+  GT100ID17+GT156ID00  両手ともREFCLK0のまま     ...旧ADP接続では旧SANSEIボードから156Mが供給
+  GT156ID00+GT156ID00  両手ともREFCLK0のまま     ...新ADP接続ではADPから156MHzが供給される
+
+  ■REFCLK0ベース
+  ZCU102   -   VU440   -   S2CADP   -   旧SANSEI   -   S2CADP   -   VU440 
+     100      100 100                     100                      100 100       … 100M-link ★従来★
+        J8.A18/19 J1.A18/19(REFCLK0)     B20/21     (REFCLK0)J7.A18/19 J1.A18/19(REFCLK0)
+     100      100 156                     156                      156 156       … 156M-link ※linkupしないので意味無─┐
+        J8.A18/19 J1.A18/19(REFCLK0)     B20/21     (REFCLK0)J7.A18/19 J1.A18/19(REFCLK0)				│156Mhz
+															│同一bit
+  ZCU102   -   VU440                -   新SANSEI   -                VU440 						│共用可
+     100      100 156                     156                      156 156       … 156M-link ★新SANSEIで156の場合★ ─┘
+        J8.A18/19 J1.A18/19(REFCLK0)     A18/19     (REFCLK0)J7.A18/19 J1.A18/19(REFCLK0)
+
+  ■REFCLK1ベース
+  ZCU102   -   VU440   -   S2CADP   -   旧SANSEI   -   S2CADP   -   VU440 
+     100      100 100                   100/156                    100 100       … 100M-link ★linkup-OK         ───┐ 
+        J8.A18/19 J1.B20/21(onbd100M)    -----     (onbd100M)J7.B20/21 J1.B20/21(REFCLK1)				│100MHz
+															│同一bit
+  ZCU102   -   VU440                -   新SANSEI   -                VU440 						│共用可
+     100      100 100                     100                      100 100       … 100M-link ★新SANSEIでも100の場合★	┘
+        J8.A18/19 J1.B20/21(REFCLK1)     B20/21     (REFCLK1)J7.B20/21 J1.B20/21(REFCLK1)
+
+●VU440-step3000-20190730 … sysclk1は左手専用.sysclk2は右手専用
+			      16st-WNS=-2.190,-2.268,-1.527,-2.479
+			      64st-WNS=-2.860,-2.475,-2.666,-2.004
+			      ・VU440-step3000-20190730-GT100ID17+GT100ID00_18-3_78.125+78.125+156.25+330+130+48M.bit
+                              ※ZCU102 - VU440 - VU440 - VU440      ※ZCU102 - VU440 - VU440 - VU440
+                                               |       |                             |       |
+                                              長cable 短cable                       短cable 長cable
+                                    0730:3枚目がconf=21e0で止まる         0730:3枚目がconf=21e0で止まる(同じ)
+                                         2枚目はWREADY待ちでハング             2枚目はWREADY待ちでハング(同じ)
+                                         短cableの指を離すと完走               短cableの指を離すと完走(同じ)
+                                        (2枚目まで結果画像正常)               (1枚目まで結果画像正常)
+                                         3枚目が止めている模様                 2枚目が止めている模様(つまりvu440の問題ではない)
+                                       ※bvalidを無視すると止まる ⇒ もし新ADPが156MHz動作し,詰まらなくなれば,bvalid無視でも動くかも.
+                                    0703:bvalid待つと長持ち               0703:bvalid待つと長持ち
+                                         1枚目はARADDR=最後までOK              1枚目はARADDR=最後までOK(同じ)
+                                         短cableの指を離すと完走               短cableの指を離すと完走(同じ)
+                                        (2枚目まで結果画像正常)               (1枚目まで結果画像正常)
+                                         3枚目が止めている模様                 2枚目が止めている模様(つまりvu440の問題ではない)
+                                       ※bvalidを待ったら先に進んで止まる ⇒ 新ADPでどうなるかは不明
+          135MHz 150MHz 150MHz(x4) 目標
+            1枚    1枚     1枚      
+   mm      250ms  233ms   70ms     80ms <C2C330M+IMAX130Mx2>ARM:308787 DRAIN:60368494 CONF:124384 REGV:12476456 RANGE:7521189 LOAD:53985177 EXEC:4405879 total:139225744★★★
+                                        <C2C340M+IMAX130Mx2>ARM:295736 DRAIN:60064650 CONF:124524 REGV:12485078 RANGE:7459782 LOAD:53967937 EXEC:4401944 total:138799651★★★
+                                        <C2C340M+IMAX135Mx2>ARM:313645 DRAIN:59957685 CONF:131035 REGV:12470906 RANGE:7534408 LOAD:53795680 EXEC:4187127 total:138390486★★★
+   cnn     120ms  106ms   69ms     80ms <C2C330M+IMAX130Mx2>ARM:97655 DRAIN:96614411 CONF:122783 REGV:21683661 RANGE:2239640 LOAD:24158109 EXEC:5863102 total:150779361★★★
+                                        <C2C340M+IMAX130Mx2>ARM:90467 DRAIN:96385724 CONF:123003 REGV:21529009 RANGE:2211895 LOAD:24107241 EXEC:5843452 total:150290791★★★
+                                        <C2C340M+IMAX135Mx2>ARM:95365 DRAIN:96269356 CONF:127855 REGV:21520633 RANGE:2266235 LOAD:24066684 EXEC:5665924 total:150012052★★★
+   gdepth 2114ms 1122ms  990ms   1400ms <C2C330M+IMAX130Mx2>ARM:1362862 DRAIN:836888147 CONF:1299320 REGV:25760393 RANGE:20380893 LOAD:765844063 EXEC:25675884 total:1677211562★★★
+                                        <C2C340M+IMAX130Mx2>ARM:1387780 DRAIN:834990318 CONF:1284498 REGV:25588422 RANGE:20417832 LOAD:764146800 EXEC:25602108 total:1673417758★★★
+                                        <C2C340M+IMAX135Mx2>ARM:1373266 DRAIN:833310338 CONF:1289842 REGV:25675245 RANGE:20313087 LOAD:764296574 EXEC:24665478 total:1670923830 ちょいゴミ
+
+●VU440-step3000-20190723 … sysclk1は左手専用.sysclk2は右手専用
+                              0703のfsm.vに戻した(bvalidを待つ)
+                              0730 else if (!next_linkup_r ? (axiif_mlen > axiif_alen) :(axi_m_wlast & axi_m_wvalid & axi_m_wready)) begin
+	                      0703 else if (!next_linkup_r ? (axiif_mlen > axiif_alen) : axi_m_bvalid) begin
+				※三精システム旧ADPは，●GTREFCLK0=100.00MHz,GTREFCLK1=100.00MHz
+                                                       ◎GTREFCLK0=156.25MHz,GTREFCLK1=156.25MHz
+					VU440-step3000/GT100ID17+GT100ID00 ... L:  CLK0=100MHz,CLK1=100MHz R:●CLK0=100MHz,CLK1=100MHz
+					VU440-step3000/GT100ID00+GT100ID00 ... L:●CLK0=100MHz,CLK1=100MHz R:●CLK0=100MHz,CLK1=100MHz
+				※三精システム新ADPは，★GTREFCLK0=156.25MHz,GTREFCLK1=100.00MHz
+					VU440-step3000/GT100ID17+GT156ID00 ... L:  CLK0=100MHz,CLK1=100MHz R:★CLK0=156MHz,CLK1=100MHz
+					VU440-step3000/GT156ID00+GT156ID00 ... L:★CLK0=156MHz,CLK1=100MHz R:★CLK0=156MHz,CLK1=100MHz
+
+●VU440-step3000-20190712 … VU440-VU440間(refclk=156MHz)間を5Gから10Gに変更.init_clkもsysclk2(78.125M)からsysclk1(156.25M)に変更.対象は以下
+			      ・VU440-step3000-20190712-16st-GT100ID00+GT100ID00_18-3_156.25+78.125+50+350+150+48M.bit sysclk2=78Mのみ 0709と同じ
+			      ・VU440-step3000-20190712-16st-GT100ID17+GT100ID00_18-3_156.25+78.125+50+350+150+48M.bit sysclk2=78Mのみ 0709と同じ
+			      ・VU440-step3000-20190712-16st-GT100ID17+GT156ID00_18-3_156.25+78.125+50+350+150+48M.bit sysclk1=156を追加 ⇒長ケーブルref156ではlinkupせず
+			      ・VU440-step3000-20190712-16st-GT156ID00+GT156ID00_18-3_156.25+78.125+50+350+150+48M.bit sysclk1=156を追加 ⇒長ケーブルref156ではlinkupせず
+			      ・VU440-step3000-20190712-     GT100ID17+GT100ID00_18-3_156.25+78.125+50+300+120+48M.bit sysclk2=78Mのみ 0709と同じ.⇒長ケーブルref100-OK
+			      ・VU440-step3000-20190712-     GT100ID00+GT100ID00_18-3_156.25+78.125+50+300+120+48M.bit sysclk2=78Mのみ 0709と同じ.⇒長ケーブルref100-OK
+			      ・VU440-step3000-20190712-     GT100ID17+GT156ID00_18-3_156.25+78.125+50+300+120+48M.bit sysclk1=156を追加
+			      ・VU440-step3000-20190712-     GT156ID00+GT156ID00_18-3_156.25+78.125+50+300+120+48M.bit sysclk1=156を追加
+  64b66bの仕様書では，Ultrascaleのinit_clkはline_rate/64(5Gなら78.125MHz, 10Gなら156.25MHz)
+
+●VU440-step3000-20190709 … axi_m_bvalidが非常に遅いのでwrite_responseを無視するよう変更.
+                              64stは各unitのエリア制約を追加したがWNSが大きくなったので戻してある.
+			      以下+156MHzアダプタとの組み合わせもOK.ただしauroraは5Gx3レーンのまま
+                              ・VU440-step3000-20190709-     GT100ID17+GT156ID00_18-3_48+78.125+50+330+130+48M.bit
+                              ・VU440-step3000-20190709-     GT156ID00+GT156ID00_18-3_48+78.125+50+330+130+48M.bit
+          135MHz 150MHz 150MHz(x4) 目標
+            1枚    1枚     1枚      
+   mm      250ms  233ms   70ms     80ms <C2C200M+IMAX120Mx1>ARM:280069 DRAIN: 9520875 CONF:128034 REGV: 12911330 RANGE: 7687021 LOAD: 54917703 EXEC:4708268 total: 90153300
+                                        <C2C220M+IMAX140Mx1>ARM:286571 DRAIN: 9250752 CONF:126144 REGV: 12829453 RANGE: 7707625 LOAD: 54488063 EXEC:4073675 total: 88762283
+                                        <C2C200M+IMAX100Mx2>ARM:317335 DRAIN:64540623 CONF:128681 REGV:12981383 RANGE:7881282 LOAD:54914162 EXEC:5590686 total:146354152
+                                        <C2C200M+IMAX120Mx2>ARM:298152 DRAIN:62894030 CONF:127614 REGV:12851899 RANGE:7694416 LOAD:54482514 EXEC:4694066 total:143042691
+                                        <C2C220M+IMAX120Mx2>ARM:288917 DRAIN:62823435 CONF:126962 REGV:12858009 RANGE:7695436 LOAD:54350042 EXEC:4692619 total:142835420
+                                        <C2C220M+IMAX130Mx2>ARM:307644 DRAIN:62488261 CONF:126493 REGV:12694872 RANGE:7698990 LOAD:54334770 EXEC:4256395 total:141907425
+                                        <C2C330M+IMAX130Mx2>ARM:308787 DRAIN:60368494 CONF:124384 REGV:12476456 RANGE:7521189 LOAD:53985177 EXEC:4405879 total:139190366★★★
+                                        <C2C340M+IMAX130Mx2>ARM:305403 DRAIN:60089309 CONF:124635 REGV:12507700 RANGE:7497269 LOAD:53972693 EXEC:4400538 total:138897547(ちょいゴミ)
+                                        <C2C330M+IMAX135Mx2>ARM:303889 DRAIN:60074853 CONF:124883 REGV:12524151 RANGE:7462655 LOAD:53970638 EXEC:4207661 total:138668730
+   cnn     120ms  106ms   69ms     80ms <C2C200M+IMAX120Mx1>ARM: 83123 DRAIN: 17594817 CONF:125473 REGV: 22177178 RANGE: 2325298 LOAD: 24484724 EXEC:6388388 total: 73179001
+                                        <C2C220M+IMAX140Mx1>ARM: 89759 DRAIN: 17052921 CONF:124943 REGV: 22055727 RANGE: 2349858 LOAD: 24328501 EXEC:5485206 total: 71486915
+                                        <C2C200M+IMAX100Mx2>ARM:91677 DRAIN:103580885 CONF:127338 REGV:22380984 RANGE:2340946 LOAD:24581839 EXEC:7595309 total:160698978
+                                        <C2C200M+IMAX120Mx2>ARM:100321 DRAIN:101127204 CONF:126824 REGV:22113453 RANGE:2304526 LOAD:24390437 EXEC:6415527 total:156578292
+                                        <C2C220M+IMAX120Mx2>ARM:91928 DRAIN:101053395 CONF:125974 REGV:22105926 RANGE:2313760 LOAD:24318423 EXEC:6406767 total:156416173
+                                        <C2C220M+IMAX130Mx2>ARM:92473 DRAIN:99997759 CONF:123754 REGV:22028913 RANGE:2262868 LOAD:24267757 EXEC:5914438 total:154687962
+                                        <C2C330M+IMAX130Mx2>ARM:89935 DRAIN:96877074 CONF:122203 REGV:21519069 RANGE:2245006 LOAD:24138082 EXEC:5842281 total:150833650★★★
+                                        <C2C340M+IMAX130Mx2>ARM:90770 DRAIN:96455448 CONF:121822 REGV:21572723 RANGE:2217341 LOAD:24147827 EXEC:5839711 total:150445642(ちょいゴミ)
+                                        <C2C330M+IMAX135Mx2>ARM:104872 DRAIN:96465443 CONF:123614 REGV:21498615 RANGE:2244883 LOAD:24173979 EXEC:5699759 total:150311165
+   gdepth 2114ms 1122ms  990ms   1400ms <C2C200M+IMAX120Mx1>ARM:1290348 DRAIN:162573860 CONF:1336224 REGV: 26976585 RANGE: 19971425 LOAD: 774372712 EXEC:27785429 total:1014306583
+					<C2C220M+IMAX140Mx1>ARM:1418291 DRAIN:159878394 CONF:1316058 REGV: 26313346 RANGE: 20845333 LOAD: 770060277 EXEC:23971225 total:1003802924
+                                        <C2C200M+IMAX100Mx2>ARM:1325985 DRAIN:896027638 CONF:1334031 REGV:26572909 RANGE:21314350 LOAD:776475103 EXEC:33099283 total:1756149299
+                                        <C2C200M+IMAX120Mx2>ARM:1324829 DRAIN:875934052 CONF:1336414 REGV:26310340 RANGE:20894040 LOAD:771000494 EXEC:27718600 total:1724518769
+                                        <C2C220M+IMAX120Mx2>ARM:1369624 DRAIN:875335157 CONF:1318795 REGV:26739154 RANGE:20303092 LOAD:769879581 EXEC:27677256 total:1722622659
+                                        <C2C220M+IMAX130Mx2>ARM:1315503 DRAIN:865109033 CONF:1302499 REGV:26715807 RANGE:20017965 LOAD:767558046 EXEC:25905818 total:1707924671
+                                        <C2C330M+IMAX130Mx2>ARM:1363996 DRAIN:838987919 CONF:1289453 REGV:25687664 RANGE:20415119 LOAD:765683509 EXEC:25587699 total:1679015359★★★
+                                        <C2C340M+IMAX130Mx2>ARM:1324104 DRAIN:835563296 CONF:1295584 REGV:25629977 RANGE:20422866 LOAD:766048692 EXEC:25575492 total:1675860011(ちょいゴミ)
+                                        <C2C330M+IMAX135Mx2>ARM:1344981 DRAIN:835376046 CONF:1290510 REGV:25665698 RANGE:20302071 LOAD:766230950 EXEC:24461104 total:1674671360(ちょいゴミ)
+●VU440-step3000-20190704 … conf->演算器のパスはfalse_pathなので，xdcに以下追加したがWNS悪化したので元に戻す
+	set_false_path -setup -from [get_pins design_1_i/emax6_0/inst/EMAX6_UNIT[*].unit/conf0_reg[*]/C]
+	set_false_path -setup -from [get_pins design_1_i/emax6_0/inst/EMAX6_UNIT[*].unit/conf1_reg[*]/C]
+	set_false_path -setup -from [get_pins design_1_i/emax6_0/inst/EMAX6_UNIT[*].unit/conf2_reg[*]/C]
+	set_false_path -setup -from [get_pins design_1_i/emax6_0/inst/EMAX6_UNIT[*].unit/conf3_reg[*]/C]
+●VU440-step3000-20190703 … VU440間アダプタのGTH0-3からGTH4-7にFPGAバンク変更,SAMTECケーブルを長いのに変更
+   mm-zynq.emax6+dma:16st 240M+120M ... M=256 2枚OK
+   mm-zynq.emax6+dma:64st 200M+100M ... M=256 2枚OK(多少ノイズ出るが演算誤差か？)
+   mm-zynq.emax6+dma:64st 200M+100M ... M=480 2枚OK(ノイズ無し)
+          135MHz 150MHz 150MHz(x4) 目標
+            1枚    1枚     1枚      
+   mm      250ms  233ms   70ms     80ms <C2C200M+IMAX120Mx1>ARM:280069 DRAIN: 9520875 CONF:128034 REGV: 12911330 RANGE: 7687021 LOAD: 54917703 EXEC:4708268 total: 90153300
+                                        <C2C220M+IMAX140Mx1>ARM:286571 DRAIN: 9250752 CONF:126144 REGV: 12829453 RANGE: 7707625 LOAD: 54488063 EXEC:4073675 total: 88762283
+                                        <C2C200M+IMAX100Mx2>ARM:340566 DRAIN:64532125 CONF:967098 REGV:109359862 RANGE:67703345 LOAD:204693861 EXEC:5576658 total:453173515
+                                        <C2C200M+IMAX120Mx2>ARM:314740 DRAIN:62916948 CONF:934002 REGV:108030777 RANGE:64725530 LOAD:201577832 EXEC:4691305 total:443191134
+                                        <C2C220M+IMAX140Mx2>ARM:325745 DRAIN:61859586 CONF:916801 REGV:106072708 RANGE:63582575 LOAD:197434292 EXEC:4076901 total:434268608
+   cnn     120ms  106ms   69ms     80ms <C2C200M+IMAX120Mx1>ARM: 83123 DRAIN: 17594817 CONF:125473 REGV: 22177178 RANGE: 2325298 LOAD: 24484724 EXEC:6388388 total: 73179001
+                                        <C2C220M+IMAX140Mx1>ARM: 89759 DRAIN: 17052921 CONF:124943 REGV: 22055727 RANGE: 2349858 LOAD: 24328501 EXEC:5485206 total: 71486915
+                                        <C2C200M+IMAX100Mx2>ARM: 93491 DRAIN:103424662 CONF:951137 REGV:190069596 RANGE:19632780 LOAD:141681254 EXEC:7561970 total:463414890
+                                        <C2C200M+IMAX120Mx2>ARM: 97605 DRAIN:101141177 CONF:929454 REGV:186570763 RANGE:19195368 LOAD:138858930 EXEC:6408876 total:453202173
+                                        <C2C220m+IMAX140Mx2>ARM: 97026 DRAIN: 98905173 CONF:913821 REGV:182833100 RANGE:18640412 LOAD:136070511 EXEC:5475057 total:442935100
+   gdepth 2114ms 1122ms  990ms   1400ms <C2C200M+IMAX120Mx1>ARM:1290348 DRAIN:162573860 CONF:1336224 REGV: 26976585 RANGE: 19971425 LOAD: 774372712 EXEC:27785429 total:1014306583
+					<C2C220M+IMAX140Mx1>ARM:1418291 DRAIN:159878394 CONF:1316058 REGV: 26313346 RANGE: 20845333 LOAD: 770060277 EXEC:23971225 total:1003802924
+                                        <C2C200M+IMAX100Mx2>ARM:1381171 DRAIN:894957322 CONF:2196593 REGV:226612451 RANGE:175596528 LOAD:5347134523 EXEC:32955364 total:6680833952
+                                        <C2C200M+IMAX120Mx2>ARM:1396780 DRAIN:876120067 CONF:2153553 REGV:217906610 RANGE:176741340 LOAD:5244177292 EXEC:27697213 total:6546192855
+                                        <C2C220M+IMAX140Mx2>ARM:1478894 DRAIN:855702071 CONF:2127582 REGV:213332077 RANGE:172842576 LOAD:5132630114 EXEC:24130760 total:6402244074
+●VU440-step3000-20190630 … ZCU102-(GT100ID17+GT100ID00)-(GT100ID00+GT100ID00)2枚構成OK
+      	test017-zynq.emax6+dma: 16st 350M+150M ... 2枚OK
+	test017-zynq.emax6+dma: 64st 200M+100M ... 2枚OK
+	mm-zynq.emax6+dma:      64st 200M+100M ... 1枚OK(2枚目の電源はONでconfなし)
+	mm-zynq.emax6+dma:      64st 310M+150M ... 1枚ハング
+	mm-zynq.emax6+dma:      64st 350M+140M ... 1枚ノイズ
+	mm-zynq.emax6+dma:      64st 330M+140M ... 1枚ノイズ
+	mm-zynq.emax6+dma:      64st 320M+140M ... 1枚OK(2枚目の電源はONでconfなし)
+	inv-zynq.emax6+dma:     64st 320M+140M ... 1枚OK(2枚目の電源はONでconfなし)
+        gather-zynq.emax6+dma:  64st 320M+140M ... 1枚OK(2枚目の電源はONでconfなし)
+	mm-zynq.emax6+dma:      64st 200M+100M ... 2枚ハング
+        gather-zynq.emax6+dma:  64st 320M+140M ... 2枚ハング
+  ここから16st CHIPSCOPEに変更
+        mm-zynq.emax6+dma:      16st 200M+100M ... 8st収容M=16  2枚OK LOG16
+        mm-zynq.emax6+dma:      16st 200M+100M ... 8st収容M=64  2枚OK LOG64
+        mm-zynq.emax6+dma:      16st 200M+100M ... 8st収容M=128 2枚OK LOG128
+        mm-zynq.emax6+dma:      16st 200M+100M ... 8st収容M=256 2枚ハング
+  ここから64stに戻す
+        mm-zynq.emax6+dma:      64st 200M+100M ... 8st収容M=64  2枚OK LOG64
+        mm-zynq.emax6+dma:      64st 200M+100M ... 8st収容M=128 2枚OK LOG128
+	mm-zynq.emax6+dma:      64st 200M+100M ... 8st収容M=256 2枚ハング
+  ここまででわかったこと
+        16stchipscopeと64stとで，ハング条件は同じ ⇒ 16st+ChipscopeでM=256を調べればわかるはず
+●VU440-step3000-20190630-16st … prot/cacheの伝搬修正
+●VU440-step3000-20190624 … ZCU102-(GT100ID17+GT100ID00)-(GT100ID00+GT100ID00)2枚構成OK
+●VU440-step3000-20190624-16st … cid伝搬修正,arburst=01に修正,reset_axiをPULLTYPE=PULLUP
+                              ZCU102-(GT100ID17+GT100ID00)-(GT100ID00+GT100ID00)2枚構成OK
+●VU440-step3000-20190623 … GTH100M+100M-64stのtest017(PIO/DMA)は実機1枚構成で正常
+                  C2C_AXI_PASS_THROUGH  vsim-test017 pio:OK dma:OK
+	          C2C_AXI_FIFOのDELAY=0 vsim-test017 pio:OK dma:OK
+	          C2C_AXI_FIFOのDELAY=1 vsim-test017 pio:OK dma:OK
+	          C2C_AXI_INTER         vsim-test017 pio:OK dma:OK
+●VU440-step3000-20190623-16st … Chipscope入り
+                              GTH100M+100M-16stのtest017(PIO/DMA)は実機1枚構成で正常
+●VU440-step3000-20190418 … GTH100M+156M-16stは,test019.cがいつの間にか正常
+                              GTH100M+156M-64stは,test019.cがハング⇒350M->280M変更で解決
+●VU440-step3000-20190401 … tb_top.dat-test017-csim.emax6-NCHIP=4が正常終了.実機もNCHIP=1が正常
+●VU440-step3000-20190315 … lint-checkエラーを修正（150MHz動作に戻せた）
+  最後にもう一度投げていた20190315のDesign Compilerの結果を確認したところ，
+  これまではセグフォだった32stが合成通っていました．（64stは相変わらずダメ．）
+  /home/kikutani/work/EMAX_GROUP/EMAXVI/HW/ASIC/DC/tsmc28_900MHz_32st_rtl0315
+  Combinational area: 883563.277016
+  Buf/Inv area: 90768.888369
+  Noncombinational area: 503958.017026
+  Macro/Black Box area: 2796767.750000
+  Net Interconnect area: undefined (Wire load has zero net area)
+  Total cell area: 4184289.044041  (mm2だとすると64段で2.89mm□
+●VU440-step3000-20190306 … 0.0+1.0*0.0が0x01000000(正解は0x0)になる現象を修正
+●VU440-step3000-20190223 … inv_x2のfolding+self_loopへの対応
+●VU440-step3000-20190220 … 0208の変更をキャンセルして, 1230に0208⇒0217の差分を反映した版
+●VU440-step3000-20190217 … inv+rmm.cのためにOPcodeずらしてFMS追加(emax6lib.c)
+●VU440-step3000-20190208 … stage[234],unit,lmringにlintcheckエラー修正を反映
+●VU440-step3000-20181230 … MC化準備中(AXI追加)初版
+----
+
+【EMAX6(IMAX) HDL改版履歴】
+
+●VU440-step2000-20190315 … lint-checkエラーを修正（150MHz動作に戻せた）
+●VU440-step2000-20190306 … 0.0+1.0*0.0が0x01000000(正解は0x0)になる現象を修正
+●VU440-step2000-20190223 … inv_x2のfolding+self_loopへの対応
+●VU440-step2000-20190220 … 0208の変更をキャンセルして, 1124に0208⇒0217の差分を反映した版（■実機OK■）
+●VU440-step2000-20190217 … inv+rmm.cのためにOPcodeずらしてFMS追加(emax6lib.c)
+●VU440-step2000-20190208 … stage[234],unit,lmringにlintcheckエラー修正を反映（■実機動作せず■）
+●VU440-step2000-20181124 … CSELやADTRの変更がlmring完了を待たないよう性能改善.現在150MHz動作中
+                              125MHzターゲット slack=-1.427ns 135MHzまでノイズなく動作
+                              IMAX on VU13Pのインプリが終わりました．Targetは150MHzです．
+                              LUT96%でも配線はOKでした．タイミングはメットしていませんが，VU440よりはSlack値が少なく，
+                              クリティカルパスを覗くと，LUTをほぼほぼ使っているがゆえにrelocateする先がなく，
+                              結果としてダイを2つ跨いだ配線が生じてしまっているという感じです．
+●VU440-step2000-20181121 … CMD上位のchip番号とREGアドレス上位の比較機能を追加し,NCHIP=4に対応.
+                              tb_topに結果比較機能を追加
+●VU440-step2000-20181120 … EXEパイプライニング実装(動作周波数向上)
+●VU440-step2000-20181118 … lmring.tyのセット方法をMC用に変更(REG_AREA_MASK追加,LMM_MAP_TOP->LMM_BASE2_PHYS)
+●VU440-step2000-20181117 … stage5のbr->av=(..ty<4)をstage4に移動.NCHIP化の準備.
+                              tr->av   = br->av || exring[cid].unit[i].lmranger_ok || exring[cid].unit[i].lmrangew_ok
+                                                || (exring[cid].unit[i].l_row == row && br->ty<4);
+●VU440-step2000-20181109 … EXP_B5410とXP_B7632を実装
+                              mm+rmm,cnn+rmm,gdepth+rmm,gather+rmm正常
+                              filter.c,filter+rmm.cともに正常
+●VU440-step2000-20181024 … for(NCHIP=1)for()for()対応（mm+rmm,cnn+rmm,gdepth+rmm正常）
+                              csim-20181018.tgzに対応
+                              なお，filter.expand4kとfilter.unsharpはzynq実機で画像異常
+                              EXP_B5410とXP_B7632が実装されていないためと推測
+●VU440-step2000-20180801 … lmringを1列構成から8列構成に変更（axringの応答高速化）
+●VU440-step2000-20180701 … 文字コードをEUCに変更
+●VU440-step2000-20180225 … test000正常動作(loop回転数=1も正常) mm_cnn_lf/も正常動作
+●VU440-step2000-20180224 … test000正常動作(loop回転数=1も正常),test007は結果が0
+●VU440-step2000-20171113 … IMAX初版完成(RTLデバッグ中.合成前)
+●VU440-step2000-20170920 … IMAX初版の準備開始
+----
+
+【EMAXV-32bit版VU440上で動作（IMAXとの比較用）】
+
+●VU440-step1500-20170906 … /home/ryusuke-y/Release/vivado_2017_2/EMAXV_64st/RTL_32bit/
+----
+
+【EMAXV HDL改版履歴】
+
+●VU440-step1000-20170530 … fpu.v修正
+●VU440-step1000-20161230 … ea0/ea1のbit幅を64bitから18bitに縮小.BLKSIZE_BITSをLMM_LENG_BITSに統合.blksizeのコメント修正
+                              bsim-20161230対応
+●VU440-step1000-20161220 … bsim-20161220に合わせて修正(LDRQ.blk!=0対応,LDDMQ/TR実装開始前)
+●VU440-step1000-20161211 … bsim-20161212に合わせて修正(途中)
+                              axra/axwa削除.OP_LDDMQ/OP_TR用にen1とrrdyを修正
+●VU440-step1000-20161208 … EX4->TR4->BR4用に,trs3-0を追加
+●VU440-step1000-20161206 … EMAXMODEの論理変更(← 一倉さん)
+●VU440-step1000-20161122 … fsm.v markの論理修正
+●VU440-step1000-20161121 … FML結果0時のexpを修正.tricountのためにlmmiのフィールド位置変更
+●VU440-step1000-20161116 … FMAバグ修正,MWとTRのパスを最適化(confは変更なし)
+●VU440-step1000-20161115 … MWとTRを分離し,IM_PREFとレジスタ伝搬を同時実行可能に変更
+●VU440-step1000-20161110 … mapdist=0かつptop!=0の場合に,lmmi.ofsを使ってEXEC同時IM_PREF
+●VU440-step1000-20161101 … LDDMQ用にexd→mw0パスを追加
+●VU440-step1000-20161010 … wlast追加
+●VU440-step1000-20160920 … conf/lmmi/regvをacp_mmapに変更
+●VU440-step1000-20160907 … MEDIAをoff,LMMも64KB->8KBに縮小
+●VU440-step1000-20160906 … DEPTH=08を追加
+●VU440-step1000-20160901 … ACP/HPPを両方物理アドレスに変更(conv-c2b-20160901)
+●VU440-step1000-20160831 … EMAX_DEPTH=16,32,64の初版．vsim OK．
+----
+
+【EMAXV conf.dat/lmmi.dat/regv.dat/data.dat】                   2016/7/27 中島
+
+●bsim -d sample/test/test007-arm.emax5により生成
+----
+
+【EMAX6 Modelsimの使い方】                              2013/1/31 中島
+
+●tb_top.vには，tb_top.datが必要
+  1. csim ../../sample/test/test020-csim.emax6+dma > ../../sample/test/test020-csim.emax6+dma.log
+  2. 行内に混入したESC-SEQをviで削除
+  3. ./tb_top.conv ../../sample/test/test020-csim.emax6+dma.log > tb_top.dat
+
+● vsimが使えるcadxxxにログイン
+● cd proj-arm64/fpga/VU440-step4000
+
+(準備１)．xilinxライブラリをmodelsim用に変換（modelsim.iniを生成）
+    % compxlib -s mti_se -arch virtex -l verilog
+          ISE134パスを使うと/opt/xilinx/ise134/内にmti_seを作ってくれる．
+(準備２)．File->New->Projectで，tb_topを作る
+    Add Existing Fileで，tb_top.vを選択
+    右ボタンでCompile-All
+(準備３)．File->New->Libraryで，unisimsをmapする
+    /opt/xilinx/ise134/ISE/verilog/mti_se/6.5b/lin64/unisims_verを選択
+(準備４)．File->New->Libraryで，xilinxcorelibをmapする
+    /opt/xilinx/ise134/ISE/verilog/mti_se/6.5b/lin64/xilinxcorelib_verを選択
+(準備５)．Project->Add_to_project->Simulation_configurationで
+    Designタブから，work/tb_topを選択
+      右下のOptimization Optionsを開いて
+      VisibilityをApply full visibilityに変更してOK
+    Librariesタブを開き，
+      Search Libraries(-L)でaddを押し，▼からxilinxcorelibを選択しOK
+      Search Libraries(-L)でaddを押し，▼からunisimsを選択しOK
+    Save
+
+● common.vhを確認
+   //`define REG_BRAM  ★vsim用はこっちを有効化
+   //`define ZYNQ_BRAM ★合成時はこっちを有効化
+● vsim tb_top.mpf
+● Projectタブのtb_top.vを右ボタンでCompile-All
+   errorが出たら，CompileメニューのCompile-reportで確認
+● Libraryタブのtb_topを右ボタンでSimulate
+● simタブのtb_topを右ボタンで"Add > To Wave > All items in region and below"
+● Simlateメニューの「Run-All」
+● waveタブに波形が出ている
+----
+
+【EMAX6 Vivadoの使い方】                              2013/1/31 中島
+
+1. Constraintは
+   VU440-step3000/project_1/project_1.srcs/constrs_1/imports/constrs_1/imports/new/io_ports_150M.xdc
+   VU440のZCU102側:MGTREFCLK0P_222 PACKAGE_PIN AV10  (bank222->J8.A18)
+   VU440の下流440 :MGTREFCLK0P_230 PACKAGE_PIN M10   (bank230->J2.A18)
+       J2.A18->J4.A18->J1-D4---J1-D4->J4.A18->J8.A18
+   VU440の上流440 :MGTREFCLK0P_222 PACKAGE_PIN AV10  (bank222->J8.A18)
+2. source /opt/xilinx/Vivado/2018.3/settings64.csh
+3. alias vivado 'vivado -stack 10000'
+4. projectをコピーする時は，Vivadoから「File->Open」⇒「File->Save As」
+   *.xprの中身が完全には変わらない場合があるので目で確認・編集
+5. common.vhを確認
+   //`define REG_BRAM  ★これはvsim用
+   //`define ZYNQ_BRAM ★こっちを有効化
+6. 起動: vivado project_1.xpr
+7. *.v更新: Libraries->xxx.vで右ボタン「Replace File」
+            上に「Refresh Changed Modules」が出るので押す
+            Hierarchy->design_wrapper->design.bdで右ボタン「Reset Output Products」
+                                     ->design.bdで右ボタン「Generate Output Products」
+8. 合成:左メニュー「Generate Bitstream」
+----
+
+【FPGAの焼き方と起動方法】
+
+●作り方はREADME-IMAX.pdf
+
+●ZCU102
+  1. arch08(Let'sNote+CentOS)にて，
+    ES1なら(rebootするとハング)
+    % zcat tech-zcu102/naist2018/ZCU102_20181218.img.gz | dd bs=64k of=/dev/mmcblk0
+    製品版なら(reboot可能)
+    % zcat tech-zcu102/naist2018/ZCU102_20190110.img.gz | dd bs=64k of=/dev/mmcblk0
+    製品高速版なら(reboot可能)
+    % zcat tech-zcu102/naist2018/ZCU102_20190117.img.gz | dd bs=64k of=/dev/mmcblk0
+
+  2. 電源ON
+  3. ssh でarch28/35/38にlogin
+  4. /lib/firmwareにbitstreamを加工したものを置く
+  5. echo c2c.bin > /sys/class/fpga_manager/fpga0/firmware
+     (/lib/firmware/c2c.binが書き込まれる)
+
+●VU440
+    Windowsに,VU440_PlayerPro/playerpro6.3.2.2.exeをインストールし
+    PlayerProトレーニング資料Rev1.3.pdf通りに作業
+    IMAXのbitは，VU440-step2000-20190315_18-3_IC350M_IMAX150M.bit
+  1. CLK確認は，LM Manager-> Read Hardware Info 最新は以下.
+     【VU440-step3000-20190401】ZCU102-VU440構成
+      S2CCLK_1=78.125MHz (GTH fixed)
+      S2CCLK_2=78.125MHz (GTH fixed)
+      S2CCLK_3=48.000MHz
+      S2CCLK_4=260.00MHz (C2C-IMAX AXI IC)
+      S2CCLK_5=130.00MHz (IMAX)
+      S2CCLK_6=48.000MHz
+
+     【VU440-step3000-20190418】ZCU102-VU440-VU440構成
+      S2CCLK_1=78.125MHz (GTH fixed)
+      S2CCLK_2=78.125MHz (GTH fixed)
+      S2CCLK_3=48.000MHz
+      S2CCLK_4=260.00MHz (C2C-IMAX AXI IC)★★★夏場は260まで落すと動く模様★★★
+      S2CCLK_5=130.00MHz (IMAX)           ★★★夏場は130まで落すと動く模様★★★
+      S2CCLK_6=48.000MHz
+  2. 設定は，LM Manager-> Hardware Settings-> Clocks&Reset
+  2. 書込み，LM Manager-> Design Download-> Download Direct
+
+●以上完了後,linkupのために
+  1. VU440の右側ボタン押す
+  2. ZCU102の中央ボタン押す
+
+●link-upしない時は (20190110時点では/etc/rc.localに書いてある)
+  1. alias pl_c2c='echo c2c.bin > /sys/class/fpga_manager/fpga0/firmware'
+  2. pl_c2c
+----
+
+【Chipscope】
+
+★VU440のIMAX周波数は，20MHz程度に落す必要あり
+  1. Block Designで対象ワイヤ右ボタン「Debug」
+  2. 上のRun Connection Automation
+  3. ilaの箱をクリックしてDepthを設定（16384など）→ OK
+  4. Sources->Hierarchy->design_1->「Generate Output Products」
+  5. 合成:左メニュー「Generate Bitstream」
+
+     arch24/25で，source /opt/xilinx/Vivado/2018.3/settings64.csh; hw_server; (/opt/xilinx/SDK/2018.3/bin/hw_server)
+  6. 左メニュー「Open Hardware Manager」->Open Target->Open New Target "arch24.naist.jp"
+  7. Remote Serverでarch24:3121 JTAG Frequencyが10000000Hz(10M)がVU440(1F)
+  8. 上の「Program Device」で bitstream file:?   xxx.bit 確認
+                              Debug probe file:? xxx.ltx 確認
+  *. なおxxx.{bit,ltx}はproj-arm64/fpga/に移動してある.使う時は以下に戻す
+     GTH100M+100M.runs/impl_2/design_1_wrapper.bit
+     GTH100M+100M.runs/impl_2/design_1_wrapper.ltx
+  9. 書き込むと波形ビューアが出る.トリガを設定してplayボタンを押す.
+  10.古いdashboardがあれば閉じて,hw_ila_1をダブルクリックすると新しいdashboardが開く
+  11.ilaの信号を増減した場合，Waveform画面の信号名が古いままなので,-で全部削除し,+で全部選択して更新する.
+  12.メーターが50%で止まったらアプリ実行.
+----
+
+【102-440-440 AXI接続】
+ZCUADP(J2)|(J8)                 VU440                      (J2)|(J4)  ADP  (J1) CAB (J1)  ADP  (J4)|(J8) VU440
+          |         X0Y12-14           X0Y44-46                |                 |                 |       X0Y12-14
+  REFCLK1 |A18,19*(222.AV10,9 CKP0,N0|230.M10,9 CKP0,N0) A18,19|CK0P,N    D4,5   |D4,5    CK0P,N   |A18,19 CKP0,N0*
+  DP4M2CPN|B16,17*(222.AW8,7  TXP0,N0|230.R4,3  RXP0,N0) A14,15|DP3_M2CPN A10,11 |A30,31  DP3_C2MPN|B16,17 TXP0,N0*
+  DP4C2MPN|A14,15*(222.AW4,3  RXP0,N0|230.R8.7  TXP0,N0) B16,17|DP3_C2MPN A30,31 |A10,11  DP3_M2CPN|A14,15 RXP0,N0*
+  DP5M2CPN|B12,13*(222.AV6,5  TXP1,N1|230.P2,1  RXP1,N1) A10,11|DP2_M2CPN A6,7   |A26,27  DP2_C2MPN|B12,13 TXP1,N1*
+  DP5C2MPN|A10,11*(222.AV2,1  RXP1,N1|230.P6.5  TXP1,N1) B12,13|DP2_C2MPN A26,27 |A6,7    DP2_M2CPN|A10,11 RXP1,N1*
+  DP6M2CPN|  B8,9*(222.AU8,7  TXP2,N2|230.N4,3  RXP2,N2) A6,7  |DP1_M2CPN A2,3   |A22,23  DP1_C2MPN|B8,9   TXP2,N2*
+  DP6C2MPN|  A6,7*(222.AU4,3  RXP2,N2|230.N8,7  TXP2,N2) B8,9  |DP1_C2MPN A22,23 |A2,3    DP1_M2CPN|A6,7   RXP2,N2*
+  DP7M2CPN|  B4,5 (222.AT6,5  TXP3,N3|230.M2,1  RXP3,N3) A2,3  |DP0_M2CPN C6,7   |C2,3    DP0_C2MPN|B4,5   TXP3,N3
+  DP7C2MPN|  A2,3 (222.AT2,1  RXP3,N3|230.M6,5  TXP3,N3) B4,5  |DP0_C2MPN C2,3   |C6,7    DP0_M2CPN|A2,3   RXP3,N3
+----

@@ -1,0 +1,785 @@
+
+\chapter{IMAX Hardware}
+
+\section{Background}
+
+While IoT, big data, AI, and robots are attracting attention, the rate of progress of low-power computing infrastructure technology, which is essential for sustainable development, is extremely slow. The main reason is the strong trade-off relationship between power consumption and programmability that has surfaced due to the limit of semiconductor miniaturization. The report of the JST Low Carbon Society Strategy Center (LCS) predicts that the power consumption of data centers will exceed the power that can be supplied by 2050 if the situation of dependence on von Neumann architecture such as CPU and GPGPU continues. Whether it is data center centralized processing or edge computing, unless the trade-offs are scrutinized and the introduction of low-power computing infrastructure is promoted, the next-generation sustainable social system centered on AI and blockchain will be attributed to the picture. While many analog computing mechanisms that utilize various physical phenomena are being explored as science, there is only one way to reach the next-generation low-power computing platform, including the power required for large-scale and stable operation.  It is a non-Von Neumann type improvement of versatility and programmability that can improve power efficiency by two orders of magnitude by subdividing a program into a data flow and mapping it to hardware.
+ 
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.70\textwidth]{CGRA0.eps}
+\caption{\label{cgra0}Difference between CPU/GPU and CGRA on execution model}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.60\textwidth]{gpu.eps}
+\caption{\label{gpu}Difference between CPU/GPU and CGRA on memory access}
+\end{figure}
+
+The von Neumann-type computing platform, in which machine instructions sequentially control the arithmetic unit and memory, has been supported by the two wheels of semiconductor miniaturization and parallel processing sophistication.  The former approached the physical limit and the latter was pursued.  GPGPU is equipped with a large-scale register file and a main memory delay concealment function that exceeds 1000 cycles by multithreading in order to perform parallel processing while maintaining conventional programmability.  However, tuning to regularize the main memory reference order is difficult, and excessive computing power and power are required to achieve the required performance.  On the other hand, the Coarse Grain Reconfigurable Architecture (CGRA) proposed by H.T.Kung et al. in 1982 is a non-Von Neumann type that maps the instruction sequence of the innermost loop to a two-dimensionally arranged arithmetic unit network and flows the main memory data.  While many domestic companies have started but withdrew due to programmability barriers, Google's TPU and Wave computing's DPU have succeeded in improving efficiency by focusing on AI applications.  Our laboratory developed a VLIW-compatible LAPP in 2008, and then developed IMAX, which dramatically improved area efficiency (calculation performance/area) by integrated control of 64 sets of near-memory high-performance arithmetic units and multiple loops.  While GPGPU employs a large number of cores in SIMD and requires coalescing that integrates memory references into continuous addresses and a luxurious memory bus, IMAX employs a large number of arithmetic units to be connected vertically to the memory bus.  We have achieved power reduction.
+ 
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.60\textwidth]{cgra.eps}
+\caption{\label{cgra}Ideal operation of CGRA}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{APPL.eps}
+\caption{\label{appl1}Complicated applications}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{LIST.eps}
+\caption{\label{list1}Requrements on CGRAs}
+\end{figure}
+
+The CGRA is a mechanism that executes a huge number of operations at one
+time. To use it efficiently, as shown in Fig. \ref{cgra}, the last operation
+result is flushed to the main memory, the operation is performed, and the
+next operation is performed. It is extremely important to keep the operation
+unit running by overlapping the fetching of the data required for the
+operation from the main memory. In addition, application programs are
+becoming more complicated as shown in Fig.\ref{appl1}.  Many features shown
+in Fig.\ref{list1} should be supported by CGRAs.
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{CGRA1.eps}
+\caption{\label{cgra1}VPP-IMAX history of execution model}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{HISTORY.eps}
+\caption{\label{history1}VPP-IMAX history of features}
+\end{figure}
+
+The process leading up to IMAX is shown in Fig.\ref{cgra1} and
+Fig.\ref{history1}. In the (a) parallel vector VPP series, VLIW was proposed
+and adopted to maximize power efficiency while overseas manufacturers were
+leaning toward superscalar processors. The VLIW + vector arithmetic
+mechanism has the feature that the continuous operation of the memory pipe M
+and the arithmetic pipe E is very similar to CGRA, but there are no
+structural restrictions on the program. (b) OROCHI is a VLIW shared
+low-power superscalar in which the instruction decoder D dynamically
+decomposes and inputs ARM instructions into the VLIW buffer B and shares the
+cache C. The CGRA configuration technology by two-dimensional extension of
+VLIW was demonstrated, and (c) LAPP, the first VLIW compatible CGRA,
+inherited it. (d) After EMAX, the efficiency of discrete stencil calculation
+and graph processing has been improved by maximizing the reuse of LM by ring
+connection between arithmetic unit E and local memory LM and eliminating
+data flow interference by explicit control. At the same time as Google's TPU
+(integer operation only), (e) IMAX employs multiple execution that
+virtualizes 1 physical column x 64 rows into 4 logical columns x 64 rows,
+and the maximum reuse of LM. The area efficiency (calculation performance /
+area) of the arithmetic floating-point multiply-accumulate operation E has
+been dramatically improved (250 times the built-in GPGPU assuming 28
+nm). (f) Tandem CGRA is a configuration that improves programmability by a
+virtualization mechanism.
+
+\clearpage
+
+\section{History of CGRA}
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=CGRAHIST1.eps,width=0.95\textwidth}
+\caption{\label{cgra2}LAPP-IMAX history of ALU network}
+\end{figure}
+
+Figure \ref{cgra2} shows the structure of one line of the CGRA developed by
+our group. LAPP was a VLIW compatible CGRA, but the local memory (LMM)
+capacity of each row composed of FIFO was as small as 16 elements x 4
+columns at most, and it could not handle stencil calculations with large
+orders (length of one side). In EMAX2, instead of abandoning VLIW
+compatibility, a dedicated medium-capacity LMM and FIFO were placed in each
+arithmetic unit so that many stencil calculations could be mapped. However,
+increasing the number of LMMs greatly increased the number of interline
+registers to 32. Therefore, four cycles were required from the register to
+the output of the computing unit.  In EMAX4, a transaction mechanism
+required for graph processing was added. The changes from EMAX2 to EMAX4 are
+as follows:
+
+\begin {itemize} \parskip 0pc \itemsep 0pc
+\item Add conditional execution by combining multiple conditions
+\item Add transaction function
+\item Data bus between each stage and external memory is expanded from 64bit * 1 to 32bit * 4
+\end {itemize}
+
+In EMAX5/L2, a SIMD operation mechanism was added, and the input registers
+of ALU and EAG were shared, reducing the number of inter-line registers by
+half to 16. From registers to the output of the arithmetic unit takes 2
+clock cycles. Also, the throughput between the external memory bus and the
+LMM has been improved.  In EMAX5/ZYNQ, the FIFO was deleted to reduce the
+FIFO initialization overhead. Instead, a path has been added to write data
+from the external memory bus to multiple rows of LMMs simultaneously. This
+made it possible to initialize many LMMs simultaneously using multiple
+external memory buses. The changes from EMAX4 to EMAX5/ZYNQ are as follows:
+
+\begin{itemize}\parskip 0pc \itemsep 0pc
+\item SIMD conversion from single-precision floating-point operation to 32-bit * 2 operation
+\item SIMD conversion of 32bit integer operation to 32bit * 2 integer operation
+\item Enhanced 8/16bit media operation from 4/2 width SIMD to 8/4 width SIMD
+\item The local memory (LMM) bus width of each module has been expanded from 32bit*1 to 64bit*4, and the throughput between LMM and external memory has been increased by 8 times.
+\item The connection between each stage and external memory has been expanded from 32bit * 4 * 1 channel to 64bit * 4 * 4 channel, and the throughput between each stage and external memory has been increased by 8 times (conf / regv / lmmi initialization overhead (Reduced to 1/8)
+\item Adoption of Dual-Port-LMM for direct reference to external memory and change of basic configuration of CGRA
+\item Inter-unit bus network that can output data to LMM while supplying data from 3 units of LMM to 3-input SIMD
+\item Reduce the number of propagation registers per unit from 8 to 4, and place a crossbar switch from propagation registers to arithmetic units.
+\item The FIFO that propagates the output of the LMM in the horizontal direction is deleted, and a mechanism for broadcasting from the external memory bus to the LMM in the same stage is provided instead (FIFO initialization is not required).
+\end{itemize}
+
+In IMAX, in order to improve the large number of wirings, which are common
+drawbacks of the CGRA, and the low operation circuit usage rate during
+self-loop operation, we introduced multithreading, which bundles
+multiple-column arithmetic functions into one column. Multithreading can be
+implemented thanks to the fact that there is no dependency on the horizontal
+operations.  By implementing a multi-column arithmetic function (logical
+UNIT) logically and physically implementing it with a single-column group of
+arithmetic units, it is possible to reduce the number of arithmetic units
+and wiring, improve the efficiency of arithmetic units, eliminate the need
+for horizontal broadcasting, and eliminate the need for redundant LMMs.  In
+addition, the method of connecting to the CPU was changed to AXI-SLAVE, and
+writing to the LMM was changed to a method in which each UNIT is
+autonomously imported according to the vAddr-range provided for each
+UNIT. This enabled vertical broadcasting. Furthermore, by adding a path that
+returns the output of the UNIT to the input, read-modify-write for the same
+LMM was enabled, and the LMM accumulation required for convolution operation
+and inverse matrix calculation was enabled. By setting a continuous
+vAddr-range for multiple rows of LMMs and performing the same store for
+multiple LMMs, it became possible to increase the accumulation space several
+times. The changes from EMAX5/ZYNQ to IMAX are as follows:
+
+\begin{itemize}\parskip 0pc \itemsep 0pc
+\item Reduce the number of physical computing units and LMMs while maintaining program compatibility with EMAX5/ZYNQ
+\item Improvement of HOST - LMM transfer efficiency by AXI-SLAVE, lmring 8 rows and 8 columns configuration, and vertical broadcast function
+\item Read-modify-write function and accumulation function using the same LMM
+\item Tandem mode of units employing double buffering in LMM (for FFT and multistage merge sort)
+\item Read-data comparator and address incrementor in dual port LMM (for multistage merge sort and sparse MM)
+\item Sparse matrix multiplication of compressed elements including location information
+\item Multi-loop batch execution function including multi-chip support and mapping to multi-chip
+\item Multiple transaction unification (AXI4 conversion) and buffering function to accelerate DMA-READ of AXI3 with burst length of up to 8 (in case of 256bit width)
+\item Unaligned 64bit-load employing dual EAG
+\item Duplicating 32bit/8bit-load to 64bit register for SIMD
+\item Dynamic DMA concatenation for multiple LMM
+\end{itemize}
+
+\section{Policy of IMAX}
+
+The conventional CGRA has an essential weakness, and it is not
+suitable for a small accelerator contributing to the edge as it is.  The
+problems can be seen as follows:
+
+(1) Long-distance wiring or wiring congestion causes a decrease in operating
+frequency and area efficiency when mounted with a two-dimensional lattice
+structure, so that a measure for area saving is required. (2) It is
+necessary to have a mechanism that does not hinder pipeline execution even
+if there is an instruction that essentially requires multiple cycles, such
+as a floating-point accumulation operation or read-modify-write to a local
+memory. (3) The speed of the innermost loop alone is not suitable for
+speeding up the matrix product with a short vector length or the speed of
+the convolution operation. Therefore, a multi-loop batch execution function
+for reducing startup overhead is required. (4) In order to increase the
+reuse efficiency of the local memory and reduce external memory references,
+an instruction mapping position shift function (that can follow the
+fluctuation of the data reference pattern, which is difficult to perform
+static analysis) is required. (5) High efficiency can be achieved as a
+simple DMA slave memory without the need to incorporate a sophisticated DMA
+master function. (6) Scalable performance can be easily obtained by
+cascading utilizing the function of the slave memory without the need for an
+additional external memory bus (AXI).
+
+In IMAX, the \textbf{first point} is that: \textbf{it is NOT the
+two-dimensional configuration} generally known by the traditional CGRA. To
+fulfil low cost requirement for IoT edge device, \textbf{the physical
+structure of this architecture is one-dimensional (linear array)}. However,
+it must still maintain high performance as the traditional two-dimensional
+architecture does. \textbf{The second point: It integrates the memory
+function inside}. Since the host uses it as memory, it can deal with the
+problem of memory-memory transferring overhead in traditional
+accelerator. In addition, the internal memory can be cascade easily.
+\textbf{The third point: Various data paths are provided} for intuitive
+programming that handling the integrated of memory functions and arithmetic
+functions. In particular, \textbf{this architecture allows read-modify-write
+and multiple loop control on the same local memory}, which ordinary CGRAs
+cannot.  \textbf{The fourth point}: Thanks to the carefully designing the
+data path, \textbf{compiling speed of EMAX 6 is high.} It does not require
+exploratory compilation such as normal FPGA.
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{EMAX6EXP.eps}
+\caption{\label{exp}Requirements on memory access patterns}
+\end{figure}
+
+On IMAX, a maximum of 10 instructions (2 operations x 3 stage + load x 2 +
+store x 2) x 4 columns x 64 rows = 2560 instructions can be mapped at a time
+to a physical structure of 1 column x 64 rows.  IMAX has a physical
+structure in which basic units are arranged in one column x 64 rows
+(described later), but the hardware model at the time of programming is 4
+columns x 64 rows.  Each unit has two sets of three-input single-precision
+floating-point adder / subtract or multipliers of a three-stage pipeline,
+and executes two operations simultaneously using 64-bit wide registers.  The
+first stage of the pipeline can perform various multimedia operations and
+fixed-point operations in 8/16/32-bit units, the middle stage can perform
+logical operations, and the last stage can perform shift operations.  Each
+unit has 64KB dual port memory, as shown in Figure \ref{exp}. It can handle
+various memory reference patterns.
+
+In (a), A, B, and C stored in one row of local memory (LMM) are read out
+four words at a time, SIMD calculation is performed by four calculators, and
+the calculation result D is stored in the next-stage LMM. This is a state in
+which two sets are mapped.  A, B, and C are supplied from external memory,
+and D is retrieved to external memory.  (b) is a map that performs vertical
+convolution. A and B were supplied from the dual port memory to the
+arithmetic units in each column, and four convolution operations were
+performed.  (c) is a mapping that accumulates four D's in the LMM.  Unlike a
+typical CGRA, accumulation can be performed while propagating data
+downstream as a whole.  (d) is a mapping that similarly accumulates four
+systems of D in the LMM.  However, it corresponds to the case where the
+storage destination is fixed and the LMM is updated many times by
+read-modify-write.  (e) is an extension for in-unit MAC with multiple input.
+(f) is an extension for sparse matrix multiplication and merge sort
+<
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{CGRAPAT.eps}
+\caption{\label{fig:cgrapat}Optimal direction of summation in matrix multiplication}
+\end{figure}
+
+For example, in case of matrix multiplication, the optimal direction of
+summation depends on the shape of the matrix B as shown in
+Fig.\ref{fig:cgrapat}. For vertical (a), Fig.\ref{exp}(b) and
+Fig.\ref{exp}(c) are required. The (b) is not optimal due to coarse store to
+C. Also the (c) is not optimal due to coarse store to
+C. For horizontal (d), Fig.\ref{exp}(d) or Fig.\ref{exp}(e) is required.
+Although the difference is that (a) broadcasts multiple rows of array A in
+vertical direction and (d) broadcasts multiple rows of array B in vertical
+direction after transpose, the store addresses in C become sequential.
+
+\section{Column direction multi-threading to save area}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.98\textwidth]{unit.eps}
+\caption{\label{fig:unit}Column multithreading for small footprint and
+bubble-free execution}
+\end{figure}
+
+Column-wise multithreading was introduced to address issues (1) and (2).
+Figure \ref{fig:unit} (a) shows the general unit configuration.  In general,
+CGRAs are designed on the premise that each operation unit outputs
+the operation result every cycle in order to reduce the synchronization cost
+with its previous and following operations. For this reason, functions with
+long operation time such as floating point accumulation cannot be pipelined,
+and area efficiency deteriorates.  In addition, in order to perform a large
+number of readings from the LMM, it is necessary to arrange multiple LMMs
+holding the same contents to increase the number of ports, which is a factor
+of area efficiency deterioration.  Figure \ref{fig:unit} (b) shows the unit
+configuration after applying multi-threading (W = 4). One unit logically
+implements the same function as (a), and it needs 4 cycles for calculation.
+When the arithmetic unit is pipelined into four stages, including the
+16-to-1 selector that selects Reg \# 0-15, and four operations in the
+horizontal direction are time-divided, the same performance can be
+maintained even with the floating-point accumulation, and the area
+efficiency can be improved by a factor of four.  However, in (a), the
+operation delay time in one unit is 2 cycles, whereas in (b), it is 8
+cycles.  Also, in order for the next-stage unit to refer to all of the
+operation results and LMM read data of the previous-stage unit (that can be
+output over four cycles), Reg \# 0-15 double buffering is required (grp.A
+and grp.B).  For the LMM, if the port is made into eight ports by the
+four-cycle operation of the two-port LMM, the area efficiency can be
+improved by a factor of four when all four LMMs in the horizontal direction
+have overlapped.  When there is no overlap, the efficiency of the memory
+itself does not change because the capacity of the LMM is divided and used,
+but the number of address generators can be reduced.  AXI-WRITE-IF and
+AXI-READ-IF refer to the LMM using a cycle in which the data path for
+operation does not use the load/store port of the LMM.
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=CGRAHIST2.eps,width=0.98\textwidth}
+\caption{\label{cgra3}Double buffering of registers is important in IMAX}
+\end{figure}
+
+Figure\ref{cgra3} shows the importance of double buffers in IMAX.  (a) is the
+relationship between the memory and ALU in a normal CGRA
+with 4-column configuration.  A 3-read 1-write memory is required to read
+4 words from each of the 3 locations in the memory and write the output (4
+words) of 4 arithmetic units operating in parallel to the memory.  In the
+case of a floating-point unit with 4-stage pipeline
+configuration, throughput does not decrease if there is no dependency
+between addresses, but if there is a dependency such as accumulation, the input
+waits for its own calculation result, so the pipeline stops and the
+performance drops to 1/4.  In order not to stop the pipeline, it is
+sufficient to make it 4-way-multithreading using only one ALU as
+shown in (b).  However, even if the number of arithmetic units can be
+reduced, the number of memory ports cannot be reduced.  (c) is a
+configuration in which SIMD-LD is revived to reduce the number of ports.
+The program is described as a set of SIMD-LD, SIMD-FMA, and SIMD-ST.  The
+hardware uses 3 out of 4 cycles to read from 3 locations with SIMD-LD.  Once
+saved in the double buffer, the 3 inputs required for each operation can
+always be available in all 4 cycles.  SIMD-FMA is executed by
+multithreading, and the calculation results are stored in memory in order.
+In other words, SIMD-FMA and SIMD-ST do not actually operate as SIMD, but the
+performance of hardware can be fully extracted.
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.60\textwidth]{rmw.eps}
+\caption{\label{fig:rmw}Read-modify-write operation}
+\end{figure}
+
+Figure \ref{fig:rmw} shows the correspondence of read-modify-write operation
+with unit.  Logically, four columns of read-modify-write are physically
+mapped to a single unit. The accumulation result (sum0-3) by the previous
+stage arithmetic unit is sent to the lower register of the unit. The result
+of the load (o0-3) is fed back to the input of the operation unit in
+synchronization with the timing, and the addition result (s0-3) is stored in
+the LMM.
+
+\section{Batch execution of multiple loops}
+
+\begin{figure}[htbp]
+\center \includegraphics[angle=0,origin=b,width=0.80\textwidth]{loop.eps}
+\caption{\label{fig:loop}Multilevel loop control}
+\end{figure}
+
+To cope with issues (3), multiple loop batch execution was introduced. Since
+CGRAs require instruction mapping and register initialization before
+starting continuous execution, we want to increase continuous execution time
+and reduce startup overhead as much as possible. However, the continuous
+execution time is determined by the amount of data that can be stored in the
+LMM, and the capacity of the LMM has an upper limit for not decreasing the
+operating frequency of the pipeline arithmetic unit. Experimentally, the LMM
+that balances with a single-precision floating-point operation pipeline
+consisting of three stages is about 32 KB (the former vector operation
+mechanism was up to about 16 KB per vector register). 16K cycles divided by
+the number of words (4B) that can be stored in 64KB is the upper limit of
+the continuous execution time. In the Lightfield (LF), the input is 8K
+images, so the LMM can be used up enough. On the other hand, in the case of
+Matrix Multiplication (MM), the col corresponding to the continuous
+execution time is M/W (120 when M = 480, W = 4). It is extremely short in
+case of Convolutional Neural Network (CNN), which is M-2 (240 for M =
+242). In order to use LMM as much as possible, MM is a double loop with a
+row loop of rotation speed GRP = 8 inserted outside, continuous execution
+time is M/WxGRP = 960, and CNN is also GRP = 8 and (M-2)xGRP = 1920.  A
+multi-loop batch execution mechanism is also added to the hardware.
+
+Figure \ref{fig:loop}(a) is the actual C code at the top of the CNN, and (b)
+is a logical multiplexing loop using a 4-column configuration (columns 3, 2,
+1, and 0 from the left). The control method is shown. Lines 2 through 5 in
+(a) are mapped to columns 1, 0, 2, and 3, respectively. Loop0, mapped to the
+0th column, is the innermost loop counter involved in the continuous
+execution of the CGRA. After the initial value M-2 is set in the register,
+it is decremented by a self-loop every cycle and the result is nonzero. In
+that case, leave the decrement value (initial value GRP) of loop1 mapped to
+the first column as 0. When loop0 reaches 0, set M-2 to the left source of
+column 0 again, switch the right source of column 1 to -1, decrement loop1,
+set -4 to the left source of column 2 again, Switch the source on the right. 
+Adding a row to the third column, M * 4, advances one iteration of
+loop1. When loop0 and loop1 are both 0, continuous execution stops.  (c) is
+the proposed method after column-wise multithreading is applied, and the
+above control is performed by a single unit.  (b) Execute four operations in
+parallel in one cycle.  On the other hand, (c) sequentially execute the
+operations in the 0th to 3rd columns using 4 cycles of 4 times
+frequency. The self-loop in the first stage of the pipeline arithmetic unit
+handles data dependencies between columns. The multi-loop batch execution
+mechanism includes read-modify-write function in the same LMM. The effect of
+multi-loop batch execution is to accumulate the execution result and CNN of
+the innermost loop stored in the LMM of the last stage of the MM by the
+read-modify-write function without temporarily pushing out the DDR.
+
+\section{Variety of LMM usage}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.85\textwidth]{lmmmode.eps}
+\caption{\label{fig:lmmmode}Variety of LMM usage}
+\end{figure}
+
+Figure \ref{fig:lmmmode} illustrates vaiety of LMM usage.
+
+\begin{description} \parskip 0pc \itemsep 0pc
+\item{(a)} The physical LMM space can be divided into 4 corresponding to 4
+logical columns, divided into 2 and shared by 2 logical columns, or shared
+as a whole without being divided. Mixed division are also possible. When
+using the prefetch/postdrain of the same LMM or the double buffering
+function, the maximum number of partitions is 8.
+
+\item{(b)} After reading the input data from the DDR to the LMM, the data is
+supplied from the LMM to the ALU input. This is the normal usage of LMM when
+load instructions are mapped. By combining prefetching to the adjacent LMM
+and instruction mapping position shift, which will be described later, the
+transmission time from DDR to LMM can be hidden in the execution time.
+
+\item{(c)} The input data required for the next activation of IMAX is read
+from DDR into another area of the same LMM while supplying prefetched data
+from the LMM to the ALU input. Since the two spaces coexist in the LMM, the
+DMA length is further halved after LMM space division.
+
+\item{(d)} After writing the execution result to LMM, the output data is
+written back from LMM to DDR. THis is the normal usage of LMM when store
+instructions are mapped.  By combining the post-drain from the adjacent LMM
+and the instruction mapping position shift described later, the transmission
+time from the LMM to the DDR can be hidden in the execution time.
+
+\item{(e)} While writing the execution result to the LMM, the previous
+output data of the previous invocation is written back to the DDR from
+another area of the same LMM.  Since the two spaces coexist in the LMM, the
+DMA length is further halved after LMM space division.
+
+\item{(f)} Data transmission between LMM and DDR can be suppressed by
+specifying 0 as the DMA length. Furthermore, while writing a series of
+calculation results to the LMM, the previous calculation result can be read
+from the same LMM and used for the next calculation. In other words, LMM can
+be used as a double buffer. It can be used for pipeline execution of
+multistage processing such as FFT and merge sort.
+\end{description}
+
+\clearpage
+
+\section{Ring formed interconnection among units and instruction mapping position shift function to reduce start-up overhead}
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6RING.eps,width=0.90\textwidth}
+\caption{\label{ring} Overview of 24-line configuration}
+\end{figure}
+
+To cope with issues (4), instruction mapping position shift function was
+introduced. Figure \ref{ring} outlines a 24-line configuration including
+DDR.  In EMAX5, the fsm (which in charge for each column) will performs
+burst transfer between all LMMs and main memory that is connected by a
+binary tree.  In IMAX, LMM is referenced by a pipeline memory bus. Since the
+wiring for the binary tree can be reduced and the switching of the target
+LMM is unnecessary, DMA transfer and PIO transfer can be mixed and executed
+seamlessly.  In EMAX5, PIO can be used to initialize conf, lmmi, and regv,
+which used only DMA. In IMAX, partial register updates can be speeded
+up. The delay between UNITs during DMA transfer is 2 cycles, and the delay
+between UNITs during operation execution is 8 cycles. The memory bus delay
+time can be reduced by rearranging the memory bus from a 24-row per column
+configuration to a multi-column configuration.
+
+The instruction mapping position shift function is for reusing LMM without
+moving data inside. The instructions are shifted by using the ring formed
+interconnection among units.  The dynamic shifting revises the point that
+conventional compilers always generated code of instruction shift before
+starting continuous execution. Before starting continuous execution, it
+compares the current LMM address range with the address range required for
+the next continuous execution, and do not issue a shift instruction if they
+are the same.
+
+\section{Cascade connection function as memory}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=0,origin=b,width=0.90\textwidth]{mchip.eps}
+\caption{\label{fig:mchip}Cascaded peer-to-peer AXI bus for scalable multichip
+CGRA}
+\end{figure}
+
+To address issues (5) and (6), a multi-chip configuration was devised. The
+cost can be reduced by the multi-chip configuration because the yield is
+improved by reducing the area of a single chip. It is new to remember that
+AMD's Threadripper (4-chip MCM) is less expensive than Intel's Core-i9
+(single chip).
+
+IMAX uses ARMv8 as a host and can map any computing resources to the main
+memory space of ARM as a memory device through the standard AXI bus. In this
+case, it is possible to map multiple LMMs in one space and write images and
+parameters to many LMMs at once by PIO/DMA from the host.  When describing
+an application in C language, a programmer can specify which LMM is
+associated with each data structure and arrange operations between the data
+structures to form an arbitrary data flow. The data supply path has an 8
+column x 8 row configuration to reduce the transfer delay between ARM and
+IMAX. By the way, we think that IMAX is equipped with the necessary
+functions as a high-efficiency compact linear array accelerator for
+IoT. However, in order to be close to practical use, it is essential to
+provide a basic structure that can improve performance in a scalable manner
+according to the required performance of various IoT. Broadcast PIO/DMA to
+multiple LMMs over multiple chips can be performed, and operation results
+can be collected over multiple chips by PIO/DMA transfer to speed up the
+operation. However, preparing many memory buses and connecting them in
+parallel like GPUs is out of ability of IoT accelerators. Because IoT device
+cannot equip multiple AXI buses. Therefore, using the DMA slave type, we
+devised an architecture that can achieve the required performance by
+cascading several LMM to the same AXI bus. We use a similar cascade
+configuration as that of the commercial CAM-LSIs. Although this cascade
+configuration has never been applied to an accelerator. This is because GPUs
+and other ordinary accelerators are designed including DMA masters that
+require a rich memory bandwidth.
+
+Figure \ref{fig:mchip} shows the connection method between units in a
+two-chip configuration. The host with PIO/DMA function and main memory
+(DDR), chip \#0 and chip \#1 are cascaded by a set of AXI4 buses. Each chip
+containing 64 units has a single-column ring connection for computation (the
+transit time of each unit is 8 cycles), and an 8-row x 8-column data path
+for DDR-LMM transfer (The unit transit time is 2 cycles). We do not share
+the same bus for transferring data between DDR-LMM and LMM-calculation units
+so that the data transfer and calculation inside units can be performed
+simultaneously. Finally, we expect to significantly reduce the 64-unit
+transit time even though the number of chips increased. AXI-WRITE-IF
+propagates a write request from the host to the inside and the next
+chip. AXI-READ-IF waits for the response from 8 rows in the chip and the
+next chip and returns the result. Note that the final hardware configuration
+is DDR4-3600 (64bit), 8 sets of bidirectional differential links (four) x8
+sets equivalent to Xilinx 28Gbps-GTY for physical connection between chips,
+and one direction is expected to match the on-chip throughput (900MHz x
+256bit = 230Gbps as described later).
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6SEQ.eps,width=0.76\textwidth}
+\caption{\label{seq}Operation of 3 Chip configuration}
+\end{figure}
+
+Figure \ref{seq} shows the operation of a 3-chip configuration. The input
+image stored in DDR is transmitted to all serially connected IMAX chips by
+DMA. In each IMAX, the corresponding LMM autonomously captures the input
+image based on the address information. At this time, by setting the same
+address information, it is possible for multiple LMMs to capture the
+information at the same time (Figure \ref{seq} (a)).  Similarly, writing
+data to a specific LMM is autonomously fetched by the corresponding LMM
+based on the address information (Figure \ref{seq} (b)).  At the time of
+execution, each IMAX performs the calculation inside units independently and
+stores the result in LMM (Figure \ref{seq} (c)).  The output image that is
+the result of the operation is read from the LMM to the DDR by the DMA
+(Figure \ref{seq} (d)).
+
+\begin{table}[htbp]
+\center\small
+\caption{\label{physinterface}Physical memory interface}
+%%\tabcolsep 0.2pc
+\begin{tabular}{l|c|p{4.2in}}\hline\hline
+信号線名称		& I/O	& 備考 \\\hline
+rw			& I	& 0:read(LDDMQ/TRANSのポーリング含む), 1:write \\
+ty			& I	& 0:reg/conf, 1:reg/breg, 2:reg/addr, 3:lddmq/tr, 4:lmm \\
+			&       & read\&lddmq:LMMからの読み出し, write\&tr:TRへの書き込み \\
+col[1:0]		& I	& 論理列番号 \\
+sqi[15:0]		& I	& seq番号（最大64Kdwords）\\
+avi			& I	& 0:a/dm/di無効, 1:有効 \\
+a[31:5]			& I	& register/LMMのアドレス \\
+dm[31:0]		& I	& register/LMMへの書き込みデータByte毎マスク \\
+di[255:0]		& I	& register/LMMへの書き込みデータ \\
+avo			& O	& 0:sqo/do無効, 1:有効 \\
+sqo[15:0]		& O	& seq番号（最大64Kdwords）\\
+do[255:0]		& O	& LMMからの読み出しデータ \\\hline
+\end{tabular}
+\end{table}
+
+The physical memory interface of the CPU-IMAX shown in the table \ref
+{physinterface} consists of a group of wires required for the CPU to refer
+to the IMAX as external memory. In which: \textbf{rw}: 1 bit R/W type,
+\textbf{ty}: 2 bit register/LMM selection, \textbf{col}: reference logical
+column number, \textbf{sqi}: 16 bit seq number, \textbf{avi}: 1 bit R/W
+request, \textbf{a}: 27 bit address line (4dword Alignment), \textbf{dm}:
+4-bit dword unit mask, \textbf{di}: 256-bit data line (Write), \textbf{avo}:
+1-bit read data valid display, \textbf{sqo}: 16-bit seq number, \textbf{do}:
+256-bit data line (Read).
+
+\clearpage
+
+\section{Detailed structure and timing}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{IMAX1.eps}
+\caption{\label{imax1}Basic structure of a unit}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6EXE.eps,width=0.98\textwidth}
+\caption{\label{exe}Configuration and timing of arithmetic in UNIT}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6LMM.eps,width=0.98\textwidth}
+\caption{\label{lmm}Configuration and timing of local memory (LMM) in UNIT}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6PMM.eps,width=0.98\textwidth}
+\caption{\label{pmm}direct reference of Local memory (LMM) from CPU}
+\end{figure}
+
+The arithmetic unit of each UNIT includes: integer arithmetic,
+single-precision floating-point arithmetic, and multimedia arithmetic.
+Figure \ref{exe} is a reference timing chart of registers specific for
+arithmetic unit. The arithmetic functions for four columns are realized by
+multiple execution using hardware for one column. Register reading and unit
+calculation are divided into 4 pipelined cycles.  Figure \ref{lmm} is a
+reference timing chart of registers specific for LMM. Similarly, the LMM
+function for four rows is realized by multiple execution using hardware for
+one row. The LMM is divided into up to four parts, and four references are
+pipelined. If the LMM is not divided, the 18 bits output from EA0/1 are used
+as it is for addressing the LMM. When the LMM is divided into four parts,
+the upper 2 bits of the 18 bits output from EA0/1 are overwritten to one of
+00/01/10/11 according to the column number and used to specify the address
+of the LMM.  Figure \ref{pmm} shows the data path configuration of DMA/PIO
+used when directly referencing LMM from CPU. In each cycle: address, R/W
+type, and write data in case of writing are supplied from the previous row,
+read memory is read out from the last row by referring to the memory space
+composed of multiple rows in a pipeline manner. In which the UNIT's LMM
+containing the destination address is determined by comparing the address
+with the vAddr-range (top, len) in each UNIT. If the own LMM matches, the R
+/ W operation is performed. The address and data are passed to the next
+line. Even if they do not match, the address and data are passed to the next
+line.
+
+\clearpage
+
+\begin{figure}[htbp]
+\center
+\epsfile{file=EMAX6MAP.eps,width=0.98\textwidth}
+\caption{\label{emax6map}UNIT features}
+\end{figure}
+
+Figure \ref {emax6map} (a) to (j) are functions that can be mapped to UNIT.
+In (a), LDRQ (4 dwords) / LDR (1 dword) supplies the loaded data to the
+arithmetic unit on the next row while preloading the data from the main
+memory required for the next execution into the LMM. For preload, blk (0: no
+blocking, 1: Blocking that advances the leading pointer array every 16
+consecutive references, 2: Blocking to advance the leading pointer array
+every 32 consecutive references, 3: Blocking that advances the leading
+pointer array for every 64 consecutive references, and len (burst length in
+32-bit units) are specified.
+
+(b) transfers the previous execution result to the main memory while storing
+the operation result into the LMM by STRQ (4 dwords) / STR (1 dword). STRQ
+stores 1dword per cycle to store logical multi-column operation results in
+LMM. For this reason, it is not possible to map multiple STRQs and preloads
+on the same line.
+
+(c) performs LMM read-modify-write in the same UNIT. The range specified by
+top, blk, and len is stored in LMM in advance. After that, the data read by
+LDRQ is returned to the operation unit input, and the result is written back
+to the same LMM. With the multi-threading function, the pipeline does not
+stop even if such an accumulation is mapped.
+
+(d) prior to LDR loading from LMM, the range specified by top, blk, and len
+is stored in LMM in advance. After that, the LDR refers to the LMM based on
+random addressing. LDRs with the same top, blk, and len are mapped to the
+same unit using the dual port function of the LMM.
+
+(e) is paired with (d), the calculation result is stored in LMM by
+STR. After all stores are completed, the amount of data specified by len is
+burst-transferred from the LMM to the main memory.
+
+(f) is a transaction. The operation results are stored in the LMM by TR (4
+dwords) and the 4 dwords required for the transaction are supplied to the
+ARM. TR stores 1dword per cycle in order to store logical multi-column
+operation results in LMM. For this reason, it is not possible to map
+multiple TRs and preloads on the same line.
+
+(g) is a function to load directly from external memory. The main memory
+address calculation is mapped to EX, and the address is queued in dword0 of
+LMM. EA0 is used for LMM writing, ARM monitors the AXRA (the same value as
+EA0), detects the registration of a new address, extracts the main memory
+address from LMM, reads the main memory using AXI, Send data to LMWD. In
+UNIT, 4dword is sent to the next line via: LMWD to TR to BR.
+
+By the way, among the above basic functions, in the mapping of (g), it is
+necessary to consider the main memory delay. Although no special description
+is required during programming, in the unit included in the same line as
+(g), the delay synchronization mechanism using LMM is activated as in
+(h). Similarly, when inter-register propagation is necessary, functions such
+as (i) (without delay synchronization) and (j) (with delay synchronization)
+are mapped using empty registers.
+
+\section{Simulator}
+
+For rapid and accurate prototype development, it is essential to develop a
+detailed simulator that can be converted to Verilog on a one-to-one
+basis. This is because the operation speed of the Verilog simulator is
+extremely slow, making it difficult to verify the operation of large-scale
+applications. In addition, for a hardware design verification using a
+Verilog simulator, an accurate expected value for comparing with a correct
+value of a register value is necessary. Since IMAX is controlled by ARMv8,
+an IMAX simulator that can simulate ARMv8 has been developed (17K lines in C
+language). Using the application program, IMAX compiler, and this simulator,
+a test program with an expected value comparison function and a test bench
+for Verilog simulation, which are essential for hardware debugging, were
+prepared before starting the design of the prototype system.
+
+\section{Multichip prototype on FPGA}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{IMAX4.eps}
+\caption{\label{imax4}IMAX with 4-chip configuration}
+\end{figure}
+
+In order to evaluate the eight-chip configuration on a real machine, a test
+environment with eight XILINX VU440s is required. Verilog description was
+completed based on the simulator described above, and debugging was
+performed by comparing the correct value of each register generated by the
+simulator with the Verilog simulation result.  The amount of hardware
+description was 11K lines in Verilog. HOST is Xilinx Zynq UltraScale +
+(ZCU102) equipped with ARMv8 (industrial standard CPUs for edge
+devices). For IMAX, Virtex Ultra Scale (S2C Single VU440 Prodigy Logic
+Module) provided by and S2C company is used (Figure \ref{imax4}). Even
+today, the only FPGA that can mount the IMAX with 64 units is VU440, and
+this combination is optimal as a system that can connect ARMv8 and VU440 by
+a high-speed serial link. However, according to the catalog specification,
+three lanes of high-speed serial links of 10 Gbps could be bundled to
+achieve a throughput of 30 Gbps, but in actuality, links could only be
+established with a total of 5 Gbps x 3 lanes = 15 Gbps (later, increased to
+8 lanes).  Also, when 8 chips were connected, the AXI-READ operation used
+for reading data from the LMM was found to be extremely slow. The reason is
+that: even if you specify a burst length long enough for the DMA function of
+HOST, and AXI interface built in HOST is AXI3 compatible, In the case of
+256-bit width transfer, the transfer was interrupted every 8 beats, and the
+next AXI-READ must wait until the response from all chips was
+completed. Therefore, we propose a method that do not break the transfer
+between IMAX even though we still use the original burst length, and HOST’s
+interface is still AXI3. The results have shown that speed of AXI-READ is
+significantly improved.
+
+\section{Comprehensive Evaluation}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{result1.eps}
+\caption{\label{result1}Comprehensive Evaluation 1 (15Gbps interface)}
+\end{figure}
+
+\begin{figure}[htbp]
+\center
+\includegraphics[angle=270,origin=b,width=0.98\textwidth]{result2.eps}
+\caption{\label{result2}Comprehensive Evaluation 2 (40Gbps interface)}
+\end{figure}
+
+Various programs have been run using the IMAX 8-chip configuration model
+that had been developed through the above processes. Figure \ref{result1}
+shows the application execution time measured by changing the number of IMAX
+chips from 1 to 8 using 15Gbps interface. Each program is normalized based
+on the execution time of one chip configuration (operating frequency 150
+MHz, number of arithmetic units 64, area 8.4 mm2 estimated at 28 nm).  For
+comparison, the execution time of a built-in GPGPU (Jetson TX2: operating
+frequency 1.3 GHz, number of arithmetic units 256, arithmetic core area 16
+nm estimated at 43.6 mm2) is also shown.  Matrix multiplication (mm) uses 7
+connected chips, convolution (cnn) uses 5 connected chips, and depth-extraction
+(depth) uses 2 connected chips. For scientific and technical calculation
+(Stencil calculation), the atmospheric simulation (grapes) uses 5 connected
+chips. Other stencils were fastest with 2 connected chips.  As a general
+trend, the effect of multichip formation is large when there is a lot of
+common data between chips such as mm and cnn, and the effect is small with
+simple space division such as stencil (it is not necessary to create a
+multi-chip with a narrow memory bandwidth). In general, we have achieved
+satisfied result within the limited memory bandwidth for Edge devices (1/32
+of Jetson TX2).  Figure \ref{result2} shows the application execution time
+using 40Gbps interface. The fact that the IMAX operating at 140MHz
+outperforms the Jetson TX2 operating at 1.3GHz in terms of performance is a
+sufficient indication of the potential of CGRAs. Also, if the IMAX operates
+at 900MHz with 28nm ASIC, the performance is up to 15 times (in the case of
+one chip cnn) with 1/17 of the area of Jetson TX2, and 250 times the
+performance per area. If we consider that power consumption is proportional
+to area, we can assume that power consumption per the same performance has
+the same ratio.

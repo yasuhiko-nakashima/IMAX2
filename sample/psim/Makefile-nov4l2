@@ -1,0 +1,33 @@
+
+## NNET platform                       ##
+##         Copyright (C) 2015 by NAIST ##
+##         Primary writer: Y.Nakashima ##
+##                nakashim@is.naist.jp ##
+
+OPTION	      = -DNOV4L2
+PROGRAM       = psim-nov4l2
+CC            = gcc
+CFLAGS        = -I. -I/usr/local/include -O2 $(OPTION)
+ASFLAGS       = 
+LDFLAGS       = 
+LIBFLAGS      = -L/usr/local/lib -lm -lX11
+DESTDIR	      = $(HOME)/bin
+
+OBJS	      =	psim.o
+
+SRCS	      =	psim.c
+
+all:		$(PROGRAM)
+
+$(PROGRAM):     $(OBJS)
+		$(CC) $(LDFLAGS) $(OBJS) -o $(PROGRAM) $(LIBFLAGS)
+
+run:;		./$(PROGRAM) -f black.ppm
+
+clean:;		rm -f $(OBJS) core *~
+
+###
+
+psim.o:		gp600m.h
+
+###

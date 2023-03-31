@@ -1,0 +1,106 @@
+【ZCU102-FPGA 8st構成の焼き方と起動方法】
+
+★ZCU102-step4000-20221020 SORT-MERGE(new MEX + conv-c2c)対応
+★ZCU102-step4000-20221010 SHA256(OP_MAJ,OP_CH,OP_ROTS),FFT(conv-c2c)対応
+★ZCU102-step4000-20220720 FTパッチ削除(dmrp_statをLMRING_BUSYに追加)
+★ZCU102-step4000-20220301 reg_ctrlからEMAX_DEPTHを取得
+★ZCU102-step4000-20220220 ZCU102内蔵IMAX8段 VU440-step4000-20220220対応版
+  1. ZCU102-step4000/ に*.v,*.vh,*.xciを用意(VU440-step4000)
+  2. IPは毎回新規作成する. ZCU102-step4000_IP/作って，中でVivado起動
+  3. File -> Project -> New -> Project_name=default 作成
+  4. Add Filesし，ZCU102-step4000/*.v,*.vh,*.xciを選択
+  5. Board選択(ZCU102) -> Next -> Finish
+  6. Tools->Create and Package New IP
+  7. Next->Next-> IP location:は ZCU102-step4000_IPに変更 -> OK -> Finish
+  8. 右画面のReview and Package -> Package IP -> Close
+  9. Quit Vivado
+  ---
+  10.ZCU102-step4000/*.xprを使ってvivado開く
+  11.Tools -> Settings -> IP -> Repository
+  12._IPがあればOK, なければ"+"押して_IPを追加
+  13.(上端のバー)Reports -> Report IP Status
+  14.(下端のバー)Upgrade Selected
+  15.左上に出るOKボタン押す
+  16.Generateウィンドウ -> Generate -> OK
+  17.OK出たら，Generate Bitstream
+  ---
+  18.binの作り方はREADME-IMAX.pdf(参考なので見なくて良い)
+     % cd proj-arm64/fpga
+     % cp ZCU102-step4000/ZCU102_8st.runs/impl_1/design_2_wrapper.bit ZCU102-8st.bit
+  19.ZCU102-8st.binは,ZCU102-8st.bitから作る.(cad105/106)
+     % ./Gen_bin.sh ZCU102-8st
+  20.arch20にloginして動作確認
+  21.# cp proj-arm64/fpga/ZCU102-8st.bin /lib/firmware
+  22.# echo ZCU102-8st.bin > /sys/class/fpga_manager/fpga0/firmware
+     % proj-arm64/sample/mm_cnn_lf/mm-zynq.emax6+dma-8st
+  23.起動時設定
+     # vi /etc/rc.local (なければ以下追加.起動時に/lib/firmware/xxx.binをFPGAに書き込む)
+       echo ZCU102-8st.bin > /sys/class/fpga_manager/fpga0/firmware
+  24.arch28にloginして
+     # cp proj-arm64/fpga/ZCU102-8st.bin /lib/firmware
+      (arch28はZCU102.bitを使うが共通SDcardとしてコピーしておく)
+  25.arch20をshutdown.SDCARDをarch21のUSBアダプタに挿す.
+  26.# dd bs=64k if=/dev/sdb | /usr/bin/gzip > /tmp/ZCU102-step4000-20221020.img.gz
+  27.% cp /tmp/ZCU102-step4000-20221020.img.gz ~/proj-arm64/fpga/ZCU102-step4000-20221020.img.gz
+=====================================================================================================
+
+【ZCU102+VU440 64st構成の焼き方と起動方法】
+
+★ZCU102-step4000-20201010 ZCU102+VU440版
+  1. ZCU102-step4000-20201010/*.xprを使ってvivado開く
+  2. design->Reset, design->Generate
+  3. Generate Bitstream
+  4. cp ZCU102-step4000-20201010/ZCU102_8st.runs/impl_1/ZYNQ_TOP.bit ZCU102.bit
+  5. ZCU102.binは,ZCU102.bitから作る. cad105/106: ./Gen_bin.sh ZCU102
+  6. arch28/29にloginして
+     # cp ZCU102.bin /lib/firmware
+     # vi /etc/rc.local (なければ以下追加.起動時に/lib/firmware/xxx.binをFPGAに書き込む)
+       echo ZCU102.bin > /sys/class/fpga_manager/fpga0/firmware
+     # echo ZCU102.bin > /sys/class/fpga_manager/fpga0/firmware
+     arch28用 5Gbps*8lane /lib/firmware/ZCU102.bin ZCU102:ZCU102-step4000-20201010 VU440:VU440-step4000
+     arch29用 5Gbps*8lane /lib/firmware/ZCU102.bin ZCU102:ZCU102-step4000-20201010 VU440:VU440-step4000
+
+  7. arch28用が正常動作したら,SDcardをarch21に挿してimgをバックアップ
+     # dd bs=64k if=/dev/sdb | /bin/gzip > /tmp/ZCU102-step4000-20201010.img.gz
+     % cp /tmp/ZCU102-step4000-20201010.img.gz ZCU102-step4000-20201010.img.gz
+
+●ZCU102 … ES1    ECC有りPC4-2133
+            Rev1.0 ECC有りPC4-2133
+            Rev1.1 ECC無しPC4-2666が付いてくるのでECC有りに要変更
+  1. arch28などで以下を実行すれば，ZCU102-step4000-20201010.img をmountし内容確認できる
+     # mount -t ext4 -o loop,offset=525336576 ZCU102-step4000-20201010.img /mnt
+     # ls /mnt/lib/firmware; cat /mnt/etc/network/interfaces /mnt/etc/hostname /mnt/etc/hosts /mnt/etc/rc.local
+  2. arch08(Let'sNote+CentOS)にてimgをSDcardに焼く
+     # zcat ZCU102-step4000-20201010.img.gz | dd bs=64k of=/dev/da6     (BSD USB経由の場合)
+     # zcat ZCU102-step4000-20201010.img.gz | dd bs=64k of=/dev/sdb     (Cent USB経由の場合)
+     # zcat ZCU102-step4000-20201010.img.gz | dd bs=64k of=/dev/mmcblk0 (SDcardの場合)
+  3. USBケーブルをarch28のconsoleに繋ぎ，arch08から"screen /dev/ttyUSB0 115200"で起動画面(C-a Kで終了)
+  4. ZCU102電源ON,console画面確認,IPaddr確認
+  5. MACADDRはSDCARDに書いてあるので他とぶつからないよう注意
+  6. ssh でarch28にlogin
+  7. arch28/29用には以下のように修正
+  8. # vi /etc/network/interfaces /etc/hostname /etc/hosts /etc/rc.local
+     hwaddress ether 00:0a:35:03:xx:xxを明示指定しないと固定値0x000a35002201がセットされてDHCPが使えない.
+     arch07 163.221.183.207 MACADDR=00:0a:35:05:61:38
+     arch28 163.221.183.228 MACADDR=00:0a:35:03:71:2c
+     arch29 163.221.183.229 MACADDR=00:0a:35:00:22:02
+
+●VU440
+  1. ソースは，proj-arm64/fpga/VU440-step4000(64stage)またはVU440-step4000-16st(16stage)
+  2. *.vや,io_ports_150M.xdcを修正したら，各directoryにて ./UPDATEIMPORTS
+  3. source /opt/xilinx/Vivado/2018.3/setting.csh
+     vivado VU440_64st.xpr ... aurora refclk=156MHz IMAX用
+  4. Update
+  5. design->Reset, design->Generate
+  6. Generate Bitstream
+  7. 終ったら，arch00に持ってくる. (mkdir Y; cd Y; sget proj-arm64/fpga/VU440-step4000)
+  8. cd proj-arm64/fpga; mv VU440-step4000 VU440-step4000-20201010
+  9. ./MOVEBITSを編集して，./MOVEBITS (bitとbinをfpga/直下に移動)
+  10../CLEANUP (dcp等を削除)
+----
+  1. Windowsに,VU440_PlayerPro/playerpro6.3.2.2.exeをインストールし
+     PlayerProトレーニング資料Rev1.3.pdf通りに作業
+  2. CLK確認は，Tools-> Read Hardware Info (arch28は280+140MHz，arch29は260+130MHz)
+  3. IMAXのbinは，Tools->Download->Direct
+  4. 以上完了後,linkupのために VU440の右側ボタン押し，ZCU102の中央ボタン押す
+----
